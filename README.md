@@ -1,4 +1,4 @@
-Win-lim by Paulo999x
+Win-Slim by Paulo999x
 
 executar o powershell como administrador (recommended)
 
