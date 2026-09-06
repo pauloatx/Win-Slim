@@ -72,6 +72,27 @@ irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main/WinSlimS
 
 ---
 
+## Créditos e agradecimentos
+
+O catálogo de tweaks do **Win-Slim Suite** foi construído consolidando ideias,
+tweaks e abordagens de outros projetos open-source de otimização do Windows —
+com os devidos créditos aos seus criadores:
+
+- **WinUtil**, de [Chris Titus Tech](https://github.com/ChrisTitusTech) —
+  [github.com/ChrisTitusTech/winutil](https://github.com/ChrisTitusTech/winutil)
+- **Win-Debloat-Tools**, de [LeDragoX](https://github.com/LeDragoX) —
+  [github.com/LeDragoX/Win-Debloat-Tools](https://github.com/LeDragoX/Win-Debloat-Tools)
+- **Playbook (MeetRevision, antigo ReviOS)**, da equipe
+  [MeetRevision](https://github.com/meetrevision) —
+  [github.com/meetrevision/playbook](https://github.com/meetrevision/playbook)
+- **Atlas**, da equipe [Atlas-OS](https://github.com/Atlas-OS) —
+  [github.com/Atlas-OS/Atlas](https://github.com/Atlas-OS/Atlas)
+
+Obrigado a todos que mantêm esses projetos abertos — sem eles, boa parte do
+conhecimento sobre tweaks, riscos e compatibilidade reunido aqui não existiria.
+
+---
+
 ## Licença
 
 Distribuído sob a licença **MIT**. Veja [LICENSE](LICENSE) para mais detalhes.
