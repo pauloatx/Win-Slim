@@ -1,0 +1,1227 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Gerador do catálogo de tweaks para o Win-Slim Suite.
+Produz um JSON validado com todas as entradas: privacidade, debloat UWP,
+serviços, performance, UI/QoL, rede, segurança e updates.
+Fontes consolidadas: WinUtil (WU), Atlas-OS (AT), Win-Debloat-Tools (WD),
+MeetRevision Playbook (MR), Win-Slim (WS). Conflitos e redundâncias já
+resolvidos conforme decisão registrada na conversa.
+"""
+import json
+
+tweaks = []
+
+
+def add(t):
+    # validações mínimas de forma
+    required = ["id", "name", "description", "category", "risk",
+                "windowsVersion", "dependencies", "conflicts", "presets", "type"]
+    for r in required:
+        if r not in t:
+            raise ValueError(f"Campo obrigatório ausente '{r}' em {t.get('id')}")
+    tweaks.append(t)
+
+
+BOTH = ["10", "11"]
+W10 = ["10"]
+W11 = ["11"]
+ALL_PRESETS = ["Balanceado", "Gamer", "Extremo"]
+
+# ---------------------------------------------------------------------------
+# 1. PRIVACIDADE
+# ---------------------------------------------------------------------------
+add({
+    "id": "PRIV-001", "name": "Telemetria - Desativar",
+    "description": "Desativa a coleta de telemetria da Microsoft (registro + serviço DiagTrack + bloqueio de domínios via hosts). Unifica em uma única operação o que WinUtil, Win-Debloat-Tools e MeetRevision faziam separadamente.",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "composite", "source": "WU+WD+MR",
+    "registry": [
+        {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo", "Name": "Enabled", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy", "Name": "TailoredExperiencesWithDiagnosticDataEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection", "Name": "AllowTelemetry", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKCU:\\Software\\Microsoft\\Siuf\\Rules", "Name": "NumberOfSIUFInPeriod", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"},
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent", "Name": "DisableWindowsConsumerFeatures", "Value": 1, "Type": "DWord", "OriginalValue": "<Remove>"}
+    ],
+    "service": [{"Name": "DiagTrack", "StartupType": "Disabled", "OriginalType": "Automatic"}],
+    "hosts": [
+        "vortex.data.microsoft.com", "vortex-win.data.microsoft.com", "telecommand.telemetry.microsoft.com",
+        "oca.telemetry.microsoft.com", "sqm.telemetry.microsoft.com", "watson.telemetry.microsoft.com",
+        "redir.metaservices.microsoft.com", "choice.microsoft.com", "df.telemetry.microsoft.com",
+        "wes.df.telemetry.microsoft.com", "services.wes.df.telemetry.microsoft.com", "sqm.df.telemetry.microsoft.com",
+        "telemetry.microsoft.com", "watson.ppe.telemetry.microsoft.com", "telemetry.appex.bing.net",
+        "telemetry.urs.microsoft.com", "settings-sandbox.data.microsoft.com", "vortex-sandbox.data.microsoft.com",
+        "survey.watson.microsoft.com", "watson.live.com", "watson.microsoft.com", "statsfe2.ws.microsoft.com",
+        "corpext.msitadfs.glbdns2.microsoft.com", "compatexchange.cloudapp.net", "cs1.wpc.v0cdn.net",
+        "a-0001.a-msedge.net", "statsfe2.update.microsoft.com.akadns.net", "sls.update.microsoft.com.akadns.net",
+        "fe2.update.microsoft.com.akadns.net", "diagnostics.support.microsoft.com", "corp.sts.microsoft.com",
+        "statsfe1.ws.microsoft.com", "pre.footprintpredict.com", "i1.services.social.microsoft.com",
+        "i1.services.social.microsoft.com.nsatc.net", "feedback.windows.com", "feedback.microsoft-hohm.com",
+        "feedback.search.microsoft.com"
+    ],
+    "link": "https://winutil.christitus.com/dev/tweaks/essential-tweaks/telemetry"
+})
+add({
+    "id": "PRIV-002", "name": "Histórico de Atividades - Desativar",
+    "description": "Apaga histórico de documentos recentes, clipboard e Timeline.",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "WU",
+    "registry": [
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "Name": "EnableActivityFeed", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"},
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "Name": "PublishUserActivities", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"},
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "Name": "UploadUserActivities", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"}
+    ]
+})
+add({
+    "id": "PRIV-003", "name": "Rastreamento de Localização - Desativar",
+    "description": "Desativa GPS/localização, serviço lfsvc e atualização automática de mapas.",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Extremo"],
+    "type": "composite", "source": "WU",
+    "service": [{"Name": "lfsvc", "StartupType": "Disabled", "OriginalType": "Manual"}],
+    "registry": [
+        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location", "Name": "Value", "Value": "Deny", "Type": "String", "OriginalValue": "Allow"},
+        {"Path": "HKLM:\\SYSTEM\\Maps", "Name": "AutoUpdateEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1}
+    ]
+})
+add({
+    "id": "PRIV-004", "name": "Coleta de Digitação e Tinta - Desativar",
+    "description": "Desativa coleta de padrões de digitação/tinta usados para melhorar previsão de texto.",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Extremo"],
+    "type": "registry", "source": "WU",
+    "registry": [
+        {"Path": "HKCU:\\Software\\Microsoft\\Input\\TIPC", "Name": "Enabled", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKCU:\\Software\\Microsoft\\InputPersonalization", "Name": "RestrictImplicitInkCollection", "Value": 1, "Type": "DWord", "OriginalValue": 0},
+        {"Path": "HKCU:\\Software\\Microsoft\\InputPersonalization", "Name": "RestrictImplicitTextCollection", "Value": 1, "Type": "DWord", "OriginalValue": 0}
+    ]
+})
+add({
+    "id": "PRIV-005", "name": "Cortana e Bing na Busca - Desativar",
+    "description": "Remove integração da Cortana/Bing na busca do Windows (mantendo o serviço de busca local ativo).",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": ["OPT-002"], "presets": ALL_PRESETS,
+    "type": "registry", "source": "WU+AT",
+    "registry": [
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "AllowCortana", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "BingSearchEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "ConnectedSearchUseWeb", "Value": 0, "Type": "DWord", "OriginalValue": 1}
+    ]
+})
+add({
+    "id": "PRIV-006", "name": "Windows Error Reporting - Desativar",
+    "description": "Desativa envio de relatórios de erro para a Microsoft (serviço WerSvc).",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "service", "source": "WU+WD+MR",
+    "service": [{"Name": "WerSvc", "StartupType": "Disabled", "OriginalType": "Manual"}]
+})
+add({
+    "id": "PRIV-007", "name": "CEIP (Customer Experience Improvement) - Desativar",
+    "description": "Desativa tarefas agendadas do Programa de Melhoria de Experiência do Cliente.",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "script", "source": "MR",
+    "InvokeScript": [
+        "Get-ScheduledTask -TaskName 'Consolidator' -ErrorAction SilentlyContinue | Disable-ScheduledTask -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'UsbCeip' -ErrorAction SilentlyContinue | Disable-ScheduledTask -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'Microsoft Compatibility Appraiser' -ErrorAction SilentlyContinue | Disable-ScheduledTask -ErrorAction SilentlyContinue"
+    ],
+    "UndoScript": [
+        "Get-ScheduledTask -TaskName 'Consolidator' -ErrorAction SilentlyContinue | Enable-ScheduledTask -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'UsbCeip' -ErrorAction SilentlyContinue | Enable-ScheduledTask -ErrorAction SilentlyContinue"
+    ]
+})
+add({
+    "id": "PRIV-008", "name": "Publicação de Atividades (Cross-Device) - Desativar",
+    "description": "Impede que atividades do usuário sejam publicadas/sincronizadas entre dispositivos Microsoft.",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "Name": "PublishUserActivities", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"}]
+})
+add({
+    "id": "PRIV-009", "name": "Reconhecimento de Voz Online - Desativar",
+    "description": "Desativa envio de dados de voz para servidores da Microsoft.",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Extremo"],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy", "Name": "HasAccepted", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"}]
+})
+add({
+    "id": "PRIV-010", "name": "Sugestões e Anúncios no Explorer/Start - Desativar",
+    "description": "Remove apps sugeridos, dicas e anúncios no menu Iniciar e Explorer.",
+    "category": "Privacidade", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "WU+AT+MR",
+    "registry": [
+        {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", "Name": "SubscribedContent-338388Enabled", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", "Name": "SilentInstalledAppsEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", "Name": "SystemPaneSuggestionsEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1}
+    ]
+})
+add({
+    "id": "PRIV-011", "name": "Diagnóstico de Aplicativos (App Diagnostics) - Restringir",
+    "description": "Restringe acesso de apps a informações de diagnóstico de outros processos.",
+    "category": "Privacidade", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "registry", "source": "AT",
+    "registry": [{"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\appDiagnostics", "Name": "Value", "Value": "Deny", "Type": "String", "OriginalValue": "Allow"}]
+})
+add({
+    "id": "PRIV-012", "name": "Câmera e Microfone Globais - Restringir Acesso",
+    "description": "Restringe acesso global de apps de terceiros à câmera e microfone (não afeta apps essenciais como navegador padrão).",
+    "category": "Privacidade", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "registry", "source": "AT",
+    "registry": [
+        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam", "Name": "Value", "Value": "Deny", "Type": "String", "OriginalValue": "Allow"},
+        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone", "Name": "Value", "Value": "Deny", "Type": "String", "OriginalValue": "Allow"}
+    ]
+})
+
+# ---------------------------------------------------------------------------
+# 2. DEBLOAT UWP - listas por grupo (id, nome, package, win10, win11, risco, presets extras)
+# ---------------------------------------------------------------------------
+grupo1 = [
+    ("APP-001", "Bing News", "Microsoft.BingNews", True, True),
+    ("APP-002", "Bing Weather", "Microsoft.BingWeather", True, True),
+    ("APP-003", "Bing Search (IA na busca)", "Microsoft.BingSearch", False, True),
+    ("APP-004", "Solitaire Collection", "Microsoft.MicrosoftSolitaireCollection", True, True),
+    ("APP-005", "Clipchamp", "Clipchamp.Clipchamp", False, True),
+    ("APP-006", "Microsoft To Do", "Microsoft.Todos", True, True),
+    ("APP-007", "Power Automate Desktop", "Microsoft.PowerAutomateDesktop", True, True),
+    ("APP-008", "Sound Recorder", "Microsoft.WindowsSoundRecorder", True, True),
+    ("APP-009", "Sticky Notes", "Microsoft.MicrosoftStickyNotes", True, True),
+    ("APP-010", "Dev Home", "Microsoft.Windows.DevHome", False, True),
+    ("APP-011", "Get Help", "Microsoft.GetHelp", True, True),
+    ("APP-012", "Dicas / Tips", "Microsoft.Getstarted", True, True),
+    ("APP-013", "Quick Assist", "MicrosoftCorporationII.QuickAssist", True, True),
+    ("APP-014", "3D Viewer", "Microsoft.Microsoft3DViewer", True, True),
+    ("APP-015", "Mixed Reality Portal", "Microsoft.MixedReality.Portal", True, True),
+    ("APP-016", "Office Hub (atalho promocional)", "Microsoft.MicrosoftOfficeHub", True, True),
+    ("APP-017", "Feedback Hub", "Microsoft.WindowsFeedbackHub", True, True),
+    ("APP-018", "Family Safety", "MicrosoftCorporationII.MicrosoftFamily", True, True),
+    ("APP-019", "People", "Microsoft.People", True, True),
+    ("APP-020", "Skype pré-instalado", "Microsoft.SkypeApp", True, True),
+    ("APP-021", "Cortana", "Microsoft.549981C3F5F10", True, True),
+    ("APP-022", "Print 3D", "Microsoft.Print3D", True, True),
+    ("APP-023", "Paint 3D", "Microsoft.MSPaint3D", True, True),
+    ("APP-024", "Wallet", "Microsoft.Wallet", True, False),
+    ("APP-025", "News (MSN)", "Microsoft.MSN", True, True),
+    ("APP-026", "Whiteboard", "Microsoft.Whiteboard", True, True),
+    ("APP-027", "Remote Desktop (UWP antigo)", "Microsoft.RemoteDesktop", True, True),
+]
+for id_, name, pkg, w10, w11 in grupo1:
+    wv = (W10 if w10 else []) + (W11 if w11 else [])
+    add({
+        "id": id_, "name": f"App - {name} (Remover)",
+        "description": f"Remove o pacote pré-instalado '{name}'.",
+        "category": "Debloat UWP", "risk": "Baixo", "windowsVersion": wv,
+        "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+        "type": "appx", "source": "WU+WD+MR", "packages": [pkg]
+    })
+
+# Alarms & Clock - opcional, fora dos presets automáticos por padrão (utilidade)
+add({
+    "id": "APP-028", "name": "App - Alarmes e Relógio (Remover)",
+    "description": "Remove o app de Alarmes e Relógio. Opcional: muitos usuários usam.",
+    "category": "Debloat UWP", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "appx", "source": "WU", "packages": ["Microsoft.WindowsAlarms"]
+})
+
+# Grupo 2 - comunicação (opcional, fora do preset Balanceado por padrão)
+grupo2 = [
+    ("APP-029", "MS Teams (pré-instalado)", "MSTeams", False, True, ["Gamer", "Extremo"]),
+    ("APP-030", "Outlook for Windows (New Outlook)", "Microsoft.OutlookForWindows", False, True, ["Gamer", "Extremo"]),
+    ("APP-031", "Mail and Calendar (clássico)", "microsoft.windowscommunicationsapps", True, False, ["Gamer", "Extremo"]),
+]
+for id_, name, pkg, w10, w11, presets in grupo2:
+    wv = (W10 if w10 else []) + (W11 if w11 else [])
+    add({
+        "id": id_, "name": f"App - {name} (Remover)",
+        "description": f"Remove '{name}'. Fica de fora do preset Balanceado por ser usado por parte dos usuários corporativos.",
+        "category": "Debloat UWP - Comunicação", "risk": "Baixo", "windowsVersion": wv,
+        "dependencies": [], "conflicts": [], "presets": presets,
+        "type": "appx", "source": "MR", "packages": [pkg]
+    })
+
+add({
+    "id": "APP-032", "name": "OneDrive - Remover (toggle reversível)",
+    "description": "Desinstala o OneDrive de forma reversível (reinstalável via winget). Diferente do 'hard remove', não bloqueia reinstalação.",
+    "category": "Debloat UWP - Comunicação", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": ["APP-032X"], "presets": [],
+    "type": "script", "source": "MR",
+    "InvokeScript": [
+        "$od = \"$Env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\"; if (-not (Test-Path $od)) { $od = \"$Env:SystemRoot\\System32\\OneDriveSetup.exe\" }",
+        "if (Test-Path $od) { Start-Process $od -ArgumentList '/uninstall' -Wait }"
+    ],
+    "UndoScript": ["winget install Microsoft.OneDrive --source winget --accept-package-agreements --accept-source-agreements"]
+})
+add({
+    "id": "APP-032X", "name": "OneDrive - Remoção Definitiva (avançado)",
+    "description": "Remoção completa e agressiva do OneDrive, incluindo pastas residuais e bloqueio de reinstalação automática. Use apenas se tiver certeza.",
+    "category": "Debloat UWP - Comunicação", "risk": "Alto", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": ["APP-032"], "presets": ["Extremo"],
+    "type": "script", "source": "WU",
+    "InvokeScript": [
+        "icacls $Env:OneDrive /deny \"Administrators:(D,DC)\" 2>$null",
+        "Start-Process \"$Env:SystemRoot\\System32\\OneDriveSetup.exe\" -ArgumentList '/uninstall' -Wait -ErrorAction SilentlyContinue",
+        "Stop-Process -Name FileCoAuth,Explorer -ErrorAction SilentlyContinue",
+        "Remove-Item \"$Env:LocalAppData\\Microsoft\\OneDrive\" -Recurse -Force -ErrorAction SilentlyContinue",
+        "Remove-Item \"$Env:ProgramData\\Microsoft OneDrive\" -Recurse -Force -ErrorAction SilentlyContinue",
+        "icacls $Env:OneDrive /grant \"Administrators:(D,DC)\" 2>$null"
+    ],
+    "UndoScript": ["winget install Microsoft.OneDrive --source winget --accept-package-agreements --accept-source-agreements"]
+})
+
+# Grupo 3 - IA/Copilot/Recall (exclusivo Win11, opt-in exceto Extremo)
+grupo3 = [
+    ("APP-033", "Copilot", "Microsoft.Copilot"),
+    ("APP-034", "Recall / Windows Copilot Runtime (Core AI)", "MicrosoftWindows.Client.CoreAI"),
+    ("APP-035", "Start Experiences (widgets no Start)", "Microsoft.StartExperiencesApp"),
+    ("APP-036", "Widgets Platform Runtime", "Microsoft.WidgetsPlatformRuntime"),
+    ("APP-037", "Web Experience (Widgets/News board)", "MicrosoftWindows.Client.WebExperience"),
+]
+for id_, name, pkg in grupo3:
+    add({
+        "id": id_, "name": f"App - {name} (Remover)",
+        "description": f"Remove '{name}'. Exclusivo do Windows 11.",
+        "category": "Debloat UWP - IA/Copilot", "risk": "Médio", "windowsVersion": W11,
+        "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+        "type": "appx", "source": "WU+MR", "packages": [pkg]
+    })
+
+# Grupo 4 - Gaming (controlado por flag "sou gamer")
+grupo4 = [
+    ("APP-038", "Xbox Identity Provider", "Microsoft.XboxIdentityProvider"),
+    ("APP-039", "Xbox Speech to Text Overlay", "Microsoft.XboxSpeechToTextOverlay"),
+    ("APP-040", "Gaming App (Xbox novo)", "Microsoft.GamingApp"),
+    ("APP-041", "Xbox TCUI", "Microsoft.Xbox.TCUI"),
+    ("APP-042", "Xbox Game Overlay (Game Bar)", "Microsoft.XboxGamingOverlay"),
+    ("APP-043", "Xbox Console Companion (antigo)", "Microsoft.XboxApp"),
+]
+for id_, name, pkg in grupo4:
+    add({
+        "id": id_, "name": f"App - {name} (Remover)",
+        "description": f"Remove '{name}'. Fica de fora automaticamente se a opção 'Sou Gamer' estiver marcada na GUI.",
+        "category": "Debloat UWP - Gaming", "risk": "Baixo", "windowsVersion": BOTH,
+        "dependencies": [], "conflicts": ["OPT-GAMER"], "presets": ["Balanceado"],
+        "type": "appx", "source": "WU+WD", "packages": [pkg]
+    })
+add({
+    "id": "APP-044", "name": "Xbox Game Bar/DVR - Desativar (toggle, mantém app)",
+    "description": "Desativa a gravação em segundo plano (Game DVR) sem remover o app, preservando compatibilidade com alguns jogos. Recomendado para quem marcou 'Sou Gamer'.",
+    "category": "Debloat UWP - Gaming", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer"],
+    "type": "registry", "source": "WD",
+    "registry": [
+        {"Path": "HKCU:\\System\\GameConfigStore", "Name": "GameDVR_Enabled", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR", "Name": "AppCaptureEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1}
+    ]
+})
+
+# Grupo 5 - Multimídia (opcional, fora dos presets por padrão)
+grupo5 = [
+    ("APP-045", "Groove Music / Zune Music", "Microsoft.ZuneMusic"),
+    ("APP-046", "Filmes e TV / Zune Video", "Microsoft.ZuneVideo"),
+]
+for id_, name, pkg in grupo5:
+    add({
+        "id": id_, "name": f"App - {name} (Remover)",
+        "description": f"Remove '{name}'. Opcional — desmarcado por padrão em todos os presets.",
+        "category": "Debloat UWP - Multimídia", "risk": "Baixo", "windowsVersion": BOTH,
+        "dependencies": [], "conflicts": [], "presets": [],
+        "type": "appx", "source": "WU", "packages": [pkg]
+    })
+add({
+    "id": "APP-047", "name": "Novo Paint (com IA/Cocriador) - Remover",
+    "description": "Remove a versão nova do Paint com recursos de IA generativa. Opcional.",
+    "category": "Debloat UWP - Multimídia", "risk": "Baixo", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "appx", "source": "MR", "packages": ["Microsoft.Paint"]
+})
+add({
+    "id": "APP-048", "name": "Photos - Remover",
+    "description": "Remove o app de Fotos padrão. Só use se já tiver um visualizador alternativo instalado.",
+    "category": "Debloat UWP - Multimídia", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "appx", "source": "WU", "packages": ["Microsoft.Windows.Photos"]
+})
+
+# Grupo 6 - Capabilities legadas
+grupo6 = [
+    ("APP-049", "Internet Explorer 11 (Capability legado)", "Internet-Explorer-Optional-amd64", "Baixo", BOTH),
+    ("APP-050", "Fax and Scan", "Fax.Contract", "Baixo", BOTH),
+    ("APP-051", "WordPad", "Microsoft.Windows.WordPad", "Baixo", BOTH),
+    ("APP-052", "Steps Recorder (Gravador de Passos)", "App.StepsRecorder", "Baixo", BOTH),
+    ("APP-053", "Math Recognizer", "MathRecognizer", "Baixo", BOTH),
+]
+for id_, name, cap, risk, wv in grupo6:
+    add({
+        "id": id_, "name": f"Componente - {name} (Remover)",
+        "description": f"Remove a capability legada '{name}' (pula silenciosamente se já ausente no SO).",
+        "category": "Debloat UWP - Componentes Legados", "risk": risk, "windowsVersion": wv,
+        "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+        "type": "capability", "source": "WD", "capabilityName": cap
+    })
+
+# ---------------------------------------------------------------------------
+# 3. SERVIÇOS (SysMain e Search tratados como OTIMIZAÇÃO, nunca desativados)
+# ---------------------------------------------------------------------------
+add({
+    "id": "SVC-001", "name": "SysMain (Superfetch) - Otimizar",
+    "description": "NÃO desativa. Ajusta automaticamente: Automático em HDD, Automático (Retardado) em SSD/NVMe, para melhor uso de cache sem penalizar a inicialização.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "script", "source": "MR+WD (conflito resolvido)",
+    "InvokeScript": [
+        "$isSSD = (Get-PhysicalDisk | Where-Object {$_.MediaType -eq 'SSD'}).Count -gt 0",
+        "if ($isSSD) { Set-Service -Name SysMain -StartupType AutomaticDelayedStart } else { Set-Service -Name SysMain -StartupType Automatic }",
+        "Start-Service -Name SysMain -ErrorAction SilentlyContinue"
+    ],
+    "UndoScript": ["Set-Service -Name SysMain -StartupType Automatic; Start-Service -Name SysMain -ErrorAction SilentlyContinue"]
+})
+add({
+    "id": "SVC-002", "name": "Windows Search - Otimizar Indexação",
+    "description": "NÃO desativa o serviço. Restringe a indexação a pastas do usuário, exclui pastas de sistema/dev pesadas e remove resultados da Store/Bing na busca.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "MR (conflito resolvido)",
+    "registry": [
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "AllowCloudSearch", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "DisableWebSearch", "Value": 1, "Type": "DWord", "OriginalValue": 0},
+        {"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search", "Name": "ConnectedSearchUseWebOverMeteredConnections", "Value": 0, "Type": "DWord", "OriginalValue": 1}
+    ],
+    "service": [{"Name": "WSearch", "StartupType": "Automatic", "OriginalType": "Automatic"}]
+})
+add({
+    "id": "SVC-003", "name": "Serviços de Baixo Uso - Definir como Manual/Desativado",
+    "description": "Ajusta RetailDemo, MapsBroker (mapas offline), Fax e RemoteRegistry — baixo risco, raramente usados.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "service", "source": "WU+WD+MR",
+    "service": [
+        {"Name": "RetailDemo", "StartupType": "Disabled", "OriginalType": "Manual"},
+        {"Name": "MapsBroker", "StartupType": "Manual", "OriginalType": "Automatic"},
+        {"Name": "Fax", "StartupType": "Manual", "OriginalType": "Manual"},
+        {"Name": "RemoteRegistry", "StartupType": "Disabled", "OriginalType": "Disabled"}
+    ]
+})
+add({
+    "id": "SVC-004", "name": "Spooler de Impressão - Definir como Manual",
+    "description": "Ajusta para Manual em vez de desativar totalmente, pois muitos usuários precisam imprimir eventualmente.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "service", "source": "WD",
+    "service": [{"Name": "Spooler", "StartupType": "Manual", "OriginalType": "Automatic"}]
+})
+add({
+    "id": "SVC-005", "name": "Compartilhamento de Rede Legado - Desativar",
+    "description": "Desativa SharedAccess (Internet Connection Sharing) e CscService (Offline Files), pouco usados fora de redes corporativas.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "service", "source": "WU",
+    "service": [
+        {"Name": "SharedAccess", "StartupType": "Disabled", "OriginalType": "Automatic"},
+        {"Name": "CscService", "StartupType": "Disabled", "OriginalType": "Manual"}
+    ]
+})
+add({
+    "id": "SVC-006", "name": "Ajuste Dinâmico do SvcHostSplitThreshold",
+    "description": "Ajusta o limite de agrupamento de svchost.exe conforme a RAM instalada, reduzindo processos svchost redundantes.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "script", "source": "WU",
+    "InvokeScript": [
+        "$Memory = (Get-CimInstance Win32_PhysicalMemory | Measure-Object Capacity -Sum).Sum / 1KB",
+        "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control' -Name SvcHostSplitThresholdInKB -Value $Memory"
+    ]
+})
+# SVC-007 removido: virou parte do tweak multinível MLV-001 (Windows Update).
+add({
+    "id": "SVC-008", "name": "Bluetooth Support Service - Definir Manual se sem Bluetooth",
+    "description": "Detecta se há adaptador Bluetooth; se não houver, define o serviço como Manual.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "script", "source": "WD",
+    "InvokeScript": [
+        "$bt = Get-PnpDevice -Class Bluetooth -ErrorAction SilentlyContinue",
+        "if (-not $bt) { Set-Service -Name bthserv -StartupType Manual -ErrorAction SilentlyContinue }"
+    ]
+})
+add({
+    "id": "SVC-009", "name": "Windows Insider Service - Desativar",
+    "description": "Desativa serviços do programa Windows Insider para quem não participa de builds beta.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "service", "source": "WD",
+    "service": [{"Name": "wisvc", "StartupType": "Disabled", "OriginalType": "Manual"}]
+})
+add({
+    "id": "SVC-010", "name": "Serviço de Diagnóstico de Rede - Manual",
+    "description": "Reduz overhead de diagnóstico automático de conectividade, mantendo disponível sob demanda.",
+    "category": "Serviços", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "service", "source": "WD",
+    "service": [{"Name": "diagnosticshub.standardcollector.service", "StartupType": "Manual", "OriginalType": "Manual"}]
+})
+
+# ---------------------------------------------------------------------------
+# 4. PERFORMANCE
+# ---------------------------------------------------------------------------
+add({
+    "id": "PERF-001", "name": "Plano de Energia (Multinível)",
+    "description": "Escolha o quanto o Windows prioriza desempenho vs. economia de energia. Um único seletor de nível — impossível ativar dois planos ao mesmo tempo. Desfazer sempre retorna ao plano Balanceado padrão do Windows.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "multilevel", "source": "WU+AT+Windows Default (unificado)",
+    "presetLevels": {"Balanceado": 0, "Gamer": 1, "Extremo": 2},
+    "levels": [
+        {"name": "Balanceado (padrão do Windows)", "description": "Plano padrão da Microsoft. Bom equilíbrio entre economia de bateria e desempenho — recomendado para notebooks.",
+         "InvokeScript": ["powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"]},
+        {"name": "Alto Desempenho", "description": "CPU roda em frequências mais altas com mais frequência. Aumenta responsividade, mas gasta mais energia/bateria.",
+         "InvokeScript": ["powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"]},
+        {"name": "Ultimate Performance (agressivo)", "description": "Plano oculto da Microsoft: desativa quase toda a economia de energia da CPU. Máximo desempenho, ideal para desktops gamers ligados na tomada. Não recomendado para notebooks na bateria.",
+         "InvokeScript": ["powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 | Out-Null; $g = (powercfg -list | Select-String 'Ultimate').ToString().Split()[3]; powercfg -setactive $g"]}
+    ]
+})
+add({
+    "id": "PERF-003", "name": "MMCSS - Priorizar Jogos (Multimedia Class Scheduler)",
+    "description": "Ajusta o agendador de tarefas multimídia para priorizar jogos em primeiro plano, reduzindo stutter.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "registry", "source": "AT+MR",
+    "registry": [
+        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games", "Name": "GPU Priority", "Value": 8, "Type": "DWord", "OriginalValue": 8},
+        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games", "Name": "Priority", "Value": 6, "Type": "DWord", "OriginalValue": 2},
+        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games", "Name": "Scheduling Category", "Value": "High", "Type": "String", "OriginalValue": "Medium"}
+    ]
+})
+add({
+    "id": "PERF-004", "name": "Algoritmo de Nagle - Desativar (Rede)",
+    "description": "Desativa o algoritmo de Nagle por adaptador de rede, reduzindo latência em jogos online (aumenta levemente o uso de pacotes pequenos).",
+    "category": "Performance", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "script", "source": "AT+MR",
+    "InvokeScript": [
+        "Get-ChildItem 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces' | ForEach-Object {",
+        "  Set-ItemProperty -Path $_.PSPath -Name 'TcpAckFrequency' -Value 1 -Type DWord -ErrorAction SilentlyContinue",
+        "  Set-ItemProperty -Path $_.PSPath -Name 'TCPNoDelay' -Value 1 -Type DWord -ErrorAction SilentlyContinue",
+        "}"
+    ],
+    "UndoScript": [
+        "Get-ChildItem 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces' | ForEach-Object {",
+        "  Remove-ItemProperty -Path $_.PSPath -Name 'TcpAckFrequency' -ErrorAction SilentlyContinue",
+        "  Remove-ItemProperty -Path $_.PSPath -Name 'TCPNoDelay' -ErrorAction SilentlyContinue",
+        "}"
+    ]
+})
+add({
+    "id": "PERF-005", "name": "HPET / Dynamic Tick - Desativar para Menor Latência",
+    "description": "Desativa o High Precision Event Timer e o dynamic tick, reduzindo microgargalos em sistemas sensíveis a latência (pode aumentar levemente o consumo de energia).",
+    "category": "Performance", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "script", "source": "AT+MR",
+    "InvokeScript": [
+        "bcdedit /deletevalue useplatformclock 2>$null",
+        "bcdedit /set disabledynamictick yes",
+        "bcdedit /set useplatformtick yes"
+    ],
+    "UndoScript": [
+        "bcdedit /set disabledynamictick no",
+        "bcdedit /deletevalue useplatformtick 2>$null"
+    ]
+})
+add({
+    "id": "PERF-006", "name": "Priorização de CPU para Jogos em Primeiro Plano",
+    "description": "Ajusta Win32PrioritySeparation para favorecer o processo em foco (jogo), melhorando fluidez percebida.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "registry", "source": "AT+MR",
+    "registry": [{"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl", "Name": "Win32PrioritySeparation", "Value": 38, "Type": "DWord", "OriginalValue": 2}]
+})
+add({
+    "id": "PERF-007", "name": "Storage Sense - Ajustar (não desativar cegamente)",
+    "description": "Mantém Storage Sense ativo, mas ajusta frequência de limpeza automática para semanal em vez de diária, evitando exclusões inesperadas.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "WU (ajustado)",
+    "registry": [{"Path": "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy", "Name": "01", "Value": 1, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "PERF-008", "name": "Prefetch/Superfetch - Ajuste Fino por Tipo de Disco",
+    "description": "Ajusta EnablePrefetcher e EnableSuperfetch conforme HDD (ambos=3) ou SSD/NVMe (Prefetcher=0, Superfetch gerenciado pelo SVC-001).",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": ["SVC-001"], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "script", "source": "MR",
+    "InvokeScript": [
+        "$isSSD = (Get-PhysicalDisk | Where-Object {$_.MediaType -eq 'SSD'}).Count -gt 0",
+        "$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters'",
+        "if ($isSSD) { Set-ItemProperty -Path $path -Name EnablePrefetcher -Value 0 -Type DWord } else { Set-ItemProperty -Path $path -Name EnablePrefetcher -Value 3 -Type DWord }"
+    ],
+    "UndoScript": ["Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters' -Name EnablePrefetcher -Value 3 -Type DWord"]
+})
+add({
+    "id": "PERF-009", "name": "Efeitos Visuais (Multinível)",
+    "description": "Controla quanto de 'enfeite' visual o Windows desenha. Em todos os níveis a suavização de fontes (ClearType) é mantida ativa de propósito — só afeta animações/sombras, nunca a legibilidade do texto.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "multilevel", "source": "WU+AT (unificado)",
+    "presetLevels": {"Balanceado": 1, "Gamer": 1, "Extremo": 2},
+    "levels": [
+        {"name": "Padrão do Windows", "description": "Restaura os valores originais de fábrica das animações e sombras (o mesmo que o Desfazer aplica).",
+         "registry": [
+            {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "DragFullWindows", "Value": "1", "Type": "String"},
+            {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "MenuShowDelay", "Value": "400", "Type": "String"},
+            {"Path": "HKCU:\\Control Panel\\Desktop\\WindowMetrics", "Name": "MinAnimate", "Value": "1", "Type": "String"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ListviewAlphaSelect", "Value": 1, "Type": "DWord"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ListviewShadow", "Value": 1, "Type": "DWord"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "TaskbarAnimations", "Value": 1, "Type": "DWord"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects", "Name": "VisualFXSetting", "Value": 1, "Type": "DWord"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\DWM", "Name": "EnableAeroPeek", "Value": 1, "Type": "DWord"},
+            {"Path": "HKCU:\\Control Panel\\Mouse", "Name": "MouseHoverTime", "Value": "400", "Type": "String"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ShowCompColor", "Value": 1, "Type": "DWord"}
+         ]},
+        {"name": "Otimizado (recomendado)", "description": "Desativa animações de janelas, sombras de ícones e efeitos de lista, mantendo a interface responsiva sem ficar 'crua'.",
+         "registry": [
+            {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "DragFullWindows", "Value": "0", "Type": "String", "OriginalValue": "1"},
+            {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "MenuShowDelay", "Value": "200", "Type": "String", "OriginalValue": "400"},
+            {"Path": "HKCU:\\Control Panel\\Desktop\\WindowMetrics", "Name": "MinAnimate", "Value": "0", "Type": "String", "OriginalValue": "1"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ListviewAlphaSelect", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ListviewShadow", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "TaskbarAnimations", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects", "Name": "VisualFXSetting", "Value": 3, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\DWM", "Name": "EnableAeroPeek", "Value": 0, "Type": "DWord", "OriginalValue": 1}
+         ]},
+        {"name": "Mínimo Agressivo", "description": "Tudo do nível Otimizado, mais: reduz o tempo de espera do mouse para exibir tooltips e desativa a cor especial de arquivos compactados/criptografados no Explorer. Interface o mais 'seca' possível sem quebrar a legibilidade.",
+         "registry": [
+            {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "DragFullWindows", "Value": "0", "Type": "String", "OriginalValue": "1"},
+            {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "MenuShowDelay", "Value": "200", "Type": "String", "OriginalValue": "400"},
+            {"Path": "HKCU:\\Control Panel\\Desktop\\WindowMetrics", "Name": "MinAnimate", "Value": "0", "Type": "String", "OriginalValue": "1"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ListviewAlphaSelect", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ListviewShadow", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "TaskbarAnimations", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects", "Name": "VisualFXSetting", "Value": 3, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\DWM", "Name": "EnableAeroPeek", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+            {"Path": "HKCU:\\Control Panel\\Mouse", "Name": "MouseHoverTime", "Value": "10", "Type": "String", "OriginalValue": "400"},
+            {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ShowCompColor", "Value": 0, "Type": "DWord", "OriginalValue": 1}
+         ]}
+    ]
+})
+add({
+    "id": "PERF-010", "name": "USB 3 Link Power Management - Desligar",
+    "description": "Desativa o gerenciamento de energia de link USB 3, evitando micro-desconexões em periféricos de jogos (mouse/teclado/headset).",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "script", "source": "MR",
+    "InvokeScript": ["powercfg /setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 d4e98f31-5ffe-4ce1-be31-1b38b384c009 0; powercfg /setactive scheme_current"],
+    "UndoScript": ["powercfg /setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 d4e98f31-5ffe-4ce1-be31-1b38b384c009 1; powercfg /setactive scheme_current"]
+})
+add({
+    "id": "PERF-011", "name": "CTFMon (Entrada de Texto) - Gerenciar",
+    "description": "Ajusta o processo ctfmon.exe (gerenciador de entrada de texto), reduzindo overhead em sistemas com múltiplos idiomas configurados desnecessariamente.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "registry", "source": "MR",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\CTF\\SystemShared", "Name": "CtfMonRunning", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "PERF-012", "name": "Restauração do Sistema - Frequência de Checkpoint",
+    "description": "Reduz a frequência mínima entre pontos de restauração automáticos para permitir mais granularidade quando necessário.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SystemRestore", "Name": "SystemRestorePointCreationFrequency", "Value": 0, "Type": "DWord", "OriginalValue": 1440}]
+})
+
+# ---------------------------------------------------------------------------
+# 5. UI / QOL
+# ---------------------------------------------------------------------------
+add({
+    "id": "UI-001", "name": "Barra de Tarefas - Alinhar à Esquerda",
+    "description": "Alinha os ícones da barra de tarefas à esquerda (padrão clássico), em vez do centro do Windows 11.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WU+AT",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "TaskbarAl", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "UI-002", "name": "Remover Widgets da Barra de Tarefas",
+    "description": "Remove o botão/painel de Widgets (notícias e interesses) da barra de tarefas.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "WU+AT",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "TaskbarDa", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "UI-003", "name": "Remover Chat/Teams da Barra de Tarefas",
+    "description": "Remove o ícone de Chat (Teams) da barra de tarefas.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "AT",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "TaskbarMn", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "UI-004", "name": "Modo Escuro - Ativar",
+    "description": "Ativa o tema escuro do sistema e dos aplicativos.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "WU+AT+MR",
+    "registry": [
+        {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "Name": "AppsUseLightTheme", "Value": 0, "Type": "DWord", "OriginalValue": 1},
+        {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "Name": "SystemUsesLightTheme", "Value": 0, "Type": "DWord", "OriginalValue": 1}
+    ]
+})
+add({
+    "id": "UI-005", "name": "Menu Iniciar Clássico - Restaurar Layout Anterior",
+    "description": "Usa ViVeTool (baixado do GitHub oficial do projeto) para reverter o layout do Menu Iniciar ao padrão anterior ao rollout do 25H2. Pode não funcionar em builds muito recentes. O arquivo baixado é verificado no VirusTotal antes de ser executado (API gratuita — pode falhar ocasionalmente por limite de uso; nesse caso você decide se quer continuar mesmo assim).",
+    "category": "UI / QoL", "risk": "Médio", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "script", "source": "WU",
+    "InvokeScript": [
+        "$viveZip = \"$env:TEMP\\ViVeTool.zip\"",
+        "Invoke-WebRequest https://github.com/thebookisclosed/ViVe/releases/download/v0.3.4/ViVeTool-v0.3.4-IntelAmd.zip -OutFile $viveZip",
+        "if (-not (Confirm-DownloadIsSafe -FilePath $viveZip -FriendlyName 'ViVeTool.zip')) { throw 'Execucao cancelada pela verificacao de seguranca (VirusTotal) ou pelo usuario.' }",
+        "Expand-Archive $viveZip \"$env:TEMP\\ViVeTool\" -Force",
+        "Start-Process \"$env:TEMP\\ViVeTool\\ViVeTool.exe\" -ArgumentList '/disable /id:47205210' -Wait -NoNewWindow"
+    ],
+    "UndoScript": ["Start-Process \"$env:TEMP\\ViVeTool\\ViVeTool.exe\" -ArgumentList '/enable /id:47205210' -Wait -NoNewWindow"]
+})
+add({
+    "id": "UI-006", "name": "'Finalizar Tarefa' no Menu de Contexto da Barra de Tarefas",
+    "description": "Habilita a opção de encerrar processos diretamente pelo clique direito na barra de tarefas.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "WU+MR",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings", "Name": "TaskbarEndTask", "Value": 1, "Type": "DWord", "OriginalValue": "<Remove>"}]
+})
+add({
+    "id": "UI-007", "name": "This PC como Padrão no Explorer (remover Home/Gallery)",
+    "description": "Define 'Este Computador' como tela inicial do Explorer e oculta 'Home' e 'Galeria' via toggle reversível (método MeetRevision, mais seguro que edição crua de registro).",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "MR (substitui versão redundante do WU)",
+    "registry": [
+        {"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "LaunchTo", "Value": 1, "Type": "DWord", "OriginalValue": "<Remove>"},
+        {"Path": "HKCU:\\Software\\Classes\\CLSID\\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}", "Name": "System.IsPinnedToNameSpaceTree", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"},
+        {"Path": "HKCU:\\Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}", "Name": "System.IsPinnedToNameSpaceTree", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"}
+    ]
+})
+add({
+    "id": "UI-008", "name": "Extensões de Arquivo - Sempre Mostrar",
+    "description": "Exibe extensões de arquivo conhecidas no Explorer.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "registry", "source": "WD+MR",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "HideFileExt", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "UI-009", "name": "Transparência de Efeitos - Toggle",
+    "description": "Ativa/desativa efeitos de transparência do sistema (Acrílico/Mica). Desligar economiza recursos gráficos levemente.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "registry", "source": "MR",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "Name": "EnableTransparency", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "UI-010", "name": "Ocultar Itens do Explorer (3D Objects, OneDrive residual)",
+    "description": "Remove atalhos de '3D Objects' e OneDrive residual do painel de navegação do Explorer quando não usados.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WD+MR",
+    "registry": [
+        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", "Name": "(Default)", "Value": "<Remove>", "Type": "String", "OriginalValue": "3D Objects"}
+    ]
+})
+
+# ---------------------------------------------------------------------------
+# 6. REDE
+# ---------------------------------------------------------------------------
+# NET-001 removido: virou tweak multinível MLV-003 (ver seção de multiníveis abaixo).
+add({
+    "id": "NET-002", "name": "IPv6 - Desativar (opcional, com aviso)",
+    "description": "Desativa IPv6 nos adaptadores. Pode causar incompatibilidade com redes/serviços modernos — use apenas se souber que não precisa.",
+    "category": "Rede", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "MR+AT",
+    "registry": [{"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters", "Name": "DisabledComponents", "Value": 255, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "NET-003", "name": "NetBIOS/Homegroup Legado - Desativar",
+    "description": "Desativa NetBIOS sobre TCP/IP e serviços de Homegroup, obsoletos em redes domésticas modernas.",
+    "category": "Rede", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "script", "source": "WD",
+    "InvokeScript": ["Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object {$_.TcpipNetbiosOptions -ne $null} | ForEach-Object { $_.SetTcpipNetbios(2) | Out-Null }"],
+    "UndoScript": ["Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object {$_.TcpipNetbiosOptions -ne $null} | ForEach-Object { $_.SetTcpipNetbios(0) | Out-Null }"]
+})
+add({
+    "id": "NET-004", "name": "Limite de Largura de Banda Reservada (QoS) - Zerar",
+    "description": "Remove a reserva padrão de 20% de banda para QoS, liberando mais largura de banda para uso geral.",
+    "category": "Rede", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "registry", "source": "AT",
+    "registry": [{"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Psched", "Name": "NonBestEffortLimit", "Value": 0, "Type": "DWord", "OriginalValue": "<Remove>"}]
+})
+add({
+    "id": "NET-005", "name": "Auto-Tuning de Janela TCP - Otimizar para Jogos",
+    "description": "Ajusta o auto-tuning da janela de recepção TCP para o perfil 'normal', bom equilíbrio entre throughput e latência.",
+    "category": "Rede", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer"],
+    "type": "script", "source": "AT+MR",
+    "InvokeScript": ["netsh interface tcp set global autotuninglevel=normal"],
+    "UndoScript": ["netsh interface tcp set global autotuninglevel=normal"]
+})
+add({
+    "id": "NET-006", "name": "Firewall - Manter Ativo (checagem de segurança)",
+    "description": "Não desativa o firewall; apenas garante que está ativo em todos os perfis de rede (item de segurança, não de otimização).",
+    "category": "Rede", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "script", "source": "Boa prática",
+    "InvokeScript": ["Set-NetFirewallProfile -All -Enabled True"]
+})
+
+# ---------------------------------------------------------------------------
+# 7. SEGURANÇA (com avisos de risco)
+# ---------------------------------------------------------------------------
+add({
+    "id": "SEC-001", "name": "WPBT (Windows Platform Binary Table) - Desativar",
+    "description": "Impede que o fabricante execute binários no boot (anti-roubo, bloatware OEM). Baixo risco para a maioria dos usuários.",
+    "category": "Segurança", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WU+MR",
+    "registry": [{"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager", "Name": "DisableWpbtExecution", "Value": 1, "Type": "DWord", "OriginalValue": "<Remove>"}]
+})
+# SEC-002 removido: virou tweak multinível MLV-002 (Nível de UAC).
+add({
+    "id": "SEC-003", "name": "BitLocker - Toggle",
+    "description": "Ativa ou desativa a criptografia BitLocker na unidade do sistema.",
+    "category": "Segurança", "risk": "Alto", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "script", "source": "WU",
+    "InvokeScript": ["Disable-BitLocker -MountPoint $Env:SystemDrive"],
+    "UndoScript": ["Enable-BitLocker -MountPoint $Env:SystemDrive"]
+})
+add({
+    "id": "SEC-004", "name": "Mitigações de CPU (Spectre/Meltdown) - Desativar",
+    "description": "Desativa mitigações de segurança contra vulnerabilidades de execução especulativa da CPU para ganho de performance. RISCO REAL DE SEGURANÇA — exige confirmação manual mesmo no preset Extremo.",
+    "category": "Segurança", "risk": "Alto", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "AT",
+    "registry": [{"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management", "Name": "FeatureSettingsOverride", "Value": 3, "Type": "DWord", "OriginalValue": 0},
+                 {"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management", "Name": "FeatureSettingsOverrideMask", "Value": 3, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "SEC-005", "name": "SmartScreen - Toggle",
+    "description": "Ativa/desativa o filtro SmartScreen para apps e navegação.",
+    "category": "Segurança", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "WD+MR",
+    "registry": [{"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\SmartScreen", "Name": "ConfigureAppInstallControlEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "SEC-006", "name": "VBS / Memory Integrity - Toggle (isolado, requer confirmação manual)",
+    "description": "Ativa/desativa Virtualization-Based Security e Memory Integrity (HVCI). Pode reduzir performance em ~2-5% em troca de segurança; alguns jogos com anti-cheat exigem VBS ativo. NUNCA entra em preset automático — sempre opt-in manual.",
+    "category": "Segurança", "risk": "Alto", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "script", "source": "MR (único a oferecer)",
+    "InvokeScript": ["Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity' -Name Enabled -Value 0 -Type DWord"],
+    "UndoScript": ["Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity' -Name Enabled -Value 1 -Type DWord"]
+})
+add({
+    "id": "SEC-007", "name": "Auto-Criptografia BitLocker no Primeiro Boot - Desativar",
+    "description": "Impede que dispositivos com TPM ativem BitLocker automaticamente na instalação limpa.",
+    "category": "Segurança", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "registry", "source": "MR",
+    "registry": [{"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\BitLockerStatus", "Name": "PreventDeviceEncryption", "Value": 1, "Type": "DWord", "OriginalValue": 0}]
+})
+
+# ---------------------------------------------------------------------------
+# 8. UPDATES
+# ---------------------------------------------------------------------------
+# UPD-001 removido: virou parte do tweak multinível MLV-001 (Windows Update).
+add({
+    "id": "UPD-002", "name": "Atualização Automática de Drivers via Windows Update - Toggle",
+    "description": "Desativa a entrega de drivers de terceiros via Windows Update, evitando conflitos com drivers instalados manualmente (ex: GPU).",
+    "category": "Updates", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "registry", "source": "WD",
+    "registry": [{"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DriverSearching", "Name": "SearchOrderConfig", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "UPD-003", "name": "Certificados Raiz - Atualizar (manutenção, não é toggle)",
+    "description": "Atualiza a lista de certificados raiz confiáveis. Roda automaticamente uma vez no início do script, fora do catálogo de toggles, pois é manutenção de segurança pura.",
+    "category": "Updates", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS,
+    "type": "script", "source": "MR", "runAlways": True,
+    "InvokeScript": ["certutil -generateSSTFromWU \"$env:TEMP\\roots.sst\" 2>$null | Out-Null; if (Test-Path \"$env:TEMP\\roots.sst\") { certutil -addstore -f root \"$env:TEMP\\roots.sst\" 2>$null | Out-Null }"]
+})
+
+# ---------------------------------------------------------------------------
+# 9. EXTRAS / MANUTENÇÃO
+# ---------------------------------------------------------------------------
+add({
+    "id": "EXT-001", "name": "Ponto de Restauração - Criar Antes de Aplicar",
+    "description": "Cria um ponto de restauração do sistema antes de qualquer alteração. Fortemente recomendado, marcado por padrão.",
+    "category": "Extras / Manutenção", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS, "runFirst": True,
+    "type": "script", "source": "WU+WD",
+    "InvokeScript": [
+        "Enable-ComputerRestore -Drive $Env:SystemDrive -ErrorAction SilentlyContinue",
+        "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SystemRestore' -Name SystemRestorePointCreationFrequency -Value 0 -Type DWord",
+        "Checkpoint-Computer -Description 'Win-Slim Suite - Antes da aplicacao' -RestorePointType MODIFY_SETTINGS"
+    ]
+})
+add({
+    "id": "EXT-002", "name": "Limpeza de Arquivos Temporários",
+    "description": "Remove arquivos temporários do usuário, do sistema e cache do Windows Update.",
+    "category": "Extras / Manutenção", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "script", "source": "WD",
+    "InvokeScript": [
+        "Remove-Item \"$Env:TEMP\\*\" -Recurse -Force -ErrorAction SilentlyContinue",
+        "Remove-Item \"$Env:SystemRoot\\Temp\\*\" -Recurse -Force -ErrorAction SilentlyContinue",
+        "Remove-Item \"$Env:SystemRoot\\SoftwareDistribution\\Download\\*\" -Recurse -Force -ErrorAction SilentlyContinue"
+    ]
+})
+add({
+    "id": "EXT-003", "name": "SFC / DISM - Verificação de Integridade",
+    "description": "Executa checagem de integridade dos arquivos de sistema. Não é um tweak, é diagnóstico — não modifica configurações, só repara.",
+    "category": "Extras / Manutenção", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "script", "source": "WD",
+    "InvokeScript": [
+        "DISM /Online /Cleanup-Image /RestoreHealth",
+        "sfc /scannow"
+    ]
+})
+add({
+    "id": "EXT-004", "name": "Reiniciar Explorer ao Final",
+    "description": "Reinicia o processo explorer.exe automaticamente após aplicar tweaks de UI, garantindo que as mudanças apareçam sem exigir logoff.",
+    "category": "Extras / Manutenção", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ALL_PRESETS, "runLast": True,
+    "type": "script", "source": "WU+MR",
+    "InvokeScript": ["Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Process explorer.exe"]
+})
+
+# ---------------------------------------------------------------------------
+# 10. TWEAKS MULTINÍVEL (o usuário escolhe um nível, não apenas ligado/desligado)
+# ---------------------------------------------------------------------------
+add({
+    "id": "MLV-001", "name": "Windows Update - Nível de Controle",
+    "description": "Escolha o quanto controlar as atualizações automáticas. A checagem de segurança nunca é totalmente desligada em nenhum nível.",
+    "category": "Updates", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "multilevel", "source": "WU+MR+AT (unificado, substitui SVC-007 e UPD-001)",
+    "presetLevels": {"Gamer": 2, "Extremo": 2},
+    "levels": [
+        {"name": "Padrão do Windows", "description": "Não altera nada. Comportamento normal de atualizações automáticas.",
+         "registry": []},
+        {"name": "Pausar Instalação Automática (35 dias)", "description": "Impede que updates sejam instalados sozinhos por até 35 dias. Você ainda pode instalar manualmente quando quiser; updates de segurança urgentes continuam disponíveis sob demanda.",
+         "InvokeScript": ["$exp = (Get-Date).AddDays(35).ToString('yyyy-MM-ddTHH:mm:ssZ'); New-Item -Path 'HKLM:\\SOFTWARE\\Microsoft\\WindowsUpdate\\UX\\Settings' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\WindowsUpdate\\UX\\Settings' -Name PauseUpdatesExpiryTime -Value $exp -Type String -Force"]},
+        {"name": "Sem Delivery Optimization", "description": "Impede que o Windows use seu PC para enviar pedaços de atualização para outros computadores pela internet (upload em segundo plano). Não afeta o recebimento de updates, só economiza banda de upload.",
+         "registry": [{"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization", "Name": "DODownloadMode", "Value": 0, "Type": "DWord"}]}
+    ]
+})
+add({
+    "id": "MLV-002", "name": "Controle de Conta de Usuário (UAC) - Nível",
+    "description": "Ajusta o quanto o Windows pergunta antes de permitir que programas façam mudanças no sistema. Nenhum preset automático força um nível aqui — decisão sempre manual por ser sensível à segurança.",
+    "category": "Segurança", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "multilevel", "source": "WU+WD (unificado, substitui SEC-002)",
+    "levels": [
+        {"name": "Padrão (recomendado)", "description": "Comportamento normal do Windows: tela escurece e pede confirmação antes de qualquer programa fazer mudanças administrativas.",
+         "registry": [
+            {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "Name": "ConsentPromptBehaviorAdmin", "Value": 5, "Type": "DWord"},
+            {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "Name": "PromptOnSecureDesktop", "Value": 1, "Type": "DWord"}
+         ]},
+        {"name": "Reduzido (avisa, sem escurecer a tela)", "description": "Ainda pede confirmação, mas sem escurecer a tela inteira (Secure Desktop) — resposta mais rápida, com segurança um pouco menor.",
+         "registry": [
+            {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "Name": "ConsentPromptBehaviorAdmin", "Value": 5, "Type": "DWord"},
+            {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "Name": "PromptOnSecureDesktop", "Value": 0, "Type": "DWord"}
+         ]},
+        {"name": "Desativado (NÃO recomendado)", "description": "Remove os avisos por completo. Qualquer programa pode fazer mudanças administrativas sem pedir permissão — risco real de segurança caso rode algo malicioso.",
+         "registry": [
+            {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "Name": "ConsentPromptBehaviorAdmin", "Value": 0, "Type": "DWord"},
+            {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System", "Name": "PromptOnSecureDesktop", "Value": 0, "Type": "DWord"}
+         ]}
+    ]
+})
+add({
+    "id": "MLV-003", "name": "DNS do Sistema - Provedor",
+    "description": "Escolhe qual servidor DNS seu PC usa para traduzir nomes de site em endereços IP. Aplica-se a todos os adaptadores de rede ativos.",
+    "category": "Rede", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "multilevel", "source": "WU (unificado, substitui NET-001)",
+    "levels": [
+        {"name": "Automático (DHCP/provedor)", "description": "Usa o servidor DNS que seu roteador ou provedor de internet fornece automaticamente. Comportamento padrão.",
+         "InvokeScript": ["Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -notmatch 'Loopback'} | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.InterfaceIndex -ResetServerAddresses }"]},
+        {"name": "Cloudflare (1.1.1.1 - velocidade)", "description": "DNS focado em velocidade e privacidade, geralmente mais rápido que muitos provedores de internet.",
+         "InvokeScript": ["Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -notmatch 'Loopback'} | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.InterfaceIndex -ServerAddresses ('1.1.1.1','1.0.0.1') }"]},
+        {"name": "Google (8.8.8.8 - velocidade)", "description": "Alternativa popular de DNS rápido, mantido pelo Google.",
+         "InvokeScript": ["Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -notmatch 'Loopback'} | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.InterfaceIndex -ServerAddresses ('8.8.8.8','8.8.4.4') }"]},
+        {"name": "Quad9 (9.9.9.9 - bloqueia malware/phishing)", "description": "Bloqueia automaticamente domínios conhecidos de malware e phishing na resolução de DNS, priorizando segurança.",
+         "InvokeScript": ["Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -notmatch 'Loopback'} | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.InterfaceIndex -ServerAddresses ('9.9.9.9','149.112.112.112') }"]}
+    ]
+})
+
+# ---------------------------------------------------------------------------
+# 11. RESPONSIVIDADE E AGILIDADE DO SISTEMA
+# ---------------------------------------------------------------------------
+add({
+    "id": "RESP-001", "name": "Reduzir Atrasos de Interface (menus, apps travados)",
+    "description": "Faz o Windows reagir mais rápido: reduz o tempo de espera para fechar um programa travado (de 20s para 5s), reduz o atraso do menu Iniciar/menus de contexto, e desativa o pequeno atraso proposital ao trocar de foco entre janelas.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "AT+MR",
+    "registry": [
+        {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "HungAppTimeout", "Value": "2000", "Type": "String", "OriginalValue": "5000"},
+        {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "WaitToKillAppTimeout", "Value": "2000", "Type": "String", "OriginalValue": "20000"},
+        {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "AutoEndTasks", "Value": "1", "Type": "String", "OriginalValue": "0"},
+        {"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control", "Name": "WaitToKillServiceTimeout", "Value": "2000", "Type": "String", "OriginalValue": "5000"},
+        {"Path": "HKCU:\\Control Panel\\Desktop", "Name": "ForegroundLockTimeout", "Value": 0, "Type": "DWord", "OriginalValue": 200000}
+    ]
+})
+add({
+    "id": "RESP-002", "name": "NTFS - Desativar Registro de Último Acesso",
+    "description": "O Windows normalmente grava a data/hora toda vez que você só abre (sem editar) um arquivo. Desativar isso reduz operações de disco desnecessárias, deixando o sistema de arquivos mais ágil — principalmente perceptível em HDs mecânicos e pastas com muitos arquivos.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "script", "source": "AT",
+    "InvokeScript": ["fsutil behavior set disablelastaccess 1"],
+    "UndoScript": ["fsutil behavior set disablelastaccess 0"]
+})
+add({
+    "id": "RESP-003", "name": "NTFS - Desativar Nomes Curtos (8.3)",
+    "description": "Desativa a criação automática de nomes de arquivo no formato antigo 'ARQUIV~1.TXT', usado só por programas muito antigos. Reduz overhead de escrita em disco, especialmente em pastas com muitos arquivos.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "script", "source": "AT",
+    "InvokeScript": ["fsutil 8dot3name set 1"],
+    "UndoScript": ["fsutil 8dot3name set 0"]
+})
+add({
+    "id": "RESP-004", "name": "Apps em Segundo Plano - Restringir",
+    "description": "Impede que apps da Store continuem consumindo CPU/rede/bateria quando você não está usando eles ativamente. Não afeta programas de desktop tradicionais (.exe), só apps UWP.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WD+AT",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications", "Name": "GlobalUserDisabled", "Value": 1, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "RESP-005", "name": "Hibernação - Desativar (libera espaço em disco)",
+    "description": "Remove o arquivo hiberfil.sys (pode ocupar vários GB, geralmente igual ao tamanho da sua RAM). Libera espaço em disco. Atenção: desativa também a 'Inicialização Rápida', então o boot pode ficar levemente mais lento — melhor para quem tem SSD rápido ou faz dual-boot.",
+    "category": "Performance", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": ["RESP-006"], "presets": ["Extremo"],
+    "type": "script", "source": "WD",
+    "InvokeScript": ["powercfg /hibernate off"],
+    "UndoScript": ["powercfg /hibernate on"]
+})
+add({
+    "id": "RESP-006", "name": "Inicialização Rápida (Fast Startup) - Desativar",
+    "description": "Desativa a Inicialização Rápida do Windows. Recomendado para quem usa dual-boot com Linux, tem problemas de driver após dormir/hibernar, ou quer que 'Desligar' realmente desligue tudo. O boot pode ficar alguns segundos mais lento. Não combine com o tweak de desativar Hibernação (um já desativa o outro).",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": ["RESP-005"], "presets": [],
+    "type": "registry", "source": "WD+MR",
+    "registry": [{"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power", "Name": "HiberbootEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "RESP-007", "name": "Suporte a Caminhos Longos (Long Paths) - Ativar",
+    "description": "Permite que Windows e programas modernos trabalhem com caminhos de arquivo maiores que 260 caracteres, evitando erros ao copiar/extrair pastas muito aninhadas (comum em projetos de programação com node_modules, por exemplo).",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\FileSystem", "Name": "LongPathsEnabled", "Value": 1, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "RESP-008", "name": "Suspensão Seletiva de USB - Desativar",
+    "description": "Impede que o Windows 'desligue' portas USB para economizar energia. Evita microtravamentos e desconexões em mouse, teclado e headset de jogos — mesmo objetivo do tweak de Link Power Management, mas cobre a suspensão em nível de porta USB.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "script", "source": "AT+MR",
+    "InvokeScript": ["powercfg /setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0; powercfg /setactive scheme_current"],
+    "UndoScript": ["powercfg /setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 1; powercfg /setactive scheme_current"]
+})
+
+# ---------------------------------------------------------------------------
+# 12. QUALIDADE DE VIDA (QoL) ADICIONAIS
+# ---------------------------------------------------------------------------
+add({
+    "id": "QOL-001", "name": "Mostrar Segundos no Relógio da Barra de Tarefas",
+    "description": "Adiciona os segundos ao relógio do canto da tela (ex: 14:32:07 em vez de só 14:32).",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ShowSecondsInSystemClock", "Value": 1, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "QOL-002", "name": "NumLock Ativado ao Iniciar o Windows",
+    "description": "Garante que o NumLock do teclado já esteja ligado assim que o Windows liga, sem precisar apertar manualmente toda vez.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WU+WD",
+    "registry": [{"Path": "HKU:\\.DEFAULT\\Control Panel\\Keyboard", "Name": "InitialKeyboardIndicators", "Value": "2147483650", "Type": "String", "OriginalValue": "2147483648"}]
+})
+add({
+    "id": "QOL-003", "name": "Histórico da Área de Transferência (Clipboard) - Ativar",
+    "description": "Ativa o histórico de copiar/colar do Windows (Win+V), permitindo colar itens copiados anteriormente, não só o último.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Clipboard", "Name": "EnableClipboardHistory", "Value": 1, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "QOL-004", "name": "Ocultar Destaques de Pesquisa (Search Highlights)",
+    "description": "Remove as notícias/imagens promocionais que aparecem dentro da caixa de busca do Windows, deixando a busca mais limpa e rápida de usar.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "MR",
+    "registry": [{"Path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\Explorer", "Name": "DisableSearchBoxSuggestions", "Value": 1, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "QOL-005", "name": "Ocultar Anúncios na Tela de Bloqueio (Spotlight)",
+    "description": "Troca a Tela de Bloqueio dinâmica com dicas e anúncios por uma imagem estática simples, sem conteúdo promocional.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WU+MR",
+    "registry": [{"Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent", "Name": "DisableWindowsSpotlightFeatures", "Value": 1, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "QOL-006", "name": "Menu de Contexto Clássico (Windows 11)",
+    "description": "Restaura o menu de clique-direito completo e antigo do Windows 10 no Explorer do Windows 11, em vez do menu reduzido com um clique extra em 'Mostrar mais opções'.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "script", "source": "WU+AT",
+    "InvokeScript": ["New-Item -Path 'HKCU:\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32' -Name '(default)' -Value ''"],
+    "UndoScript": ["Remove-Item -Path 'HKCU:\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}' -Recurse -Force -ErrorAction SilentlyContinue"]
+})
+add({
+    "id": "QOL-007", "name": "Explorador de Arquivos - Modo Compacto",
+    "description": "Reduz o espaçamento entre linhas nas listas do Explorer, permitindo ver mais arquivos na tela ao mesmo tempo.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "UseCompactMode", "Value": 1, "Type": "DWord", "OriginalValue": 0}]
+})
+add({
+    "id": "QOL-008", "name": "Snap Layouts ao Passar o Mouse - Ativar/Manter",
+    "description": "Garante que o menu de organização de janelas (Snap Layouts) apareça ao passar o mouse sobre o botão maximizar, facilitando organizar várias janelas na tela.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": W11,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "EnableSnapAssistFlyout", "Value": 1, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "QOL-009", "name": "Notificações de Dicas do Windows - Desativar",
+    "description": "Para de mostrar notificações do tipo 'Experimente este recurso' e sugestões pop-up do Windows durante o uso normal.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WU+MR",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager", "Name": "SoftLandingEnabled", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "QOL-010", "name": "Mostrar Arquivos e Pastas Ocultos",
+    "description": "Exibe arquivos e pastas ocultos do sistema no Explorer. Útil para quem precisa acessar AppData e configurações avançadas com frequência.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "WD",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "Hidden", "Value": 1, "Type": "DWord", "OriginalValue": 2}]
+})
+add({
+    "id": "QOL-011", "name": "Barra de Tarefas - Remover Botão de Assistente de Tarefas (Task View)",
+    "description": "Remove o botão de 'Exibição de Tarefas' (áreas de trabalho virtuais) da barra de tarefas, para quem não usa múltiplas áreas de trabalho e quer uma barra mais limpa.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced", "Name": "ShowTaskViewButton", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+add({
+    "id": "QOL-012", "name": "Remote Assistance - Desativar",
+    "description": "Desativa o recurso que permite que outra pessoa tome controle remoto do seu PC via convite (Assistência Remota clássica). Reduz superfície de ataque para quem não usa suporte remoto.",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "registry", "source": "WD",
+    "registry": [{"Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance", "Name": "fAllowToGetHelp", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
+})
+
+# ---------------------------------------------------------------------------
+# 13. PRESET EXTREMO - AGRESSIVOS ADICIONAIS (sem conflito com o restante)
+# ---------------------------------------------------------------------------
+add({
+    "id": "EXTRA-001", "name": "Reproduzir Som ao Iniciar o Windows - Desativar",
+    "description": "Remove o som de inicialização do Windows, útil para boot silencioso (ex: PCs que ligam de madrugada, HTPCs).",
+    "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "registry", "source": "WU",
+    "registry": [{"Path": "HKCU:\\AppEvents\\Schemes", "Name": "(Default)", "Value": ".None", "Type": "String", "OriginalValue": "Default"}]
+})
+add({
+    "id": "EXTRA-002", "name": "AutoPlay/AutoRun de Mídia Removível - Desativar",
+    "description": "Impede que pendrives e outras mídias removíveis executem programas automaticamente ao serem conectados — reduz risco de malware via USB e some com a janelinha de 'O que você quer fazer com este disco?'.",
+    "category": "Segurança", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
+    "type": "registry", "source": "WD+AT",
+    "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", "Name": "NoDriveTypeAutoRun", "Value": 255, "Type": "DWord", "OriginalValue": 145}]
+})
+add({
+    "id": "EXTRA-003", "name": "Compartilhamento de Rede do Windows Media Player - Desativar",
+    "description": "Desativa o compartilhamento de biblioteca de mídia do Windows Media Player na rede local, um recurso raramente usado hoje em dia que fica escutando na rede sem necessidade.",
+    "category": "Rede", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Extremo"],
+    "type": "service", "source": "WD",
+    "service": [{"Name": "WMPNetworkSvc", "StartupType": "Disabled", "OriginalType": "Manual"}]
+})
+add({
+    "id": "EXTRA-004", "name": "Tarefas Agendadas de Manutenção Automática - Ajustar Horário",
+    "description": "Reagenda a Manutenção Automática do Windows (limpeza, verificações) para rodar de madrugada em vez de a qualquer momento durante o dia, evitando que ela ligue seu PC do modo de espera ou consuma CPU/disco enquanto você trabalha ou joga.",
+    "category": "Performance", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "script", "source": "WU+MR",
+    "InvokeScript": ["$time = New-ScheduledTaskTrigger -Daily -At 4am; Set-ScheduledTask -TaskName '\\Microsoft\\Windows\\TaskScheduler\\Regular Maintenance' -Trigger $time -ErrorAction SilentlyContinue"]
+})
+add({
+    "id": "EXTRA-005", "name": "Prioridade de Processos em Segundo Plano - Reduzir",
+    "description": "Reduz automaticamente a prioridade de processos que não estão em uso ativo (janela minimizada há tempo), liberando mais CPU para o que você está usando agora — sem precisar fechar nada manualmente.",
+    "category": "Performance", "risk": "Médio", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": ["Gamer", "Extremo"],
+    "type": "registry", "source": "AT",
+    "registry": [{"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile", "Name": "SystemResponsiveness", "Value": 0, "Type": "DWord", "OriginalValue": 20}]
+})
+
+# EXTRA-006 removido: redundante com PERF-009 (nível "Mínimo Agressivo" já cobre
+# TaskbarAnimations e MinAnimate, com mais itens).
+
+# ---------------------------------------------------------------------------
+# Saída
+# ---------------------------------------------------------------------------
+catalog = {
+    "schemaVersion": "1.1",
+    "generatedBy": "Win-Slim Suite Builder",
+    "sources": {
+        "WU": "ChrisTitusTech/winutil",
+        "AT": "Atlas-OS/Atlas",
+        "WD": "LeDragoX/Win-Debloat-Tools",
+        "MR": "meetrevision/playbook",
+        "WS": "pauloatx/Win-Slim"
+    },
+    "presets": ["Balanceado", "Gamer", "Extremo"],
+    "count": len(tweaks),
+    "tweaks": tweaks
+}
+
+with open("catalog.json", "w", encoding="utf-8") as f:
+    json.dump(catalog, f, ensure_ascii=False, indent=2)
+
+print(f"Catálogo gerado com {len(tweaks)} tweaks.")
+
+# validação simples de IDs duplicados
+ids = [t["id"] for t in tweaks]
+dups = set([i for i in ids if ids.count(i) > 1])
+if dups:
+    raise SystemExit(f"IDs duplicados encontrados: {dups}")
+print("Nenhum ID duplicado. OK.")
