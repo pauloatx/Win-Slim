@@ -1,5 +1,4 @@
-﻿#Requires -Version 5.1
-<#
+﻿﻿<#
 .SYNOPSIS
     Win-Slim Suite - Otimizador e Debloat para Windows 10/11
 .DESCRIPTION
@@ -13,6 +12,14 @@
     Salvo em UTF-8 com BOM para que acentos/símbolos sejam interpretados
     corretamente pelo Windows PowerShell 5.1.
 #>
+
+# Checagem de versão em runtime (em vez de #Requires, que não funciona quando o
+# script roda via "irm | iex" — o parser só reconhece #Requires em arquivos .ps1
+# executados diretamente do disco, não em texto avaliado por Invoke-Expression).
+if ($PSVersionTable.PSVersion.Major -lt 5) {
+    Write-Host "Este script requer Windows PowerShell 5.1 ou superior. Sua versão: $($PSVersionTable.PSVersion)" -ForegroundColor Red
+    exit 1
+}
 
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms
@@ -163,10 +170,16 @@ function Test-FileVirusTotal {
 }
 
 function Confirm-DownloadIsSafe {
-    <# Retorna $true se está seguro para prosseguir (limpo, sem internet/API
-       indisponível -> segue automaticamente sem interromper o processo).
-       Retorna $false SOMENTE quando o VirusTotal respondeu e encontrou alerta real. #>
+    <# Retorna $true se está seguro para prosseguir (limpo, verificação desativada
+       pelo usuário, ou sem internet/API indisponível -> segue automaticamente
+       sem interromper o processo). Retorna $false SOMENTE quando o VirusTotal
+       respondeu e encontrou alerta real. #>
     param([string]$FilePath, [string]$FriendlyName)
+
+    if ($Script:ChkVirusTotal -and -not $Script:ChkVirusTotal.IsChecked) {
+        Write-Log "Verificação do VirusTotal para '$FriendlyName' desativada pelo usuário (checkbox desmarcada) — prosseguindo sem verificar." 'INFO'
+        return $true
+    }
 
     if (-not (Test-InternetAvailable)) {
         Write-Log "Sem conexão com a internet — verificação do VirusTotal para '$FriendlyName' foi pulada automaticamente (API gratuita, sem interromper o processo)." 'WARN'
@@ -535,10 +548,23 @@ function Resolve-Conflicts {
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <Path Data="M6,27 C9,21 13,15 27,3 M9,23 L14,20 M12,19 L17,16 M15,15 L20,12 M18,11 L23,8"
-                          Stroke="{StaticResource OrangeGradient}" StrokeThickness="2.6"
-                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                          Width="24" Height="24" Stretch="Uniform" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                    <Viewbox Width="26" Height="26" Margin="0,0,10,0" VerticalAlignment="Center">
+                        <Canvas Width="64" Height="64">
+                            <!-- corpo da pena (vane), preenchido com degradê laranja -->
+                            <Path Data="M14,56 C10,46 12,34 20,24 C26,17 34,12 50,8 C40,14 26,24 20,34 C14,42 12,50 14,56 Z"
+                                  Fill="{StaticResource OrangeGradient}" Stroke="#8C4A14" StrokeThickness="1.1" StrokeLineJoin="Round"/>
+                            <!-- brilho sutil na borda superior -->
+                            <Path Data="M20,24 C26,17 34,12 50,8" Stroke="#FFEEDC" StrokeThickness="0.8" StrokeStartLineCap="Round" Opacity="0.55"/>
+                            <!-- haste central (rachis) -->
+                            <Path Data="M14,56 C16,46 20,34 26,26 C32,20 40,14 50,8"
+                                  Stroke="#FFF1DE" StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Opacity="0.9"/>
+                            <!-- barbas -->
+                            <Path Data="M16,52 L13.6,50.2 M16,52 L18.4,53.6 M18,47 L14,44 M18,47 L22,49.5 M20,42 L14.4,37.8 M20,42 L25.4,45.6 M22,37 L15.6,32.2 M22,37 L28.2,41.2 M25,32 L17.8,26.6 M25,32 L32,36.8 M29,27 L22.6,22.2 M29,27 L35.2,31.2 M33,22 L28.2,18.4 M33,22 L37.6,25 M38,18 L34.8,15.6 M38,18 L41,20 M44,13 L42.4,11.8 M44,13 L45.4,14"
+                                  Stroke="#8C4A14" StrokeThickness="0.9" StrokeStartLineCap="Round" Opacity="0.8"/>
+                            <!-- ponta da pluma (quill) -->
+                            <Path Data="M14,56 L11,60" Stroke="#8C4A14" StrokeThickness="1.3" StrokeStartLineCap="Round"/>
+                        </Canvas>
+                    </Viewbox>
                     <TextBlock Text="Win-Slim Suite" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextMain}" VerticalAlignment="Center"/>
                     <TextBlock x:Name="OsBadge" Text="" FontSize="12" Foreground="{StaticResource TextDim}" Margin="14,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
@@ -551,54 +577,97 @@ function Resolve-Conflicts {
         <TabControl x:Name="MainTabs">
             <!-- ================= ABA BEM-VINDO ================= -->
             <TabItem Header="👋 Bem-vindo">
-                <Border Background="#12141A" Padding="36,28">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel MaxWidth="700" HorizontalAlignment="Left">
-                            <TextBlock Text="Bem-vindo ao Win-Slim Suite" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextMain}"/>
-                            <TextBlock Foreground="{StaticResource TextDim}" FontSize="13" TextWrapping="Wrap" Margin="0,6,0,20">
-                                Escolha um preset abaixo para começar. Cada um marca automaticamente um conjunto de
-                                tweaks — você pode revisar e ajustar tudo individualmente na aba Avançado quando quiser.
-                            </TextBlock>
+                <Grid Background="#12141A">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                            <!-- Sou Gamer: discreto, sem destaque exagerado -->
-                            <StackPanel Margin="0,0,0,22">
-                                <CheckBox x:Name="ChkGamer" Content="🎮 Sou Gamer" FontSize="13.5" FontWeight="SemiBold"/>
-                                <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="22,4,0,0">
-                                    Marque se joga no PC. Isto mantém os apps do Xbox instalados (só desativa a gravação
-                                    em segundo plano). Se desmarcado, os apps do Xbox são removidos por completo.
+                    <Border Grid.Row="0" Padding="36,28,36,16">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel MaxWidth="700" HorizontalAlignment="Left">
+                                <TextBlock Text="Bem-vindo ao Win-Slim Suite" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextMain}"/>
+                                <TextBlock Foreground="{StaticResource TextDim}" FontSize="13" TextWrapping="Wrap" Margin="0,6,0,20">
+                                    Escolha um preset abaixo para começar. Cada um marca automaticamente um conjunto de
+                                    tweaks — você pode aplicar direto por aqui, ou revisar e ajustar tudo individualmente
+                                    na aba Avançado quando quiser.
                                 </TextBlock>
+
+                                <!-- Sou Gamer: discreto, sem destaque exagerado -->
+                                <StackPanel Margin="0,0,0,16">
+                                    <CheckBox x:Name="ChkGamer" Content="🎮 Sou Gamer" FontSize="13.5" FontWeight="SemiBold"/>
+                                    <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="22,4,0,0">
+                                        Marque se joga no PC. Isto mantém os apps do Xbox instalados (só desativa a gravação
+                                        em segundo plano). Se desmarcado, os apps do Xbox são removidos por completo.
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <!-- Verificação VirusTotal: mesma lógica visual do Sou Gamer -->
+                                <StackPanel Margin="0,0,0,22">
+                                    <CheckBox x:Name="ChkVirusTotal" Content="🛡 Verificar arquivos baixados com VirusTotal" FontSize="13.5" FontWeight="SemiBold" IsChecked="True"/>
+                                    <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="22,4,0,0">
+                                        Alguns tweaks baixam um arquivo externo antes de aplicar (ex: ViVeTool). Com isso
+                                        marcado, o arquivo é checado no VirusTotal antes de rodar — usa uma API gratuita,
+                                        que pode falhar ou ficar indisponível às vezes (nesse caso o processo continua
+                                        normalmente, sem travar). Desmarque para pular essa checagem sempre.
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <Button x:Name="BtnWelcomeBalanceado" Content="⚖  Balanceado" Style="{StaticResource WelcomeBtn}"/>
+                                <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="4,0,0,18">
+                                    Otimizações seguras de baixo risco, com impacto real: privacidade, debloat básico,
+                                    limpeza de interface e ajustes de responsividade (menus, apps travados, apps em
+                                    segundo plano). Bom ponto de partida para qualquer PC, incluindo notebooks.
+                                </TextBlock>
+
+                                <Button x:Name="BtnWelcomeGamer" Content="🎮  Gamer" Style="{StaticResource WelcomeBtn}"/>
+                                <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="4,0,0,18">
+                                    Tudo do Balanceado, mais: plano de energia Alto Desempenho, prioridade de CPU para o
+                                    jogo em foco, ajustes de rede/latência e redução de prioridade de processos em
+                                    segundo plano — feito para responsividade e fluidez em jogos.
+                                </TextBlock>
+
+                                <Button x:Name="BtnWelcomeExtremo" Content="🔥  Extremo" Style="{StaticResource WelcomeBtn}"/>
+                                <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="4,0,0,18">
+                                    O máximo de agressividade sem gerar conflitos entre tweaks: remove componentes de
+                                    IA/Copilot, ativa o plano Ultimate Performance e aplica ajustes avançados de sistema
+                                    e rede. Itens de risco Alto continuam de fora e exigem confirmação manual.
+                                </TextBlock>
+
+                                <!-- Feedback visual do preset selecionado -->
+                                <Border x:Name="WelcomeStatusBorder" Background="{StaticResource PanelAlt}" CornerRadius="10" Padding="14" Margin="0,4,0,10" Visibility="Collapsed">
+                                    <TextBlock x:Name="WelcomeStatusText" Foreground="{StaticResource TextMain}" FontSize="12.5" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                </Border>
+
+                                <Border Background="{StaticResource PanelAlt}" CornerRadius="10" Padding="14" Margin="0,0,0,0">
+                                    <TextBlock Foreground="{StaticResource TextDim}" FontSize="11.5" TextWrapping="Wrap">
+                                        💡 Depois de escolher um preset, você pode aplicar direto pelo botão abaixo, ou
+                                        conferir e ajustar tudo na aba
+                                        <Run Foreground="{StaticResource Accent}" FontWeight="Bold">Avançado</Run>.
+                                    </TextBlock>
+                                </Border>
                             </StackPanel>
+                        </ScrollViewer>
+                    </Border>
 
-                            <Button x:Name="BtnWelcomeBalanceado" Content="⚖  Balanceado" Style="{StaticResource WelcomeBtn}"/>
-                            <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="4,0,0,18">
-                                Otimizações seguras de baixo risco, com impacto real: privacidade, debloat básico,
-                                limpeza de interface e ajustes de responsividade (menus, apps travados, apps em
-                                segundo plano). Bom ponto de partida para qualquer PC, incluindo notebooks.
-                            </TextBlock>
-
-                            <Button x:Name="BtnWelcomeGamer" Content="🎮  Gamer" Style="{StaticResource WelcomeBtn}"/>
-                            <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="4,0,0,18">
-                                Tudo do Balanceado, mais: plano de energia Alto Desempenho, prioridade de CPU para o
-                                jogo em foco, ajustes de rede/latência e redução de prioridade de processos em
-                                segundo plano — feito para responsividade e fluidez em jogos.
-                            </TextBlock>
-
-                            <Button x:Name="BtnWelcomeExtremo" Content="🔥  Extremo" Style="{StaticResource WelcomeBtn}"/>
-                            <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="4,0,0,18">
-                                O máximo de agressividade sem gerar conflitos entre tweaks: remove componentes de
-                                IA/Copilot, ativa o plano Ultimate Performance e aplica ajustes avançados de sistema
-                                e rede. Itens de risco Alto continuam de fora e exigem confirmação manual.
-                            </TextBlock>
-
-                            <Border Background="{StaticResource PanelAlt}" CornerRadius="10" Padding="14" Margin="0,8,0,0">
-                                <TextBlock Foreground="{StaticResource TextDim}" FontSize="11.5" TextWrapping="Wrap">
-                                    💡 Depois de escolher um preset, você pode conferir e ajustar tudo na aba
-                                    <Run Foreground="{StaticResource Accent}" FontWeight="Bold">Avançado</Run>, quando quiser.
-                                </TextBlock>
-                            </Border>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Border>
+                    <!-- RODAPÉ: progresso + aplicar + reiniciar -->
+                    <Border Grid.Row="1" Background="{StaticResource Panel}" BorderThickness="0,1,0,0" BorderBrush="#22262F" Padding="36,14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,16,0">
+                                <ProgressBar x:Name="WelcomeProgBar" Height="9" Margin="0,0,0,7" Background="{StaticResource PanelAlt}" Foreground="{StaticResource Accent}"/>
+                                <TextBlock x:Name="WelcomeCompletionText" Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button x:Name="BtnWelcomeApply" Content="✓ Aplicar Perfil" Style="{StaticResource ActionBtn}"/>
+                                <Button x:Name="BtnWelcomeRestart" Content="⟳ Reiniciar Sistema" Style="{StaticResource PresetBtn}" ToolTip="Reinicia o computador agora, para garantir que todas as mudanças tenham efeito completo."/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
             </TabItem>
 
             <!-- ================= ABA AVANÇADO ================= -->
@@ -697,6 +766,13 @@ $BtnDesmarcarVisiveis = $Window.FindName('BtnDesmarcarVisiveis')
 $BtnWelcomeBalanceado = $Window.FindName('BtnWelcomeBalanceado')
 $BtnWelcomeGamer = $Window.FindName('BtnWelcomeGamer')
 $BtnWelcomeExtremo = $Window.FindName('BtnWelcomeExtremo')
+$Script:ChkVirusTotal = $Window.FindName('ChkVirusTotal')
+$WelcomeStatusBorder = $Window.FindName('WelcomeStatusBorder')
+$WelcomeStatusText = $Window.FindName('WelcomeStatusText')
+$WelcomeProgBar = $Window.FindName('WelcomeProgBar')
+$WelcomeCompletionText = $Window.FindName('WelcomeCompletionText')
+$BtnWelcomeApply = $Window.FindName('BtnWelcomeApply')
+$BtnWelcomeRestart = $Window.FindName('BtnWelcomeRestart')
 
 $controlMap = @{
     OsBadge=$OsBadge; ChkGamer=$ChkGamer; ChkRestorePoint=$ChkRestorePoint; MainTabs=$MainTabs
@@ -705,6 +781,9 @@ $controlMap = @{
     BtnBalanceado=$BtnBalanceado; BtnGamer=$BtnGamer; BtnExtremo=$BtnExtremo; BtnLimpar=$BtnLimpar
     BtnMarcarVisiveis=$BtnMarcarVisiveis; BtnDesmarcarVisiveis=$BtnDesmarcarVisiveis
     BtnWelcomeBalanceado=$BtnWelcomeBalanceado; BtnWelcomeGamer=$BtnWelcomeGamer; BtnWelcomeExtremo=$BtnWelcomeExtremo
+    ChkVirusTotal=$Script:ChkVirusTotal; WelcomeStatusBorder=$WelcomeStatusBorder; WelcomeStatusText=$WelcomeStatusText
+    WelcomeProgBar=$WelcomeProgBar; WelcomeCompletionText=$WelcomeCompletionText
+    BtnWelcomeApply=$BtnWelcomeApply; BtnWelcomeRestart=$BtnWelcomeRestart
 }
 $missing = $controlMap.GetEnumerator() | Where-Object { -not $_.Value } | Select-Object -ExpandProperty Key
 if ($missing) {
@@ -898,6 +977,34 @@ $BtnLimpar.Add_Click({
 # ============================================================================
 # 10. PRESETS (sem navegação automática de aba)
 # ============================================================================
+$Script:WelcomeButtons = @{ 'Balanceado' = $BtnWelcomeBalanceado; 'Gamer' = $BtnWelcomeGamer; 'Extremo' = $BtnWelcomeExtremo }
+$Script:AccentBrush = $Window.FindResource('Accent')
+$Script:PanelAltBrush = $Window.FindResource('PanelAlt')
+$Script:TextMainBrush = $Window.FindResource('TextMain')
+$Script:DarkOnAccentBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString('#1A0F08')
+
+function Get-ActiveTweakCount {
+    $simple = $Script:SelectedIds.Count
+    $leveled = ($Script:LevelSelections.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
+    return $simple + $leveled
+}
+
+function Update-WelcomePresetVisual {
+    param([string]$SelectedPreset)
+    foreach ($kv in $Script:WelcomeButtons.GetEnumerator()) {
+        if ($kv.Key -eq $SelectedPreset) {
+            $kv.Value.Background = $Script:AccentBrush
+            $kv.Value.Foreground = $Script:DarkOnAccentBrush
+        } else {
+            $kv.Value.Background = $Script:PanelAltBrush
+            $kv.Value.Foreground = $Script:TextMainBrush
+        }
+    }
+    $count = Get-ActiveTweakCount
+    $WelcomeStatusText.Text = "✓ Preset '$SelectedPreset' selecionado — $count tweaks serão aplicados"
+    $WelcomeStatusBorder.Visibility = 'Visible'
+}
+
 function Select-Preset {
     param([string]$PresetName)
     $Script:SelectedIds.Clear()
@@ -915,6 +1022,7 @@ function Select-Preset {
     }
     if ($PresetName -eq 'Gamer') { $ChkGamer.IsChecked = $true }
     Render-Tweaks -Category $CategoryList.SelectedItem -Filter $TxtSearch.Text
+    Update-WelcomePresetVisual -SelectedPreset $PresetName
     Write-Log "Preset '$PresetName' selecionado ($($Script:SelectedIds.Count) tweaks + ajustes multinível)."
 }
 
@@ -962,10 +1070,14 @@ function Run-Batch {
     $i = 0
     $BtnApply.IsEnabled = $false
     $BtnUndo.IsEnabled = $false
+    $BtnWelcomeApply.IsEnabled = $false
+    $WelcomeCompletionText.Text = "Aplicando... aguarde."
 
     foreach ($id in $ordered) {
         $i++
-        $ProgBar.Value = [double]($i / $totalItems) * 100
+        $pct = [double]($i / $totalItems) * 100
+        $ProgBar.Value = $pct
+        $WelcomeProgBar.Value = $pct
         $tweak = $AllTweaks | Where-Object { $_.id -eq $id }
         $ok = Invoke-TweakEngine -Tweak $tweak -Undo:$Undo
         if ($ok) { if ($Undo) { $Script:AppliedState.Remove($id) } else { $Script:AppliedState[$id] = (Get-Date -Format 'o') } }
@@ -973,7 +1085,9 @@ function Run-Batch {
     }
     foreach ($id in $selectedLeveled) {
         $i++
-        $ProgBar.Value = [double]($i / $totalItems) * 100
+        $pct = [double]($i / $totalItems) * 100
+        $ProgBar.Value = $pct
+        $WelcomeProgBar.Value = $pct
         $tweak = $AllTweaks | Where-Object { $_.id -eq $id }
         $lvl = $Script:LevelSelections[$id]
         $ok = Invoke-TweakEngine -Tweak $tweak -Undo:$Undo -Level $lvl
@@ -988,14 +1102,24 @@ function Run-Batch {
     Save-Rollback
     $BtnApply.IsEnabled = $true
     $BtnUndo.IsEnabled = $true
+    $BtnWelcomeApply.IsEnabled = $true
     $ProgBar.Value = 0
+    $WelcomeProgBar.Value = 0
     $action = if ($Undo) { 'revertidos (rollback profissional aplicado quando havia snapshot salvo)' } else { 'aplicados' }
+    $WelcomeCompletionText.Text = "✅ Concluído — $totalItems tweaks $action. Reinicie para garantir efeito completo."
     [System.Windows.MessageBox]::Show("$totalItems tweaks $action. Veja o log para detalhes. Reinicie o computador para garantir que todas as mudanças tenham efeito completo.", "Win-Slim Suite", 'OK', 'Information') | Out-Null
     Render-Tweaks -Category $CategoryList.SelectedItem -Filter $TxtSearch.Text
 }
 
 $BtnApply.Add_Click({ Invoke-Safe -Context 'aplicar selecionados' -Action { Run-Batch } })
 $BtnUndo.Add_Click({ Invoke-Safe -Context 'rollback (desfazer selecionados)' -Action { Run-Batch -Undo } })
+$BtnWelcomeApply.Add_Click({ Invoke-Safe -Context 'aplicar perfil (Bem-vindo)' -Action { Run-Batch } })
+$BtnWelcomeRestart.Add_Click({
+    Invoke-Safe -Context 'reiniciar sistema' -Action {
+        $r = [System.Windows.MessageBox]::Show("Isto vai reiniciar o computador agora. Salve qualquer trabalho pendente antes de continuar.`n`nDeseja reiniciar agora?", "Win-Slim Suite - Reiniciar", 'YesNo', 'Warning')
+        if ($r -eq 'Yes') { Write-Log "Reinício solicitado pelo usuário." 'INFO'; Restart-Computer -Force }
+    }
+})
 
 Write-Log "Win-Slim Suite iniciado. Windows $($Script:WinVersion) build $($Script:WinBuild). $($VisibleTweaks.Count) tweaks carregados."
 
