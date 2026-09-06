@@ -1,17 +1,13 @@
-﻿﻿<#
-.SYNOPSIS
-    Win-Slim Suite - Otimizador e Debloat para Windows 10/11
-.DESCRIPTION
-    Interface com aba "Bem-vindo" (presets) e aba "Avançado" (catálogo completo).
-    Consolida WinUtil, Atlas-OS, Win-Debloat-Tools, MeetRevision Playbook e Win-Slim.
-    SysMain e Windows Search são sempre tratados como OTIMIZAÇÃO, nunca desativados.
-    Inclui rollback estruturado (snapshot do estado real antes de cada aplicação) e
-    verificação opcional de arquivos baixados via API gratuita do VirusTotal.
-.NOTES
-    Execute como Administrador. Compatível com Windows 10 e Windows 11.
-    Salvo em UTF-8 com BOM para que acentos/símbolos sejam interpretados
-    corretamente pelo Windows PowerShell 5.1.
-#>
+﻿# Win-Slim Suite - Otimizador e Debloat para Windows 10/11
+#
+# Interface com aba "Bem-vindo" (presets) e aba "Avançado" (catálogo completo).
+# Consolida WinUtil, Atlas-OS, Win-Debloat-Tools, MeetRevision Playbook e Win-Slim.
+# SysMain e Windows Search são sempre tratados como OTIMIZAÇÃO, nunca desativados.
+# Inclui rollback estruturado (snapshot do estado real antes de cada aplicação),
+# verificação opcional via API gratuita do VirusTotal (arquivos baixados e,
+# opcionalmente, varredura dos locais mais comuns de infecção do sistema).
+#
+# Execute como Administrador. Compatível com Windows 10 e Windows 11.
 
 # Checagem de versão em runtime (em vez de #Requires, que não funciona quando o
 # script roda via "irm | iex" — o parser só reconhece #Requires em arquivos .ps1
@@ -201,6 +197,114 @@ function Confirm-DownloadIsSafe {
     }
     Write-Log "VirusTotal: '$FriendlyName' limpo (0 detecções de $($result.Total) motores)." 'OK'
     return $true
+}
+
+# ---------------------------------------------------------------------------
+# Verificação de Segurança do Sistema (VirusTotal) - versão "unidade do sistema"
+#
+# IMPORTANTE (limitação real, não contornável): a API gratuita do VirusTotal
+# permite poucas consultas por minuto. Uma unidade C: típica tem centenas de
+# milhares de arquivos — verificar cada um individualmente levaria dias e
+# estouraria o limite da API quase imediatamente. Por isso, em vez de varrer
+# o disco inteiro, esta função verifica os locais onde malware realmente
+# costuma se instalar: pastas temporárias, Downloads, pastas de inicialização
+# automática (Startup) e programas configurados para iniciar com o Windows
+# (chaves Run do registro). É o mesmo princípio usado por ferramentas como o
+# Autoruns da Microsoft para achar softwares indesejados rapidamente, sem
+# precisar ler o disco inteiro.
+# ---------------------------------------------------------------------------
+function Get-SystemScanCandidates {
+    param([int]$MaxFiles = 150)
+    $found = New-Object System.Collections.Generic.List[string]
+    $roots = @(
+        "$env:TEMP", "$env:LOCALAPPDATA\Temp", "$env:USERPROFILE\Downloads",
+        "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup",
+        "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
+    )
+    foreach ($r in $roots) {
+        if (Test-Path $r) {
+            Get-ChildItem -Path $r -Include *.exe, *.dll, *.scr, *.bat, *.cmd, *.ps1, *.vbs, *.js -Recurse -File -ErrorAction SilentlyContinue |
+                Sort-Object LastWriteTime -Descending | Select-Object -First 40 -ExpandProperty FullName |
+                ForEach-Object { $found.Add($_) }
+        }
+    }
+    $runKeys = @('HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run', 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run')
+    foreach ($k in $runKeys) {
+        if (Test-Path $k) {
+            $props = (Get-Item $k -ErrorAction SilentlyContinue).Property
+            foreach ($p in $props) {
+                $val = (Get-ItemProperty -Path $k -Name $p -ErrorAction SilentlyContinue).$p
+                if ($val -match '([A-Za-z]:\\[^"]+?\.exe)') { $found.Add($Matches[1]) }
+            }
+        }
+    }
+    return $found | Where-Object { Test-Path $_ -PathType Leaf } | Select-Object -Unique -First $MaxFiles
+}
+
+function Invoke-SystemSecurityScan {
+    <# Roda a varredura dos locais de risco, respeitando o limite da API
+       gratuita do VirusTotal (~4 consultas/min -> ~15s de intervalo).
+       Reporta progresso via Write-Log (aparece no log da interface) e via
+       $ProgBar quando disponível. Retorna a lista de alertas encontrados. #>
+    param([switch]$Silent)
+
+    if (-not (Test-InternetAvailable)) {
+        Write-Log "Sem internet — verificação de segurança do sistema cancelada." 'WARN'
+        if (-not $Silent) { [System.Windows.MessageBox]::Show("Sem conexão com a internet. Tente novamente quando estiver online.", "Win-Slim Suite", 'OK', 'Warning') | Out-Null }
+        return @()
+    }
+
+    $files = Get-SystemScanCandidates -MaxFiles 150
+    $total = $files.Count
+    if ($total -eq 0) {
+        Write-Log "Verificação de segurança do sistema: nenhum arquivo candidato encontrado nos locais verificados." 'INFO'
+        return @()
+    }
+
+    $estimatedMin = [Math]::Ceiling(($total * 15) / 60)
+    if (-not $Silent) {
+        $r = [System.Windows.MessageBox]::Show(
+            "Isto vai verificar $total arquivo(s) dos locais mais comuns de infecção (Temp, Downloads, Startup, itens de inicialização automática) no VirusTotal.`n`n" +
+            "A API gratuita é lenta de propósito (poucas consultas por minuto) — tempo estimado: ~$estimatedMin minuto(s). Não verifica TODOS os arquivos do disco, só os locais de maior risco.`n`n" +
+            "Deseja continuar?", "Win-Slim Suite - Verificação de Segurança", 'YesNo', 'Information')
+        if ($r -ne 'Yes') { Write-Log "Verificação de segurança do sistema cancelada pelo usuário." 'INFO'; return @() }
+    }
+
+    Write-Log "Iniciando verificação de segurança do sistema: $total arquivo(s) candidatos (tempo estimado ~$estimatedMin min)." 'INFO'
+    $alerts = New-Object System.Collections.Generic.List[object]
+    $i = 0
+    foreach ($f in $files) {
+        $i++
+        Write-Log "[VT-SCAN] ($i/$total) Verificando: $f" 'INFO'
+        if ($ProgBar) { $ProgBar.Value = [double]($i / $total) * 100 }
+        if ($WelcomeProgBar) { $WelcomeProgBar.Value = [double]($i / $total) * 100 }
+        [System.Windows.Forms.Application]::DoEvents()
+
+        $result = Test-FileVirusTotal -FilePath $f
+        if ($result.Success -and ($result.Malicious -gt 0 -or $result.Suspicious -gt 0)) {
+            Write-Log "[VT-SCAN] ALERTA em '$f': $($result.Malicious) malicioso(s), $($result.Suspicious) suspeito(s)." 'ERROR'
+            $alerts.Add([PSCustomObject]@{ Path = $f; Malicious = $result.Malicious; Suspicious = $result.Suspicious })
+        } elseif (-not $result.Success) {
+            Write-Log "[VT-SCAN] Não foi possível verificar '$f' ($($result.Error))." 'WARN'
+        }
+        if ($i -lt $total) { Start-Sleep -Seconds 15 }
+    }
+    if ($ProgBar) { $ProgBar.Value = 0 }
+    if ($WelcomeProgBar) { $WelcomeProgBar.Value = 0 }
+
+    if ($alerts.Count -gt 0) {
+        $list = ($alerts | ForEach-Object { "• $($_.Path) — $($_.Malicious) malicioso(s), $($_.Suspicious) suspeito(s)" }) -join "`n"
+        Write-Log "Verificação de segurança do sistema concluída: $($alerts.Count) arquivo(s) com alerta." 'ERROR'
+        if (-not $Silent) {
+            [System.Windows.MessageBox]::Show("⚠ Encontrados $($alerts.Count) arquivo(s) com alerta no VirusTotal:`n`n$list`n`nRecomendado: investigar e remover manualmente esses arquivos.", "Win-Slim Suite - Alerta de Segurança", 'OK', 'Error') | Out-Null
+        }
+    } else {
+        Write-Log "Verificação de segurança do sistema concluída: nenhum alerta encontrado em $total arquivo(s)." 'OK'
+        if (-not $Silent) {
+            [System.Windows.MessageBox]::Show("✅ Verificação concluída. Nenhum alerta encontrado em $total arquivo(s) verificados nos locais de maior risco.", "Win-Slim Suite", 'OK', 'Information') | Out-Null
+        }
+    }
+    return $alerts
 }
 
 # ============================================================================
@@ -609,7 +713,10 @@ function Resolve-Conflicts {
                                         Alguns tweaks baixam um arquivo externo antes de aplicar (ex: ViVeTool). Com isso
                                         marcado, o arquivo é checado no VirusTotal antes de rodar — usa uma API gratuita,
                                         que pode falhar ou ficar indisponível às vezes (nesse caso o processo continua
-                                        normalmente, sem travar). Desmarque para pular essa checagem sempre.
+                                        normalmente, sem travar). Desmarque para pular essa checagem sempre. Quer uma
+                                        varredura mais ampla, dos locais mais comuns de infecção do sistema (Temp,
+                                        Downloads, itens de inicialização)? Está disponível na aba
+                                        <Run Foreground="{StaticResource Accent}" FontWeight="Bold">Avançado → Extras / Manutenção</Run>.
                                     </TextBlock>
                                 </StackPanel>
 
@@ -663,6 +770,7 @@ function Resolve-Conflicts {
                             </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <Button x:Name="BtnWelcomeApply" Content="✓ Aplicar Perfil" Style="{StaticResource ActionBtn}"/>
+                                <Button x:Name="BtnWelcomeUndo" Content="↺ Rollback" Style="{StaticResource PresetBtn}" ToolTip="Restaura o estado real capturado antes da última aplicação (rollback estruturado)."/>
                                 <Button x:Name="BtnWelcomeRestart" Content="⟳ Reiniciar Sistema" Style="{StaticResource PresetBtn}" ToolTip="Reinicia o computador agora, para garantir que todas as mudanças tenham efeito completo."/>
                             </StackPanel>
                         </Grid>
@@ -772,6 +880,7 @@ $WelcomeStatusText = $Window.FindName('WelcomeStatusText')
 $WelcomeProgBar = $Window.FindName('WelcomeProgBar')
 $WelcomeCompletionText = $Window.FindName('WelcomeCompletionText')
 $BtnWelcomeApply = $Window.FindName('BtnWelcomeApply')
+$BtnWelcomeUndo = $Window.FindName('BtnWelcomeUndo')
 $BtnWelcomeRestart = $Window.FindName('BtnWelcomeRestart')
 
 $controlMap = @{
@@ -783,7 +892,7 @@ $controlMap = @{
     BtnWelcomeBalanceado=$BtnWelcomeBalanceado; BtnWelcomeGamer=$BtnWelcomeGamer; BtnWelcomeExtremo=$BtnWelcomeExtremo
     ChkVirusTotal=$Script:ChkVirusTotal; WelcomeStatusBorder=$WelcomeStatusBorder; WelcomeStatusText=$WelcomeStatusText
     WelcomeProgBar=$WelcomeProgBar; WelcomeCompletionText=$WelcomeCompletionText
-    BtnWelcomeApply=$BtnWelcomeApply; BtnWelcomeRestart=$BtnWelcomeRestart
+    BtnWelcomeApply=$BtnWelcomeApply; BtnWelcomeUndo=$BtnWelcomeUndo; BtnWelcomeRestart=$BtnWelcomeRestart
 }
 $missing = $controlMap.GetEnumerator() | Where-Object { -not $_.Value } | Select-Object -ExpandProperty Key
 if ($missing) {
@@ -1071,6 +1180,7 @@ function Run-Batch {
     $BtnApply.IsEnabled = $false
     $BtnUndo.IsEnabled = $false
     $BtnWelcomeApply.IsEnabled = $false
+    $BtnWelcomeUndo.IsEnabled = $false
     $WelcomeCompletionText.Text = "Aplicando... aguarde."
 
     foreach ($id in $ordered) {
@@ -1103,6 +1213,7 @@ function Run-Batch {
     $BtnApply.IsEnabled = $true
     $BtnUndo.IsEnabled = $true
     $BtnWelcomeApply.IsEnabled = $true
+    $BtnWelcomeUndo.IsEnabled = $true
     $ProgBar.Value = 0
     $WelcomeProgBar.Value = 0
     $action = if ($Undo) { 'revertidos (rollback profissional aplicado quando havia snapshot salvo)' } else { 'aplicados' }
@@ -1114,6 +1225,7 @@ function Run-Batch {
 $BtnApply.Add_Click({ Invoke-Safe -Context 'aplicar selecionados' -Action { Run-Batch } })
 $BtnUndo.Add_Click({ Invoke-Safe -Context 'rollback (desfazer selecionados)' -Action { Run-Batch -Undo } })
 $BtnWelcomeApply.Add_Click({ Invoke-Safe -Context 'aplicar perfil (Bem-vindo)' -Action { Run-Batch } })
+$BtnWelcomeUndo.Add_Click({ Invoke-Safe -Context 'rollback (Bem-vindo)' -Action { Run-Batch -Undo } })
 $BtnWelcomeRestart.Add_Click({
     Invoke-Safe -Context 'reiniciar sistema' -Action {
         $r = [System.Windows.MessageBox]::Show("Isto vai reiniciar o computador agora. Salve qualquer trabalho pendente antes de continuar.`n`nDeseja reiniciar agora?", "Win-Slim Suite - Reiniciar", 'YesNo', 'Warning')

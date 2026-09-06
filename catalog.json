@@ -13,7 +13,7 @@
     "Gamer",
     "Extremo"
   ],
-  "count": 141,
+  "count": 142,
   "tweaks": [
     {
       "id": "PRIV-001",
@@ -3237,6 +3237,25 @@
       "source": "WU+MR",
       "InvokeScript": [
         "Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Process explorer.exe"
+      ]
+    },
+    {
+      "id": "EXT-005",
+      "name": "Verificação de Segurança do Sistema (VirusTotal)",
+      "description": "Verifica no VirusTotal os arquivos dos locais onde malware mais costuma se instalar: pastas temporárias, Downloads, itens de inicialização automática (Startup) e programas configurados para iniciar com o Windows (chaves Run do registro). NÃO varre o HD inteiro — a API gratuita do VirusTotal só permite poucas consultas por minuto, então verificar cada um dos centenas de milhares de arquivos de um disco levaria dias. Esta é a mesma abordagem de ferramentas como o Autoruns da Microsoft: focar nos locais de maior risco. Pode levar vários minutos; você confirma antes de começar.",
+      "category": "Extras / Manutenção",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "presets": [],
+      "type": "script",
+      "source": "Win-Slim Suite (novo)",
+      "InvokeScript": [
+        "Invoke-SystemSecurityScan | Out-Null"
       ]
     },
     {
