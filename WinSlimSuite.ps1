@@ -138,8 +138,8 @@ $Script:LevelSelections = @{}
 $Script:VTApiKey = '50da278e8c9c0a37968b73e85357eb542464ad3339db8ffb649f1a7632196f31'
 
 function Test-InternetAvailable {
-    <# Checagem rápida e barata de conectividade, para não travar o script quando
-       o usuário está offline. Timeout curto de propósito. #>
+    # Checagem rápida e barata de conectividade, para não travar o script quando
+    # o usuário está offline. Timeout curto de propósito.
     try {
         $req = [System.Net.WebRequest]::Create('https://www.virustotal.com')
         $req.Timeout = 4000
@@ -166,10 +166,10 @@ function Test-FileVirusTotal {
 }
 
 function Confirm-DownloadIsSafe {
-    <# Retorna $true se está seguro para prosseguir (limpo, verificação desativada
-       pelo usuário, ou sem internet/API indisponível -> segue automaticamente
-       sem interromper o processo). Retorna $false SOMENTE quando o VirusTotal
-       respondeu e encontrou alerta real. #>
+    # Retorna $true se está seguro para prosseguir (limpo, verificação desativada
+    # pelo usuário, ou sem internet/API indisponível -> segue automaticamente
+    # sem interromper o processo). Retorna $false SOMENTE quando o VirusTotal
+    # respondeu e encontrou alerta real.
     param([string]$FilePath, [string]$FriendlyName)
 
     if ($Script:ChkVirusTotal -and -not $Script:ChkVirusTotal.IsChecked) {
@@ -200,52 +200,92 @@ function Confirm-DownloadIsSafe {
 }
 
 # ---------------------------------------------------------------------------
-# Verificação de Segurança do Sistema (VirusTotal) - versão "unidade do sistema"
+# Verificação de Segurança do Sistema (VirusTotal) - varredura da unidade
 #
-# IMPORTANTE (limitação real, não contornável): a API gratuita do VirusTotal
-# permite poucas consultas por minuto. Uma unidade C: típica tem centenas de
-# milhares de arquivos — verificar cada um individualmente levaria dias e
-# estouraria o limite da API quase imediatamente. Por isso, em vez de varrer
-# o disco inteiro, esta função verifica os locais onde malware realmente
-# costuma se instalar: pastas temporárias, Downloads, pastas de inicialização
-# automática (Startup) e programas configurados para iniciar com o Windows
-# (chaves Run do registro). É o mesmo princípio usado por ferramentas como o
-# Autoruns da Microsoft para achar softwares indesejados rapidamente, sem
-# precisar ler o disco inteiro.
+# Varre de fato as pastas da unidade do sistema onde um usuário ou programa
+# de terceiros pode gravar arquivos: Users (todos os perfis), ProgramData,
+# Program Files e Program Files (x86). A pasta Windows (sistema operacional
+# em si) fica de fora de propósito: são dezenas de milhares de arquivos
+# assinados digitalmente pela própria Microsoft, praticamente nunca a origem
+# de malware de terceiros, e verificá-los aumentaria o tempo de varredura em
+# horas sem ganho real de segurança.
+#
+# LIMITAÇÃO REAL (não contornável): a API gratuita do VirusTotal só permite
+# poucas consultas por minuto. Por isso a varredura prioriza os arquivos mais
+# suspeitos (em pastas temporárias/Downloads, ou modificados recentemente) e
+# verifica um número limitado deles no VirusTotal, em vez de checar todos os
+# milhares de arquivos encontrados um por um.
 # ---------------------------------------------------------------------------
 function Get-SystemScanCandidates {
-    param([int]$MaxFiles = 150)
-    $found = New-Object System.Collections.Generic.List[string]
-    $roots = @(
-        "$env:TEMP", "$env:LOCALAPPDATA\Temp", "$env:USERPROFILE\Downloads",
-        "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup",
-        "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
-    )
-    foreach ($r in $roots) {
-        if (Test-Path $r) {
-            Get-ChildItem -Path $r -Include *.exe, *.dll, *.scr, *.bat, *.cmd, *.ps1, *.vbs, *.js -Recurse -File -ErrorAction SilentlyContinue |
-                Sort-Object LastWriteTime -Descending | Select-Object -First 40 -ExpandProperty FullName |
-                ForEach-Object { $found.Add($_) }
-        }
+    param([int]$MaxToCheck = 150)
+
+    $extensions = @('.exe', '.dll', '.scr', '.bat', '.cmd', '.ps1', '.vbs', '.js')
+    $scanRoots = @(
+        "$env:SystemDrive\Users",
+        "$env:SystemDrive\ProgramData",
+        $env:ProgramFiles,
+        ${env:ProgramFiles(x86)}
+    ) | Where-Object { $_ -and (Test-Path $_) } | Select-Object -Unique
+
+    Write-Log "Varrendo a unidade do sistema: $($scanRoots -join '; ')" 'INFO'
+
+    $allFiles = New-Object System.Collections.Generic.List[object]
+    foreach ($root in $scanRoots) {
+        Get-ChildItem -Path $root -Recurse -File -Force -ErrorAction SilentlyContinue |
+            Where-Object { $extensions -contains $_.Extension.ToLower() } |
+            ForEach-Object { $allFiles.Add($_) }
     }
+    Write-Log "Varredura da unidade concluída: $($allFiles.Count) arquivo(s) executável(is) encontrados. Priorizando os mais suspeitos para checagem no VirusTotal." 'INFO'
+
+    # Chaves Run (programas configurados para iniciar com o Windows)
     $runKeys = @('HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run', 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run')
+    $runTargets = New-Object System.Collections.Generic.List[string]
     foreach ($k in $runKeys) {
         if (Test-Path $k) {
             $props = (Get-Item $k -ErrorAction SilentlyContinue).Property
             foreach ($p in $props) {
                 $val = (Get-ItemProperty -Path $k -Name $p -ErrorAction SilentlyContinue).$p
-                if ($val -match '([A-Za-z]:\\[^"]+?\.exe)') { $found.Add($Matches[1]) }
+                if ($val -match '([A-Za-z]:\\[^"]+?\.exe)') { $runTargets.Add($Matches[1]) }
             }
         }
     }
-    return $found | Where-Object { Test-Path $_ -PathType Leaf } | Select-Object -Unique -First $MaxFiles
+
+    # Prioriza: itens de Run (mais suspeitos por natureza) primeiro, depois
+    # arquivos em pastas de risco (Temp/Downloads/ProgramData), depois os
+    # modificados mais recentemente.
+    $scored = $allFiles | ForEach-Object {
+        $score = 0
+        if ($_.FullName -match '\\(Temp|Downloads|ProgramData)\\') { $score += 3 }
+        if ($_.LastWriteTime -gt (Get-Date).AddDays(-7)) { $score += 3 }
+        elseif ($_.LastWriteTime -gt (Get-Date).AddDays(-30)) { $score += 1 }
+        [PSCustomObject]@{ FullName = $_.FullName; Score = $score; LastWriteTime = $_.LastWriteTime }
+    }
+    $prioritized = $scored | Sort-Object Score, LastWriteTime -Descending | Select-Object -ExpandProperty FullName
+
+    $combined = @($runTargets) + @($prioritized)
+    return $combined | Where-Object { Test-Path $_ -PathType Leaf } | Select-Object -Unique -First $MaxToCheck
+}
+
+function Wait-WithoutFreezingUI {
+    # Espera o número de segundos indicado SEM travar a janela — chama
+    # DoEvents em pequenos intervalos para a interface continuar respondendo
+    # (mover a janela, ver o log atualizando) durante a espera exigida pelo
+    # limite de requisições da API gratuita do VirusTotal.
+    param([int]$Seconds)
+    $elapsedMs = 0
+    $stepMs = 200
+    while ($elapsedMs -lt ($Seconds * 1000)) {
+        Start-Sleep -Milliseconds $stepMs
+        [System.Windows.Forms.Application]::DoEvents()
+        $elapsedMs += $stepMs
+    }
 }
 
 function Invoke-SystemSecurityScan {
-    <# Roda a varredura dos locais de risco, respeitando o limite da API
-       gratuita do VirusTotal (~4 consultas/min -> ~15s de intervalo).
-       Reporta progresso via Write-Log (aparece no log da interface) e via
-       $ProgBar quando disponível. Retorna a lista de alertas encontrados. #>
+    # Roda a varredura da unidade do sistema, respeitando o limite da API
+    # gratuita do VirusTotal (~4 consultas/min -> ~15s de intervalo, sem
+    # travar a interface). Reporta progresso via Write-Log e via $ProgBar /
+    # $WelcomeProgBar quando disponíveis. Retorna a lista de alertas encontrados.
     param([switch]$Silent)
 
     if (-not (Test-InternetAvailable)) {
@@ -254,23 +294,25 @@ function Invoke-SystemSecurityScan {
         return @()
     }
 
-    $files = Get-SystemScanCandidates -MaxFiles 150
+    $files = Get-SystemScanCandidates -MaxToCheck 150
     $total = $files.Count
     if ($total -eq 0) {
-        Write-Log "Verificação de segurança do sistema: nenhum arquivo candidato encontrado nos locais verificados." 'INFO'
+        Write-Log "Verificação de segurança do sistema: nenhum arquivo candidato encontrado." 'INFO'
+        if (-not $Silent) { [System.Windows.MessageBox]::Show("Nenhum arquivo executável encontrado nas pastas verificadas.", "Win-Slim Suite", 'OK', 'Information') | Out-Null }
         return @()
     }
 
     $estimatedMin = [Math]::Ceiling(($total * 15) / 60)
     if (-not $Silent) {
         $r = [System.Windows.MessageBox]::Show(
-            "Isto vai verificar $total arquivo(s) dos locais mais comuns de infecção (Temp, Downloads, Startup, itens de inicialização automática) no VirusTotal.`n`n" +
-            "A API gratuita é lenta de propósito (poucas consultas por minuto) — tempo estimado: ~$estimatedMin minuto(s). Não verifica TODOS os arquivos do disco, só os locais de maior risco.`n`n" +
+            "Isto vai varrer a unidade do sistema (Users, ProgramData, Program Files) e verificar os $total arquivo(s) mais suspeitos no VirusTotal.`n`n" +
+            "A pasta Windows não é verificada (arquivos assinados pela Microsoft, praticamente nunca a origem de malware).`n`n" +
+            "A API gratuita é lenta de propósito — tempo estimado: ~$estimatedMin minuto(s). A interface continua responsiva durante a espera.`n`n" +
             "Deseja continuar?", "Win-Slim Suite - Verificação de Segurança", 'YesNo', 'Information')
         if ($r -ne 'Yes') { Write-Log "Verificação de segurança do sistema cancelada pelo usuário." 'INFO'; return @() }
     }
 
-    Write-Log "Iniciando verificação de segurança do sistema: $total arquivo(s) candidatos (tempo estimado ~$estimatedMin min)." 'INFO'
+    Write-Log "Iniciando verificação de segurança da unidade: $total arquivo(s) candidatos (tempo estimado ~$estimatedMin min)." 'INFO'
     $alerts = New-Object System.Collections.Generic.List[object]
     $i = 0
     foreach ($f in $files) {
@@ -287,7 +329,7 @@ function Invoke-SystemSecurityScan {
         } elseif (-not $result.Success) {
             Write-Log "[VT-SCAN] Não foi possível verificar '$f' ($($result.Error))." 'WARN'
         }
-        if ($i -lt $total) { Start-Sleep -Seconds 15 }
+        if ($i -lt $total) { Wait-WithoutFreezingUI -Seconds 15 }
     }
     if ($ProgBar) { $ProgBar.Value = 0 }
     if ($WelcomeProgBar) { $WelcomeProgBar.Value = 0 }
@@ -301,7 +343,7 @@ function Invoke-SystemSecurityScan {
     } else {
         Write-Log "Verificação de segurança do sistema concluída: nenhum alerta encontrado em $total arquivo(s)." 'OK'
         if (-not $Silent) {
-            [System.Windows.MessageBox]::Show("✅ Verificação concluída. Nenhum alerta encontrado em $total arquivo(s) verificados nos locais de maior risco.", "Win-Slim Suite", 'OK', 'Information') | Out-Null
+            [System.Windows.MessageBox]::Show("✅ Verificação concluída. Nenhum alerta encontrado em $total arquivo(s) verificados na unidade.", "Win-Slim Suite", 'OK', 'Information') | Out-Null
         }
     }
     return $alerts
@@ -333,9 +375,9 @@ function Get-CurrentRegistryState {
 }
 
 function Backup-BeforeApply {
-    <# Captura o estado real (registro/serviço) imediatamente antes de aplicar um
-       payload, e guarda em $Script:RollbackData[$TweakId], sobrescrevendo qualquer
-       snapshot anterior daquele tweak (sempre reflete o estado anterior à ÚLTIMA aplicação). #>
+    # Captura o estado real (registro/serviço) imediatamente antes de aplicar um
+    # payload, e guarda em $Script:RollbackData[$TweakId], sobrescrevendo qualquer
+    # snapshot anterior daquele tweak (sempre reflete o estado anterior à ÚLTIMA aplicação).
     param([string]$TweakId, $Payload)
     $snap = [PSCustomObject]@{ timestamp = (Get-Date -Format 'o'); registry = @(); service = @() }
     if ($Payload.registry) {
@@ -354,9 +396,9 @@ function Backup-BeforeApply {
 }
 
 function Restore-FromSnapshot {
-    <# Rollback profissional: restaura o estado EXATO capturado antes da última
-       aplicação. Retorna $true se havia snapshot e foi restaurado; $false se não
-       havia snapshot (aí o chamador cai para o fallback do catálogo). #>
+    # Rollback profissional: restaura o estado EXATO capturado antes da última
+    # aplicação. Retorna $true se havia snapshot e foi restaurado; $false se não
+    # havia snapshot (aí o chamador cai para o fallback do catálogo).
     param([string]$TweakId)
     if (-not $Script:RollbackData.ContainsKey($TweakId)) { return $false }
     $snap = $Script:RollbackData[$TweakId]
@@ -710,13 +752,8 @@ function Resolve-Conflicts {
                                 <StackPanel Margin="0,0,0,22">
                                     <CheckBox x:Name="ChkVirusTotal" Content="🛡 Verificar arquivos baixados com VirusTotal" FontSize="13.5" FontWeight="SemiBold" IsChecked="True"/>
                                     <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="22,4,0,0">
-                                        Alguns tweaks baixam um arquivo externo antes de aplicar (ex: ViVeTool). Com isso
-                                        marcado, o arquivo é checado no VirusTotal antes de rodar — usa uma API gratuita,
-                                        que pode falhar ou ficar indisponível às vezes (nesse caso o processo continua
-                                        normalmente, sem travar). Desmarque para pular essa checagem sempre. Quer uma
-                                        varredura mais ampla, dos locais mais comuns de infecção do sistema (Temp,
-                                        Downloads, itens de inicialização)? Está disponível na aba
-                                        <Run Foreground="{StaticResource Accent}" FontWeight="Bold">Avançado → Extras / Manutenção</Run>.
+                                        Checa arquivos baixados por esta ferramenta antes de rodar. Usa uma API gratuita
+                                        (pode falhar às vezes, sem travar o processo).
                                     </TextBlock>
                                 </StackPanel>
 
