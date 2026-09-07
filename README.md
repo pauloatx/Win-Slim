@@ -18,27 +18,7 @@ com catálogo de tweaks, presets e rollback profissional).
 
 ---
 
-## ⚡ Win-Slim
-
-A versão original: script direto, sem interface gráfica, focado em debloat e
-otimizações essenciais.
-
 **Executar o PowerShell como Administrador (recomendado)**
-
-```powershell
-irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main/Win-Slim.ps1 | iex
-```
-
----
-
-## 🧪 Win-Slim Beta
-
-Versão em teste, com novidades e ajustes que ainda estão sendo validados antes
-de entrar na versão estável.
-
-```powershell
-irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main/Win-SlimBeta.ps1 | iex
-```
 
 ---
 
