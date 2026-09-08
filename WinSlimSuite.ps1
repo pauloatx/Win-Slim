@@ -1,4 +1,4 @@
-﻿# Win-Slim Suite - Otimizador e Debloat para Windows 10/11
+# Win-Slim Suite - Otimizador e Debloat para Windows 10/11
 #
 # Interface com aba "Bem-vindo" (presets) e aba "Avançado" (catálogo completo).
 # Consolida WinUtil, Atlas-OS, Win-Debloat-Tools, MeetRevision Playbook e Win-Slim.
@@ -47,6 +47,21 @@ if (-not (Test-IsAdmin)) {
         $argList = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
         Start-Process -FilePath 'powershell.exe' -ArgumentList $argList -Verb RunAs
     }
+    exit
+}
+
+# ASCII-only block on purpose (no accented characters, no emoji): this runs
+# BEFORE we can trust how this process decided to decode the file, so it must
+# parse correctly no matter what. When running from a local .ps1 file, Windows
+# PowerShell 5.1 can guess the wrong text encoding if the file has no BOM,
+# which would corrupt accented characters and emoji used later in the script.
+# Instead of relying on a BOM (which breaks "irm | iex" in a different way),
+# we explicitly re-read our own file as UTF-8 and re-run it via Invoke-Expression
+# exactly once. A process-only marker prevents this from looping forever.
+if ($PSCommandPath -and -not $env:WINSLIM_UTF8_OK) {
+    $env:WINSLIM_UTF8_OK = '1'
+    $fullText = [System.IO.File]::ReadAllText($PSCommandPath, [System.Text.Encoding]::UTF8)
+    Invoke-Expression $fullText
     exit
 }
 
