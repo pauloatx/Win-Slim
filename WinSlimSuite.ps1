@@ -30,8 +30,8 @@ Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, Sys
 #        auto-elevação relança o mesmo comando irm|iex num processo admin,
 #        em vez de apontar para um arquivo que não existe.
 # ============================================================================
-$Script:RepoRawBase = 'https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main'
-$Script:IsRemoteRun = [string]::IsNullOrEmpty($PSCommandPath)
+$RepoRawBase = 'https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main'
+$IsRemoteRun = [string]::IsNullOrEmpty($PSCommandPath)
 
 function Test-IsAdmin {
     $id = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -40,8 +40,8 @@ function Test-IsAdmin {
 }
 
 if (-not (Test-IsAdmin)) {
-    if ($Script:IsRemoteRun) {
-        $remoteCmd = "irm $($Script:RepoRawBase)/WinSlimSuite.ps1 | iex"
+    if ($IsRemoteRun) {
+        $remoteCmd = "irm $($RepoRawBase)/WinSlimSuite.ps1 | iex"
         Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', $remoteCmd) -Verb RunAs
     } else {
         $argList = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
@@ -50,7 +50,7 @@ if (-not (Test-IsAdmin)) {
     exit
 }
 
-if ($Script:IsRemoteRun) {
+if ($IsRemoteRun) {
     $ScriptRoot = Join-Path $env:LOCALAPPDATA 'WinSlimSuite'
     if (-not (Test-Path $ScriptRoot)) { New-Item -Path $ScriptRoot -ItemType Directory -Force | Out-Null }
 } else {
@@ -61,10 +61,10 @@ $StatePath = Join-Path $ScriptRoot 'winslim-state.json'
 $RollbackPath = Join-Path $ScriptRoot 'winslim-rollback.json'
 $LogPath = Join-Path $ScriptRoot 'winslim-log.txt'
 
-if ($Script:IsRemoteRun) {
+if ($IsRemoteRun) {
     # Sempre busca a versão mais recente do catálogo quando rodando via irm|iex
     try {
-        Invoke-WebRequest -Uri "$($Script:RepoRawBase)/catalog.json" -OutFile $CatalogPath -UseBasicParsing -TimeoutSec 20
+        Invoke-WebRequest -Uri "$($RepoRawBase)/catalog.json" -OutFile $CatalogPath -UseBasicParsing -TimeoutSec 20
     } catch {
         [System.Windows.MessageBox]::Show("Não foi possível baixar o catalog.json do GitHub:`n$($_.Exception.Message)`n`nVerifique sua conexão com a internet e se o repositório está público.", "Win-Slim Suite", 'OK', 'Error') | Out-Null
         exit 1
@@ -83,8 +83,8 @@ function Get-WinMajorVersion {
     $build = [int](Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion').CurrentBuildNumber
     if ($build -ge 22000) { return '11' } else { return '10' }
 }
-$Script:WinVersion = Get-WinMajorVersion
-$Script:WinBuild = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion').CurrentBuildNumber
+$WinVersion = Get-WinMajorVersion
+$WinBuild = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion').CurrentBuildNumber
 
 # ============================================================================
 # 2. CARREGAR CATÁLOGO
@@ -92,20 +92,20 @@ $Script:WinBuild = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\Curren
 $JsonRaw = [System.IO.File]::ReadAllText($CatalogPath, [System.Text.Encoding]::UTF8)
 $Catalog = $JsonRaw | ConvertFrom-Json
 $AllTweaks = $Catalog.tweaks
-$VisibleTweaks = $AllTweaks | Where-Object { $_.windowsVersion -contains $Script:WinVersion }
+$VisibleTweaks = $AllTweaks | Where-Object { $_.windowsVersion -contains $WinVersion }
 
 if (Test-Path $StatePath) {
-    $Script:AppliedState = @{}
-    (Get-Content $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $Script:AppliedState[$_.Name] = $_.Value }
-} else { $Script:AppliedState = @{} }
-function Save-State { $Script:AppliedState | ConvertTo-Json -Depth 5 | Out-File -FilePath $StatePath -Encoding UTF8 }
+    $AppliedState = @{}
+    (Get-Content $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $AppliedState[$_.Name] = $_.Value }
+} else { $AppliedState = @{} }
+function Save-State { $AppliedState | ConvertTo-Json -Depth 5 | Out-File -FilePath $StatePath -Encoding UTF8 }
 
 function Write-Log {
     param([string]$Message, [string]$Level = 'INFO')
     $line = "[{0}] [{1}] {2}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $Level, $Message
     try { Add-Content -Path $LogPath -Value $line -Encoding UTF8 } catch { }
-    if ($Script:LogBox) {
-        try { $Script:LogBox.Dispatcher.Invoke([Action]{ $Script:LogBox.AppendText("$line`r`n"); $Script:LogBox.ScrollToEnd() }) } catch { }
+    if ($LogBox) {
+        try { $LogBox.Dispatcher.Invoke([Action]{ $LogBox.AppendText("$line`r`n"); $LogBox.ScrollToEnd() }) } catch { }
     }
 }
 
@@ -125,8 +125,8 @@ function Invoke-Safe {
 # ============================================================================
 # 3. ESTADO DE SELEÇÃO EM MEMÓRIA
 # ============================================================================
-$Script:SelectedIds = [System.Collections.Generic.HashSet[string]]::new()
-$Script:LevelSelections = @{}
+$SelectedIds = [System.Collections.Generic.HashSet[string]]::new()
+$LevelSelections = @{}
 
 # ============================================================================
 # 4. VIRUSTOTAL - verificação opcional de arquivos baixados pela ferramenta
@@ -135,7 +135,7 @@ $Script:LevelSelections = @{}
 #    ou ficar indisponíveis ocasionalmente — nesse caso o usuário decide se quer
 #    prosseguir mesmo sem a verificação.
 # ============================================================================
-$Script:VTApiKey = '50da278e8c9c0a37968b73e85357eb542464ad3339db8ffb649f1a7632196f31'
+$VTApiKey = '50da278e8c9c0a37968b73e85357eb542464ad3339db8ffb649f1a7632196f31'
 
 function Test-InternetAvailable {
     # Checagem rápida e barata de conectividade, para não travar o script quando
@@ -154,7 +154,7 @@ function Test-FileVirusTotal {
     param([string]$FilePath)
     try {
         $hash = (Get-FileHash -Path $FilePath -Algorithm SHA256).Hash
-        $headers = @{ 'x-apikey' = $Script:VTApiKey }
+        $headers = @{ 'x-apikey' = $VTApiKey }
         $uri = "https://www.virustotal.com/api/v3/files/$hash"
         $resp = Invoke-RestMethod -Uri $uri -Headers $headers -Method Get -TimeoutSec 10
         $stats = $resp.data.attributes.last_analysis_stats
@@ -172,7 +172,7 @@ function Confirm-DownloadIsSafe {
     # respondeu e encontrou alerta real.
     param([string]$FilePath, [string]$FriendlyName)
 
-    if ($Script:ChkVirusTotal -and -not $Script:ChkVirusTotal.IsChecked) {
+    if ($ChkVirusTotal -and -not $ChkVirusTotal.IsChecked) {
         Write-Log "Verificação do VirusTotal para '$FriendlyName' desativada pelo usuário (checkbox desmarcada) — prosseguindo sem verificar." 'INFO'
         return $true
     }
@@ -355,13 +355,13 @@ function Invoke-SystemSecurityScan {
 #    exatamente esse estado quando o usuário clica em Desfazer.
 # ============================================================================
 if (Test-Path $RollbackPath) {
-    $Script:RollbackData = @{}
+    $RollbackData = @{}
     try {
-        (Get-Content $RollbackPath -Raw -Encoding UTF8 | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $Script:RollbackData[$_.Name] = $_.Value }
-    } catch { $Script:RollbackData = @{} }
-} else { $Script:RollbackData = @{} }
+        (Get-Content $RollbackPath -Raw -Encoding UTF8 | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $RollbackData[$_.Name] = $_.Value }
+    } catch { $RollbackData = @{} }
+} else { $RollbackData = @{} }
 
-function Save-Rollback { $Script:RollbackData | ConvertTo-Json -Depth 10 | Out-File -FilePath $RollbackPath -Encoding UTF8 }
+function Save-Rollback { $RollbackData | ConvertTo-Json -Depth 10 | Out-File -FilePath $RollbackPath -Encoding UTF8 }
 
 function Get-CurrentRegistryState {
     param($Path, $Name)
@@ -376,7 +376,7 @@ function Get-CurrentRegistryState {
 
 function Backup-BeforeApply {
     # Captura o estado real (registro/serviço) imediatamente antes de aplicar um
-    # payload, e guarda em $Script:RollbackData[$TweakId], sobrescrevendo qualquer
+    # payload, e guarda em $RollbackData[$TweakId], sobrescrevendo qualquer
     # snapshot anterior daquele tweak (sempre reflete o estado anterior à ÚLTIMA aplicação).
     param([string]$TweakId, $Payload)
     $snap = [PSCustomObject]@{ timestamp = (Get-Date -Format 'o'); registry = @(); service = @() }
@@ -392,7 +392,7 @@ function Backup-BeforeApply {
             if ($svc) { $snap.service += [PSCustomObject]@{ Name = $s.Name; PriorStartupType = $svc.StartType.ToString() } }
         }
     }
-    $Script:RollbackData[$TweakId] = $snap
+    $RollbackData[$TweakId] = $snap
 }
 
 function Restore-FromSnapshot {
@@ -400,8 +400,8 @@ function Restore-FromSnapshot {
     # aplicação. Retorna $true se havia snapshot e foi restaurado; $false se não
     # havia snapshot (aí o chamador cai para o fallback do catálogo).
     param([string]$TweakId)
-    if (-not $Script:RollbackData.ContainsKey($TweakId)) { return $false }
-    $snap = $Script:RollbackData[$TweakId]
+    if (-not $RollbackData.ContainsKey($TweakId)) { return $false }
+    $snap = $RollbackData[$TweakId]
     foreach ($r in $snap.registry) {
         if ($r.Existed) { Set-RegistryValue -Path $r.Path -Name $r.Name -Value $r.PriorValue -Type $r.Type }
         else { Remove-ItemProperty -Path $r.Path -Name $r.Name -ErrorAction SilentlyContinue }
@@ -409,7 +409,7 @@ function Restore-FromSnapshot {
     foreach ($s in $snap.service) {
         Set-Service -Name $s.Name -StartupType $s.PriorStartupType -ErrorAction SilentlyContinue
     }
-    $Script:RollbackData.Remove($TweakId)
+    $RollbackData.Remove($TweakId)
     return $true
 }
 
@@ -898,7 +898,7 @@ $CategoryList = $Window.FindName('CategoryList')
 $TweakList = $Window.FindName('TweakList')
 $TxtSearch = $Window.FindName('TxtSearch')
 $SelectionCount = $Window.FindName('SelectionCount')
-$Script:LogBox = $Window.FindName('LogBox')
+$LogBox = $Window.FindName('LogBox')
 $ProgBar = $Window.FindName('ProgBar')
 $BtnApply = $Window.FindName('BtnApply')
 $BtnUndo = $Window.FindName('BtnUndo')
@@ -911,7 +911,7 @@ $BtnDesmarcarVisiveis = $Window.FindName('BtnDesmarcarVisiveis')
 $BtnWelcomeBalanceado = $Window.FindName('BtnWelcomeBalanceado')
 $BtnWelcomeGamer = $Window.FindName('BtnWelcomeGamer')
 $BtnWelcomeExtremo = $Window.FindName('BtnWelcomeExtremo')
-$Script:ChkVirusTotal = $Window.FindName('ChkVirusTotal')
+$ChkVirusTotal = $Window.FindName('ChkVirusTotal')
 $WelcomeStatusBorder = $Window.FindName('WelcomeStatusBorder')
 $WelcomeStatusText = $Window.FindName('WelcomeStatusText')
 $WelcomeProgBar = $Window.FindName('WelcomeProgBar')
@@ -923,11 +923,11 @@ $BtnWelcomeRestart = $Window.FindName('BtnWelcomeRestart')
 $controlMap = @{
     OsBadge=$OsBadge; ChkGamer=$ChkGamer; ChkRestorePoint=$ChkRestorePoint; MainTabs=$MainTabs
     CategoryList=$CategoryList; TweakList=$TweakList; TxtSearch=$TxtSearch; SelectionCount=$SelectionCount
-    LogBox=$Script:LogBox; ProgBar=$ProgBar; BtnApply=$BtnApply; BtnUndo=$BtnUndo
+    LogBox=$LogBox; ProgBar=$ProgBar; BtnApply=$BtnApply; BtnUndo=$BtnUndo
     BtnBalanceado=$BtnBalanceado; BtnGamer=$BtnGamer; BtnExtremo=$BtnExtremo; BtnLimpar=$BtnLimpar
     BtnMarcarVisiveis=$BtnMarcarVisiveis; BtnDesmarcarVisiveis=$BtnDesmarcarVisiveis
     BtnWelcomeBalanceado=$BtnWelcomeBalanceado; BtnWelcomeGamer=$BtnWelcomeGamer; BtnWelcomeExtremo=$BtnWelcomeExtremo
-    ChkVirusTotal=$Script:ChkVirusTotal; WelcomeStatusBorder=$WelcomeStatusBorder; WelcomeStatusText=$WelcomeStatusText
+    ChkVirusTotal=$ChkVirusTotal; WelcomeStatusBorder=$WelcomeStatusBorder; WelcomeStatusText=$WelcomeStatusText
     WelcomeProgBar=$WelcomeProgBar; WelcomeCompletionText=$WelcomeCompletionText
     BtnWelcomeApply=$BtnWelcomeApply; BtnWelcomeUndo=$BtnWelcomeUndo; BtnWelcomeRestart=$BtnWelcomeRestart
 }
@@ -937,7 +937,7 @@ if ($missing) {
     exit 1
 }
 
-$OsBadge.Text = "Windows $($Script:WinVersion)  •  Build $($Script:WinBuild)  •  $($VisibleTweaks.Count) tweaks disponíveis"
+$OsBadge.Text = "Windows $($WinVersion)  •  Build $($WinBuild)  •  $($VisibleTweaks.Count) tweaks disponíveis"
 
 # ============================================================================
 # 8. POPULAR CATEGORIAS
@@ -945,12 +945,14 @@ $OsBadge.Text = "Windows $($Script:WinVersion)  •  Build $($Script:WinBuild)  
 $Categories = @('Todas') + ($VisibleTweaks | Select-Object -ExpandProperty category -Unique | Sort-Object)
 $CategoryList.ItemsSource = $Categories
 $CategoryList.SelectedIndex = 0
-$Script:CurrentRenderedIds = @()
+$CurrentRenderedIds = [System.Collections.Generic.List[string]]::new()
 
 function Update-SelectionCount {
-    $simpleCount = $Script:SelectedIds.Count
-    $levelCount = ($Script:LevelSelections.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
-    $SelectionCount.Text = "$simpleCount tweaks marcados + $levelCount ajustes multinível ativos"
+    param($SelectedIdsRef, $LevelSelectionsRef, $CountControl)
+    if (-not $SelectedIdsRef -or -not $LevelSelectionsRef -or -not $CountControl) { return }
+    $simpleCount = $SelectedIdsRef.Count
+    $levelCount = ($LevelSelectionsRef.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
+    $CountControl.Text = "$simpleCount tweaks marcados + $levelCount ajustes multinível ativos"
 }
 
 function New-TweakCard {
@@ -959,6 +961,14 @@ function New-TweakCard {
     $tweakId = $Tweak.id
     $tweakLevels = $Tweak.levels
     $isMultilevel = ($Tweak.type -eq 'multilevel')
+
+    # Referências capturadas localmente e passadas via GetNewClosure(): garante
+    # que cada evento (marcar checkbox, mudar nível) sempre tem uma referência
+    # válida às coleções compartilhadas, independente de como o script foi
+    # executado (arquivo local ou "irm | iex").
+    $selectedIdsRef = $SelectedIds
+    $levelSelRef = $LevelSelections
+    $countCtrl = $SelectionCount
 
     $border = New-Object System.Windows.Controls.Border
     $border.Background = '#171A21'
@@ -977,13 +987,13 @@ function New-TweakCard {
         $chk = New-Object System.Windows.Controls.CheckBox
         $chk.VerticalAlignment = 'Top'
         $chk.Margin = '0,2,10,0'
-        $chk.IsChecked = $Script:SelectedIds.Contains($tweakId)
+        $chk.IsChecked = $selectedIdsRef.Contains($tweakId)
         $chk.Add_Checked({
-            try { $Script:SelectedIds.Add($tweakId) | Out-Null; Update-SelectionCount }
+            try { $selectedIdsRef.Add($tweakId) | Out-Null; Update-SelectionCount -SelectedIdsRef $selectedIdsRef -LevelSelectionsRef $levelSelRef -CountControl $countCtrl }
             catch { Write-Log "Erro ao marcar $tweakId : $($_.Exception.Message)" 'ERROR' }
         }.GetNewClosure())
         $chk.Add_Unchecked({
-            try { $Script:SelectedIds.Remove($tweakId) | Out-Null; Update-SelectionCount }
+            try { $selectedIdsRef.Remove($tweakId) | Out-Null; Update-SelectionCount -SelectedIdsRef $selectedIdsRef -LevelSelectionsRef $levelSelRef -CountControl $countCtrl }
             catch { Write-Log "Erro ao desmarcar $tweakId : $($_.Exception.Message)" 'ERROR' }
         }.GetNewClosure())
         [System.Windows.Controls.Grid]::SetColumn($chk, 0)
@@ -1012,10 +1022,10 @@ function New-TweakCard {
         $combo.Width = 330
         $combo.HorizontalAlignment = 'Left'
         foreach ($lv in $tweakLevels) { $combo.Items.Add($lv.name) | Out-Null }
-        $savedIdx = if ($Script:LevelSelections.ContainsKey($tweakId)) { $Script:LevelSelections[$tweakId] } else { 0 }
+        $savedIdx = if ($levelSelRef.ContainsKey($tweakId)) { $levelSelRef[$tweakId] } else { 0 }
         if ($savedIdx -ge $combo.Items.Count) { $savedIdx = 0 }
         $combo.SelectedIndex = $savedIdx
-        if (-not $Script:LevelSelections.ContainsKey($tweakId)) { $Script:LevelSelections[$tweakId] = 0 }
+        if (-not $levelSelRef.ContainsKey($tweakId)) { $levelSelRef[$tweakId] = 0 }
 
         $levelDesc = New-Object System.Windows.Controls.TextBlock
         $levelDesc.Text = $tweakLevels[$savedIdx].description
@@ -1027,9 +1037,9 @@ function New-TweakCard {
 
         $combo.Add_SelectionChanged({
             try {
-                $Script:LevelSelections[$tweakId] = $combo.SelectedIndex
+                $levelSelRef[$tweakId] = $combo.SelectedIndex
                 $levelDesc.Text = $tweakLevels[$combo.SelectedIndex].description
-                Update-SelectionCount
+                Update-SelectionCount -SelectedIdsRef $selectedIdsRef -LevelSelectionsRef $levelSelRef -CountControl $countCtrl
             } catch { Write-Log "Erro ao mudar nível de $tweakId : $($_.Exception.Message)" 'ERROR' }
         }.GetNewClosure())
 
@@ -1067,7 +1077,8 @@ function Render-Tweaks {
     if ($ChkGamer.IsChecked) { $items = $items | Where-Object { $gamerRemovalIds -notcontains $_.id } }
     else { $items = $items | Where-Object { $_.id -ne 'APP-044' } }
 
-    $Script:CurrentRenderedIds = @($items | Where-Object { $_.type -ne 'multilevel' } | Select-Object -ExpandProperty id)
+    $CurrentRenderedIds.Clear()
+    $CurrentRenderedIds.AddRange([string[]]@($items | Where-Object { $_.type -ne 'multilevel' } | Select-Object -ExpandProperty id))
 
     $TweakList.Items.Clear()
     foreach ($t in $items) {
@@ -1101,21 +1112,21 @@ $ChkGamer.Add_Unchecked({
 # ============================================================================
 $BtnMarcarVisiveis.Add_Click({
     Invoke-Safe -Context 'marcar visíveis' -Action {
-        foreach ($id in $Script:CurrentRenderedIds) { $Script:SelectedIds.Add($id) | Out-Null }
+        foreach ($id in $CurrentRenderedIds) { $SelectedIds.Add($id) | Out-Null }
         Render-Tweaks -Category $CategoryList.SelectedItem -Filter $TxtSearch.Text
     }
 })
 $BtnDesmarcarVisiveis.Add_Click({
     Invoke-Safe -Context 'desmarcar visíveis' -Action {
-        foreach ($id in $Script:CurrentRenderedIds) { $Script:SelectedIds.Remove($id) | Out-Null }
+        foreach ($id in $CurrentRenderedIds) { $SelectedIds.Remove($id) | Out-Null }
         Render-Tweaks -Category $CategoryList.SelectedItem -Filter $TxtSearch.Text
     }
 })
 $BtnLimpar.Add_Click({
     Invoke-Safe -Context 'limpar seleção' -Action {
-        $Script:SelectedIds.Clear()
-        $keys = @($Script:LevelSelections.Keys)
-        foreach ($k in $keys) { $Script:LevelSelections[$k] = 0 }
+        $SelectedIds.Clear()
+        $keys = @($LevelSelections.Keys)
+        foreach ($k in $keys) { $LevelSelections[$k] = 0 }
         Render-Tweaks -Category $CategoryList.SelectedItem -Filter $TxtSearch.Text
     }
 })
@@ -1123,27 +1134,27 @@ $BtnLimpar.Add_Click({
 # ============================================================================
 # 10. PRESETS (sem navegação automática de aba)
 # ============================================================================
-$Script:WelcomeButtons = @{ 'Balanceado' = $BtnWelcomeBalanceado; 'Gamer' = $BtnWelcomeGamer; 'Extremo' = $BtnWelcomeExtremo }
-$Script:AccentBrush = $Window.FindResource('Accent')
-$Script:PanelAltBrush = $Window.FindResource('PanelAlt')
-$Script:TextMainBrush = $Window.FindResource('TextMain')
-$Script:DarkOnAccentBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString('#1A0F08')
+$WelcomeButtons = @{ 'Balanceado' = $BtnWelcomeBalanceado; 'Gamer' = $BtnWelcomeGamer; 'Extremo' = $BtnWelcomeExtremo }
+$AccentBrush = $Window.FindResource('Accent')
+$PanelAltBrush = $Window.FindResource('PanelAlt')
+$TextMainBrush = $Window.FindResource('TextMain')
+$DarkOnAccentBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString('#1A0F08')
 
 function Get-ActiveTweakCount {
-    $simple = $Script:SelectedIds.Count
-    $leveled = ($Script:LevelSelections.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
+    $simple = $SelectedIds.Count
+    $leveled = ($LevelSelections.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
     return $simple + $leveled
 }
 
 function Update-WelcomePresetVisual {
     param([string]$SelectedPreset)
-    foreach ($kv in $Script:WelcomeButtons.GetEnumerator()) {
+    foreach ($kv in $WelcomeButtons.GetEnumerator()) {
         if ($kv.Key -eq $SelectedPreset) {
-            $kv.Value.Background = $Script:AccentBrush
-            $kv.Value.Foreground = $Script:DarkOnAccentBrush
+            $kv.Value.Background = $AccentBrush
+            $kv.Value.Foreground = $DarkOnAccentBrush
         } else {
-            $kv.Value.Background = $Script:PanelAltBrush
-            $kv.Value.Foreground = $Script:TextMainBrush
+            $kv.Value.Background = $PanelAltBrush
+            $kv.Value.Foreground = $TextMainBrush
         }
     }
     $count = Get-ActiveTweakCount
@@ -1153,23 +1164,23 @@ function Update-WelcomePresetVisual {
 
 function Select-Preset {
     param([string]$PresetName)
-    $Script:SelectedIds.Clear()
-    $keys = @($Script:LevelSelections.Keys)
-    foreach ($k in $keys) { $Script:LevelSelections[$k] = 0 }
+    $SelectedIds.Clear()
+    $keys = @($LevelSelections.Keys)
+    foreach ($k in $keys) { $LevelSelections[$k] = 0 }
 
     foreach ($t in $AllTweaks) {
         if ($t.type -eq 'multilevel') {
             if ($t.presetLevels -and $t.presetLevels.PSObject.Properties.Name -contains $PresetName) {
-                $Script:LevelSelections[$t.id] = [int]$t.presetLevels.$PresetName
+                $LevelSelections[$t.id] = [int]$t.presetLevels.$PresetName
             }
         } elseif ($t.presets -contains $PresetName) {
-            $Script:SelectedIds.Add($t.id) | Out-Null
+            $SelectedIds.Add($t.id) | Out-Null
         }
     }
     if ($PresetName -eq 'Gamer') { $ChkGamer.IsChecked = $true }
     Render-Tweaks -Category $CategoryList.SelectedItem -Filter $TxtSearch.Text
     Update-WelcomePresetVisual -SelectedPreset $PresetName
-    Write-Log "Preset '$PresetName' selecionado ($($Script:SelectedIds.Count) tweaks + ajustes multinível)."
+    Write-Log "Preset '$PresetName' selecionado ($($SelectedIds.Count) tweaks + ajustes multinível)."
 }
 
 $BtnBalanceado.Add_Click({ Invoke-Safe -Context 'preset Balanceado' -Action { Select-Preset 'Balanceado' } })
@@ -1192,8 +1203,8 @@ $BtnWelcomeExtremo.Add_Click({
 # ============================================================================
 # 11. APLICAR / ROLLBACK
 # ============================================================================
-function Get-SelectedSimpleIds { return @($Script:SelectedIds) }
-function Get-SelectedLeveledIds { return @($Script:LevelSelections.GetEnumerator() | Where-Object { $_.Value -gt 0 } | Select-Object -ExpandProperty Key) }
+function Get-SelectedSimpleIds { return @($SelectedIds) }
+function Get-SelectedLeveledIds { return @($LevelSelections.GetEnumerator() | Where-Object { $_.Value -gt 0 } | Select-Object -ExpandProperty Key) }
 
 function Run-Batch {
     param([switch]$Undo)
@@ -1227,7 +1238,7 @@ function Run-Batch {
         $WelcomeProgBar.Value = $pct
         $tweak = $AllTweaks | Where-Object { $_.id -eq $id }
         $ok = Invoke-TweakEngine -Tweak $tweak -Undo:$Undo
-        if ($ok) { if ($Undo) { $Script:AppliedState.Remove($id) } else { $Script:AppliedState[$id] = (Get-Date -Format 'o') } }
+        if ($ok) { if ($Undo) { $AppliedState.Remove($id) } else { $AppliedState[$id] = (Get-Date -Format 'o') } }
         [System.Windows.Forms.Application]::DoEvents()
     }
     foreach ($id in $selectedLeveled) {
@@ -1236,10 +1247,10 @@ function Run-Batch {
         $ProgBar.Value = $pct
         $WelcomeProgBar.Value = $pct
         $tweak = $AllTweaks | Where-Object { $_.id -eq $id }
-        $lvl = $Script:LevelSelections[$id]
+        $lvl = $LevelSelections[$id]
         $ok = Invoke-TweakEngine -Tweak $tweak -Undo:$Undo -Level $lvl
-        if ($ok -and -not $Undo) { $Script:AppliedState[$id] = (Get-Date -Format 'o') }
-        if ($Undo) { $Script:LevelSelections[$id] = 0 }
+        if ($ok -and -not $Undo) { $AppliedState[$id] = (Get-Date -Format 'o') }
+        if ($Undo) { $LevelSelections[$id] = 0 }
         [System.Windows.Forms.Application]::DoEvents()
     }
 
@@ -1270,7 +1281,7 @@ $BtnWelcomeRestart.Add_Click({
     }
 })
 
-Write-Log "Win-Slim Suite iniciado. Windows $($Script:WinVersion) build $($Script:WinBuild). $($VisibleTweaks.Count) tweaks carregados."
+Write-Log "Win-Slim Suite iniciado. Windows $($WinVersion) build $($WinBuild). $($VisibleTweaks.Count) tweaks carregados."
 
 # ============================================================================
 # 12. EXIBIR JANELA
