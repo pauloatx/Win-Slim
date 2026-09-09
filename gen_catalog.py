@@ -728,13 +728,29 @@ add({
     "registry": [{"Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "Name": "EnableTransparency", "Value": 0, "Type": "DWord", "OriginalValue": 1}]
 })
 add({
-    "id": "UI-010", "name": "Ocultar Itens do Explorer (3D Objects, OneDrive residual)",
-    "description": "Remove atalhos de '3D Objects' e OneDrive residual do painel de navegação do Explorer quando não usados.",
+    "id": "UI-010", "name": "'Este Computador' - Mostrar Só Unidades (remover pastas)",
+    "description": "Remove os atalhos de pastas (Área de Trabalho, Documentos, Downloads, Imagens, Música, Vídeos, Objetos 3D) da tela 'Este Computador' no Explorador de Arquivos, deixando só os discos/unidades. Faz backup das chaves de registro antes de remover, para o Desfazer restaurar exatamente como estava.",
     "category": "UI / QoL", "risk": "Baixo", "windowsVersion": BOTH,
     "dependencies": [], "conflicts": [], "presets": ["Balanceado", "Gamer", "Extremo"],
-    "type": "registry", "source": "WD+MR",
-    "registry": [
-        {"Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}", "Name": "(Default)", "Value": "<Remove>", "Type": "String", "OriginalValue": "3D Objects"}
+    "type": "script", "source": "WD+MR (padrão comum a vários debloat scripts)",
+    "InvokeScript": [
+        "$clsids = @('{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}','{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}','{d3162b92-9365-467a-956b-92703aca08af}','{374DE290-123F-4565-9164-39C4925E467B}','{1CF1260C-4DD0-4ebb-811F-33C572699FDE}','{3ADD1653-EB32-4cb0-BBD7-DFA0ABB5ACCA}','{A0953C92-50DC-43bf-BE83-3742FED03C9C}')",
+        "$roots = @('HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace','HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace')",
+        "$backupDir = Join-Path $env:LOCALAPPDATA 'WinSlimSuite\\backup-thispc-folders'",
+        "New-Item -Path $backupDir -ItemType Directory -Force | Out-Null",
+        "foreach ($root in $roots) { foreach ($clsid in $clsids) {",
+        "  $fullKey = \"$root\\$clsid\"; $psPath = \"Registry::$fullKey\"",
+        "  if (Test-Path $psPath) {",
+        "    $safeName = ($root -replace '[\\\\:]','_') + '_' + $clsid.Trim('{','}')",
+        "    $backupFile = Join-Path $backupDir \"$safeName.reg\"",
+        "    reg export \"$fullKey\" \"$backupFile\" /y 2>$null | Out-Null",
+        "    Remove-Item -Path $psPath -Recurse -Force -ErrorAction SilentlyContinue",
+        "  }",
+        "} }"
+    ],
+    "UndoScript": [
+        "$backupDir = Join-Path $env:LOCALAPPDATA 'WinSlimSuite\\backup-thispc-folders'",
+        "if (Test-Path $backupDir) { Get-ChildItem -Path $backupDir -Filter *.reg -ErrorAction SilentlyContinue | ForEach-Object { reg import $_.FullName 2>$null | Out-Null } }"
     ]
 })
 
@@ -907,6 +923,14 @@ add({
     "dependencies": [], "conflicts": [], "presets": ALL_PRESETS, "runLast": True,
     "type": "script", "source": "WU+MR",
     "InvokeScript": ["Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Process explorer.exe"]
+})
+add({
+    "id": "EXT-005", "name": "Verificação de Segurança do Sistema (VirusTotal)",
+    "description": "Varre a unidade do sistema (pastas de todos os usuários, ProgramData, Program Files) e verifica no VirusTotal os arquivos mais suspeitos: itens configurados para iniciar com o Windows, arquivos em pastas de risco (Temp/Downloads) e modificados recentemente. A pasta Windows fica de fora de propósito (arquivos assinados pela Microsoft, praticamente nunca a origem de malware). A API gratuita do VirusTotal só permite poucas consultas por minuto, então a verificação é limitada aos arquivos mais suspeitos em vez de todos de uma vez — pode levar vários minutos; você confirma antes de começar.",
+    "category": "Extras / Manutenção", "risk": "Baixo", "windowsVersion": BOTH,
+    "dependencies": [], "conflicts": [], "presets": [],
+    "type": "script", "source": "Win-Slim Suite (novo)",
+    "InvokeScript": ["Invoke-SystemSecurityScan | Out-Null"]
 })
 
 # ---------------------------------------------------------------------------
