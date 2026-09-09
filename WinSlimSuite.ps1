@@ -1,4 +1,4 @@
-# Win-Slim Suite v2.2 - Otimizador e Debloat para Windows 10/11
+﻿# Win-Slim Suite v2.2 - Otimizador e Debloat para Windows 10/11
 #
 # Consolida WinUtil, Atlas-OS, Win-Debloat-Tools, MeetRevision Playbook e Win-Slim.
 # v2.2:
