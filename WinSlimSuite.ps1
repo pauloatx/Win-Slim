@@ -1,7 +1,7 @@
-# Win-Slim Suite v2.0 - Otimizador e Debloat para Windows 10/11
+# Win-Slim Suite v2.2 - Otimizador e Debloat para Windows 10/11
 #
 # Consolida WinUtil, Atlas-OS, Win-Debloat-Tools, MeetRevision Playbook e Win-Slim.
-# v2.0:
+# v2.2:
 #   - VirusTotal REMOVIDO (verificação externa e varredura do sistema).
 #     Substituido por confirmação manual para downloads externos.
 #   - Novo layout com 3 abas: Bem-vindo, Avançado e Manutenção.
@@ -10,6 +10,9 @@
 #   - Rollback por snapshot real mantido (captura estado anterior a cada aplicação).
 #   - Aba Manutenção: ações rápidas reutilizando o motor (ponto de restauração,
 #     limpeza, SFC/DISM, reiniciar Explorer), exportar/importar seleção.
+#   v2.2:
+#   - Anti-IA completo por padrao: novo IA-001 (policies Copilot/Recall/Cortana/Edge AI
+#     + hosts) e UI-005 (ViVeTool) entram nos 3 presets; presets so marcam tweaks do SO atual.
 #
 # Execute como Administrador. Compatível com Windows 10 e Windows 11.
 
@@ -20,6 +23,10 @@ if ($PSVersionTable.PSVersion.Major -lt 5) {
 
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms
+
+# TLS 1.2: o PS 5.1 negocia SSL3/TLS1.0 por padrao e servidores modernos (GitHub/CDN) recusam.
+# Sem isto, Invoke-WebRequest falha com 'nao pode se comunicar com o servidor remoto'.
+try { [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch { }
 
 # ============================================================================
 # 0. BOOTSTRAP / ELEVAÇÃO
@@ -100,11 +107,27 @@ function Invoke-Safe {
 #    Tweaks com mesmo ID: o arquivo carregado por último sobrescreve o anterior.
 # ============================================================================
 if ($IsRemoteRun) {
-    try {
-        Invoke-WebRequest -Uri "$($RepoRawBase)/catalog.json" -OutFile $CatalogPath -UseBasicParsing -TimeoutSec 20
-    } catch {
-        [System.Windows.MessageBox]::Show("Não foi possível baixar o catalog.json do GitHub:`n$($_.Exception.Message)`n`nVerifique sua conexão com a internet.", "Win-Slim Suite", 'OK', 'Error') | Out-Null
-        exit 1
+    $downloadError = $null
+    $downloaded = $false
+    for ($attempt = 1; $attempt -le 3; $attempt++) {
+        try {
+            Invoke-WebRequest -Uri "$($RepoRawBase)/catalog.json" -OutFile $CatalogPath -UseBasicParsing -TimeoutSec 25
+            $downloaded = $true
+            break
+        } catch {
+            $downloadError = $_.Exception.Message
+            Write-Log "Tentativa $attempt/3 de download do catalog.json falhou: $downloadError" 'WARN'
+            Start-Sleep -Seconds 2
+        }
+    }
+    if (-not $downloaded) {
+        if (Test-Path $CatalogPath) {
+            # Fallback: usa o catálogo em cache da execução anterior — funciona mesmo offline.
+            Write-Log "Sem comunicação com o servidor — usando catálogo em cache: $CatalogPath" 'WARN'
+        } else {
+            [System.Windows.MessageBox]::Show("Não foi possível baixar o catalog.json do GitHub após 3 tentativas:`n$downloadError`n`nSoluções:`n- Verifique sua conexão/proxy`n- Ou use o modo local: baixe WinSlimSuite.ps1 + catalog.json para a mesma pasta e execute o .ps1", "Win-Slim Suite", 'OK', 'Error') | Out-Null
+            exit 1
+        }
     }
 }
 
@@ -734,6 +757,11 @@ function Resolve-Conflicts {
                                     ToolTip="Reinicia o shell do Windows para aplicar mudanças de interface sem logoff (EXT-004)."/>
                             <Button x:Name="BtnMaintRestartPC" Content="⟳  Reiniciar computador" Style="{StaticResource MaintBtn}"
                                     ToolTip="Reinicia o sistema para garantir efeito completo dos tweaks."/>
+
+                            <ProgressBar x:Name="MaintProgBar" Height="12" Margin="0,16,0,6"
+                                         Background="{StaticResource PanelAlt}" Foreground="{StaticResource Accent}"/>
+                            <TextBlock x:Name="MaintStatusText" Foreground="{StaticResource TextDim}" FontSize="12"
+                                       Text="Nenhuma tarefa em execução."/>
                         </StackPanel>
                     </Border>
 
@@ -811,6 +839,8 @@ $BtnExportSelection = $Window.FindName('BtnExportSelection')
 $BtnImportSelection = $Window.FindName('BtnImportSelection')
 $BtnOpenDataFolder = $Window.FindName('BtnOpenDataFolder')
 $MaintLogBox = $Window.FindName('MaintLogBox')
+$MaintProgBar = $Window.FindName('MaintProgBar')
+$MaintStatusText = $Window.FindName('MaintStatusText')
 
 $controlMap = @{
     OsBadge=$OsBadge; ChkGamer=$ChkGamer; ChkRestorePoint=$ChkRestorePoint; MainTabs=$MainTabs
@@ -827,6 +857,7 @@ $controlMap = @{
     BtnMaintRestartExplorer=$BtnMaintRestartExplorer; BtnMaintRestartPC=$BtnMaintRestartPC
     BtnExportSelection=$BtnExportSelection; BtnImportSelection=$BtnImportSelection
     BtnOpenDataFolder=$BtnOpenDataFolder; MaintLogBox=$MaintLogBox
+    MaintProgBar=$MaintProgBar; MaintStatusText=$MaintStatusText
 }
 $missing = $controlMap.GetEnumerator() | Where-Object { -not $_.Value } | Select-Object -ExpandProperty Key
 if ($missing) {
@@ -1063,6 +1094,7 @@ function Select-Preset {
     foreach ($k in $keys) { $LevelSelections[$k] = 0 }
 
     foreach ($t in $AllTweaks) {
+        if ($t.windowsVersion -notcontains $WinVersion) { continue }
         if ($t.type -eq 'multilevel') {
             if ($t.presetLevels -and $t.presetLevels.PSObject.Properties.Name -contains $PresetName) {
                 $LevelSelections[$t.id] = [int]$t.presetLevels.$PresetName
@@ -1097,8 +1129,34 @@ $BtnWelcomeExtremo.Add_Click({
 # ============================================================================
 # 12. ABA MANUTENÇÃO - ações rápidas via motor de tweaks
 # ============================================================================
+$script:ActiveMaintButton = $null
+$script:MaintResetTimer = New-Object System.Windows.Threading.DispatcherTimer
+$script:MaintResetTimer.Interval = [TimeSpan]::FromSeconds(3.5)
+$script:MaintResetTimer.Add_Tick({
+    try {
+        if ($script:ActiveMaintButton) {
+            $script:ActiveMaintButton.ClearValue([System.Windows.Controls.Control]::BackgroundProperty)
+            $script:ActiveMaintButton.ClearValue([System.Windows.Controls.Control]::ForegroundProperty)
+            $script:ActiveMaintButton = $null
+        }
+        $MaintProgBar.IsIndeterminate = $false
+        $MaintProgBar.Value = 0
+        $MaintStatusText.Text = 'Nenhuma tarefa em execução.'
+    } catch { }
+    $script:MaintResetTimer.Stop()
+})
+
+function Set-MaintenanceButtonsEnabled {
+    param([bool]$Enabled)
+    $BtnMaintRestorePoint.IsEnabled = $Enabled
+    $BtnMaintCleanupTemp.IsEnabled = $Enabled
+    $BtnMaintCleanupWinSxS.IsEnabled = $Enabled
+    $BtnMaintSfcDism.IsEnabled = $Enabled
+    $BtnMaintRestartExplorer.IsEnabled = $Enabled
+}
+
 function Invoke-MaintenanceAction {
-    param([string]$TweakId, [string]$ContextLabel, [switch]$Confirm)
+    param([string]$TweakId, [string]$ContextLabel, [System.Windows.Controls.Button]$Button, [switch]$Confirm)
     if ($Confirm) {
         $r = [System.Windows.MessageBox]::Show("Confirmar: $ContextLabel?", "Win-Slim Suite - Manutenção", 'YesNo', 'Question')
         if ($r -ne 'Yes') { return }
@@ -1106,29 +1164,50 @@ function Invoke-MaintenanceAction {
     Invoke-Safe -Context $ContextLabel -Action {
         $tweak = $AllTweaks | Where-Object { $_.id -eq $TweakId }
         if (-not $tweak) {
-            [System.Windows.MessageBox]::Show("Tweak '$TweakId' não encontrado no catálogo.`nVerifique se catalog.json/catalog-additions.json estão na pasta.", "Win-Slim Suite", 'OK', 'Warning') | Out-Null
+            [System.Windows.MessageBox]::Show("Tweak '$TweakId' não encontrado no catálogo.`nVerifique se catalog.json está na pasta.", "Win-Slim Suite", 'OK', 'Warning') | Out-Null
             return
         }
-        $BtnMaintRestorePoint.IsEnabled = $false; $BtnMaintCleanupTemp.IsEnabled = $false
-        $BtnMaintCleanupWinSxS.IsEnabled = $false; $BtnMaintSfcDism.IsEnabled = $false
-        $BtnMaintRestartExplorer.IsEnabled = $false
-        Invoke-TweakEngine -Tweak $tweak | Out-Null
-        $BtnMaintRestorePoint.IsEnabled = $true; $BtnMaintCleanupTemp.IsEnabled = $true
-        $BtnMaintCleanupWinSxS.IsEnabled = $true; $BtnMaintSfcDism.IsEnabled = $true
-        $BtnMaintRestartExplorer.IsEnabled = $true
-        Save-Rollback
+        # Feedback visual: botão fica laranja (Accent) enquanto a tarefa executa
+        $script:ActiveMaintButton = $Button
+        $Button.Background = $AccentBrush
+        $Button.Foreground = $DarkOnAccentBrush
+        $MaintProgBar.IsIndeterminate = $true
+        $MaintProgBar.Value = 0
+        $MaintStatusText.Foreground = $AccentBrush
+        $MaintStatusText.Text = "Executando: $ContextLabel ..."
+        Set-MaintenanceButtonsEnabled -Enabled $false
+        try {
+            $ok = Invoke-TweakEngine -Tweak $tweak
+            Save-Rollback
+            $MaintProgBar.IsIndeterminate = $false
+            if ($ok) {
+                $MaintProgBar.Value = 100
+                $MaintStatusText.Text = "Concluído: $ContextLabel"
+            } else {
+                $MaintStatusText.Text = "Falhou: $ContextLabel - veja o log para detalhes."
+            }
+        } finally {
+            Set-MaintenanceButtonsEnabled -Enabled $true
+        }
+        # retorna a cor original do botão após 3,5s
+        $script:MaintResetTimer.Stop()
+        $script:MaintResetTimer.Start()
     }
 }
 
-$BtnMaintRestorePoint.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-001' -ContextLabel 'criar ponto de restauração' -Confirm })
-$BtnMaintCleanupTemp.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-002' -ContextLabel 'limpar arquivos temporários' -Confirm })
-$BtnMaintCleanupWinSxS.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXTRA-006' -ContextLabel 'limpeza do Component Store (WinSxS)' -Confirm })
-$BtnMaintSfcDism.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-003' -ContextLabel 'verificação de integridade (SFC/DISM)' -Confirm })
-$BtnMaintRestartExplorer.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-004' -ContextLabel 'reiniciar Explorer' })
+$BtnMaintRestorePoint.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-001' -ContextLabel 'criar ponto de restauração' -Button $BtnMaintRestorePoint -Confirm })
+$BtnMaintCleanupTemp.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-002' -ContextLabel 'limpar arquivos temporários' -Button $BtnMaintCleanupTemp -Confirm })
+$BtnMaintCleanupWinSxS.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXTRA-006' -ContextLabel 'limpeza do Component Store (WinSxS)' -Button $BtnMaintCleanupWinSxS -Confirm })
+$BtnMaintSfcDism.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-003' -ContextLabel 'verificação de integridade (SFC/DISM)' -Button $BtnMaintSfcDism -Confirm })
+$BtnMaintRestartExplorer.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-004' -ContextLabel 'reiniciar Explorer' -Button $BtnMaintRestartExplorer })
 $BtnMaintRestartPC.Add_Click({
     Invoke-Safe -Context 'reiniciar sistema' -Action {
+        $BtnMaintRestartPC.Background = $AccentBrush
+        $BtnMaintRestartPC.Foreground = $DarkOnAccentBrush
         $r = [System.Windows.MessageBox]::Show("Isto vai reiniciar o computador agora. Salve qualquer trabalho pendente antes de continuar.`n`nDeseja reiniciar agora?", "Win-Slim Suite - Reiniciar", 'YesNo', 'Warning')
         if ($r -eq 'Yes') { Write-Log "Reinício solicitado pelo usuário." 'INFO'; Restart-Computer -Force }
+        $BtnMaintRestartPC.ClearValue([System.Windows.Controls.Control]::BackgroundProperty)
+        $BtnMaintRestartPC.ClearValue([System.Windows.Controls.Control]::ForegroundProperty)
     }
 })
 
@@ -1250,7 +1329,7 @@ $BtnWelcomeRestart.Add_Click({
     }
 })
 
-Write-Log "Win-Slim Suite v2.0 iniciado. Windows $($WinVersion) build $($WinBuild). $($VisibleTweaks.Count) tweaks carregados."
+Write-Log "Win-Slim Suite v2.2 iniciado. Windows $($WinVersion) build $($WinBuild). $($VisibleTweaks.Count) tweaks carregados."
 
 # ============================================================================
 # 14. EXIBIR JANELA

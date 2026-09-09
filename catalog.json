@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.2",
-  "generatedBy": "Win-Slim Suite Builder - merged v2.0 (catálogo original + additions; EXT-005/VirusTotal removido)",
+  "generatedBy": "Win-Slim Suite Builder - merged v2.2 (anti-IA completo por padrao: IA-001 + UI-005 em todos os presets)",
   "sources": {
     "WU": "ChrisTitusTech/winutil",
     "AT": "Atlas-OS/Atlas",
@@ -13,7 +13,7 @@
     "Gamer",
     "Extremo"
   ],
-  "count": 168,
+  "count": 169,
   "tweaks": [
     {
       "id": "PRIV-001",
@@ -508,6 +508,101 @@
           "Type": "DWord",
           "OriginalValue": "<Remove>"
         }
+      ]
+    },
+    {
+      "id": "IA-001",
+      "name": "IA do Windows (Copilot, Recall, Cortana, Edge AI) - Desativar completamente",
+      "description": "Desativa TODA a camada de IA do Windows via políticas oficiais e reversíveis: Copilot (app, painel e integrações), Recall/análise de dados de IA (Win11 24H2+), Cortana (Win10), barra lateral Bing/Copilot do Edge e telemetria de IA. Não remove apps — só desliga os recursos. Bloqueio de rede em copilot.microsoft.com incluso. Complementar ao UI-005 (desativação profunda via ViVeTool).",
+      "category": "Privacidade",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "type": "composite",
+      "source": "WU+AT+MR+WS",
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+          "Name": "TurnOffWindowsCopilot",
+          "Value": 1,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+          "Name": "TurnOffWindowsCopilot",
+          "Value": 1,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+          "Name": "DisableAIDataAnalysis",
+          "Value": 1,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI",
+          "Name": "DisableAIDataAnalysis",
+          "Value": 1,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Cortana",
+          "Name": "AllowCortana",
+          "Value": 0,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+          "Name": "AllowCortana",
+          "Value": 0,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+          "Name": "AllowCloudSearch",
+          "Value": 0,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "HubsSidebarEnabled",
+          "Value": 0,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "CopilotPageContext",
+          "Value": 0,
+          "Type": "DWord",
+          "OriginalValue": "<Remove>"
+        },
+        {
+          "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "Name": "ShowCopilotButton",
+          "Value": 0,
+          "Type": "DWord",
+          "OriginalValue": 1
+        }
+      ],
+      "hosts": [
+        "copilot.microsoft.com"
       ]
     },
     {
@@ -2463,18 +2558,20 @@
     },
     {
       "id": "UI-005",
-      "name": "Copilot - Desativar via ViVeTool (avancado)",
-      "description": "Desativa a feature do Copilot inteiramente via ViVeTool (baixado do GitHub oficial). Sem backup: o comando pode precisar ser refeito após updates. Requer confirmação manual do download.",
+      "name": "Copilot - Desativar por completo via ViVeTool",
+      "description": "Mata a feature do Copilot inteiramente via ViVeTool (IDs 44774629/44776738), a camada que as policies do IA-001 nao alcancam. AGORA FAZ PARTE DO PADRAO anti-IA de todos os presets. Baixado do GitHub oficial com confirmacao manual. Sem backup: pode precisar reaplicar apos updates de feature do Windows.",
       "category": "UI / QoL",
-      "risk": "Alto",
+      "risk": "Medio",
       "windowsVersion": [
         "11"
       ],
       "dependencies": [],
-      "conflicts": [
-        "UI-011"
+      "conflicts": [],
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
       ],
-      "presets": [],
       "type": "script",
       "source": "AT+MR",
       "InvokeScript": [
