@@ -1253,12 +1253,13 @@
       "type": "script",
       "source": "WU",
       "InvokeScript": [
-        "icacls $Env:OneDrive /deny \"Administrators:(D,DC)\" 2>$null",
+        "$oneDrivePath = if ($Env:OneDrive) { $Env:OneDrive } else { Join-Path $Env:UserProfile 'OneDrive' }",
+        "if (Test-Path $oneDrivePath) { icacls $oneDrivePath /deny \"Administrators:(D,DC)\" 2>$null | Out-Null }",
         "Start-Process \"$Env:SystemRoot\\System32\\OneDriveSetup.exe\" -ArgumentList '/uninstall' -Wait -ErrorAction SilentlyContinue",
         "Stop-Process -Name FileCoAuth,Explorer -ErrorAction SilentlyContinue",
         "Remove-Item \"$Env:LocalAppData\\Microsoft\\OneDrive\" -Recurse -Force -ErrorAction SilentlyContinue",
         "Remove-Item \"$Env:ProgramData\\Microsoft OneDrive\" -Recurse -Force -ErrorAction SilentlyContinue",
-        "icacls $Env:OneDrive /grant \"Administrators:(D,DC)\" 2>$null"
+        "if (Test-Path $oneDrivePath) { icacls $oneDrivePath /grant \"Administrators:(D,DC)\" 2>$null | Out-Null }"
       ],
       "UndoScript": [
         "winget install Microsoft.OneDrive --source winget --accept-package-agreements --accept-source-agreements"
@@ -1726,7 +1727,7 @@
       "type": "script",
       "source": "MR+WD (conflito resolvido)",
       "InvokeScript": [
-        "$isSSD = (Get-PhysicalDisk | Where-Object {$_.MediaType -eq 'SSD'}).Count -gt 0",
+        "$isSSD = $false; try { $isSSD = @(Get-PhysicalDisk -ErrorAction Stop | Where-Object { $_.MediaType -eq 'SSD' }).Count -gt 0 } catch { $isSSD = $false }",
         "if ($isSSD) { Set-Service -Name SysMain -StartupType AutomaticDelayedStart } else { Set-Service -Name SysMain -StartupType Automatic }",
         "Start-Service -Name SysMain -ErrorAction SilentlyContinue"
       ],
@@ -2016,7 +2017,7 @@
           "name": "Ultimate Performance (agressivo)",
           "description": "Plano oculto da Microsoft: desativa quase toda a economia de energia da CPU. Máximo desempenho, ideal para desktops gamers ligados na tomada. Não recomendado para notebooks na bateria.",
           "InvokeScript": [
-            "powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 | Out-Null; $g = (powercfg -list | Select-String 'Ultimate').ToString().Split()[3]; powercfg -setactive $g"
+            "$dup = powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61; $match = [regex]::Match(($dup -join ' '), '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'); if ($match.Success) { powercfg -setactive $match.Value } else { throw 'Nao foi possivel obter o GUID do plano Ultimate Performance.' }"
           ]
         }
       ]
@@ -2200,7 +2201,7 @@
       "type": "script",
       "source": "MR",
       "InvokeScript": [
-        "$isSSD = (Get-PhysicalDisk | Where-Object {$_.MediaType -eq 'SSD'}).Count -gt 0",
+        "$isSSD = $false; try { $isSSD = @(Get-PhysicalDisk -ErrorAction Stop | Where-Object { $_.MediaType -eq 'SSD' }).Count -gt 0 } catch { $isSSD = $false }",
         "$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters'",
         "if ($isSSD) { Set-ItemProperty -Path $path -Name EnablePrefetcher -Value 0 -Type DWord } else { Set-ItemProperty -Path $path -Name EnablePrefetcher -Value 3 -Type DWord }"
       ],
@@ -3721,7 +3722,7 @@
       "source": "WU+WD",
       "registry": [
         {
-          "Path": "HKU:\\.DEFAULT\\Control Panel\\Keyboard",
+          "Path": "Registry::HKEY_USERS\\.DEFAULT\\Control Panel\\Keyboard",
           "Name": "InitialKeyboardIndicators",
           "Value": "2147483650",
           "Type": "String",

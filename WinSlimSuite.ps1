@@ -1233,7 +1233,13 @@ function Run-Batch {
 
     $ordered = Resolve-Conflicts -SelectedIds $selectedSimple
 
-    if (-not $Undo -and $ChkRestorePoint.IsChecked) {
+    $restorePointHandledSeparately = (-not $Undo -and $ChkRestorePoint.IsChecked)
+    if ($restorePointHandledSeparately) {
+        # EXT-001 já vai ser executado pela etapa especial logo abaixo — remove
+        # daqui para não rodar duas vezes na mesma aplicação. Se a checkbox global
+        # estiver desmarcada, EXT-001 continua na lista normal (só roda se o
+        # usuário tiver marcado ele manualmente na aba Avançado).
+        $ordered = @($ordered | Where-Object { $_ -ne 'EXT-001' })
         $rp = $AllTweaks | Where-Object { $_.id -eq 'EXT-001' }
         if ($rp) { Invoke-TweakEngine -Tweak $rp | Out-Null }
     }
