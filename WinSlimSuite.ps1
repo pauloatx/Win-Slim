@@ -473,6 +473,14 @@ function Resolve-Conflicts {
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
         <Style TargetType="CheckBox"><Setter Property="Foreground" Value="{StaticResource TextMain}"/></Style>
+        <Style TargetType="CheckBox" x:Key="MaintChk">
+            <Setter Property="Foreground" Value="{StaticResource TextMain}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,0,0,0"/>
+            <Setter Property="Margin" Value="2,0,0,14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="{StaticResource PanelAlt}"/>
             <Setter Property="Foreground" Value="{StaticResource TextMain}"/>
@@ -741,22 +749,29 @@ function Resolve-Conflicts {
                         <StackPanel>
                             <TextBlock Text="Ações rápidas" FontSize="18" FontWeight="Bold" Foreground="{StaticResource TextMain}" Margin="0,0,0,4"/>
                             <TextBlock Foreground="{StaticResource TextDim}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,18">
-                                Execute tarefas de cuidado do sistema diretamente. Cada ação usa o mesmo motor de aplicação
-                                com rollback quando aplicável.
+                                Marque as ações desejadas e clique em "Aplicar selecionadas" para executá-las em sequência.
+                                Cada ação usa o mesmo motor de aplicação com rollback quando aplicável.
                             </TextBlock>
 
-                            <Button x:Name="BtnMaintRestorePoint" Content="💾  Criar ponto de restauração agora" Style="{StaticResource MaintBtn}"
+                            <CheckBox x:Name="ChkMaintRestorePoint" Content="💾  Criar ponto de restauração agora" Style="{StaticResource MaintChk}"
                                     ToolTip="Cria um checkpoint do sistema imediatamente (EXT-001)."/>
-                            <Button x:Name="BtnMaintCleanupTemp" Content="🧹  Limpar arquivos temporários" Style="{StaticResource MaintBtn}"
+                            <CheckBox x:Name="ChkMaintCleanupTemp" Content="🧹  Limpar arquivos temporários" Style="{StaticResource MaintChk}"
                                     ToolTip="Remove temporários do usuário/sistema e cache do Windows Update (EXT-002)."/>
-                            <Button x:Name="BtnMaintCleanupWinSxS" Content="📦  Limpeza do Component Store (WinSxS)" Style="{StaticResource MaintBtn}"
+                            <CheckBox x:Name="ChkMaintCleanupWinSxS" Content="📦  Limpeza do Component Store (WinSxS)" Style="{StaticResource MaintChk}"
                                     ToolTip="DISM /StartComponentCleanup - libera espaço ocupado por componentes antigos do Windows (EXTRA-006). Pode demorar."/>
-                            <Button x:Name="BtnMaintSfcDism" Content="🔍  Verificação de integridade (SFC / DISM)" Style="{StaticResource MaintBtn}"
+                            <CheckBox x:Name="ChkMaintSfcDism" Content="🔍  Verificação de integridade (SFC / DISM)" Style="{StaticResource MaintChk}"
                                     ToolTip="Repara arquivos de sistema corrompidos (EXT-003). Pode demorar bastante."/>
-                            <Button x:Name="BtnMaintRestartExplorer" Content="🖥  Reiniciar Explorer" Style="{StaticResource MaintBtn}"
+                            <CheckBox x:Name="ChkMaintRestartExplorer" Content="🖥  Reiniciar Explorer" Style="{StaticResource MaintChk}"
                                     ToolTip="Reinicia o shell do Windows para aplicar mudanças de interface sem logoff (EXT-004)."/>
+
+                            <Button x:Name="BtnMaintApply" Content="▶  Aplicar selecionadas" Style="{StaticResource ActionBtn}"
+                                    Margin="0,4,0,4" HorizontalAlignment="Stretch"
+                                    ToolTip="Executa somente as ações marcadas acima, na ordem em que aparecem."/>
+
+                            <Separator Margin="0,14,0,14" Background="#22252E"/>
+
                             <Button x:Name="BtnMaintRestartPC" Content="⟳  Reiniciar computador" Style="{StaticResource MaintBtn}"
-                                    ToolTip="Reinicia o sistema para garantir efeito completo dos tweaks."/>
+                                    ToolTip="Reinicia o sistema para garantir efeito completo dos tweaks. Fica de fora do lote acima de propósito, pois interrompe qualquer ação em andamento."/>
 
                             <ProgressBar x:Name="MaintProgBar" Height="12" Margin="0,16,0,6"
                                          Background="{StaticResource PanelAlt}" Foreground="{StaticResource Accent}"/>
@@ -829,11 +844,12 @@ $WelcomeCompletionText = $Window.FindName('WelcomeCompletionText')
 $BtnWelcomeApply = $Window.FindName('BtnWelcomeApply')
 $BtnWelcomeUndo = $Window.FindName('BtnWelcomeUndo')
 $BtnWelcomeRestart = $Window.FindName('BtnWelcomeRestart')
-$BtnMaintRestorePoint = $Window.FindName('BtnMaintRestorePoint')
-$BtnMaintCleanupTemp = $Window.FindName('BtnMaintCleanupTemp')
-$BtnMaintCleanupWinSxS = $Window.FindName('BtnMaintCleanupWinSxS')
-$BtnMaintSfcDism = $Window.FindName('BtnMaintSfcDism')
-$BtnMaintRestartExplorer = $Window.FindName('BtnMaintRestartExplorer')
+$ChkMaintRestorePoint = $Window.FindName('ChkMaintRestorePoint')
+$ChkMaintCleanupTemp = $Window.FindName('ChkMaintCleanupTemp')
+$ChkMaintCleanupWinSxS = $Window.FindName('ChkMaintCleanupWinSxS')
+$ChkMaintSfcDism = $Window.FindName('ChkMaintSfcDism')
+$ChkMaintRestartExplorer = $Window.FindName('ChkMaintRestartExplorer')
+$BtnMaintApply = $Window.FindName('BtnMaintApply')
 $BtnMaintRestartPC = $Window.FindName('BtnMaintRestartPC')
 $BtnExportSelection = $Window.FindName('BtnExportSelection')
 $BtnImportSelection = $Window.FindName('BtnImportSelection')
@@ -852,9 +868,9 @@ $controlMap = @{
     WelcomeStatusBorder=$WelcomeStatusBorder; WelcomeStatusText=$WelcomeStatusText
     WelcomeProgBar=$WelcomeProgBar; WelcomeCompletionText=$WelcomeCompletionText
     BtnWelcomeApply=$BtnWelcomeApply; BtnWelcomeUndo=$BtnWelcomeUndo; BtnWelcomeRestart=$BtnWelcomeRestart
-    BtnMaintRestorePoint=$BtnMaintRestorePoint; BtnMaintCleanupTemp=$BtnMaintCleanupTemp
-    BtnMaintCleanupWinSxS=$BtnMaintCleanupWinSxS; BtnMaintSfcDism=$BtnMaintSfcDism
-    BtnMaintRestartExplorer=$BtnMaintRestartExplorer; BtnMaintRestartPC=$BtnMaintRestartPC
+    ChkMaintRestorePoint=$ChkMaintRestorePoint; ChkMaintCleanupTemp=$ChkMaintCleanupTemp
+    ChkMaintCleanupWinSxS=$ChkMaintCleanupWinSxS; ChkMaintSfcDism=$ChkMaintSfcDism
+    ChkMaintRestartExplorer=$ChkMaintRestartExplorer; BtnMaintApply=$BtnMaintApply; BtnMaintRestartPC=$BtnMaintRestartPC
     BtnExportSelection=$BtnExportSelection; BtnImportSelection=$BtnImportSelection
     BtnOpenDataFolder=$BtnOpenDataFolder; MaintLogBox=$MaintLogBox
     MaintProgBar=$MaintProgBar; MaintStatusText=$MaintStatusText
@@ -1063,6 +1079,7 @@ $WelcomeButtons = @{ 'Balanceado' = $BtnWelcomeBalanceado; 'Gamer' = $BtnWelcome
 $AccentBrush = $Window.FindResource('Accent')
 $PanelAltBrush = $Window.FindResource('PanelAlt')
 $TextMainBrush = $Window.FindResource('TextMain')
+$TextDimBrush = $Window.FindResource('TextDim')
 $DarkOnAccentBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromString('#1A0F08')
 
 function Get-ActiveTweakCount {
@@ -1129,77 +1146,101 @@ $BtnWelcomeExtremo.Add_Click({
 # ============================================================================
 # 12. ABA MANUTENÇÃO - ações rápidas via motor de tweaks
 # ============================================================================
-$script:ActiveMaintButton = $null
 $script:MaintResetTimer = New-Object System.Windows.Threading.DispatcherTimer
-$script:MaintResetTimer.Interval = [TimeSpan]::FromSeconds(3.5)
+$script:MaintResetTimer.Interval = [TimeSpan]::FromSeconds(5)
 $script:MaintResetTimer.Add_Tick({
     try {
-        if ($script:ActiveMaintButton) {
-            $script:ActiveMaintButton.ClearValue([System.Windows.Controls.Control]::BackgroundProperty)
-            $script:ActiveMaintButton.ClearValue([System.Windows.Controls.Control]::ForegroundProperty)
-            $script:ActiveMaintButton = $null
-        }
         $MaintProgBar.IsIndeterminate = $false
         $MaintProgBar.Value = 0
+        $MaintStatusText.Foreground = $TextDimBrush
         $MaintStatusText.Text = 'Nenhuma tarefa em execução.'
     } catch { }
     $script:MaintResetTimer.Stop()
 })
 
-function Set-MaintenanceButtonsEnabled {
+# Ações disponíveis na aba Manutenção: cada uma liga um checkbox a um tweak do catálogo.
+# O usuário marca quantas quiser e só executa ao clicar em "Aplicar selecionadas".
+$script:MaintActions = @(
+    [pscustomobject]@{ Chk = $ChkMaintRestorePoint;    TweakId = 'EXT-001';   Label = 'criar ponto de restauração' }
+    [pscustomobject]@{ Chk = $ChkMaintCleanupTemp;     TweakId = 'EXT-002';   Label = 'limpar arquivos temporários' }
+    [pscustomobject]@{ Chk = $ChkMaintCleanupWinSxS;   TweakId = 'EXTRA-006'; Label = 'limpeza do Component Store (WinSxS)' }
+    [pscustomobject]@{ Chk = $ChkMaintSfcDism;         TweakId = 'EXT-003';   Label = 'verificação de integridade (SFC/DISM)' }
+    [pscustomobject]@{ Chk = $ChkMaintRestartExplorer; TweakId = 'EXT-004';   Label = 'reiniciar Explorer' }
+)
+
+function Set-MaintenanceControlsEnabled {
     param([bool]$Enabled)
-    $BtnMaintRestorePoint.IsEnabled = $Enabled
-    $BtnMaintCleanupTemp.IsEnabled = $Enabled
-    $BtnMaintCleanupWinSxS.IsEnabled = $Enabled
-    $BtnMaintSfcDism.IsEnabled = $Enabled
-    $BtnMaintRestartExplorer.IsEnabled = $Enabled
+    foreach ($item in $script:MaintActions) { $item.Chk.IsEnabled = $Enabled }
+    $BtnMaintApply.IsEnabled = $Enabled
 }
 
-function Invoke-MaintenanceAction {
-    param([string]$TweakId, [string]$ContextLabel, [System.Windows.Controls.Button]$Button, [switch]$Confirm)
-    if ($Confirm) {
-        $r = [System.Windows.MessageBox]::Show("Confirmar: $ContextLabel?", "Win-Slim Suite - Manutenção", 'YesNo', 'Question')
+function Invoke-MaintenanceBatch {
+    $selected = @($script:MaintActions | Where-Object { $_.Chk.IsChecked -eq $true })
+    if ($selected.Count -eq 0) {
+        [System.Windows.MessageBox]::Show("Marque ao menos uma ação antes de clicar em Aplicar.", "Win-Slim Suite - Manutenção", 'OK', 'Information') | Out-Null
+        return
+    }
+
+    $resolved = foreach ($item in $selected) {
+        [pscustomobject]@{ Item = $item; Tweak = ($AllTweaks | Where-Object { $_.id -eq $item.TweakId }) }
+    }
+
+    # A janela de confirmação só aparece quando alguma ação marcada é de risco Alto.
+    $highRiskLabels = @($resolved | Where-Object { $_.Tweak -and $_.Tweak.risk -eq 'Alto' } | ForEach-Object { $_.Item.Label })
+    if ($highRiskLabels.Count -gt 0) {
+        $msg = "As ações a seguir são classificadas como risco ALTO:`n`n- $($highRiskLabels -join "`n- ")`n`nDeseja continuar mesmo assim?"
+        $r = [System.Windows.MessageBox]::Show($msg, "Win-Slim Suite - Confirmação de Risco Alto", 'YesNo', 'Warning')
         if ($r -ne 'Yes') { return }
     }
-    Invoke-Safe -Context $ContextLabel -Action {
-        $tweak = $AllTweaks | Where-Object { $_.id -eq $TweakId }
-        if (-not $tweak) {
-            [System.Windows.MessageBox]::Show("Tweak '$TweakId' não encontrado no catálogo.`nVerifique se catalog.json está na pasta.", "Win-Slim Suite", 'OK', 'Warning') | Out-Null
-            return
-        }
-        # Feedback visual: botão fica laranja (Accent) enquanto a tarefa executa
-        $script:ActiveMaintButton = $Button
-        $Button.Background = $AccentBrush
-        $Button.Foreground = $DarkOnAccentBrush
-        $MaintProgBar.IsIndeterminate = $true
-        $MaintProgBar.Value = 0
-        $MaintStatusText.Foreground = $AccentBrush
-        $MaintStatusText.Text = "Executando: $ContextLabel ..."
-        Set-MaintenanceButtonsEnabled -Enabled $false
-        try {
-            $ok = Invoke-TweakEngine -Tweak $tweak
-            Save-Rollback
+
+    Invoke-Safe -Context 'aplicar ações de manutenção selecionadas' -Action {
+        Set-MaintenanceControlsEnabled -Enabled $false
+        $script:MaintResetTimer.Stop()
+        $total = $resolved.Count
+        $i = 0
+        $failed = @()
+        foreach ($entry in $resolved) {
+            $i++
+            $item = $entry.Item
+            $tweak = $entry.Tweak
             $MaintProgBar.IsIndeterminate = $false
-            if ($ok) {
-                $MaintProgBar.Value = 100
-                $MaintStatusText.Text = "Concluído: $ContextLabel"
-            } else {
-                $MaintStatusText.Text = "Falhou: $ContextLabel - veja o log para detalhes."
+            $MaintProgBar.Value = [double]($i - 1) / $total * 100
+            $MaintStatusText.Foreground = $AccentBrush
+            $MaintStatusText.Text = "Executando ($i/$total): $($item.Label) ..."
+            [System.Windows.Forms.Application]::DoEvents()
+            if (-not $tweak) {
+                Write-Log "Tweak '$($item.TweakId)' não encontrado no catálogo (ação: $($item.Label))." 'WARN'
+                $failed += $item.Label
+                continue
             }
-        } finally {
-            Set-MaintenanceButtonsEnabled -Enabled $true
+            try {
+                $ok = Invoke-TweakEngine -Tweak $tweak
+                if (-not $ok) { $failed += $item.Label }
+            } catch {
+                Write-Log "Erro em '$($item.Label)': $($_.Exception.Message)" 'ERROR'
+                $failed += $item.Label
+            }
+            $MaintProgBar.Value = [double]$i / $total * 100
+            [System.Windows.Forms.Application]::DoEvents()
         }
-        # retorna a cor original do botão após 3,5s
+        Save-Rollback
+        Set-MaintenanceControlsEnabled -Enabled $true
+        foreach ($item in $selected) { $item.Chk.IsChecked = $false }
+
+        if ($failed.Count -eq 0) {
+            $MaintStatusText.Foreground = $TextMainBrush
+            $MaintStatusText.Text = "Concluído: $total ação(ões) aplicada(s) com sucesso."
+        } else {
+            $MaintStatusText.Foreground = $AccentBrush
+            $MaintStatusText.Text = "Concluído com falha em: $($failed -join ', '). Veja o log."
+        }
         $script:MaintResetTimer.Stop()
         $script:MaintResetTimer.Start()
     }
 }
 
-$BtnMaintRestorePoint.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-001' -ContextLabel 'criar ponto de restauração' -Button $BtnMaintRestorePoint -Confirm })
-$BtnMaintCleanupTemp.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-002' -ContextLabel 'limpar arquivos temporários' -Button $BtnMaintCleanupTemp -Confirm })
-$BtnMaintCleanupWinSxS.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXTRA-006' -ContextLabel 'limpeza do Component Store (WinSxS)' -Button $BtnMaintCleanupWinSxS -Confirm })
-$BtnMaintSfcDism.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-003' -ContextLabel 'verificação de integridade (SFC/DISM)' -Button $BtnMaintSfcDism -Confirm })
-$BtnMaintRestartExplorer.Add_Click({ Invoke-MaintenanceAction -TweakId 'EXT-004' -ContextLabel 'reiniciar Explorer' -Button $BtnMaintRestartExplorer })
+$BtnMaintApply.Add_Click({ Invoke-MaintenanceBatch })
+
 $BtnMaintRestartPC.Add_Click({
     Invoke-Safe -Context 'reiniciar sistema' -Action {
         $BtnMaintRestartPC.Background = $AccentBrush
