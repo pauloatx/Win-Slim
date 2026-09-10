@@ -950,7 +950,7 @@ function Update-SelectionCount {
     param($SelectedIdsRef, $LevelSelectionsRef, $CountControl)
     if (-not $SelectedIdsRef -or -not $LevelSelectionsRef -or -not $CountControl) { return }
     $simpleCount = $SelectedIdsRef.Count
-    $levelCount = ($LevelSelectionsRef.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
+    $levelCount = @($LevelSelectionsRef.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
     $CountControl.Text = "$simpleCount tweaks marcados + $levelCount ajustes multinível ativos"
 }
 
@@ -1138,7 +1138,7 @@ $DarkOnAccentBrush = [System.Windows.Media.BrushConverter]::new().ConvertFromStr
 
 function Get-ActiveTweakCount {
     $simple = $SelectedIds.Count
-    $leveled = ($LevelSelections.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
+    $leveled = @($LevelSelections.GetEnumerator() | Where-Object { $_.Value -gt 0 }).Count
     return $simple + $leveled
 }
 
@@ -1235,9 +1235,9 @@ function Invoke-MaintenanceBatch {
         return
     }
 
-    $resolved = foreach ($item in $selected) {
+    $resolved = @(foreach ($item in $selected) {
         [pscustomobject]@{ Item = $item; Tweak = ($AllTweaks | Where-Object { $_.id -eq $item.TweakId }) }
-    }
+    })
 
     # A janela de confirmação só aparece quando alguma ação marcada é de risco Alto.
     $highRiskLabels = @($resolved | Where-Object { $_.Tweak -and $_.Tweak.risk -eq 'Alto' } | ForEach-Object { $_.Item.Label })
@@ -1250,7 +1250,7 @@ function Invoke-MaintenanceBatch {
     Invoke-Safe -Context 'aplicar ações de manutenção selecionadas' -Action {
         Set-MaintenanceControlsEnabled -Enabled $false
         $script:MaintResetTimer.Stop()
-        $total = $resolved.Count
+        $total = [Math]::Max($resolved.Count, 1)
         $i = 0
         $failed = @()
         foreach ($entry in $resolved) {
