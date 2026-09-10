@@ -6,14 +6,15 @@
     "AT": "Atlas-OS/Atlas",
     "WD": "LeDragoX/Win-Debloat-Tools",
     "MR": "meetrevision/playbook",
-    "WS": "pauloatx/Win-Slim"
+    "WS": "pauloatx/Win-Slim",
+    "GD": "GSDragoon/RadeonSoftwarePostInstallDebloat"
   },
   "presets": [
     "Balanceado",
     "Gamer",
     "Extremo"
   ],
-  "count": 169,
+  "count": 171,
   "tweaks": [
     {
       "id": "PRIV-001",
@@ -4892,6 +4893,73 @@
       "source": "WU+WD",
       "InvokeScript": [
         "DISM /Online /Cleanup-Image /StartComponentCleanup"
+      ]
+    },
+    {
+      "id": "PRIV-015",
+      "name": "Telemetria AMD - Desativar",
+      "description": "Para e desativa o serviço AMD User Experience Program Launcher (AUEPLauncher) e as tarefas agendadas relacionadas (AMDInstallLauncher, AMDLinkUpdate, ModifyLinkUpdate). NÃO mexe no serviço 'AMD External Events Utility', necessário para troca de GPU em notebooks híbridos (Optimus/PowerXpress) e alguns recursos do Radeon Software. Sem efeito em sistemas sem driver AMD instalado. Fonte: GSDragoon/RadeonSoftwarePostInstallDebloat.",
+      "category": "Privacidade",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "type": "script",
+      "source": "GD",
+      "InvokeScript": [
+        "Stop-Service -Name 'AUEPLauncher' -ErrorAction SilentlyContinue",
+        "Set-Service -Name 'AUEPLauncher' -StartupType Disabled -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'AMDInstallLauncher' -ErrorAction SilentlyContinue | Disable-ScheduledTask -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'AMDLinkUpdate' -ErrorAction SilentlyContinue | Disable-ScheduledTask -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'ModifyLinkUpdate' -ErrorAction SilentlyContinue | Disable-ScheduledTask -ErrorAction SilentlyContinue"
+      ],
+      "UndoScript": [
+        "Set-Service -Name 'AUEPLauncher' -StartupType Manual -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'AMDInstallLauncher' -ErrorAction SilentlyContinue | Enable-ScheduledTask -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'AMDLinkUpdate' -ErrorAction SilentlyContinue | Enable-ScheduledTask -ErrorAction SilentlyContinue",
+        "Get-ScheduledTask -TaskName 'ModifyLinkUpdate' -ErrorAction SilentlyContinue | Enable-ScheduledTask -ErrorAction SilentlyContinue"
+      ]
+    },
+    {
+      "id": "PERF-018",
+      "name": "MSI Mode (Interrupções Sinalizadas por Mensagem) para GPU - Ativar",
+      "description": "Ativa o Message-Signaled Interrupts (MSI) na(s) placa(s) de vídeo detectada(s) (NVIDIA, AMD ou Intel), substituindo o modo de interrupção legado por linha. Pode reduzir microgaguejos (stutters) e latência de input em alguns sistemas. Efeito depende do suporte da placa/chipset; em hardware sem suporte a chave é ignorada pelo driver. Requer reinício. Fonte: técnica consolidada da comunidade de tuning de GPU (Win-Slim).",
+      "category": "Performance",
+      "risk": "Medio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "type": "script",
+      "source": "WS",
+      "InvokeScript": [
+        "$displayAdapters = Get-PnpDevice -Class Display -Status OK -ErrorAction SilentlyContinue",
+        "foreach ($dev in $displayAdapters) {",
+        "    $instPath = \"HKLM:\\SYSTEM\\CurrentControlSet\\Enum\\$($dev.InstanceId)\\Device Parameters\\Interrupt Management\\MessageSignaledInterruptProperties\"",
+        "    if (-not (Test-Path $instPath)) { New-Item -Path $instPath -Force -ErrorAction SilentlyContinue | Out-Null }",
+        "    New-ItemProperty -Path $instPath -Name 'MSISupported' -PropertyType DWord -Value 1 -Force -ErrorAction SilentlyContinue | Out-Null",
+        "}"
+      ],
+      "UndoScript": [
+        "$displayAdapters = Get-PnpDevice -Class Display -Status OK -ErrorAction SilentlyContinue",
+        "foreach ($dev in $displayAdapters) {",
+        "    $instPath = \"HKLM:\\SYSTEM\\CurrentControlSet\\Enum\\$($dev.InstanceId)\\Device Parameters\\Interrupt Management\\MessageSignaledInterruptProperties\"",
+        "    if (Test-Path $instPath) { Set-ItemProperty -Path $instPath -Name 'MSISupported' -Value 0 -Force -ErrorAction SilentlyContinue }",
+        "}"
       ]
     }
   ]

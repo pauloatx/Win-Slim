@@ -175,6 +175,35 @@ $WinBuild = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersio
 $VisibleTweaks = @($AllTweaks | Where-Object { $_.windowsVersion -contains $WinVersion })
 Write-Log "Windows $($WinVersion) build $($WinBuild) - $($AllTweaks.Count) tweaks no catálogo, $($VisibleTweaks.Count) visíveis neste SO."
 
+# ============================================================================
+# 3b. AUTO-DETECÇÃO DE HARDWARE (CPU / RAM / GPU / disco)
+#     Cada consulta é isolada em try/catch: falha em uma não derruba as outras
+#     nem o carregamento da interface (ex.: WMI bloqueado, VM sem sensores, etc.)
+# ============================================================================
+function Get-HardwareSummary {
+    $info = [ordered]@{ CPU = $null; RamGB = $null; GPUs = @(); DiskType = $null }
+    try {
+        $cpu = Get-CimInstance -ClassName Win32_Processor -ErrorAction Stop | Select-Object -First 1
+        if ($cpu -and $cpu.Name) { $info.CPU = ($cpu.Name -replace '\s+', ' ').Trim() }
+    } catch { Write-Log "Auto-detecção: falha ao ler CPU ($($_.Exception.Message))." 'WARN' }
+    try {
+        $cs = Get-CimInstance -ClassName Win32_ComputerSystem -ErrorAction Stop
+        if ($cs -and $cs.TotalPhysicalMemory) { $info.RamGB = [Math]::Round($cs.TotalPhysicalMemory / 1GB) }
+    } catch { Write-Log "Auto-detecção: falha ao ler RAM ($($_.Exception.Message))." 'WARN' }
+    try {
+        $info.GPUs = @(Get-CimInstance -ClassName Win32_VideoController -ErrorAction Stop |
+            Where-Object { $_.Name -and $_.Name -notmatch 'Microsoft Basic|Remote Display|Meta Virtual|Citrix' } |
+            Select-Object -ExpandProperty Name)
+    } catch { Write-Log "Auto-detecção: falha ao ler GPU ($($_.Exception.Message))." 'WARN' }
+    try {
+        $disk = Get-CimInstance -Namespace 'root\Microsoft\Windows\Storage' -ClassName MSFT_PhysicalDisk -ErrorAction Stop | Select-Object -First 1
+        if ($disk) { $info.DiskType = switch ([int]$disk.MediaType) { 4 { 'SSD' } 3 { 'HDD' } default { $null } } }
+    } catch { Write-Log "Auto-detecção: falha ao ler tipo de disco ($($_.Exception.Message))." 'WARN' }
+    return [pscustomobject]$info
+}
+$HwInfo = Get-HardwareSummary
+Write-Log "Hardware detectado: CPU='$($HwInfo.CPU)' RAM=$($HwInfo.RamGB)GB GPU(s)='$($HwInfo.GPUs -join ', ')' Disco=$($HwInfo.DiskType)"
+
 if (Test-Path $StatePath) {
     $AppliedState = @{}
     try { (Get-Content $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $AppliedState[$_.Name] = $_.Value } } catch { $AppliedState = @{} }
@@ -580,6 +609,8 @@ function Resolve-Conflicts {
                     </Viewbox>
                     <TextBlock Text="Win-Slim Suite" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextMain}" VerticalAlignment="Center"/>
                     <TextBlock x:Name="OsBadge" Text="" FontSize="12" Foreground="{StaticResource TextDim}" Margin="14,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="HwBadge" Text="" FontSize="11" Foreground="#6E7480" Margin="10,0,0,0" VerticalAlignment="Center"
+                               ToolTipService.InitialShowDelay="150" ToolTipService.ShowDuration="30000"/>
                 </StackPanel>
                 <CheckBox x:Name="ChkRestorePoint" Grid.Column="1" Content="Criar ponto de restauração antes de aplicar"
                           ToolTip="Fortemente recomendado: cria um checkpoint do Windows para reverter tudo em caso de problema."
@@ -817,6 +848,7 @@ $Window = [Windows.Markup.XamlReader]::Load($Reader)
 if (-not $Window) { throw "Falha ao carregar a interface (XamlReader retornou nulo)." }
 
 $OsBadge = $Window.FindName('OsBadge')
+$HwBadge = $Window.FindName('HwBadge')
 $ChkGamer = $Window.FindName('ChkGamer')
 $ChkRestorePoint = $Window.FindName('ChkRestorePoint')
 $MainTabs = $Window.FindName('MainTabs')
@@ -859,7 +891,7 @@ $MaintProgBar = $Window.FindName('MaintProgBar')
 $MaintStatusText = $Window.FindName('MaintStatusText')
 
 $controlMap = @{
-    OsBadge=$OsBadge; ChkGamer=$ChkGamer; ChkRestorePoint=$ChkRestorePoint; MainTabs=$MainTabs
+    OsBadge=$OsBadge; HwBadge=$HwBadge; ChkGamer=$ChkGamer; ChkRestorePoint=$ChkRestorePoint; MainTabs=$MainTabs
     CategoryList=$CategoryList; TweakList=$TweakList; TxtSearch=$TxtSearch; SelectionCount=$SelectionCount
     LogBox=$LogBox; ProgBar=$ProgBar; BtnApply=$BtnApply; BtnUndo=$BtnUndo
     BtnBalanceado=$BtnBalanceado; BtnGamer=$BtnGamer; BtnExtremo=$BtnExtremo; BtnLimpar=$BtnLimpar
@@ -883,6 +915,28 @@ if ($missing) {
 
 $script:LogBox = $LogBox
 $OsBadge.Text = "Windows $($WinVersion)  •  Build $($WinBuild)  •  $($VisibleTweaks.Count) tweaks disponíveis"
+
+# Badge discreto de hardware: texto curto sempre visível no cabeçalho (todas as abas);
+# passar o mouse mostra o detalhamento completo via tooltip.
+function Get-ShortText { param([string]$Text, [int]$MaxLen)
+    if (-not $Text) { return $null }
+    if ($Text.Length -le $MaxLen) { return $Text }
+    return $Text.Substring(0, $MaxLen).TrimEnd() + '…'
+}
+$cpuShort = if ($HwInfo.CPU) { Get-ShortText -Text $HwInfo.CPU -MaxLen 24 } else { 'CPU n/d' }
+$ramShort = if ($HwInfo.RamGB) { "$($HwInfo.RamGB) GB RAM" } else { 'RAM n/d' }
+$gpuShort = if ($HwInfo.GPUs.Count -gt 0) {
+    $first = Get-ShortText -Text $HwInfo.GPUs[0] -MaxLen 22
+    if ($HwInfo.GPUs.Count -gt 1) { "$first +$($HwInfo.GPUs.Count - 1)" } else { $first }
+} else { 'GPU n/d' }
+$HwBadge.Text = "◆  $cpuShort  •  $ramShort  •  $gpuShort"
+
+$gpuFull = if ($HwInfo.GPUs.Count -gt 0) { $HwInfo.GPUs -join "`n" } else { 'Nenhuma GPU dedicada detectada' }
+$HwBadge.ToolTip = "Hardware detectado automaticamente:`n`n" +
+    "CPU: $(if ($HwInfo.CPU) { $HwInfo.CPU } else { 'não detectada' })`n" +
+    "RAM: $(if ($HwInfo.RamGB) { "$($HwInfo.RamGB) GB" } else { 'não detectada' })`n" +
+    "Disco do sistema: $(if ($HwInfo.DiskType) { $HwInfo.DiskType } else { 'não detectado' })`n" +
+    "GPU(s):`n$gpuFull"
 
 # ============================================================================
 # 9. POPULAR CATEGORIAS + RENDERIZAÇÃO DE CARDS
