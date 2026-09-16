@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.2",
-  "generatedBy": "Win-Slim Suite Builder - merged v2.2 (anti-IA completo por padrao: IA-001 + UI-005 em todos os presets)",
+  "schemaVersion": "1.3",
+  "generatedBy": "Win-Slim Suite Builder - merged v2.2 (anti-IA completo por padrao: IA-001 + UI-005 em todos os presets) | v1.3: removidas 2 duplicatas exatas (PERF-003, APP-013), padronizada acentuação de risco (11 itens), corrigidos 2 vazamentos de rollback por chave compartilhada (PRIV-002/008, PERF-001/RESP-002), declarados 2 conflitos simétricos (PERF-012/EXTRA-005, PERF-011/SEC-006).",
   "sources": {
     "WU": "ChrisTitusTech/winutil",
     "AT": "Atlas-OS/Atlas",
@@ -14,7 +14,7 @@
     "Gamer",
     "Extremo"
   ],
-  "count": 171,
+  "count": 169,
   "tweaks": [
     {
       "id": "PRIV-001",
@@ -361,13 +361,6 @@
         {
           "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
           "Name": "EnableActivityFeed",
-          "Value": 0,
-          "Type": "DWord",
-          "OriginalValue": 1
-        },
-        {
-          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
-          "Name": "PublishUserActivities",
           "Value": 0,
           "Type": "DWord",
           "OriginalValue": 1
@@ -880,29 +873,6 @@
       "source": "WU+AT+MR+WD",
       "packages": [
         "Microsoft.GetHelp"
-      ]
-    },
-    {
-      "id": "APP-013",
-      "name": "Get Started",
-      "description": "Remove o app Get Started.",
-      "category": "Debloat UWP",
-      "risk": "Baixo",
-      "windowsVersion": [
-        "10",
-        "11"
-      ],
-      "dependencies": [],
-      "conflicts": [],
-      "presets": [
-        "Balanceado",
-        "Gamer",
-        "Extremo"
-      ],
-      "type": "appx",
-      "source": "WU+AT+MR+WD",
-      "packages": [
-        "Microsoft.Getstarted"
       ]
     },
     {
@@ -1723,7 +1693,7 @@
     {
       "id": "APP-047",
       "name": "Tips (Dicas)",
-      "description": "Remove o app Tips (dicas do Windows).",
+      "description": "Remove o app Tips (dicas do Windows). Pacote 'Microsoft.Getstarted' (nome exibido mudou de 'Get Started' para 'Tips' em versões recentes do Windows).",
       "category": "Debloat UWP",
       "risk": "Baixo",
       "windowsVersion": [
@@ -2173,32 +2143,6 @@
       ]
     },
     {
-      "id": "PERF-003",
-      "name": "Hibernação - Desativar",
-      "description": "Desativa a hibernação e remove hiberfil.sys (libera espaço em disco igual à RAM). Reduz também o resume time. Conflita com Fast Startup.",
-      "category": "Performance",
-      "risk": "Médio",
-      "windowsVersion": [
-        "10",
-        "11"
-      ],
-      "dependencies": [],
-      "conflicts": [
-        "RESP-006"
-      ],
-      "presets": [
-        "Extremo"
-      ],
-      "type": "script",
-      "source": "WU+AT+WD",
-      "InvokeScript": [
-        "powercfg /hibernate off"
-      ],
-      "UndoScript": [
-        "powercfg /hibernate on"
-      ]
-    },
-    {
       "id": "PERF-004",
       "name": "HPET - Desativar",
       "description": "Desativa o High Precision Event Timer (melhora DPC latency e frame pacing em vários sistemas). Reinicie para validar com testes.",
@@ -2397,7 +2341,9 @@
         "11"
       ],
       "dependencies": [],
-      "conflicts": [],
+      "conflicts": [
+        "SEC-006"
+      ],
       "presets": [],
       "type": "registry",
       "source": "AT+MR+WU",
@@ -2414,7 +2360,7 @@
     {
       "id": "PERF-012",
       "name": "Prioridade de processos em segundo plano - Reduzir",
-      "description": "Reduz a prioridade relativa de processos em segundo plano, dando mais CPU ao app em foco (jogo).",
+      "description": "Reduz a prioridade relativa de processos em segundo plano, dando mais CPU ao app em foco (jogo). Alternativa mais branda ao EXTRA-005 (que zera para 0); não entra em presets automáticos para evitar sobrepor o mesmo valor de registro.",
       "category": "Performance",
       "risk": "Baixo",
       "windowsVersion": [
@@ -2422,11 +2368,10 @@
         "11"
       ],
       "dependencies": [],
-      "conflicts": [],
-      "presets": [
-        "Gamer",
-        "Extremo"
+      "conflicts": [
+        "EXTRA-005"
       ],
+      "presets": [],
       "type": "registry",
       "source": "AT",
       "registry": [
@@ -2562,7 +2507,7 @@
       "name": "Copilot - Desativar por completo via ViVeTool",
       "description": "Mata a feature do Copilot inteiramente via ViVeTool (IDs 44774629/44776738), a camada que as policies do IA-001 nao alcancam. AGORA FAZ PARTE DO PADRAO anti-IA de todos os presets. Baixado do GitHub oficial com confirmacao manual. Sem backup: pode precisar reaplicar apos updates de feature do Windows.",
       "category": "UI / QoL",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "11"
       ],
@@ -2964,7 +2909,7 @@
       "name": "Windows Defender SmartScreen - Desativar",
       "description": "Desativa o SmartScreen (filtro de download/execução de apps desconhecidos). REDUZ a segurança. Opt-in manual.",
       "category": "Seguranca",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"
@@ -3030,7 +2975,7 @@
       "name": "Envio de amostras ao Defender - Desativar",
       "description": "Impede que o Windows Defender envie arquivos suspeitos (amostras) automaticamente à Microsoft para análise.",
       "category": "Seguranca",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"
@@ -3272,7 +3217,7 @@
       "name": "Protecao PUA (apps potencialmente indesejados)",
       "description": "Controla o nível de proteção contra softwares potencialmente indesejados (PUA/PUP) do Windows Defender.",
       "category": "Seguranca",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"
@@ -3423,7 +3368,7 @@
     {
       "id": "RESP-002",
       "name": "Menu animations - Desativar",
-      "description": "Desativa a animação de fade dos menus (abertura instantânea).",
+      "description": "Desativa a animação de abertura dos menus (MenuAnimation=0). O delay de exibição do menu (MenuShowDelay) é responsabilidade do PERF-001, presente em todos os presets onde este tweak também aparece.",
       "category": "Responsividade",
       "risk": "Baixo",
       "windowsVersion": [
@@ -3438,13 +3383,6 @@
       "type": "registry",
       "source": "WD",
       "registry": [
-        {
-          "Path": "HKCU:\\Control Panel\\Desktop",
-          "Name": "MenuShowDelay",
-          "Value": "100",
-          "Type": "String",
-          "OriginalValue": "400"
-        },
         {
           "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
           "Name": "MenuAnimation",
@@ -3538,7 +3476,7 @@
       "name": "Hibernação - Desativar",
       "description": "Desativa hibernação e remove hiberfil.sys (libera espaço = tamanho da RAM). Conflita com Fast Startup (RESP-006).",
       "category": "Responsividade",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"
@@ -4125,7 +4063,9 @@
         "11"
       ],
       "dependencies": [],
-      "conflicts": [],
+      "conflicts": [
+        "PERF-012"
+      ],
       "presets": [
         "Gamer",
         "Extremo"
@@ -4229,7 +4169,7 @@
       "name": "FSO (Fullscreen Optimizations) - Desativar",
       "description": "Desativa as otimizacoes de tela cheia (Fullscreen Optimizations) herdadas do Windows 10, forcando jogos a usar o modo exclusivo real. Reduz input lag em varios titulos (comportamento do Atlas-OS).",
       "category": "Performance",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"
@@ -4363,7 +4303,7 @@
       "name": "HAGS (Agendamento de GPU acelerado por hardware) - Toggle",
       "description": "Ativa ou desativa o Hardware-Accelerated GPU Scheduling. Em GPUs modernas tende a reduzir latencia; em algumas configuracoes antigas causa instabilidade. Requer reinicio para ter efeito. Nunca entra em preset automatico — decisao manual. Fonte: Atlas-OS / MeetRevision.",
       "category": "Performance",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"
@@ -4698,7 +4638,7 @@
       "name": "SMBv1 - Desativar",
       "description": "Remove o protocolo SMBv1 (alvo do ransomware WannaCry), obsoleto e inseguro. Redes modernas usam SMBv2/v3. Fonte: Win-Debloat-Tools / MeetRevision.",
       "category": "Rede",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"
@@ -4776,7 +4716,7 @@
       "name": "Smart App Control - Desativar",
       "description": "Desativa o Smart App Control do Windows 11 (checagem reputacional de apps novos). Uma vez desativado, so volta com reinstalacao limpa do Windows. Opt-in manual. Fonte: Chris Titus Tech.",
       "category": "Seguranca",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "11"
       ],
@@ -4800,7 +4740,7 @@
       "name": "UCPD (User Choice Protection Driver) - Desativar",
       "description": "Desativa o driver anti-sequestro de escolhas padrao do usuario (impede que apps resets seu navegador padrao). Driver recente do Windows 11 24H2/25H2; pode voltar em updates. Fonte: Chris Titus Tech.",
       "category": "Seguranca",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"
@@ -4933,7 +4873,7 @@
       "name": "MSI Mode (Interrupções Sinalizadas por Mensagem) para GPU - Ativar",
       "description": "Ativa o Message-Signaled Interrupts (MSI) na(s) placa(s) de vídeo detectada(s) (NVIDIA, AMD ou Intel), substituindo o modo de interrupção legado por linha. Pode reduzir microgaguejos (stutters) e latência de input em alguns sistemas. Efeito depende do suporte da placa/chipset; em hardware sem suporte a chave é ignorada pelo driver. Requer reinício. Fonte: técnica consolidada da comunidade de tuning de GPU (Win-Slim).",
       "category": "Performance",
-      "risk": "Medio",
+      "risk": "Médio",
       "windowsVersion": [
         "10",
         "11"

@@ -333,8 +333,55 @@ function Invoke-Payload {
     if ($scriptBlock) { Invoke-Expression ($scriptBlock -join "`n") }
 }
 
+$script:SimulationMode = $false
+
+# Motor de SIMULAÇÃO: espelha a estrutura do Invoke-TweakEngine real, mas em
+# nenhum branch chama Set-RegistryValue, Set-Service, Invoke-Expression,
+# Remove-AppxPackage ou qualquer outra função que grave algo no sistema.
+# É um caminho de código totalmente separado de propósito - mais fácil de
+# auditar "isso aqui não escreve nada" do que uma flag $Simulate espalhada
+# por dentro do motor real.
+function Invoke-TweakEngineSimulated {
+    param($Tweak, [switch]$Undo, [int]$Level = -1)
+    $mode = if ($Undo) { 'UNDO' } else { 'APPLY' }
+    Write-Log "[SIMULAÇÃO/$mode] $($Tweak.id) - $($Tweak.name)" 'SIM'
+    try {
+        $payload = $Tweak
+        if ($Tweak.type -eq 'multilevel') {
+            $idx = if ($Level -lt 0) { 0 } else { $Level }
+            $payload = $Tweak.levels[$idx]
+        }
+        foreach ($r in @($payload.registry)) {
+            $cur = Get-CurrentRegistryState -Path $r.Path -Name $r.Name
+            $curDisplay = if ($cur.Existed) { $cur.Value } else { '<ausente>' }
+            $novo = if ($Undo) { $r.OriginalValue } else { $r.Value }
+            Write-Log "  registro: $($r.Path)\$($r.Name)  atual=$curDisplay  seria->  $novo" 'SIM'
+        }
+        foreach ($s in @($payload.service)) {
+            $svc = Get-Service -Name $s.Name -ErrorAction SilentlyContinue
+            $curType = if ($svc) { $svc.StartType } else { '<serviço não encontrado>' }
+            $novo = if ($Undo) { $s.OriginalType } else { $s.StartupType }
+            Write-Log "  serviço: $($s.Name)  atual=$curType  seria->  $novo" 'SIM'
+        }
+        $scriptBlock = if ($Undo) { $payload.UndoScript } else { $payload.InvokeScript }
+        if ($scriptBlock) { Write-Log "  script que SERIA executado:`n$($scriptBlock -join "`n")" 'SIM' }
+        if ($Tweak.packages -and -not $Undo) { Write-Log "  pacotes que seriam removidos: $($Tweak.packages -join ', ')" 'SIM' }
+        if ($Tweak.capabilityName -and -not $Undo) { Write-Log "  capability que seria removida: $($Tweak.capabilityName)*" 'SIM' }
+        if ($Tweak.hosts) {
+            $acao = if ($Undo) { 'removidas' } else { 'adicionadas' }
+            Write-Log "  entradas do hosts file que seriam ${acao}: $($Tweak.hosts -join ', ')" 'SIM'
+        }
+        Write-Log "[SIMULAÇÃO/$mode] $($Tweak.id) -> nenhuma alteração real foi feita." 'SIM'
+        return $true
+    } catch {
+        Write-Log "[SIMULAÇÃO/$mode] $($Tweak.id) falhou ao simular: $($_.Exception.Message)" 'ERROR'
+        return $false
+    }
+}
+
 function Invoke-TweakEngine {
     param($Tweak, [switch]$Undo, [int]$Level = -1)
+    if ($script:SimulationMode) { return Invoke-TweakEngineSimulated -Tweak $Tweak -Undo:$Undo -Level $Level }
     $mode = if ($Undo) { 'UNDO' } else { 'APPLY' }
     Write-Log "[$mode] $($Tweak.id) - $($Tweak.name)"
     try {
@@ -729,9 +776,13 @@ function Resolve-Conflicts {
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="TxtSearch" Grid.Column="0" VerticalContentAlignment="Center"/>
                             <TextBlock x:Name="SelectionCount" Grid.Column="1" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="14,0,0,0" FontSize="12"/>
+                            <CheckBox x:Name="ChkSimulationMode" Grid.Column="2" Content="🧪 Modo Simulação (não altera nada)"
+                                      Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="16,0,0,0" FontSize="12" Cursor="Hand"
+                                      ToolTip="Com isso marcado, Aplicar e Desfazer só mostram no log o que SERIA feito (chave por chave), sem alterar o sistema de verdade. Use para conferir o comportamento antes da primeira aplicação real."/>
                         </Grid>
                     </Border>
 
@@ -859,6 +910,7 @@ $SelectionCount = $Window.FindName('SelectionCount')
 $LogBox = $Window.FindName('LogBox')
 $ProgBar = $Window.FindName('ProgBar')
 $BtnApply = $Window.FindName('BtnApply')
+$ChkSimulationMode = $Window.FindName('ChkSimulationMode')
 $BtnUndo = $Window.FindName('BtnUndo')
 $BtnBalanceado = $Window.FindName('BtnBalanceado')
 $BtnGamer = $Window.FindName('BtnGamer')
@@ -893,7 +945,7 @@ $MaintStatusText = $Window.FindName('MaintStatusText')
 $controlMap = @{
     OsBadge=$OsBadge; HwBadge=$HwBadge; ChkGamer=$ChkGamer; ChkRestorePoint=$ChkRestorePoint; MainTabs=$MainTabs
     CategoryList=$CategoryList; TweakList=$TweakList; TxtSearch=$TxtSearch; SelectionCount=$SelectionCount
-    LogBox=$LogBox; ProgBar=$ProgBar; BtnApply=$BtnApply; BtnUndo=$BtnUndo
+    LogBox=$LogBox; ProgBar=$ProgBar; BtnApply=$BtnApply; BtnUndo=$BtnUndo; ChkSimulationMode=$ChkSimulationMode
     BtnBalanceado=$BtnBalanceado; BtnGamer=$BtnGamer; BtnExtremo=$BtnExtremo; BtnLimpar=$BtnLimpar
     BtnMarcarVisiveis=$BtnMarcarVisiveis; BtnDesmarcarVisiveis=$BtnDesmarcarVisiveis
     BtnWelcomeBalanceado=$BtnWelcomeBalanceado; BtnWelcomeGamer=$BtnWelcomeGamer; BtnWelcomeExtremo=$BtnWelcomeExtremo
@@ -1277,16 +1329,17 @@ function Invoke-MaintenanceBatch {
             $MaintProgBar.Value = [double]$i / $total * 100
             [System.Windows.Forms.Application]::DoEvents()
         }
-        Save-Rollback
+        if (-not $script:SimulationMode) { Save-Rollback }
         Set-MaintenanceControlsEnabled -Enabled $true
         foreach ($item in $selected) { $item.Chk.IsChecked = $false }
 
+        $simTag = if ($script:SimulationMode) { ' [SIMULAÇÃO — nada foi alterado]' } else { '' }
         if ($failed.Count -eq 0) {
             $MaintStatusText.Foreground = $TextMainBrush
-            $MaintStatusText.Text = "Concluído: $total ação(ões) aplicada(s) com sucesso."
+            $MaintStatusText.Text = "Concluído: $total ação(ões) aplicada(s) com sucesso.$simTag"
         } else {
             $MaintStatusText.Foreground = $AccentBrush
-            $MaintStatusText.Text = "Concluído com falha em: $($failed -join ', '). Veja o log."
+            $MaintStatusText.Text = "Concluído com falha em: $($failed -join ', '). Veja o log.$simTag"
         }
         $script:MaintResetTimer.Stop()
         $script:MaintResetTimer.Start()
@@ -1381,7 +1434,7 @@ function Run-Batch {
         $WelcomeProgBar.Value = $pct
         $tweak = $AllTweaks | Where-Object { $_.id -eq $id }
         $ok = Invoke-TweakEngine -Tweak $tweak -Undo:$Undo
-        if ($ok) { if ($Undo) { $AppliedState.Remove($id) } else { $AppliedState[$id] = (Get-Date -Format 'o') } }
+        if ($ok -and -not $script:SimulationMode) { if ($Undo) { $AppliedState.Remove($id) } else { $AppliedState[$id] = (Get-Date -Format 'o') } }
         [System.Windows.Forms.Application]::DoEvents()
     }
     foreach ($id in $selectedLeveled) {
@@ -1392,15 +1445,14 @@ function Run-Batch {
         $tweak = $AllTweaks | Where-Object { $_.id -eq $id }
         $lvl = $LevelSelections[$id]
         $ok = Invoke-TweakEngine -Tweak $tweak -Undo:$Undo -Level $lvl
-        if ($ok -and -not $Undo) { $AppliedState[$id] = (Get-Date -Format 'o') }
-        if ($ok -and $Undo) { $AppliedState.Remove($id); $LevelSelections[$id] = 0 }
+        if ($ok -and -not $Undo -and -not $script:SimulationMode) { $AppliedState[$id] = (Get-Date -Format 'o') }
+        if ($ok -and $Undo -and -not $script:SimulationMode) { $AppliedState.Remove($id); $LevelSelections[$id] = 0 }
         [System.Windows.Forms.Application]::DoEvents()
     }
 
-    if (-not $Undo) { try { Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Process explorer.exe } catch { } }
+    if (-not $Undo -and -not $script:SimulationMode) { try { Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Start-Process explorer.exe } catch { } }
 
-    Save-State
-    Save-Rollback
+    if (-not $script:SimulationMode) { Save-State; Save-Rollback }
     $BtnApply.IsEnabled = $true
     $BtnUndo.IsEnabled = $true
     $BtnWelcomeApply.IsEnabled = $true
@@ -1408,10 +1460,38 @@ function Run-Batch {
     $ProgBar.Value = 0
     $WelcomeProgBar.Value = 0
     $action = if ($Undo) { 'revertidos (rollback profissional aplicado quando havia snapshot salvo)' } else { 'aplicados' }
-    $WelcomeCompletionText.Text = "✅ Concluído — $totalItems tweaks $action. Reinicie para garantir efeito completo."
-    [System.Windows.MessageBox]::Show("$totalItems tweaks $action. Veja o log para detalhes. Reinicie o computador para garantir que todas as mudanças tenham efeito completo.", "Win-Slim Suite", 'OK', 'Information') | Out-Null
+    $reinicieMsg = ' Reinicie para garantir efeito completo.'
+    if ($script:SimulationMode) { $action = 'simulados (SIMULAÇÃO — nada foi alterado de verdade, veja o log)'; $reinicieMsg = '' }
+    $WelcomeCompletionText.Text = "✅ Concluído — $totalItems tweaks $action.$reinicieMsg"
+    $msgBody = "$totalItems tweaks $action. Veja o log para detalhes."
+    if ($script:SimulationMode) {
+        $msgBody += "`n`n🧪 Modo Simulação estava ativo: nenhuma alteração real foi feita."
+    } else {
+        $msgBody += " Reinicie o computador para garantir que todas as mudanças tenham efeito completo."
+    }
+    [System.Windows.MessageBox]::Show($msgBody, "Win-Slim Suite", 'OK', 'Information') | Out-Null
     Render-Tweaks -Category $CategoryList.SelectedItem -Filter $TxtSearch.Text
 }
+
+function Update-SimulationModeUI {
+    if ($script:SimulationMode) {
+        $BtnApply.Content = '🧪 Simular Aplicação (nada será alterado)'
+        $BtnUndo.Content = '🧪 Simular Desfazer'
+        if ($BtnMaintApply) { $BtnMaintApply.Content = '🧪 Simular selecionadas' }
+        if ($BtnWelcomeApply) { $BtnWelcomeApply.Content = '🧪 Simular Perfil' }
+        if ($BtnWelcomeUndo) { $BtnWelcomeUndo.Content = '🧪 Simular Rollback' }
+        Write-Log 'Modo Simulação ATIVADO — nenhuma alteração real será feita até desmarcar.' 'SIM'
+    } else {
+        $BtnApply.Content = 'Aplicar Selecionados'
+        $BtnUndo.Content = '↺ Rollback (Desfazer)'
+        if ($BtnMaintApply) { $BtnMaintApply.Content = '▶  Aplicar selecionadas' }
+        if ($BtnWelcomeApply) { $BtnWelcomeApply.Content = '✓ Aplicar Perfil' }
+        if ($BtnWelcomeUndo) { $BtnWelcomeUndo.Content = '↺ Rollback' }
+        Write-Log 'Modo Simulação desativado — Aplicar/Desfazer voltam a alterar o sistema de verdade.' 'INFO'
+    }
+}
+$ChkSimulationMode.Add_Checked({ $script:SimulationMode = $true; Update-SimulationModeUI })
+$ChkSimulationMode.Add_Unchecked({ $script:SimulationMode = $false; Update-SimulationModeUI })
 
 $BtnApply.Add_Click({ Invoke-Safe -Context 'aplicar selecionados' -Action { Run-Batch } })
 $BtnUndo.Add_Click({ Invoke-Safe -Context 'rollback (desfazer selecionados)' -Action { Run-Batch -Undo } })
