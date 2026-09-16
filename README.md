@@ -1,10 +1,3 @@
-<p align="center">
-  <img src="assets/feather-icon.svg" width="96" height="96" alt="Win-Slim" />
-</p>
-
-<h1 align="center">Win-Slim</h1>
-<p align="center"><i>Transformando o Windows do jeito que você quiser.</i></p>
-
 # Win-Slim Suite
 
 **169 tweaks reversíveis para Windows 10/11 — com rollback do estado real do
@@ -65,18 +58,38 @@ de reverter que é validada automaticamente no CI antes de qualquer release
 presets, rollback real, Modo Simulação:
 
 ```powershell
-# Win-Slim Suite
-
-irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main/WinSlimSuite.ps1 | iex
+# baixa os dois arquivos de uma release fixa (troque v1.3 pela última tag)
+irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/tags/v1.3/WinSlimSuite.ps1 -OutFile WinSlimSuite.ps1
+irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/tags/v1.3/catalog.json -OutFile catalog.json
 
 # confira o hash contra o SHA256SUMS.txt publicado na release antes de rodar
-
 Get-FileHash .\WinSlimSuite.ps1, .\catalog.json -Algorithm SHA256
 
-# rode como administrador (o s
-cript pede elevação via UAC sozinho)
+# rode como administrador (o script pede elevação via UAC sozinho)
 powershell -ExecutionPolicy Bypass -File .\WinSlimSuite.ps1
 ```
+
+Prefere o estilo de instalação em uma linha só (sem baixar/conferir hash
+antes)? O script também suporta rodar direto via `irm | iex`, buscando o
+`catalog.json` sozinho para `%LOCALAPPDATA%\WinSlimSuite` na primeira
+execução:
+
+```powershell
+$c = irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main/WinSlimSuite.ps1; iex ($c.TrimStart([char]0xFEFF))
+```
+
+> ℹ️ Note o `.TrimStart([char]0xFEFF)`: o arquivo tem uma marca BOM (UTF-8)
+> necessária para acentuação funcionar corretamente quando baixado e rodado
+> como arquivo local no PowerShell 5.1. Só que `irm | iex` puro (sem essa
+> limpeza) quebra com `O termo '#' não é reconhecido`, porque o BOM sobrevive
+> como caractere literal antes do primeiro comentário. Use exatamente o
+> comando acima — copiar só `irm ... | iex` do jeito "clássico" **não
+> funciona** neste script específico.
+
+Essa é uma troca consciente: a linha única é mais rápida, mas pula a
+verificação de hash. Para o método mais auditável, use o de baixar +
+conferir hash acima.
+
 
 Veja [SECURITY.md](./SECURITY.md) para o passo a passo completo de auditoria
 antes de rodar, e o que exatamente o script faz e não faz.
