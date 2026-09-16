@@ -65,10 +65,8 @@ de reverter que é validada automaticamente no CI antes de qualquer release
 presets, rollback real, Modo Simulação:
 
 ```powershell
-# baixa os dois arquivos de uma release fixa (troque v1.3 pela última tag)
-irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/tags/v1.3/WinSlimSuite.ps1 -OutFile WinSlimSuite.ps1
-irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/tags/v1.3/catalog.json -OutFile catalog.json
-
+# Win-Slim Suite
+irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main/WinSlimSuite.ps1 | iex
 # confira o hash contra o SHA256SUMS.txt publicado na release antes de rodar
 Get-FileHash .\WinSlimSuite.ps1, .\catalog.json -Algorithm SHA256
 
