@@ -45,7 +45,14 @@ function Test-IsAdmin {
 
 if (-not (Test-IsAdmin)) {
     if ($IsRemoteRun) {
-        $remoteCmd = "irm $($RepoRawBase)/WinSlimSuite.ps1 | iex"
+        # Nota: irm/Invoke-RestMethod preserva o caractere BOM (U+FEFF) como
+        # parte literal do texto retornado quando o arquivo remoto tem BOM.
+        # Passar isso direto pro iex quebra com "termo '#' nao reconhecido"
+        # (o BOM invisivel gruda no primeiro token da primeira linha).
+        # TrimStart remove o BOM se presente, sem afetar o resto do conteúdo
+        # (que já chega corretamente decodificado como UTF-8 via HTTP, sem
+        # depender do code page local do Windows como a leitura de arquivo).
+        $remoteCmd = '$__c = irm ' + $RepoRawBase + '/WinSlimSuite.ps1; iex ($__c.TrimStart([char]0xFEFF))'
         Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', $remoteCmd) -Verb RunAs
     } else {
         $argList = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
