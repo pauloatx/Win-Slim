@@ -66,11 +66,15 @@ presets, rollback real, Modo Simulação:
 
 ```powershell
 # Win-Slim Suite
+
 irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main/WinSlimSuite.ps1 | iex
+
 # confira o hash contra o SHA256SUMS.txt publicado na release antes de rodar
+
 Get-FileHash .\WinSlimSuite.ps1, .\catalog.json -Algorithm SHA256
 
-# rode como administrador (o script pede elevação via UAC sozinho)
+# rode como administrador (o s
+cript pede elevação via UAC sozinho)
 powershell -ExecutionPolicy Bypass -File .\WinSlimSuite.ps1
 ```
 
