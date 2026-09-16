@@ -58,10 +58,9 @@ de reverter que é validada automaticamente no CI antes de qualquer release
 presets, rollback real, Modo Simulação:
 
 ```powershell
-#Usando direto do PowerShell
+# Usando direto do PowerShell
 
 $c = irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/heads/main/WinSlimSuite.ps1; iex ($c.TrimStart([char]0xFEFF))
-
 # baixa os dois arquivos de uma release fixa (troque v1.3 pela última tag)
 irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/tags/v1.3/WinSlimSuite.ps1 -OutFile WinSlimSuite.ps1
 irm https://raw.githubusercontent.com/pauloatx/Win-Slim/refs/tags/v1.3/catalog.json -OutFile catalog.json
