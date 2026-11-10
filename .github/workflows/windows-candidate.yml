@@ -49,14 +49,14 @@ jobs:
           if ($PSVersionTable.PSVersion.Major -ne 5 -or -not [Environment]::Is64BitProcess) {
             throw 'The official pipeline requires Windows PowerShell 5.1 x64.'
           }
-      - name: Validate registered cases and delivered hashes without packaging
-        run: |
-          python tools/package_release.py . specs/FASE7-R3.2.84-baseline.json
-          exit $LASTEXITCODE
       - name: Run official candidate pipeline (build, WPF and current registry)
         id: candidate
         run: |
           & .\Iniciar-Validacao.bat /ci
+          exit $LASTEXITCODE
+      - name: Validate registered cases and delivered hashes without packaging
+        run: |
+          python tools/package_release.py . specs/FASE7-R3.2.84-baseline.json
           exit $LASTEXITCODE
       - name: Collect current-run text evidence and integrity
         if: always()
