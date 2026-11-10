@@ -1,0 +1,11 @@
+Win-Slim Suite — FASE 7 R3.1
+Correção visual de layout baseada na referência fornecida pelo usuário.
+
+- Mantém FASE 7 R3 integralmente congelada e backend FASE 6.5 R4.1 intacto.
+- Remove da janela do aplicativo o grande cabeçalho promocional da prancha de conceito.
+- Usa title bar compacta, sidebar estreita e conteúdo denso como nas telas internas da referência.
+- Dashboard reorganizado: sistema + desempenho à esquerda; status do Win-Slim à direita.
+- Presets em três cards compactos; overlays condicionais ficam em gaveta opcional.
+- Personalizado, Backup/Restore, Análise e Configurações seguem a composição visual da referência.
+- Rotas Preview / Apply / Result / TweakDetail recebem layout visual equivalente à referência, ainda sem ligação transacional nesta revisão.
+- Nenhuma primitiva de alteração do Windows adicionada à UI.

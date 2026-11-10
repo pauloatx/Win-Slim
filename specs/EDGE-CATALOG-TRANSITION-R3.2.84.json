@@ -1,0 +1,679 @@
+{
+  "schemaVersion": 1,
+  "reason": "Previously accepted Edge contract completion changed metadata for 17 IDs; retain original R4 hashes and snapshots, accept only exact reviewed current versions; no Registry operation or unrelated tweak changed.",
+  "report": "docs/CONCLUSAO-EDGE-R3.2.84.md",
+  "entries": [
+    {
+      "path": "catalogs/validated/Expansion-R4.json",
+      "originalSHA256": "303e411d4cafdd1f52eb1af126a6b5551adf77ae45c83eae3f1ecbbe0f1216ee",
+      "originalSnapshot": "specs/history/edge-before-completion/Expansion-R4.json",
+      "reviewedCurrentSHA256": "ff57a6ae1aec11e84077ecdd57b14b9aba3815d817d734a47f9dfba10698788c",
+      "changes": [
+        {
+          "id": "EDGE-007",
+          "index": 11,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Requer o mecanismo de guias em suspensão; o Planner inclui EDGE-006 automaticamente pela dependência.",
+          "afterExists": true,
+          "after": "Requer o mecanismo de guias em suspensão; o Planner inclui EDGE-006 automaticamente pela dependência. Revisão 21/10/2026: Requer EDGE-006 ativo; guias descartadas são recarregadas ao retornar."
+        },
+        {
+          "id": "EDGE-007",
+          "index": 11,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Requer EDGE-006 ativo; guias descartadas são recarregadas ao retornar."
+        },
+        {
+          "id": "EDGE-007",
+          "index": 11,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define AutoDiscardSleepingTabsEnabled=1. Em versões compatíveis do Edge, abas já suspensas e ociosas podem ser descartadas após aproximadamente 1,5 dia para economizar memória; ao retornar, a página precisa ser recarregada.",
+          "afterExists": true,
+          "after": "Define AutoDiscardSleepingTabsEnabled=1. Em versões compatíveis do Edge, abas já suspensas e ociosas podem ser descartadas após aproximadamente 1,5 dia para economizar memória; ao retornar, a página precisa ser recarregada. Compatibilidade revisada: Requer EDGE-006 ativo; guias descartadas são recarregadas ao retornar."
+        },
+        {
+          "id": "EDGE-007",
+          "index": 11,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 120
+        }
+      ]
+    },
+    {
+      "path": "catalogs/validated/Expansion-R4.1.json",
+      "originalSHA256": "5ccba3d18ae2bf8c2144c40d5cfe06fbab825c7b5c1f6708dec2bbeb6beb3973",
+      "originalSnapshot": "specs/history/edge-before-completion/Expansion-R4.1.json",
+      "reviewedCurrentSHA256": "7a39a17248468948b7f0bd38d8c32bcef6b2763c4e4953d9a90cf9df5006a44c",
+      "changes": [
+        {
+          "id": "EDGE-009",
+          "index": 2,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Desativa sincronização, sem apagar dados locais. Não se aplica a perfil Microsoft pessoal."
+        },
+        {
+          "id": "EDGE-009",
+          "index": 2,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Desativa sincronização, sem apagar dados locais. Não se aplica a perfil Microsoft pessoal."
+        },
+        {
+          "id": "EDGE-009",
+          "index": 2,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define SyncDisabled=1. Usuários não podem ativar a sincronização de favoritos, configurações e outros dados pelo serviço de sync do Edge enquanto a política estiver aplicada.",
+          "afterExists": true,
+          "after": "Define SyncDisabled=1. Usuários não podem ativar a sincronização de favoritos, configurações e outros dados pelo serviço de sync do Edge enquanto a política estiver aplicada. Compatibilidade revisada: Desativa sincronização, sem apagar dados locais. Não se aplica a perfil Microsoft pessoal."
+        },
+        {
+          "id": "EDGE-009",
+          "index": 2,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 77
+        },
+        {
+          "id": "EDGE-010",
+          "index": 3,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Desativa entrada no navegador, não login em sites. Prevalece sobre NonRemovableProfileEnabled; requer reinício."
+        },
+        {
+          "id": "EDGE-010",
+          "index": 3,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Desativa entrada no navegador, não login em sites. Prevalece sobre NonRemovableProfileEnabled; requer reinício."
+        },
+        {
+          "id": "EDGE-010",
+          "index": 3,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define BrowserSignin=0, desabilitando a entrada no navegador e serviços ligados ao perfil autenticado. É manual-only porque pode afetar ambientes que dependem de conta/SSO no Edge.",
+          "afterExists": true,
+          "after": "Define BrowserSignin=0, desabilitando a entrada no navegador e serviços ligados ao perfil autenticado. É manual-only porque pode afetar ambientes que dependem de conta/SSO no Edge. Compatibilidade revisada: Desativa entrada no navegador, não login em sites. Prevalece sobre NonRemovableProfileEnabled; requer reinício."
+        },
+        {
+          "id": "EDGE-010",
+          "index": 3,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 77
+        },
+        {
+          "id": "EDGE-013",
+          "index": 6,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Oculta Rewards; documentação diverge entre descrição e suporte de conta pessoal. Efeito por conta não presumido."
+        },
+        {
+          "id": "EDGE-013",
+          "index": 6,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Oculta Rewards; documentação diverge entre descrição e suporte de conta pessoal. Efeito por conta não presumido."
+        },
+        {
+          "id": "EDGE-013",
+          "index": 6,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define ShowMicrosoftRewards=0. Contas Microsoft deixam de receber a experiência e notificações do Rewards dentro do Edge.",
+          "afterExists": true,
+          "after": "Define ShowMicrosoftRewards=0. Contas Microsoft deixam de receber a experiência e notificações do Rewards dentro do Edge. Compatibilidade revisada: Oculta Rewards; documentação diverge entre descrição e suporte de conta pessoal. Efeito por conta não presumido."
+        },
+        {
+          "id": "EDGE-013",
+          "index": 6,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 88
+        },
+        {
+          "id": "EDGE-014",
+          "index": 7,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Depreciada, ainda suportada; migração futura para AutofillSettings exige revisão. Liberada somente até Edge 155 revisado. Não apaga endereços."
+        },
+        {
+          "id": "EDGE-014",
+          "index": 7,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Depreciada, ainda suportada; migração futura para AutofillSettings exige revisão. Liberada somente até Edge 155 revisado. Não apaga endereços."
+        },
+        {
+          "id": "EDGE-014",
+          "index": 7,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define AutofillAddressEnabled=0. O Edge deixa de sugerir, preencher e salvar informações de endereço em formulários, sem afetar os controles separados de pagamentos e senhas.",
+          "afterExists": true,
+          "after": "Define AutofillAddressEnabled=0. O Edge deixa de sugerir, preencher e salvar informações de endereço em formulários, sem afetar os controles separados de pagamentos e senhas. Compatibilidade revisada: Depreciada, ainda suportada; migração futura para AutofillSettings exige revisão. Liberada somente até Edge 155 revisado. Não apaga endereços."
+        },
+        {
+          "id": "EDGE-014",
+          "index": 7,
+          "field": "policyLifecycle",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "deprecated-still-supported-review-required-after-155"
+        },
+        {
+          "id": "EDGE-014",
+          "index": 7,
+          "field": "reviewedWindowsEdgeMaximum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 155
+        },
+        {
+          "id": "EDGE-014",
+          "index": 7,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 77
+        },
+        {
+          "id": "EDGE-015",
+          "index": 8,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Depreciada, ainda suportada; migração futura para AutofillSettings exige revisão. Liberada somente até Edge 155 revisado. Não apaga pagamentos."
+        },
+        {
+          "id": "EDGE-015",
+          "index": 8,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Depreciada, ainda suportada; migração futura para AutofillSettings exige revisão. Liberada somente até Edge 155 revisado. Não apaga pagamentos."
+        },
+        {
+          "id": "EDGE-015",
+          "index": 8,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define AutofillCreditCardEnabled=0. O Edge não sugere, preenche ou salva novos instrumentos de pagamento em formulários.",
+          "afterExists": true,
+          "after": "Define AutofillCreditCardEnabled=0. O Edge não sugere, preenche ou salva novos instrumentos de pagamento em formulários. Compatibilidade revisada: Depreciada, ainda suportada; migração futura para AutofillSettings exige revisão. Liberada somente até Edge 155 revisado. Não apaga pagamentos."
+        },
+        {
+          "id": "EDGE-015",
+          "index": 8,
+          "field": "policyLifecycle",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "deprecated-still-supported-review-required-after-155"
+        },
+        {
+          "id": "EDGE-015",
+          "index": 8,
+          "field": "reviewedWindowsEdgeMaximum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 155
+        },
+        {
+          "id": "EDGE-015",
+          "index": 8,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 77
+        },
+        {
+          "id": "EDGE-017",
+          "index": 10,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Desativa convite/entrada do site para o navegador. Complementa BrowserSignin, sem bloquear login em sites."
+        },
+        {
+          "id": "EDGE-017",
+          "index": 10,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Desativa convite/entrada do site para o navegador. Complementa BrowserSignin, sem bloquear login em sites."
+        },
+        {
+          "id": "EDGE-017",
+          "index": 10,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define WebToBrowserSignInEnabled=0 em versões compatíveis, evitando CTA ou experiência de entrada no navegador disparada por login em sites Microsoft.",
+          "afterExists": true,
+          "after": "Define WebToBrowserSignInEnabled=0 em versões compatíveis, evitando CTA ou experiência de entrada no navegador disparada por login em sites Microsoft. Compatibilidade revisada: Desativa convite/entrada do site para o navegador. Complementa BrowserSignin, sem bloquear login em sites."
+        },
+        {
+          "id": "EDGE-017",
+          "index": 10,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 133
+        },
+        {
+          "id": "EDGE-018",
+          "index": 11,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Só produz efeito quando DiagnosticData efetivo é OptionalData (2). Com EDGE-031=1 é redundante; reconhecimento não comprova efeito."
+        },
+        {
+          "id": "EDGE-018",
+          "index": 11,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Só produz efeito quando DiagnosticData efetivo é OptionalData (2). Com EDGE-031=1 é redundante; reconhecimento não comprova efeito."
+        },
+        {
+          "id": "EDGE-018",
+          "index": 11,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define UrlDiagnosticDataEnabled=0. Quando diagnóstico opcional estiver habilitado, URLs e uso por página deixam de ser incluídos nesse conjunto de dados.",
+          "afterExists": true,
+          "after": "Define UrlDiagnosticDataEnabled=0. Quando diagnóstico opcional estiver habilitado, URLs e uso por página deixam de ser incluídos nesse conjunto de dados. Compatibilidade revisada: Só produz efeito quando DiagnosticData efetivo é OptionalData (2). Com EDGE-031=1 é redundante; reconhecimento não comprova efeito."
+        },
+        {
+          "id": "EDGE-018",
+          "index": 11,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 122
+        },
+        {
+          "id": "EDGE-021",
+          "index": 14,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Somente perfil corporativo Entra ID e Copilot no painel lateral. Sem conta corporativa, efeito não pode ser validado."
+        },
+        {
+          "id": "EDGE-021",
+          "index": 14,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Somente perfil corporativo Entra ID e Copilot no painel lateral. Sem conta corporativa, efeito não pode ser validado."
+        },
+        {
+          "id": "EDGE-021",
+          "index": 14,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define Microsoft365CopilotChatIconEnabled=0. Em versões compatíveis, o ícone do Microsoft 365 Copilot Chat não aparece na barra de ferramentas do Edge for Business.",
+          "afterExists": true,
+          "after": "Define Microsoft365CopilotChatIconEnabled=0. Em versões compatíveis, o ícone do Microsoft 365 Copilot Chat não aparece na barra de ferramentas do Edge for Business. Compatibilidade revisada: Somente perfil corporativo Entra ID e Copilot no painel lateral. Sem conta corporativa, efeito não pode ser validado."
+        },
+        {
+          "id": "EDGE-021",
+          "index": 14,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 139
+        }
+      ]
+    },
+    {
+      "path": "catalogs/validated/Expansion-R4.2.json",
+      "originalSHA256": "2c4d6a286d324f18067518bd0ce5b1ce0ef2d0761d356cb533fbcccf22996bbc",
+      "originalSnapshot": "specs/history/edge-before-completion/Expansion-R4.2.json",
+      "reviewedCurrentSHA256": "31ec7519add41f5c492cfe558346d05fd5c97529e80d87e49024f837608658a7",
+      "changes": [
+        {
+          "id": "EDGE-022",
+          "index": 3,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Valor 2 desativa predição de rede; valor 1 não é suportado. Complementa pré-carregamento de nova guia."
+        },
+        {
+          "id": "EDGE-022",
+          "index": 3,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Valor 2 desativa predição de rede; valor 1 não é suportado. Complementa pré-carregamento de nova guia."
+        },
+        {
+          "id": "EDGE-022",
+          "index": 3,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define NetworkPredictionOptions=2 (NetworkPredictionNever). Desativa predição de rede do Edge, incluindo DNS prefetch, TCP/SSL preconnection e prerendering.",
+          "afterExists": true,
+          "after": "Define NetworkPredictionOptions=2 (NetworkPredictionNever). Desativa predição de rede do Edge, incluindo DNS prefetch, TCP/SSL preconnection e prerendering. Compatibilidade revisada: Valor 2 desativa predição de rede; valor 1 não é suportado. Complementa pré-carregamento de nova guia."
+        },
+        {
+          "id": "EDGE-022",
+          "index": 3,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 77
+        },
+        {
+          "id": "EDGE-023",
+          "index": 4,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Desativa pré-carregamento de nova guia; não desativa toda navegação especulativa isoladamente."
+        },
+        {
+          "id": "EDGE-023",
+          "index": 4,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Desativa pré-carregamento de nova guia; não desativa toda navegação especulativa isoladamente."
+        },
+        {
+          "id": "EDGE-023",
+          "index": 4,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define NewTabPagePrerenderEnabled=0. O Edge não pré-carrega a página de nova guia em segundo plano.",
+          "afterExists": true,
+          "after": "Define NewTabPagePrerenderEnabled=0. O Edge não pré-carrega a página de nova guia em segundo plano. Compatibilidade revisada: Desativa pré-carregamento de nova guia; não desativa toda navegação especulativa isoladamente."
+        },
+        {
+          "id": "EDGE-023",
+          "index": 4,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 85
+        },
+        {
+          "id": "EDGE-026",
+          "index": 7,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Desativa predição do serviço em campos elegíveis; sites podem oferecer predição própria."
+        },
+        {
+          "id": "EDGE-026",
+          "index": 7,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Desativa predição do serviço em campos elegíveis; sites podem oferecer predição própria."
+        },
+        {
+          "id": "EDGE-026",
+          "index": 7,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define TextPredictionEnabled=0. O serviço de predição de texto do Edge deixa de gerar sugestões para campos de texto elegíveis.",
+          "afterExists": true,
+          "after": "Define TextPredictionEnabled=0. O serviço de predição de texto do Edge deixa de gerar sugestões para campos de texto elegíveis. Compatibilidade revisada: Desativa predição do serviço em campos elegíveis; sites podem oferecer predição própria."
+        },
+        {
+          "id": "EDGE-026",
+          "index": 7,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 104
+        },
+        {
+          "id": "EDGE-027",
+          "index": 8,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Não controla pesquisa visual em Captura da Web, gerida por WebCaptureEnabled."
+        },
+        {
+          "id": "EDGE-027",
+          "index": 8,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Não controla pesquisa visual em Captura da Web, gerida por WebCaptureEnabled."
+        },
+        {
+          "id": "EDGE-027",
+          "index": 8,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define VisualSearchEnabled=0. Remove a pesquisa visual por hover, menu de contexto e integração de pesquisa lateral para imagens.",
+          "afterExists": true,
+          "after": "Define VisualSearchEnabled=0. Remove a pesquisa visual por hover, menu de contexto e integração de pesquisa lateral para imagens. Compatibilidade revisada: Não controla pesquisa visual em Captura da Web, gerida por WebCaptureEnabled."
+        },
+        {
+          "id": "EDGE-027",
+          "index": 8,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 95
+        },
+        {
+          "id": "EDGE-028",
+          "index": 9,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Desativa salvar/preencher associações; não apaga dados existentes."
+        },
+        {
+          "id": "EDGE-028",
+          "index": 9,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Desativa salvar/preencher associações; não apaga dados existentes."
+        },
+        {
+          "id": "EDGE-028",
+          "index": 9,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define AutofillMembershipsEnabled=0. O Edge deixa de salvar e preencher automaticamente dados como programa e número de associação.",
+          "afterExists": true,
+          "after": "Define AutofillMembershipsEnabled=0. O Edge deixa de salvar e preencher automaticamente dados como programa e número de associação. Compatibilidade revisada: Desativa salvar/preencher associações; não apaga dados existentes."
+        },
+        {
+          "id": "EDGE-028",
+          "index": 9,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 110
+        },
+        {
+          "id": "EDGE-029",
+          "index": 10,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Mantém corretores locais; sem efeito se SpellcheckEnabled ou corretor do usuário já estiver desligado."
+        },
+        {
+          "id": "EDGE-029",
+          "index": 10,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Mantém corretores locais; sem efeito se SpellcheckEnabled ou corretor do usuário já estiver desligado."
+        },
+        {
+          "id": "EDGE-029",
+          "index": 10,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define MicrosoftEditorProofingEnabled=0. O Edge deixa de usar o serviço Microsoft Editor para correção avançada; mecanismos locais de correção podem continuar disponíveis.",
+          "afterExists": true,
+          "after": "Define MicrosoftEditorProofingEnabled=0. O Edge deixa de usar o serviço Microsoft Editor para correção avançada; mecanismos locais de correção podem continuar disponíveis. Compatibilidade revisada: Mantém corretores locais; sem efeito se SpellcheckEnabled ou corretor do usuário já estiver desligado."
+        },
+        {
+          "id": "EDGE-029",
+          "index": 10,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 105
+        },
+        {
+          "id": "EDGE-030",
+          "index": 11,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Faz APIs de consulta informarem ausência de meios de pagamento; não remove meios salvos."
+        },
+        {
+          "id": "EDGE-030",
+          "index": 11,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Faz APIs de consulta informarem ausência de meios de pagamento; não remove meios salvos."
+        },
+        {
+          "id": "EDGE-030",
+          "index": 11,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define PaymentMethodQueryEnabled=0. Sites que usam PaymentRequest são informados de que não há métodos de pagamento disponíveis para consulta.",
+          "afterExists": true,
+          "after": "Define PaymentMethodQueryEnabled=0. Sites que usam PaymentRequest são informados de que não há métodos de pagamento disponíveis para consulta. Compatibilidade revisada: Faz APIs de consulta informarem ausência de meios de pagamento; não remove meios salvos."
+        },
+        {
+          "id": "EDGE-030",
+          "index": 11,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 80
+        },
+        {
+          "id": "EDGE-031",
+          "index": 12,
+          "field": "activationNote",
+          "beforeExists": true,
+          "before": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+          "afterExists": true,
+          "after": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política. Revisão 21/10/2026: Envia somente diagnóstico obrigatório. Não é desativação de toda telemetria e torna EDGE-018 redundante."
+        },
+        {
+          "id": "EDGE-031",
+          "index": 12,
+          "field": "compatibilityNote",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": "Envia somente diagnóstico obrigatório. Não é desativação de toda telemetria e torna EDGE-018 redundante."
+        },
+        {
+          "id": "EDGE-031",
+          "index": 12,
+          "field": "description",
+          "beforeExists": true,
+          "before": "Define DiagnosticData=1 (RequiredData). Mantém apenas dados de diagnóstico obrigatórios, evitando a opção de dados diagnósticos opcionais sem configurar o modo Off que a Microsoft marca como não recomendado.",
+          "afterExists": true,
+          "after": "Define DiagnosticData=1 (RequiredData). Mantém apenas dados de diagnóstico obrigatórios, evitando a opção de dados diagnósticos opcionais sem configurar o modo Off que a Microsoft marca como não recomendado. Compatibilidade revisada: Envia somente diagnóstico obrigatório. Não é desativação de toda telemetria e torna EDGE-018 redundante."
+        },
+        {
+          "id": "EDGE-031",
+          "index": 12,
+          "field": "reviewedWindowsEdgeMinimum",
+          "beforeExists": false,
+          "before": null,
+          "afterExists": true,
+          "after": 122
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+R3.2.23: remove aba Sobre redundante de Presets; mantém Geral, Avançado, Logs e Sobre do menu lateral.

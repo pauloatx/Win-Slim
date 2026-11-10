@@ -1,0 +1,14 @@
+﻿{
+  "schemaVersion": "1.0",
+  "phase": "FASE6.5-R4",
+  "plannerIterations": 3,
+  "transactionIterations": 4,
+  "endToEndIterations": 2,
+  "transactionItems": 18,
+  "benchmarkIsGate": false,
+  "notes": [
+    "Benchmark diagnostico; equivalencia/regressao e o gate.",
+    "Compara fallback legado direto contra APIs canônicas promovidas.",
+    "End-to-end mede Policy + Planner + Preview + Transaction NoPersist."
+  ]
+}

@@ -1,0 +1,9 @@
+﻿FASE 6 R3 - Planner Deep Validation
+
+Execute em Windows PowerShell 5.1, preferencialmente como Administrador:
+
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase6-R3-PlannerValidation.ps1
+
+O harness é não destrutivo. Ele não aplica tweaks ao Windows.
+Ele usa contextos sintéticos para validar PresetPolicyEngine -> Planner, dependências, risco, restart, fingerprints e shape transacional.

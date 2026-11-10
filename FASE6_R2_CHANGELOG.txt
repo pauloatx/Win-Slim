@@ -1,0 +1,13 @@
+﻿Win-Slim Suite - FASE 6 R2
+
+- Baseline R1 congelada por SHA-256.
+- Novo presets/WinSlim-PresetRules-R2.json.
+- Novo src/Core/PresetPolicyEngine.ps1, camada pura.
+- 16 perfis condicionais: 5 Hardware + 11 Workload.
+- Todos os perfis exigem opt-in explícito.
+- WS-ADV-002 e WS-ADV-003 exigem consentimento adicional AllowHighRiskConditional.
+- ManualOnly, Maintenance e Diagnostic não podem ser injetados por preset/overlay.
+- Conflitos declarados, mutex e conflitos de nível multilevel bloqueiam a resolução; nunca há escolha silenciosa.
+- Dependências permanecem sob responsabilidade do Planner.
+- Balanceado/Gamer/Extremo permanecem exatamente 105/129/168 sem overlays.
+- Nenhuma alteração em Planner R1, Transaction Manager R13, Providers ou nos 230 tweaks.

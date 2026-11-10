@@ -1,0 +1,17 @@
+﻿Win-Slim Suite - FASE 5 R1.1 / Correção de harness
+Data: 2026-10-04
+
+CAUSA DA FALHA DA R1
+- O Planner calculou o risco a partir de valores UTF-8 com "Médio".
+- tests/Test-Fase5-WorkloadCatalog.ps1 estava em UTF-8 sem BOM.
+- Windows PowerShell 5.1 interpreta scripts sem BOM pela code page ANSI do sistema.
+- Assim, o literal acentuado usado na asserção podia virar mojibake (ex.: MÃ©dio), gerando falso negativo apesar do RiskSummary.Medium estar correto.
+
+CORREÇÕES
+1. Test-Fase5-WorkloadCatalog.ps1 salvo como UTF-8 com BOM.
+2. MmcssProvider.ps1 normalizado para UTF-8 com BOM (GamePriorityProvider já estava com BOM).
+3. TEST 09 agora valida semanticamente o nível com Get-WinSlimPlannerRiskRank e imprime diagnóstico completo Low/Medium/High/Highest em caso de falha.
+4. Transaction.ps1 R13, Planner.ps1 R1, RegistryProvider.ps1 e catálogo Seal permanecem funcionalmente inalterados.
+
+OBJETIVO
+- Eliminar falso negativo específico do Windows PowerShell 5.1 sem alterar o Planner aprovado na Fase 4.

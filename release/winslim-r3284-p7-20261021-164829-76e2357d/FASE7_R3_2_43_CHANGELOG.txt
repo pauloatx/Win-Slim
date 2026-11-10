@@ -1,0 +1,1 @@
+R3.2.43: antecipa primeira coleta de desempenho; coleta imediata ao retornar ao Dashboard; consultas CIM limitadas ao total/campos necessarios com tempos preservados; formulas reais e falhas isoladas preservadas; teste de coletor. Windows pendente.

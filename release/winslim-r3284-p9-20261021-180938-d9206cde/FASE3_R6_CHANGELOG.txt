@@ -1,0 +1,9 @@
+﻿Win-Slim Suite - Fase 3 R6
+
+- operations.json virou journal compacto para recovery.
+- Remove reserializacao repetida de ApplyResult/VerifyResult/StateBefore/StateAfter/BackupData a cada Save-Transaction.
+- BackupData continua persistido ANTES do Apply em Backups/<TransactionId>/ e e reidratado no Import-WinSlimTransaction.
+- Recovery continua LIFO e usa o primeiro backup imutavel.
+- Mantem transaction.json metadata-only, plan.json e rollback.json.
+- Adiciona preflight R6 para validar o formato compacto do journal.
+- Objetivo: eliminar o hang reproduzido no Windows PowerShell 5.1 em SAVE / operations.json apos Verify.

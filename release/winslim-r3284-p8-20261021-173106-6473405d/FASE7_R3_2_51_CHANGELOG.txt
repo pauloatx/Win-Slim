@@ -1,0 +1,6 @@
+R3.2.51 — legibilidade dos overlays
+- Texto selecionado escuro no modo claro, branco original no modo escuro.
+- Título e estados de hover/seleção sem branco fixo sobre fundos claros.
+- Teste de contraste de texto e restauração do tema escuro.
+- Motor, catálogo e revisões anteriores preservados.
+- Compilação e execução da R3.2.51 pendentes no Windows.

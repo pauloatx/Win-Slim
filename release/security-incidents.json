@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "incidents": [
+    {
+      "id": "AV-20261021-001",
+      "status": "component-contained",
+      "detection": "VHO:Trojan-PSW.Win32.Disco.gen",
+      "families": [
+        "PresentMonHarness",
+        "MonitorHarness"
+      ],
+      "blockedScopes": [
+        "affected-test-component-generation-and-execution",
+        "application-package-publication",
+        "production-release"
+      ],
+      "independentWork": "Data-only production-class fixtures and official PresentMon integration authorized; current 26-case gate uses independent DLL-only components under review REVISAO-TECNICA-GATE-R3.2.84.md. Never build/execute held harness sources. Package publication and production remain held; nothing resolves the recurring manufacturer incident.",
+      "resumeCriteria": [
+        "Review the new exact-build detection and preserved pre-launch compiler/source/artifact provenance, retaining the original missing SHA separately.",
+        "Obtain technical resolution for the recurring block (manufacturer analysis/current databases or justified reviewed code correction); an owner assessment alone does not make an antivirus-denied launch succeed.",
+        "No antivirus deactivation/exclusions, renamed retries or automatic quarantine restore. No further affected execution under the now-suspended local authorization.",
+        "Any subsequent controlled execution requires a documented scope decision based on the new evidence, fresh provenance, complete current-registry gate and WPF; failures approve nothing.",
+        "Application package publication and production stay blocked; hosted CI and remaining physical acceptances are still required."
+      ],
+      "detectedPath": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\winslim-pm-regression-cc4b47d828ae4072bf20a60ac85ffd67\\PresentMonHarness.exe",
+      "detectedLocalTime": "2026-10-21T15:03:27",
+      "detectedSampleSHA256": null,
+      "reason": "Project owner assessed false positive and authorized controlled local tests; new current build was detected again by Kaspersky at 2026-10-22 06:58:39, launch denied. Conditional local authorization suspended; do not retry, rename, exclude or restore quarantine.",
+      "resolution": null,
+      "localValidationHistory": [
+        {
+          "status": "controlled-local-validation",
+          "assessmentRecord": "release/security-owner-assessment-AV-20261021-001.json",
+          "authorizedScopes": [
+            "affected-test-component-generation-and-execution",
+            "full-regression-gate"
+          ],
+          "endedBecause": "Confirmed recurrent detection at 2026-10-22 06:58:39 local; controlled gate stopped before MonitorHarness"
+        }
+      ],
+      "recurrences": [
+        {
+          "localTime": "2026-10-22T06:58:39",
+          "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\winslim-pm-regression-3b9cadb7c8504a0183e958f028c1b4e9\\PresentMonHarness.exe",
+          "sampleSHA256": "b1cd7b2617e6cda191d3d01b053ecca38316b26dfd9caced2093f0438236e1d6",
+          "provenanceRecord": "logs/test-artifacts/artifact-f1497f0ec7c540c5a0e2a153814bdb76.json",
+          "evidence": "logs/av-owner-review-20261022/recurrence-correlation.json",
+          "originalSample": false,
+          "launchSucceeded": false
+        }
+      ],
+      "independentProviderReview": {
+        "report": "docs/PRESENTMON-OFICIAL-INTEGRACAO-R3.2.84.md",
+        "provider": "official PresentMon console 2.6.0 x64",
+        "sha256": "b2a706bc6ad475749e3b7e3409263aa1e6906d45bdcf993f6dbc0f660188f1af",
+        "signatureVerified": "Valid / Intel Corporation",
+        "officialScanDetected": 0,
+        "officialIsolatedPassed": true,
+        "officialBackendIntegrationPassed": true,
+        "physicalGameAcceptance": true,
+        "physicalGameAcceptanceNote": "Responsavel testou build R3.2.84 (62eb3819580efa1d1e80151e9934646b796572fe2e9ac786bdb961241a04de62) em jogo real (Cities.exe) com overlay ativo; 30s de captura com troca de tema do overlay durante a captura; FrameTime comparado; tudo passou sem erro/dialogo/OverflowException.",
+        "heldHarnessesRebuilt": false,
+        "historicalIncidentResolved": false,
+        "fullGatePassed": true,
+        "fullGateSuites": 28,
+        "fullGateReport": "logs/regressao-20261027-023740-948-e5a40289/resultado.json",
+        "productionApproved": false
+      },
+      "scopeDecision": {
+        "status": "component-contained",
+        "record": "REVISAO-TECNICA-GATE-R3.2.84.md",
+        "manifest": "release/review.json",
+        "date": "2026-10-23",
+        "authority": "project-owner-authorized-technical-review",
+        "effect": "FullRegressionGate allowed only through reviewed contained scope; held families remain blocked."
+      },
+      "scopeReview": {
+        "authority": "project-owner-authorized-technical-review",
+        "record": "REVISAO-TECNICA-GATE-R3.2.84.md",
+        "manifest": "release/review.json",
+        "manifestSHA256": "1998028bbb317084f3884b56f9d4e1627048dade20a4832a64957f2edb5a346c",
+        "historicalIncidentResolved": false,
+        "productionApproved": false,
+        "fullGatePassed": true,
+        "fullGateSuites": 28,
+        "fullGateReport": "logs/regressao-20261027-023740-948-e5a40289/resultado.json",
+        "candidateExeSHA256": "62eb3819580efa1d1e80151e9934646b796572fe2e9ac786bdb961241a04de62",
+        "visualValidationPassed": true,
+        "visualValidationReport": "docs/VALIDACAO-UI-HOTKEY-WPARAM-VM-20261026.md",
+        "themeValidationPassed": true,
+        "themeValidationReport": "docs/OVERLAY-TEMAS-R3.2.84-20261026.md",
+        "realGameCaptureAcceptance": true,
+        "realGameCaptureNote": "Responsavel testou build R3.2.84 em Cities.exe; 30s captura com overlay ativo e troca de tema durante captura; FrameTime comparado; sem erro/dialogo/OverflowException."
+      }
+    }
+  ]
+}

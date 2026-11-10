@@ -1,0 +1,32 @@
+Win-Slim Suite - FASE 3 R2 (Transaction Manager)
+Data: 2026-10-04
+
+Motivo da revisao
+-----------------
+No Windows PowerShell 5.1, TEST 01 travou depois que commit1.txt foi criado e
+antes que ApplyResult/StateBefore/BackupData fossem persistidos. A evidencia
+forense mostrou Status=Applying e nenhum arquivo de backup individual.
+
+Correcoes e melhorias
+---------------------
+1. Copy-TransactionObject nao usa mais ConvertTo-Json/ConvertFrom-Json para
+   clonar objetos em memoria. Agora faz clone previsivel de escalares,
+   byte[], arrays, dictionaries e PSCustomObject de contrato.
+2. Novo BackupHandler opcional, executado e persistido ANTES do Apply.
+   Isso fecha a janela de crash entre mutacao e persistencia do StateBefore.
+3. Primeiro backup por TweakId continua imutavel e e reutilizado em aplicacoes
+   repetidas dentro da mesma transacao.
+4. trace.log por transacao com checkpoints:
+   BEGIN, BACKUP-HANDLER, BACKUP PERSIST, APPLY, RESULT COPY, VERIFY, COMPLETE.
+5. Exit-WinSlimTransactionLock remove o arquivo .lock quando possivel depois
+   de liberar o FileStream. O FileStream com FileShare.None continua sendo a
+   autoridade real do lock.
+6. Harness Fase 3 atualizado para usar BackupHandler pre-apply em todos os
+   cenarios.
+
+Compatibilidade
+---------------
+- Windows PowerShell 5.1 mantido.
+- Fallback pos-Apply via StateBefore continua disponivel para compatibilidade,
+  mas a integracao real da Fase 3.1 deve usar pre-backup.
+- Fase 2.1B e Providers nao foram alterados por esta revisao.

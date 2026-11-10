@@ -1,0 +1,13 @@
+{
+  "schema": "WinSlim.CustomPreset/v1",
+  "name": "Teste lote Edge preferencias R3.2.84",
+  "basePreset": "Custom",
+  "catalogCount": 230,
+  "selectedIds": [
+    "EDGE-019",
+    "EDGE-020",
+    "EDGE-024",
+    "EDGE-025"
+  ],
+  "levelSelections": {}
+}

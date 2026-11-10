@@ -1,0 +1,11 @@
+Win-Slim Suite - FASE 3 R5
+
+Correcoes sobre R4:
+- Corrige a segunda enumeracao de arrays causada por ConvertTo-TransactionJsonData no Windows PowerShell 5.1.
+- Copy-TransactionObject ja preservava @(), mas o wrapper ConvertTo-TransactionJsonData usava return (...) e reenumerava a colecao.
+- ConvertTo-TransactionJsonData agora usa Write-Output -NoEnumerate para qualquer IEnumerable nao-string.
+- TEST 00 agora valida tres camadas separadamente: clone, wrapper JSON e arquivo persistido.
+- TEST 00 virou hard gate: se falhar, TEST 01+ nao rodam.
+- O probe reporta o conteudo real persistido para diagnostico imediato.
+
+Nenhum Provider, catalog.json, WinSlimSuite.ps1 ou Legacy foi alterado nesta revisao.

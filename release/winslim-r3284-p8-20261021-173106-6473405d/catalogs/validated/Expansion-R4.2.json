@@ -1,0 +1,532 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "Win-Slim Suite Fase 5 R4.2 - Curated Catalog Expansion III",
+  "count": 13,
+  "visibility": "ValidatedBackendOnlyUntilPhase7",
+  "sources": [
+    "Microsoft Learn policy documentation",
+    "Win-Slim existing RegistryProvider/Planner/Transaction architecture"
+  ],
+  "tweaks": [
+    {
+      "id": "PRIV-019",
+      "name": "Diagnóstico do Windows - Não enviar nome do dispositivo",
+      "plainName": "Impedir envio do nome do dispositivo nos dados de diagnóstico",
+      "description": "Define AllowDeviceNameInDiagnosticData=0 conforme a política oficial do Windows. O nome do dispositivo não é incluído nos dados de diagnóstico enviados à Microsoft.",
+      "category": "Privacidade",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "None",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - System Policy CSP / AllowDeviceNameInDiagnosticData",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+          "Name": "AllowDeviceNameInDiagnosticData",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política é aplicada pelo Windows após atualização da configuração; alguns componentes podem reler o valor na próxima inicialização.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "PRIV-020",
+      "name": "Área de Transferência - Histórico desativado",
+      "plainName": "Desativar histórico da Área de Transferência do Windows",
+      "description": "Define AllowClipboardHistory=0. O Windows deixa de armazenar histórico de itens copiados para o recurso Win+V. Pode reduzir conveniência para quem usa o histórico de clipboard.",
+      "category": "Privacidade",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "None",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Experience Policy CSP / AllowClipboardHistory",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+          "Name": "AllowClipboardHistory",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política é aplicada pelo Windows após atualização da configuração; alguns componentes podem reler o valor na próxima inicialização.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "SEARCH-001",
+      "name": "Pesquisa do Windows - Indexação em unidades removíveis desativada",
+      "plainName": "Impedir indexação de locais em unidades removíveis",
+      "description": "Define DisableRemovableDriveIndexing=1. Locais em unidades removíveis não podem ser adicionados às bibliotecas e não são indexados pelo Windows Search.",
+      "category": "Pesquisa",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Search Policy CSP / DisableRemovableDriveIndexing",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+          "Name": "DisableRemovableDriveIndexing",
+          "Value": 1,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-022",
+      "name": "Microsoft Edge - Predição de rede desativada",
+      "plainName": "Desativar prefetch/preconnect/prerender de rede no Edge",
+      "description": "Define NetworkPredictionOptions=2 (NetworkPredictionNever). Desativa predição de rede do Edge, incluindo DNS prefetch, TCP/SSL preconnection e prerendering.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy NetworkPredictionOptions",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "NetworkPredictionOptions",
+          "Value": 2,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-023",
+      "name": "Microsoft Edge - Pré-carregamento da nova guia desativado",
+      "plainName": "Desativar preload da página de nova guia do Edge",
+      "description": "Define NewTabPagePrerenderEnabled=0. O Edge não pré-carrega a página de nova guia em segundo plano.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy NewTabPagePrerenderEnabled",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "NewTabPagePrerenderEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-024",
+      "name": "Microsoft Edge - Sugestões para páginas com erro desativadas",
+      "plainName": "Desativar serviço web para sugerir páginas em erros de navegação",
+      "description": "Define AlternateErrorPagesEnabled=0. O Edge usa a página de erro padrão sem consultar o serviço web para gerar sugestões de URL/pesquisa em erros de conectividade.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy AlternateErrorPagesEnabled",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "AlternateErrorPagesEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-025",
+      "name": "Microsoft Edge - Sugestões de pesquisa desativadas",
+      "plainName": "Desativar sugestões web na barra de endereços do Edge",
+      "description": "Define SearchSuggestEnabled=0. Sugestões web deixam de ser consultadas; histórico e favoritos locais ainda podem aparecer.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy SearchSuggestEnabled",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "SearchSuggestEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-026",
+      "name": "Microsoft Edge - Predição de texto desativada",
+      "plainName": "Desativar predição de texto do Microsoft Turing no Edge",
+      "description": "Define TextPredictionEnabled=0. O serviço de predição de texto do Edge deixa de gerar sugestões para campos de texto elegíveis.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy TextPredictionEnabled",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "TextPredictionEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-027",
+      "name": "Microsoft Edge - Pesquisa visual desativada",
+      "plainName": "Desativar Visual Search do Edge",
+      "description": "Define VisualSearchEnabled=0. Remove a pesquisa visual por hover, menu de contexto e integração de pesquisa lateral para imagens.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy VisualSearchEnabled",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "VisualSearchEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-028",
+      "name": "Microsoft Edge - Autofill de associações desativado",
+      "plainName": "Desativar salvamento e preenchimento de dados de associações",
+      "description": "Define AutofillMembershipsEnabled=0. O Edge deixa de salvar e preencher automaticamente dados como programa e número de associação.",
+      "category": "Microsoft Edge",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy AutofillMembershipsEnabled",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "AutofillMembershipsEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-029",
+      "name": "Microsoft Edge - Microsoft Editor online desativado",
+      "plainName": "Usar apenas mecanismos locais de correção no Edge",
+      "description": "Define MicrosoftEditorProofingEnabled=0. O Edge deixa de usar o serviço Microsoft Editor para correção avançada; mecanismos locais de correção podem continuar disponíveis.",
+      "category": "Microsoft Edge",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy MicrosoftEditorProofingEnabled",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "MicrosoftEditorProofingEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-030",
+      "name": "Microsoft Edge - Consulta de métodos de pagamento bloqueada",
+      "plainName": "Impedir sites de consultar métodos de pagamento disponíveis",
+      "description": "Define PaymentMethodQueryEnabled=0. Sites que usam PaymentRequest são informados de que não há métodos de pagamento disponíveis para consulta.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy PaymentMethodQueryEnabled",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "PaymentMethodQueryEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-031",
+      "name": "Microsoft Edge - Diagnóstico limitado ao obrigatório",
+      "plainName": "Enviar somente diagnóstico obrigatório do Microsoft Edge",
+      "description": "Define DiagnosticData=1 (RequiredData). Mantém apenas dados de diagnóstico obrigatórios, evitando a opção de dados diagnósticos opcionais sem configurar o modo Off que a Microsoft marca como não recomendado.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy DiagnosticData",
+        "Win-Slim Phase 5 R4.2"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "DiagnosticData",
+          "Value": 1,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Fechar e reabrir o aplicativo/superfície afetada garante a leitura da política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    }
+  ]
+}

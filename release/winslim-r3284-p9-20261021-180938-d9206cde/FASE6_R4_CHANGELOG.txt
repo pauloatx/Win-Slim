@@ -1,0 +1,37 @@
+﻿Win-Slim Suite - FASE 6 R4
+
+Status: candidato a gate final da FASE 6.
+Baseline: FASE 6 R3 aprovada, backend 230 tweaks.
+
+Adicionado:
+- src/Core/PresetPreview.ps1
+  * Preview puro para UI/auditoria.
+  * PreviewFingerprint determinístico.
+  * resumo de selecionados/dependências/executáveis/skips/blocks.
+  * risco, restart, warnings e itens ordenados.
+  * binding Preview/ExecutionPlan por PlannerFingerprint + ordem + Level.
+  * handoff seguro Get-WinSlimPreviewTransactionItems.
+- specs/FASE6-R4-baseline.json
+- specs/FASE6-R4-scenarios.json
+- tests/Test-Fase6-R4-PreviewTransaction.ps1
+
+Congelado/inalterado:
+- 230 tweaks do backend.
+- Planner R1.
+- Transaction Manager R13.
+- PresetResolver R1.
+- PresetPolicyEngine R2.
+- PresetPlannerValidator R3.
+- Providers e catálogos.
+
+Testes R4:
+- baseline R3 congelada.
+- Preview puro e determinístico.
+- Balanceado/Gamer/Extremo preservados.
+- overlays, Skip, PendingReboot e risco Alto visíveis.
+- proteção TOCTOU Preview/Plan.
+- commit sintético via Transaction Manager em NoPersist.
+- falha sintética posterior + rollback LIFO.
+- nenhuma mutação real do Windows no harness.
+
+Se aprovado: FASE 6 concluída; próximo gate FASE 6.5 (cleanup/refactor/performance).

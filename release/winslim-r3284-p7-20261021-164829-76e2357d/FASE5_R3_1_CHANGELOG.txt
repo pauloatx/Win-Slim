@@ -1,0 +1,11 @@
+﻿Win-Slim Suite - FASE 5 R3.1
+
+Correção de gate do harness no Windows PowerShell 5.1.
+
+- Nenhuma alteração em Transaction.ps1 R13.
+- Nenhuma alteração em Planner.ps1 R1.
+- Nenhuma alteração nos Providers R2.1.
+- Nenhuma alteração nos catálogos Advanced/Game-Workload.
+- TEST 07 agora valida WS-ADV-001 e WS-ADV-002 individualmente por TweakId e RollbackStatus/Status.
+- Removida do gate a seleção intermediária baseada em -in, que produziu falso negativo apesar de Transaction.Status=RolledBack e estado físico restaurado.
+- Em falha, o harness imprime Sequence/Id/Changed/Status/RollbackStatus de todos os Steps.

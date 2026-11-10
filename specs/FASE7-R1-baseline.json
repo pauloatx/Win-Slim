@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "FASE7-R1",
+  "basePhase": "FASE6.5-R4.1",
+  "scope": "Shell principal, navegacao e tema; UI sem mutacao direta do Windows",
+  "backendExpectedCount": 230,
+  "presetExpectedCounts": {
+    "Balanceado": 105,
+    "Gamer": 129,
+    "Extremo": 168
+  },
+  "theme": {
+    "background": "#080808",
+    "panels": [
+      "#111111",
+      "#151515"
+    ],
+    "accent": "#FF7A00",
+    "accentLight": "#FF9A2E",
+    "accentDark": "#C85A00"
+  },
+  "r1Files": {
+    "WinSlimSuite.Fase7.ps1": "231d1507db57c5e8cf87f9e162f6063201c638595562da4c792c0d68af2e63b7",
+    "Executar-WinSlim.bat": "e5581cbcfbbc63f7379552f8929f0977310fa2587c5691a6b485bee34e27e2e2",
+    "Executar-WinSlim-Legado.bat": "f6532a8064f65e20188751f4f8f44edd86723898c1206fef7e0187588255fc99",
+    "src/UI/Fase7/WinSlimShell.ps1": "7ebae14f7f138ac189d8e621bd8f773303ff9d1dd088c8b6c29f76f85b513466",
+    "src/UI/Fase7/WinSlimShell.xaml": "96b278ba56bc0f64c65137d5ee711b2823a337bf30147ae26b1d2c766ce1fa07",
+    "tests/Test-Fase7-R1-UI.ps1": "b147ab12384dfeacda1d0299a63d7da7c0e3964f72061dd4c28fd5cfc3b610b9",
+    "FASE7_R1_CHANGELOG.txt": "ad3c38f54c3f6ff485ba62a02d59886cddaffb4d711c2736024d7483bc6d26db",
+    "FASE7-R1-LEIA-ME.md": "03ab1d91dcbc29e0afb947eb20fcdc3ffa8fa703288a270cac2caf689ba41869"
+  },
+  "protectedBaseline": "specs/FASE6.5-R4-baseline.json"
+}

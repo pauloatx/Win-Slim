@@ -1,0 +1,27 @@
+﻿Win-Slim Suite - FASE 5 R3.3
+
+Correção do escopo dos handlers Advanced Providers no Windows PowerShell 5.1.
+
+Causa confirmada na R3.2:
+- TEST 07 falhava no Backup pre-apply de WS-ADV-001;
+- erro real: Get-WinSlimBridgeProperty não era visível dentro do handler;
+- New-WinSlimAdvancedTransactionHandlers usava ScriptBlock.GetNewClosure();
+- no Windows PowerShell 5.1, GetNewClosure cria um módulo dinâmico com session state próprio;
+- o handler posterior não resolvia as funções auxiliares dot-sourced do bridge.
+
+Mudanças R3.3:
+- removido GetNewClosure dos três handlers transacionais;
+- adicionados handlers nomeados Apply/Backup/Undo no session state normal;
+- fallbacks e ArgumentResolver passam a ser armazenados em Context.AdvancedProviderHandlerRuntime;
+- factory exige -Context e devolve ScriptBlocks estáticos das funções de handler;
+- TEST 07 adiciona probe direto do BackupHandler antes da transação;
+- TEST 07 continua exigindo falha somente em F5R3-FAIL e rollback real de WS-ADV-001/002.
+
+Inalterados:
+- Transaction Manager R13;
+- Planner R1;
+- CoreParkingProvider;
+- CpuAffinityProvider;
+- GpuInterruptAffinityProvider;
+- RegistryProvider/PowerCfg/ScheduledTask;
+- catálogos base/Game-Workload/Advanced.

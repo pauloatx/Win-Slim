@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "phase": "FASE 7 R3.2.5",
+  "parentApproved": "FASE 6.5 R4.1 + FASE 7 R3.1.1; R3.2.4 preservada para auditoria; R3.2.4 compilou/self-test passou mas falhou no logger AppendAllLines do PS5.1",
+  "r325Files": {
+    "Build-NativeUI-R3.2.5.ps1": "34187e41fe039b0a7a36d0ec6a59a63c24f4b9623b7d0c3c709e72f28400f91a",
+    "Executar-WinSlim-R3.2.5.bat": "e1ef5269d9116177fd1c9017f912a25c49f40a366e60e5498853d76ebef10469",
+    "src\\UI\\Native\\R3_2_5\\Program.cs": "036ca3c88229d61fa4b47f4e1616e5fc04083f45b3f5a6267ec5de484f739ee9",
+    "src\\UI\\Native\\R3_2_5\\BridgeClient.cs": "e9ca4442e555a22fdf4bd0ce7ea2fb90515d380df15f2468047c3045eadbe887",
+    "src\\UI\\Native\\R3_2_5\\MainWindowController.cs": "263d12db1d033402709f6973f435521e74bc1331e547310fe7cfe02c882e6d6a",
+    "src\\UI\\Native\\R3_2_5\\WinSlimShell.xaml": "89669ac24c8dc739fc612b24c9866d277f839c430217a42d61a61375aab8a45f",
+    "src\\UI\\Native\\R3_2_5\\WinSlim.UiBridge.ps1": "1d3f73c53ef1ca09f2e9c2e896af8b43eea1261d36c94cb2942398d60edca6dc",
+    "src\\UI\\Native\\R3_2_5\\WinSlim.UI.Native.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "src\\UI\\Native\\R3_2_5\\WinSlim.NativeUI.manifest": "ece7b1b8b42616dbc201a170e661e7b71800fc12b2c186e0c2d9460dad857094",
+    "tests\\Test-Fase7-R3.2.5-NativeUI.ps1": "c5678cdda6a66660cef990a13f2f873ebc62e9c00023a2e6a077cffd603a7c17",
+    "FASE7_R3_2_5_CHANGELOG.txt": "ea592e67ed50961080d18009e42b36073c308b01ad92b9df56b834eb6e1196a8",
+    "FASE7-R3.2.5-LEIA-ME.md": "de729ace2f0a9a2ebda73f59e9bbe0333545597f08e74a9c0d8c84c527954184",
+    "docs\\FASE7-R3.2.5-PS51-LOGGING-HOTFIX.md": "d47276be848060c67578c6fa78f2b414b6f27ef144d4432bfba5b577e7e87f13"
+  }
+}

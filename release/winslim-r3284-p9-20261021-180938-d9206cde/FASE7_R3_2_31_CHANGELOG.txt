@@ -1,0 +1,1 @@
+R3.2.31: botao Voltar no topo dos detalhes do tweak, com destaque sutil; fecha os detalhes e ativa a janela anterior sem alterar categoria, busca, rolagem ou selecao. R3.2.30 aprovada no gate Windows enviado. Nova validacao Windows pendente.

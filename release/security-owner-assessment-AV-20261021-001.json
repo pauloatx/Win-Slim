@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "incidentId": "AV-20261021-001",
+  "dateLocal": "2026-10-22",
+  "assessmentAuthority": "project-owner-user",
+  "ownerConclusion": "false-positive",
+  "ownerStatementVerbatim": "Concluí minha análise e considero a detecção um falso positivo.",
+  "supportingStatementVerbatim": "erro no banco de dados atualizei e rodei o teste e passou",
+  "evidenceClassification": "owner-reported database update and successful retest; not independently correlated to an exact artifact yet",
+  "reportedDatabaseErrorIndependentlyConfirmed": false,
+  "databaseVersionProvided": null,
+  "ownerRetestNameTimeHashLogProvided": null,
+  "originalSampleSHA256": null,
+  "manufacturerVerdictProvided": false,
+  "manufacturerCaseReference": null,
+  "manufacturerFalsePositiveConclusion": null,
+  "authorizationVerbatim": "Autorizar compilação e execução local controladas dos auxiliares e retomada do gate completo, sem liberar produção.",
+  "authorizedScopes": [
+    "affected-test-component-generation-and-execution",
+    "full-regression-gate"
+  ],
+  "stillBlockedScopes": [
+    "application-package-publication",
+    "production-release"
+  ],
+  "conditions": [
+    "Antivirus remains active; no exclusions or automatic quarantine restoration",
+    "Preserve historical evidence and do not rename helpers to evade detection",
+    "Record compiler, sources and new artifact hashes before execution; never substitute new hashes for the original missing sample",
+    "Fresh complete gate and WPF results are required; a passed test does not prove manufacturer clearance or production acceptance",
+    "Stop controlled gate at first failure; new detection requires retaining evidence and stopping affected execution"
+  ],
+  "productionApproved": false,
+  "corroboratingUpdateTask": {
+    "report": "logs/av-owner-review-20261022/antivirus-updater-report.txt",
+    "taskStartedLocal": "2026-10-22T05:33:33",
+    "taskCompletedLocal": "2026-10-22T05:34:16",
+    "doesNotConfirmOriginalDetectionCause": true
+  },
+  "operationalAuthorizationStatus": "suspended-after-recurrent-detection",
+  "newEvidence": "logs/av-owner-review-20261022/recurrence-correlation.json"
+}

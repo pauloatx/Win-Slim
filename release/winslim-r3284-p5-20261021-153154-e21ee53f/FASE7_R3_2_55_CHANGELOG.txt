@@ -1,0 +1,7 @@
+R3.2.55 — correções da leitura real
+- HKU e HKU: resolvem HKEY_USERS sem drive PowerShell adicional.
+- AutomaticDelayedStart compara StartMode e DelayedAutoStart DWORD.
+- Serviços ausentes preservados como ausentes.
+- Testes isolados dos casos identificados no relatório R3.2.54.
+- Revisões anteriores, Core, Providers e catálogo preservados.
+- Validação Windows pendente.

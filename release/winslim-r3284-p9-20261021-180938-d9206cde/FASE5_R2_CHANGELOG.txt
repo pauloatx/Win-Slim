@@ -1,0 +1,62 @@
+﻿Win-Slim Suite - FASE 5 R2 / Advanced Providers
+Data: 2026-10-04
+Baseline: Fase 5 R1.1 aprovada em Windows PowerShell 5.1.
+
+IMPLEMENTADO
+1. CoreParkingProvider.ps1
+   - CPMINCORES subgroup 54533251-82be-4824-96c1-47b60b740d00
+   - setting 0cc5b647-c1df-4637-891a-dec35c318583
+   - alvo Seal AC=100 / DC=100
+   - backup e Undo restauram os indices capturados; sem default inventado
+   - idempotencia e Applicable=false quando o setting nao e consultavel
+
+2. CpuAffinityProvider.ps1
+   - P/Invoke GetLogicalProcessorInformationEx(RelationProcessorCore)
+   - leitura de EfficiencyClass por core
+   - regra recuperada referência técnica: P-core = EfficiencyClass >= 1
+   - SKIP seguro quando P/E nao podem ser distinguidos
+   - SKIP para multiplos processor groups e >63 logicos no caminho ProcessorAffinity atual
+   - worker affinity-cs2.ps1 + tarefa WinSlimSuite-AffinityCs2
+   - backup de tarefa XML, bytes do worker e afinidade dos PIDs atuais
+   - Undo restaura tarefa/script e PIDs ainda existentes
+
+3. GpuInterruptAffinityProvider.ps1
+   - DevicePolicy=4
+   - AssignmentSetOverride REG_BINARY
+   - descoberta de GPU PCI por Get-PnpDevice, fallback Win32_VideoController
+   - minimo 8 processadores logicos
+   - mascara NAO hardcoded em 0x14
+   - politica TwoPhysicalCoreRepresentatives: um logical representativo de dois cores fisicos; em CPU hibrida prefere P-cores; evita CPU0 quando ha >=3 candidatos
+   - em layout SMT sintetico 0x3,0xC,0x30,0xC0 a politica produz 0x14 naturalmente
+   - backup/restore exato de existencia, tipo, valor e bytes por GPU PCI
+
+4. specs/Workload-advanced-pending.json
+   - status alterado para ProvidersImplementedAwaitingWindowsValidation
+   - itens continuam fora do catalogo ate o gate R2 passar
+
+5. WinSlimSuite.dev.ps1
+   - carrega os 3 Providers novos para desenvolvimento
+   - WinSlimSuite.ps1 de producao e catalogo executavel nao foram promovidos nesta etapa
+
+6. tests/Test-Fase5-R2-AdvancedProviders.ps1
+   - hashes da baseline R1.1
+   - parser dos 3 Providers
+   - Core Parking sintetico Apply/Undo/idempotencia
+   - P-core mask e guardrails
+   - CpuAffinity com adapter sintetico e rollback exato
+   - GPU mask dinamica e bytes little-endian
+   - GPU Provider real apenas em HKCU temporario
+   - topology API real em modo read-only
+   - nenhuma promocao prematura ao catalogo
+   - contrato ProviderResult
+
+SEGURANCA DO HARNESS
+- Nao executa powercfg /set* real.
+- Nao cria tarefa agendada real.
+- Nao altera ProcessorAffinity de processo real.
+- Nao altera HKLM de GPU real.
+- Le topologia real apenas para validar a API nativa.
+- Registro mutavel limitado a HKCU temporario, removido ao final.
+
+PROXIMO PASSO
+Se R2 passar em Windows real: FASE 5 R3, com promocao controlada dos 3 itens ao catalogo e expansao catalogal.

@@ -1,0 +1,16 @@
+﻿Win-Slim Suite - FASE 6.5 R1 MANIFEST
+
+Baseline: FASE 6 R4 aprovada
+Backend: 230 tweaks
+Planner/Transaction: congelados nesta R1
+
+Arquivos novos:
+19a1852b2f7f4bc9e861e3b7eb0fb3034a4b1686c33934368be2200872b51274  src/Core/CatalogRuntime.ps1
+8ce86d1db3b39b1348688ccd9a1bc6b4f2ca146d3f8287cc2174c2f11e854843  src/Core/PresetRuntime.ps1
+0623becf863fb34157d51e5aaa3ba0219e81335696cf1f6d505583cbd6b1de25  tests/Test-Fase6.5-R1-RuntimeOptimization.ps1
+925405c78f754113dd50bdbb839b0ab0b0b250bf2ecc5c19815cdf049203fa1a  tests/FASE6.5-R1-LEIA-ME.txt
+322a6f7aa818d890a6936b2fc57c0ffa4e5610c3363bc8fad901d084524f1184  specs/FASE6.5-R1-baseline.json
+ed63099e1ff35524013b34ce1466fe9494b3025d1bace843a9dab18c1cd6453c  specs/FASE6.5-R1-benchmark.json
+dac5e8d264ce15dc6898c71700fed8effd91bb7c5a7206ad434573f170095451  FASE6_5_R1_CHANGELOG.txt
+17e519d97564efc7d53ceb3dd90cc906202135673978dd9ec92929335db7b3dd  FASE6_5_STATUS.txt
+a844b3b5855b4cf523cee8eaee1e84a9a35e9f8df5d41cf88d2ac9f56ed0130f  benchmarks/README.txt

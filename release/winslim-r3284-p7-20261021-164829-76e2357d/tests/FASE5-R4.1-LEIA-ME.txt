@@ -1,0 +1,15 @@
+﻿Win-Slim Suite - FASE 5 R4.1 / Segunda Expansao Curada
+
+Baseline: FASE 5 R4 APROVADA (202 backend).
+
+Este subgate adiciona 15 politicas documentadas pela Microsoft em um modulo validado separado:
+- 2 Windows/Search/Explorer
+- 13 Microsoft Edge
+
+Contagem alvo: 202 + 15 = 217 backend validado.
+A UI/autoload legado permanece em 187 ate a Fase 7.
+
+O harness NAO aplica as politicas reais. Testes funcionais usam apenas HKCU:\Software\WinSlimSuite\Tests\Fase5R41*.
+
+Executar como Administrador:
+  .\tests\Test-Fase5-R4.1-CatalogExpansion.ps1

@@ -1,0 +1,16 @@
+FASE 6 R1 - TESTE
+
+Abra o Windows PowerShell 5.1 como Administrador.
+
+Exemplo:
+  cd D:\Desktop\winslim_fase6_r1
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase6-R1-Presets.ps1
+
+O teste NÃO aplica tweaks no Windows.
+Ele valida composição, classificação, conflicts/mutex, levels, Planner,
+determinismo e integridade da baseline Fase 5 R4.2.1.
+
+Resultado esperado:
+  FASE 6 R1 APROVADA - 230 tweaks classificados; Balanceado=105,
+  Gamer=129, Extremo=168; nenhum conflito ou risco Alto automático.

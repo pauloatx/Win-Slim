@@ -1,0 +1,1 @@
+R3.2.10: File.Replace com backup temporário explícito; gate inclui segunda compilação para testar destino existente. Backend e layout preservados.

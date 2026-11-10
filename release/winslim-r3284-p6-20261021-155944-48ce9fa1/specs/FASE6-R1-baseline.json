@@ -1,0 +1,17 @@
+{
+  "baseline": "FASE 5 R4.2.1",
+  "files": {
+    "catalog.json": "0e71c1fba2fb9fefba09d3b8b82007c5b972c30ae2d0c69734a30b93857cc1ba",
+    "catalogs/Game-Workload.json": "19e5d57eb6ac7501ef5fc782445a44bc1bc5aaf6a59100ae45639aea7e25079d",
+    "catalogs/validated/Advanced-Catalog.json": "48b03f6627c7ee9943e9c1094c93036f961fa30a6b9a61bff6b5e34f9b718389",
+    "catalogs/validated/Expansion-R4.json": "303e411d4cafdd1f52eb1af126a6b5551adf77ae45c83eae3f1ecbbe0f1216ee",
+    "catalogs/validated/Expansion-R4.1.json": "5ccba3d18ae2bf8c2144c40d5cfe06fbab825c7b5c1f6708dec2bbeb6beb3973",
+    "catalogs/validated/Expansion-R4.2.json": "2c4d6a286d324f18067518bd0ce5b1ce0ef2d0761d356cb533fbcccf22996bbc",
+    "src/Core/Planner.ps1": "a27ab444744f3011d9ff7c539967c1d75bdcfdbf2a8a81ee2f03d56c48c81ce4",
+    "src/Core/Transaction.ps1": "ecee3451af44cef809215d4a9045c2a81d7596e57062273e2860c00171f43619",
+    "src/Core/AdvancedProviderBridge.ps1": "d28f6bba2d20e95deff5868f7d6f2787cb0c0ebb2cd79672b736cc9284b666a3",
+    "src/Core/ProviderContract.ps1": "0c25f40cff7c6f191d0d9700142cb5ccd7ae80ee6bdbbcdce64cca0b7ccf6365",
+    "src/Providers/RegistryProvider.ps1": "b01680f038d0eaa075680041ef76a48938bce412991d530fd8cabadf0186a90e",
+    "tests/Test-Fase5-R4.2-CatalogExpansion.ps1": "50014eded8f66bac544f3fd108c4aa34d9a8bcc8944318c9c337bbb2cf252a19"
+  }
+}

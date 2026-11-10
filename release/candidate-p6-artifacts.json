@@ -1,0 +1,18 @@
+﻿{
+    "Revision":  "R3.2.84",
+    "Patch":  6,
+    "Candidate":  "D:\\Desktop\\winslim_fase7_r3_2_84\\release\\winslim-r3284-p6-20261021-155944-48ce9fa1",
+    "Zip":  "D:\\Desktop\\winslim_fase7_r3_2_84\\release\\winslim-r3284-p6-20261021-155944-48ce9fa1.zip",
+    "ZipBytes":  17288621,
+    "ZipSHA256":  "FBEA78B38E5A499828991D9D3038516E1B7EBB87CEAE6A96280F83B3A2691CAB",
+    "BinarySHA256":  "AC06D60261CBC6A0590E31512836420FE5C38E90AA96EFF054E9DE0E52E88D68",
+    "RegressionPassed":  17,
+    "RegressionTotal":  17,
+    "PackagerTestsPassed":  6,
+    "ValidatedHashes":  137,
+    "ProductionApproved":  false,
+    "OverlayRealGameInput":  "Pending",
+    "PhysicalMultiMonitorDpi":  "Pending",
+    "EdgeManual":  "Pending",
+    "HostedCI":  "Pending"
+}

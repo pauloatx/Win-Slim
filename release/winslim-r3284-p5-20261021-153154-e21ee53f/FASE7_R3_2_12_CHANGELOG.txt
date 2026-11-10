@@ -1,0 +1,1 @@
+R3.2.12: corrige contagem de overlays no gate e cortes do selo e benefícios; adiciona medição WPF. Backend e Dashboard preservados.

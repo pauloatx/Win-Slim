@@ -1,0 +1,13 @@
+{
+  "schema": "WinSlim.CustomPreset/v1",
+  "name": "Teste lote UI R3.2.77 Windows10",
+  "basePreset": "Custom",
+  "catalogCount": 230,
+  "selectedIds": [
+    "UI-001",
+    "UI-017",
+    "UI-021",
+    "UI-023"
+  ],
+  "levelSelections": {}
+}

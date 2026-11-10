@@ -1,0 +1,7 @@
+R3.2.54 — integração inicial da pré-visualização
+- Consulta real e somente leitura de registro e serviços.
+- Estados explícitos, valores atuais/desejados e data nos detalhes.
+- Falhas e tipos não verificados não são apresentados como sucesso.
+- Testes isolados integrados ao gate Windows.
+- Core, Providers, catálogo e revisões anteriores preservados.
+- Backup/aplicação/restauração reais permanecem para os próximos incrementos.

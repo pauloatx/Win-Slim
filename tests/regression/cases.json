@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "revision": "R3.2.84",
+  "cases": [
+    {
+      "id": "REG-PROCESS-001",
+      "bugs": [
+        "exit-code-nulo-falso-failed"
+      ],
+      "scenario": "Capturar códigos 0/1/7 de processos rápidos e drenar stdout/stderr acima do buffer sem perder o resultado.",
+      "script": "tests/regression/Test-ProcessExitCode.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-HARNESS-001",
+      "bugs": [
+        "caminho-invalido-inicializacao-regressoes",
+        "release-regression-id-duplicado"
+      ],
+      "scenario": "Resolver a pasta após vincular parâmetros e executar o harness real em pasta com espaços/acentos, com Root padrão/explicito e saída de falha. Cadastro duplicado deve bloquear todas as execucoes e informar o ID.",
+      "script": "tests/regression/Test-RegressionPaths-R3.2.84.ps1",
+      "timeoutSeconds": 150
+    },
+    {
+      "id": "REG-BUILD-001",
+      "bugs": [
+        "CS4014-dispatcher-personalizado"
+      ],
+      "scenario": "O compilador deve rejeitar BeginInvoke ignorado em contexto async e aceitar a operação acompanhada com await; a build completa continua exigida pela suíte nativa.",
+      "script": "tests/regression/Test-DispatcherAwait.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-PERF-001",
+      "bugs": [
+        "indicadores-esperam-gpu"
+      ],
+      "scenario": "CPU/RAM devem ser publicados antes do fim da consulta GPU; falhas produzem null; falha de publicação não interrompe coleta.",
+      "script": "tests/Test-Fase7-R3.2.84-Performance.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-UI-001",
+      "bugs": [
+        "categoria-desativar-todos",
+        "chave-ativada-posicao-incorreta",
+        "CS4014-logs",
+        "personalizado-navegacao",
+        "logs-acesso-thread-incorreta",
+        "benchmark-theme-language-layout",
+        "benchmark-unmeasured-selftest-viewport",
+        "benchmark-guidance-missing",
+        "benchmark-technical-detail-default",
+        "benchmark-baseline-self-comparison",
+        "benchmark-native-combo-white-surface",
+        "benchmark-comparison-chart-height",
+        "overlay-controls-interrupt-capture-state",
+        "overlay-selftest-transient-cleanup-io",
+        "overlay-settings-unavailable-without-game",
+        "overlay-settings-modal-owner-blocked",
+        "overlay-settings-reopen-loses-draft"
+      ],
+      "scenario": "Compilar com CS4014 tratado como erro e executar o self-test WPF: seleção/desseleção por categoria incluindo busca, preservação de outras categorias e estado das chaves; reutilização da tela Personalizado. Logs sem SynchronizationContext: sucesso e erro devem atualizar no Dispatcher. Benchmark: navegacao sem nova janela, inativo inicialmente, temas e idiomas. Medir/organizar viewport finito, dois tamanhos, relatorio longo e rejeitar controles cortados ou sobrepostos. Orientacao didatica: dicas inclusive em botoes desabilitados, resumo simples em PT/EN, detalhes tecnicos reversiveis e referencia sem comparacao falsa. Seletor: superficies renderizadas seguem tema claro/escuro, dica vazia traduzida, selecao preservada ao desabilitar; grafico com escala preserva pontos e limites. Comparacao visual: cores e tracejado distintos, escala comum, hover numerico nos extremos com comprimentos diferentes, limpeza ao sair e rejeicao de referencia incompativel/identica. Area do grafico permanece ao menos 90x60 nos dois tamanhos, com legenda e hover presentes; falha inclui dimensoes e viewport. Selecao automatica/manual preserva resultado e referencia, congela durante operacao e nao inicia captura nem overlay sozinha; novos controles medidos nos mesmos temas, idiomas e viewports. Fabrica real do overlay recebe referencia compativel; durante tarefa pendente, mover, trocar tamanho e travar nao alteram processo, tarefa, cancelamento, resultado anterior nem referencia. Limpeza de fixture exclusiva valida caminho, suporta IO transitorio e continua reprovando IO persistente; teste injeta ambas as falhas e prova que diretorio alheio nao e alterado. P8: open/edit/reset/close settings during a pending capture fixture preserves capture task, PID, cancellation, values, previous result and reference. P9 REG-OVERLAYENTRY-001: actual settings button opens general preferences without a game; singleton modeless window retains draft; off/on/recording/completed/cancelled/monitor-transition fixtures. Save/Cancel preserve pending task, selected process, cancellation, live metrics, result and reference.",
+      "script": "tests/Test-Fase7-R3.2.84-NativeUI.ps1",
+      "timeoutSeconds": 900,
+      "integratedNative": true
+    },
+    {
+      "id": "REG-EDGE-001",
+      "bugs": [
+        "edge-machine-policy-contract",
+        "edge-apply-backup-restore"
+      ],
+      "scenario": "Edge: contratos exatos, versao instalada, elevacao, backup em disco, Apply/Verify/Undo, idempotencia e recuperacao de falha parcial com IO simulado.",
+      "script": "tests/Test-Fase7-R3.2.84-Edge.ps1",
+      "timeoutSeconds": 150
+    },
+    {
+      "id": "REG-ENDTASK-001",
+      "bugs": [
+        "endtask-local-compatibility",
+        "endtask-roundtrip-original-state"
+      ],
+      "scenario": "UI-006: contrato HKCU, limite local Windows 11, backup obrigatorio, Apply/Verify/Undo, ausencia e DWORD 0, idempotencia e recuperacao apos escrita parcial.",
+      "script": "tests/Test-Fase7-R3.2.84-EndTask.ps1",
+      "timeoutSeconds": 150
+    },
+    {
+      "id": "REG-SEARCH-001",
+      "bugs": [
+        "search-mode-conflict-boundary",
+        "search-mode-original-state-restore"
+      ],
+      "scenario": "UI-004: contrato, conflitos UI-021, Windows 10/11, Apply/Verify/Undo com ausencia e DWORD 0/2/3, backup, idempotencia e falha parcial.",
+      "script": "tests/Test-Fase7-R3.2.84-SearchIcon.ps1",
+      "timeoutSeconds": 180
+    },
+    {
+      "id": "REG-UIBATCH-001",
+      "bugs": [
+        "multivalue-backup-coverage",
+        "multivalue-partial-write-recovery",
+        "ui-batch-policy-compatibility"
+      ],
+      "scenario": "Seis ajustes UI/QoL: todos os destinos, limites de versao/edicao, conflitos e Apply/Verify/Undo individual e lote; backup multioperacao e recuperacao em cada ponto de falha.",
+      "script": "tests/Test-Fase7-R3.2.84-UiBatch.ps1",
+      "timeoutSeconds": 240
+    },
+    {
+      "id": "REG-REPORT-001",
+      "bugs": [
+        "preview-category-alias-split",
+        "multivalue-outcome-duplicates",
+        "report-false-success"
+      ],
+      "scenario": "Relatorio nativo/HTML agrupa IDs, confere contadores, falhas e exclusoes; escapa HTML. Previa agrega aliases UI/QoL sem alterar catalogo, risco ou reinicio.",
+      "script": "tests/Test-Fase7-R3.2.84-Report.ps1",
+      "timeoutSeconds": 150
+    },
+    {
+      "id": "REG-QOLBATCH-001",
+      "bugs": [
+        "qol-online-tips-wrong-registry-path",
+        "qol-machine-policy-elevation",
+        "qol-multivalue-roundtrip"
+      ],
+      "scenario": "Tres ajustes QoL: rejeitar caminho antigo de AllowOnlineTips, validar contrato completo e limites locais; Apply/Verify/Undo individual e lote com falha em cada escrita e backup incompleto.",
+      "script": "tests/Test-Fase7-R3.2.84-QolBatch.ps1",
+      "timeoutSeconds": 240
+    },
+    {
+      "id": "REG-EDGEBATCH-001",
+      "bugs": [
+        "edge-batch-contract-isolation",
+        "edge-batch-version-boundaries",
+        "edge-batch-transaction-roundtrip"
+      ],
+      "scenario": "EDGE-003 a EDGE-006: destinos e valores exatos, versoes locais e elevacao; Apply Verify Undo por politica e lote; idempotencia, backup incompleto e recuperacao em cada escrita.",
+      "script": "tests/Test-Fase7-R3.2.84-EdgeBatch.ps1",
+      "timeoutSeconds": 240
+    },
+    {
+      "id": "REG-EDGENEXT-001",
+      "bugs": [
+        "edge-interface-policy-contracts",
+        "edge-sidebar-enum-exact-value",
+        "edge-interface-restore-original-state"
+      ],
+      "scenario": "EDGE-008/011/012/016: contrato exato incluindo DWORD 2, limites locais de versao, elevacao e Apply Verify Undo individual e lote; recuperacao em cada escrita.",
+      "script": "tests/Test-Fase7-R3.2.84-EdgeNext.ps1",
+      "timeoutSeconds": 240
+    },
+    {
+      "id": "REG-EDGEPRIV-001",
+      "bugs": [
+        "edge-optional-preferences-contract",
+        "edge-optional-preferences-version",
+        "edge-optional-preferences-roundtrip"
+      ],
+      "scenario": "EDGE-019/020/024/025: destinos e DWORDs exatos, limites locais de versao e permissao; Apply Verify Undo individual e lote, idempotencia e falha em cada escrita.",
+      "script": "tests/Test-Fase7-R3.2.84-EdgePrivacy.ps1",
+      "timeoutSeconds": 240
+    },
+    {
+      "id": "REG-PIPELINE-001",
+      "bugs": [
+        "duplicate-nested-regressions",
+        "release-empty-report-false-success",
+        "release-manual-evidence-collection",
+        "candidate-empty-root-from-bat",
+        "diagnostic-null-backup-path",
+        "diagnostic-stale-zip-false-evidence",
+        "diagnostic-current-revision-build-logs"
+      ],
+      "scenario": "Execucao integrada delega dez suites uma unica vez; modo isolado preserva execucao. Gate rejeita resultado vazio, duplicado, ausente ou falho; pipeline real coleta ZIP e so abre app com gate completo. Pasta omitida/vazia/espacos resolvida apos parametros; ambos os BATs reais em pasta acentuada a partir de outro cwd. Substituir ZIP existente com backup de caminho valido, verificar resumo arquivado atual e preservar ZIP antigo quando arquivo estiver bloqueado. ZIP inclui conteudo exato dos logs .log/.json da revisao do resumo (R3.2.84 e revisao futura), exclui outras revisoes e prefixos semelhantes; log opcional ausente nao reaparece; log bloqueado ou revisao invalida reprovam sem alterar ZIP anterior, logs e resumo.",
+      "script": "tests/Test-Fase7-R3.2.84-Pipeline.ps1",
+      "timeoutSeconds": 180
+    },
+    {
+      "id": "REG-PRESENTMON-001",
+      "bugs": [
+        "presentmon-invalid-csv-false-result",
+        "presentmon-mixed-process-streams",
+        "presentmon-partial-capture-success",
+        "presentmon-unsafe-session-takeover",
+        "presentmon-live-partial-row",
+        "presentmon-live-stale-data",
+        "chart-stride-reduction-drops-peaks",
+        "presentmon-internal-provider-bypasses-official-identity",
+        "capture-deterministic-tests-require-blocked-collector-process"
+      ],
+      "scenario": "Production CSV and in-memory fixtures only: numeric statistics, PID/application/swap-chain isolation, quoted/invalid/missing/duplicate/truncated input, comparison eligibility, chart peak preservation, partial incremental lines, 5-second/1-second windows, stale data and bounded samples. All process entry points reject unverified providers before launch; owned session validation rejects global/foreign stop. No harness source compiled, no collector process or ETW. Real official process cancellation/restart is separately recorded by tools/integration/Test-WinSlimOfficialPresentMonIntegration.ps1; forced exit-7/pipe-pressure failure remains an explicit gap, not an approval.",
+      "script": "tests/Test-Fase7-R3.2.84-PresentMonData.ps1",
+      "timeoutSeconds": 150
+    },
+    {
+      "id": "REG-OVERLAY-001",
+      "bugs": [
+        "benchmark-overlay-source-before-visual-tree",
+        "benchmark-overlay-position-per-game",
+        "benchmark-overlay-live-mode-switch",
+        "overlay-locked-metrics-block-game-input",
+        "overlay-drag-clamped-to-game-monitor",
+        "overlay-reference-not-forwarded",
+        "overlay-monitor-preference-lost",
+        "overlay-selftest-transient-cleanup-io",
+        "overlay-reference-cannot-be-hidden-without-clearing",
+        "overlay-harness-outer-cleanup-transient-io"
+      ],
+      "scenario": "Inicializar HWND oculto antes da arvore visual sem NullReferenceException; Pequeno mostra quatro metricas e Medio acrescenta grafico, troca imediata preserva os valores. Arraste e Mover/Travar, persistencia por executavel, PID reutilizado, entrada invalida/indisponivel e preservacao do perfil anterior e de outro jogo. Fixtures WPF sem ETW, jogo real ou ajustes no computador. Complemento: HWND layered travado permite passagem nativa, janela separada limita entrada aos controles, mensagens recusam ativacao; seletor real preserva valores e referencia laranja/azul com escala comum. Arraste atravessa monitores, persiste monitor por jogo e ajusta resolucao/origem/remocao; topologia indisponivel preserva perfil. Compatibilidade e copia de referencia, comprimentos diferentes, migracao v1/v2 e janela nativa do jogo substituida. Limpeza de fixture exclusiva valida caminho, suporta IO transitorio e continua reprovando IO persistente; teste injeta ambas as falhas e prova que diretorio alheio nao e alterado. P7: configurable/disabled/duplicate/conflicting hotkeys with rollback, current FPS replaces first indicator, scale/opacity/sensors saved per game, invalid scale preserves profile, effective fit to small monitor, reset defaults. P9: actual proxy button hides and restores reference without modifying source; shared scale restored, native passthrough and no activation retained. Outer harness fixture cleanup uses the same dedicated-path bounded cleanup as the existing behavioral checks for transient/persistent IO and unrelated-directory preservation. Full gate reproduced an outer Directory.Delete nonempty failure after all behavioral checks; fixed by reusing the tested helper, retaining a short space-containing inner path.",
+      "script": "tests/Test-Fase7-R3.2.84-BenchmarkOverlay.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-MONITOR-001",
+      "bugs": [
+        "presentmon-buffered-file-empty-live-overlay",
+        "benchmark-cancel-discards-complete-result",
+        "monitor-benchmark-lifecycle-coupled"
+      ],
+      "scenario": "Data-only production state fixtures: monitor before benchmark, 10-second recording, cancellation and recapture preserve session and prior CSV, concurrent/pre-cancel/invalid-duration requests, stream unavailable/late frames and null current snapshot. Production TextReader paths drain large chunked CSV and 200000 stderr characters with bounded memory; malformed, truncated and oversized streams reject. Optional sensor unavailable/invalid values preserved. No process transport, fake collector or held harness compiled/executed. Real official stream/stop/restart covered separately; hostile OS-pipe pressure and forced official process failure remain pending. WPF target/preferences/geometry coverage stays in REG-UI/OVERLAY.",
+      "script": "tests/Test-Fase7-R3.2.84-MonitorData.ps1",
+      "timeoutSeconds": 100
+    },
+    {
+      "id": "REG-OVERLAYSETTINGS-001",
+      "bugs": [
+        "overlay-settings-unsaved-defaults-overwrite-profile",
+        "overlay-settings-no-cancel-rollback",
+        "overlay-settings-scale-position-drift",
+        "settings-long-page-hides-shortcuts",
+        "sensor-missing-temperature-ambiguous",
+        "sensor-vram-unit-unclear",
+        "overlay-preview-fit-hides-scale"
+      ],
+      "scenario": "Actual WPF settings: immediate visual draft and illustrative preview isolated from newly arriving live data, Small/Medium preserves four metrics and both curves, scale/opacity percentages and native anchor, no implicit profile writes; defaults/Cancel/titlebar close restore opening state; Save by executable, failed/locked storage restores keys and preserves old bytes/other game. Keyboard capture/clear/reserved key/duplicate and registration-conflict messages by field; command dispatch suspended during editing. Individual CPU/GPU/VRAM/RAM choices. WPF render/measure at simulated DPI 100/125/150 percent, fixed accessible footer, no overlap, scroll to last shortcut. Physical DPI/input acceptance remains pending. P9: persistent three-tab drafts, fixed accessible footer, each shortcut reachable at WPF simulated 100/125/150 percent; both overlay sizes/control bounds rendered at those scales. General Save/Cancel, only new profiles inherit defaults, existing profile bytes preserved, active game keys preserved. Starting live overlay with editor open attaches visual draft and rolls back independently. Explicit missing usage/temperature, decimal adapter GB, null/NaN unavailable. P9 preview scale: rendered ancestor bounds must double between 75 and 150 percent, for each simulated DPI; fit must not normalise the selected scale away.",
+      "script": "tests/Test-Fase7-R3.2.84-OverlaySettings.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-SECURITY-001",
+      "bugs": [
+        "av-block-misclassified-and-helper-renamed",
+        "test-generator-cleans-failed-evidence-without-provenance",
+        "packager-untracked-or-renamed-compiled-helper-leak",
+        "release-implicit-validation-runtime-mix",
+        "release-publishes-with-unresolved-security-incident",
+        "security-owner-local-validation-cannot-retain-release-hold",
+        "security-controlled-gate-continues-after-failure"
+      ],
+      "scenario": "Security hold and package behavior with inert fixtures only: actual PresentMon 83/84 and Monitor entry points fail before compiler or temporary helper creation; missing/invalid policy and unreviewed clearance fail closed; fixture clearance/unrelated checks preserve state. Record exact fixture artifact/compiler/source hashes without execution, represent missing output/source explicitly and preserve prior evidence. Package regressions reject extra/renamed/MZ/nested executable, invalid/missing runtime manifest, tampering and unresolved incident with old archive preservation; explicit validation/runtime descriptors and CLI choice; runtime has only reviewed files. Never compile/execute detected helper while incident is pending. Owner-authorized local-validation disposition permits inert local action and gate while preserving publication/production hold; invalid authority, missing assessment/scope, excess production scope and disabled failure stop fail closed. Actual entry scripts copied unchanged into isolated pending-policy fixture prove guards before compiler even when the real policy allows local tests. Whole staged executor stops after first failed inert script and preserves failed report without running subsequent action. No real held-family compilation is performed by this security fixture suite.",
+      "script": "tests/regression/Test-SecurityHold-R3.2.84.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-FRAMELIMITPLAN-001",
+      "bugs": [
+        "framelimit-plan-global-shared-or-ambiguous-profile",
+        "framelimit-plan-missing-origin-or-unavailable-capability",
+        "framelimit-plan-stale-review-or-external-change-overwrite"
+      ],
+      "scenario": "New independent offline development contract, not a physical driver test: full executable identity; reject global/shared/ambiguous profile and unsupported/untyped values; explicit/inherited/absent/predefined state; no-op does not create override; complete in-memory backup and deep-copy transition preserve other game/global settings; verify expected result; undo refuses unavailable backup, altered receipt and concurrent changes. Injected failures before model output preserve caller state. No NVAPI, hardware, compiler, PresentMon or UI integration; physical/ABI/persistent backup/save/rollback remain pending.",
+      "script": "tests/regression/Test-FrameLimitPlan-R3.2.84.ps1",
+      "timeoutSeconds": 60
+    },
+    {
+      "id": "REG-VMEDGE-001",
+      "bugs": [
+        "edge-vm-json-inventory-nested-array-selects-absent-backup",
+        "edge-vm-cdp-initial-new-tab-prevents-policy-capture"
+      ],
+      "scenario": "Independent pure development regression: PowerShell 5.1 JSON array emits separate inventory records; absent Backups directory is never selected for copy, actual backups selected once; preserve input and reject empty/malformed/duplicate/outside/traversal/alternate-stream/invalid-hash records. CDP target selection accepts initial new-tab for explicit policy navigation, prefers existing policy page, rejects worker-only lists and non-loopback/wrong-port endpoint. Both defects reproduced with failing behavioral tests before correction. Does not run VM, browser, compiler, PresentMonHarness or MonitorHarness; physical Edge acceptance remains separate.",
+      "script": "tests/regression/Test-EdgeVmEvidence-R3.2.84.ps1",
+      "timeoutSeconds": 60
+    },
+    {
+      "id": "REG-EDGECOMP-001",
+      "bugs": [
+        "edge-catalog-missing-reviewed-ui-contracts",
+        "edge-deprecated-policy-unbounded-version",
+        "edge-007-unreviewed-dependency",
+        "edge-review-medium-risk-reported-low"
+      ],
+      "scenario": "Independent Edge completion: 17 pinned reviewed contracts and explicit EDGE-006 prerequisite for EDGE-007; official type/value/minimum and deprecated review maximum; reject modified destination/admin/dependency/conflict; missing browser/admin/server fail closed. Per-ID and combined Apply/Verify, verified backup, idempotence and exact Undo with originally absent/existing data; unavailable input/backup writes nothing; failure after every write recovers unrelated state. Preview preserves actual medium risk. Initial missing-contract behavioral failure recorded before implementation. Registry IO fixtures only; native UI interaction/browser recognition are separate. No held harness or full gate executed.",
+      "script": "tests/Test-Fase7-R3.2.84-EdgeCompletion.ps1",
+      "timeoutSeconds": 300
+    },
+    {
+      "id": "REG-NVAPIRO-001",
+      "bugs": [
+        "nvapi-readonly-provenance-script-invalid",
+        "nvapi-readonly-powershell-marshal-overload",
+        "nvapi-readonly-abi-pack-version-or-setting-origin-mismatch"
+      ],
+      "scenario": "Independent development DLL, never the held helper family. Compile readonly adapter and managed transport fixtures with compiler/source/output provenance before loading; initial provenance syntax failure before compile and PowerShell Marshal.SizeOf overload failure preserved. Compare x64 .NET layouts/versions/offsets and query IDs against independent ctypes model based on SHA-pinned official SDK; no C++ crosscompiler or physical NVIDIA ABI success claimed. Full executable path, explicit/inherited/predefined/absent versus zero, shared/global/generic association diagnosis, raw enumeration not a fabricated FPS list. Native errors/unavailable/partial capability/contract mismatch and cleanup failures remain explicit and never authorize writes; release only acquired resources. Trust metadata fixtures reject unsupported architecture/signature/publisher. No Save/Set/Delete API, no application integration, no optimization. Real NVIDIA matrix, physical driver calls and FPS control remain pending; AMD host missing-library negative result recorded separately.",
+      "script": "tests/regression/Test-NvapiReadOnly-R3.2.84.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-CATALOGBASE-001",
+      "bugs": [
+        "edge-approved-metadata-transition-invalidates-historical-catalog-gate"
+      ],
+      "scenario": "Historical R4 baseline remains unchanged and byte-identical original snapshots are verified; explicit lineage accepts only exact reviewed current catalogs after metadata-only changes for 17 accepted Edge IDs. Behavioral fixtures reject changed current bytes, wrong original identity, missing/tampered snapshot and unavailable catalog; restoring evidence restores acceptance and unchanged old catalog still passes. Initial full native gate rejected the three approved transitions before correction. No real Edge policy, UI visual or driver changes.",
+      "script": "tests/regression/Test-HistoricalCatalog-R3.2.84.ps1",
+      "timeoutSeconds": 60
+    },
+    {
+      "id": "REG-CAPTUREIO-001",
+      "bugs": [
+        "presentmon-stderr-reader-fault-keeps-monitor-running",
+        "presentmon-closed-stdout-keeps-monitor-running",
+        "capture-transport-preview-and-pipe-pressure-coverage-gap"
+      ],
+      "scenario": "Production transport lifecycle with DLL-only managed streams and two real in-process Windows anonymous pipes: startup denied/false, exit 7, malformed stdout, read faults on each pipe, closed stdout while process active, owned stop failure/kill, simultaneous pressure above 600KB/327680B and cancel under pressure. Pending benchmark fails, current values clear, reference hash preserved. Preview/snapshot throw or unavailable never completes/cancels recording; actual recording failure/cancel propagates. Before-fix behavior reproduced for stderr fault and closed stdout; no blocked harness source, collector executable or ETW.",
+      "script": "tests/Test-Fase7-R3.2.84-CaptureTransport.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-HOTKEY-001",
+      "bugs": [
+        "ui-hotkey-wparam-overflow-before-message-filter",
+        "ui-hotkey-native-id-truncation-risk"
+      ],
+      "scenario": "Actual production private Hook bound as HwndSourceHook in a DLL without Main on x64 Windows. Foreign messages (including WM_CLOSE/WM_GETOBJECT) with zero, native-width and extreme wParam preserve handled and never dispatch; valid WM_HOTKEY IDs dispatch the exact index, unknown/negative/extreme/high-bit aliases are ignored without overflow or truncation. Suspended/Capture combinations, null HWND/lParam, WPF HWND on dedicated STA, native SendMessage delivery before and removal after Dispose. Invalid/null/duplicate Apply and simulated registration unavailable restore prior bindings/registrations; file bytes preserved in isolated root. Before fix 48 of 113 checks failed with OverflowException; after fix 113 passed. No global shortcut registration, production optimization, held harness, collector or ETW. Exact original UI Automation message parameters and physical UI acceptance remain separate.",
+      "script": "tests/Test-Fase7-R3.2.84-HotkeyWParam.ps1",
+      "timeoutSeconds": 60
+    },
+    {
+      "id": "REG-OVERLAYTHEME-001",
+      "bugs": [
+        "overlay-settings-fixed-dark-palette",
+        "floating-overlay-ignores-manual-and-system-theme",
+        "overlay-theme-save-cancel-live-synchronization",
+        "overlay-locked-theme-control-and-clickthrough",
+        "overlay-settings-tab-content-missing-from-accessibility-tree"
+      ],
+      "scenario": "Production WPF overlay/settings compiled as DLL only, no Main or held sources. Six behavioral startup/control checks failed before correction; 75 focused checks after: legacy/manual/default preference, real HWND WM_SETTINGCHANGE/WM_THEMECHANGED with injected system source, auto/manual and unavailable/corrupt input, Save/Cancel and exact bytes, failed storage/rollback, two-way live attachment, general defaults preserve other games, locked native clickthrough/proxy accessibility, Small/Medium control bounds, 4.5 text contrast/footer at simulated DPI100/125/150, orange current/blue dashed reference and live metric/geometry preservation. Full native self-test additionally switches light/dark/auto while actual controller capture task remains pending, preserving selection/PID/reference/cancellation/result. Windows theme writes and visual acceptance only in VM; physical game capture remains distinct. VM inspection exposed selected tab controls absent from UI Automation. Real TabControl/TabItem peer traversal failed before naming the selected-content presenter and now passes in both palettes at all simulated DPIs; no textual source-string test. Accessible selection provider also changes the actual preference; theme choices use one exclusive radio group, not checkmarks disconnected from the command.",
+      "script": "tests/Test-Fase7-R3.2.84-OverlayTheme.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-HOSTEDCI-001",
+      "bugs": [
+        "ci-checkout-autocrlf-invalidates-reviewed-byte-hashes",
+        "ci-artifact-mixes-historical-logs-and-compiled-fixtures",
+        "ci-integrity-manifest-omits-nested-sha256-log"
+      ],
+      "scenario": "Disposable Git repositories reproduce LF-to-CRLF corruption under autocrlf=true before the byte-preserving attributes fix; fresh clone must preserve both LF and CRLF bytes. Evidence transport copies only new/changed text logs, preserves historical originals, refuses missing state/wrong root/existing destination/outside paths and success without a fresh candidate report pair. Compiler failure retains diagnostics without approval; binaries, disguised MZ files and archives are excluded, every uploaded file has SHA-256, built application is hashed but never copied. Environment allowlist omits credentials; local context never claims hosted CI approval. Collector is new: its prior hosted-upload failure was not executed locally. No production adjustment, VM, ETW, held-family generation or physical acceptance.",
+      "script": "tests/regression/Test-HostedCI-R3.2.84.ps1",
+      "timeoutSeconds": 90
+    },
+    {
+      "id": "REG-BUILDIDENTITY-001",
+      "bugs": ["native-gate-compares-rebuilt-exe-to-delivered-binary-hash"],
+      "scenario": "Full local candidate reproduced REG-UI-001 failure after successful forced builds and WPF: a new compiler output was compared with the delivered EXE hash. Before build, verify every delivered baseline byte; after build, retain every input expectation and compare only the two generated outputs against the successful official build receipt captured before self-test. Inert fixtures prove new versus historical output identity, stale/missing/partial receipts, changed source or post-self-test binary, empty/unavailable/outside input and unchanged caller expectations/configuration. No compiler, held harness, physical/VM test or optimization in this focused regression. Full native gate proves actual build/cache/IfNeeded/WPF integration separately.",
+      "script": "tests/regression/Test-NativeBuildIntegrity-R3.2.84.ps1",
+      "timeoutSeconds": 60
+    }
+  ]
+}

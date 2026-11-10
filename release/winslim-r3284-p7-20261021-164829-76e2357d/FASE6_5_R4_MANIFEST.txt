@@ -1,0 +1,9 @@
+﻿Win-Slim Suite - FASE 6.5 R4 MANIFEST
+
+a3603a5ea59dedafa83fa9bdf77ca089eba59225d828e55a55aac8a4e4b05f0f  src/Core/RuntimePromotion.ps1
+c975de494e3514f0c9591ecc9f189e547d3a903386045b0a43bd7ede57e2b9a2  WinSlimSuite.dev.ps1
+aad4b5dcd140ca347ebd472a1a3de802b2092b20b9f1a1088dd0be0333cac74f  tests/Test-Fase6.5-R4-PromotionRegression.ps1
+095dfce6e9f3f87a209d614e41e8372d3df3eaddb74d4de6a08efe8c0f91da57  specs/FASE6.5-R4-baseline.json
+f8f38431b20eb3aa86306a4496f6144390190b17f1b5f1ce6c3326ea4149acec  specs/FASE6.5-R4-benchmark.json
+9410f920f4262adb301bb3e8bae4430ce80dd2b0b012903bac9ee611eaf691fc  FASE6_5_R4_CHANGELOG.txt
+0c5e288d9979ed5a405fce1d5a6a00cdf928063d9b4f1a3ccb1000579459107b  FASE6_5_STATUS.txt

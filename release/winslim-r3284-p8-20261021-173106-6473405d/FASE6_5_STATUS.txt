@@ -1,0 +1,12 @@
+﻿Win-Slim Suite - Status FASE 6.5
+
+Baseline de entrada: FASE 6 R4 APROVADA
+Backend: 230 tweaks
+Presets: Balanceado=105 / Gamer=129 / Extremo=168
+
+R1   - Runtime Index + Preset Hot Paths         APROVADA
+R2.1 - Planner structural refactor              APROVADA
+R3   - Transaction/persistence cleanup          APROVADA
+R4.1 - Promotion + full regression + benchmark  TESTAR
+
+FASE 7 UI somente depois da FASE 6.5 R4.1 aprovada.

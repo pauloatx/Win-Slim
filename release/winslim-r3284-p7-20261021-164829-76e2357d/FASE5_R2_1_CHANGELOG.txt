@@ -1,0 +1,8 @@
+﻿Win-Slim Suite - FASE 5 R2.1
+
+Hotfix CpuAffinityProvider
+- SetProcessAffinity: parametro $Pid renomeado para $ProcessId.
+- Windows PowerShell 5.1 trata nomes de variaveis sem diferenca entre maiusculas/minusculas; $Pid colide com a variavel automatica read-only $PID.
+- A colisao fazia Apply e Undo falharem exatamente no SetProcessAffinity, enquanto backup de task/script/processo permanecia correto.
+- Harness sintetico corrigido com a mesma assinatura e novo gate anti-regressao.
+- Transaction R13, Planner R1, CoreParkingProvider, GpuInterruptAffinityProvider e catalogos permanecem inalterados.

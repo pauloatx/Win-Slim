@@ -1,0 +1,1 @@
+R3.2.27: remoção do reset redundante no cabeçalho; dicas didáticas para os 230 tweaks, em linhas e chaves, no mesmo modelo dos overlays. Preserva seleção por categoria e chaves verdes. Gate Windows da nova versão pendente.

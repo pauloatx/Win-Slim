@@ -1,0 +1,7 @@
+﻿Win-Slim Suite - FASE 6.5 R4.1
+
+- Corrige exclusivamente o harness de promoção/regressão para Windows PowerShell 5.1.
+- Corrige interpolação inválida "$name:" para "${name}:" no TEST 02.
+- RuntimePromotion, PlannerOptimized, TransactionOptimized, catálogos, presets e specs permanecem inalterados.
+- Backend permanece 230; presets permanecem 105 / 129 / 168.
+- A finalidade da R4.1 é repetir integralmente o gate R4 sem alterar comportamento funcional.

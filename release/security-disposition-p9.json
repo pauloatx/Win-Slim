@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "incident": "AV-20261021-001",
+  "package": "winslim-r3284-p9-20261021-180938-d9206cde.zip",
+  "packageSHA256": "EF515E7C5585BB036B68013E95045D3DDD23CC63933324450090BE23528E54C7",
+  "status": "security-review-hold",
+  "falsePositiveConfirmed": false,
+  "originalDetectedSHA256": null,
+  "visualAcceptance": "Confirmed by user; separate from remaining functional scenarios",
+  "previousTechnicalResults": "Historical P9 19/19, not antivirus clearance",
+  "newAppPackagePublished": false
+}

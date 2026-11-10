@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "FASE7-R3.1.1",
+  "basePhase": "FASE7-R3.1",
+  "scope": "Hotfix de runtime WPF para dynamic scope no Windows PowerShell 5.1; sem alteracao de layout ou semantica de Apply.",
+  "backendExpectedCount": 230,
+  "presetExpectedCounts": {
+    "Balanceado": 105,
+    "Gamer": 129,
+    "Extremo": 168
+  },
+  "r31Baseline": "specs/FASE7-R3.1-baseline.json",
+  "preservedLayoutXaml": "src/UI/Fase7/WinSlimShell.R3_1.xaml",
+  "preservedLayoutXamlSha256": "34fb700df50de63dc2daeffcdd810119fb7917f96ae6068e25396f46b3793fa1",
+  "r311Files": {
+    "WinSlimSuite.Fase7R3_1_1.ps1": "fec508900f9e983089a87c25cb6f74f79de755431b7162ffda3f01cdf8600a15",
+    "Executar-WinSlim-R3.1.1.bat": "9d0eccb76c66c280d0325332dcf584725e84fc8e322c88e4013b070065476cfc",
+    "src/UI/Fase7/WinSlimShell.R3_1_1.ps1": "91e8cd9b238e2f13439d352be5e7f69235b5959ad22fe24aac88055045f3d0c0",
+    "tests/Test-Fase7-R3.1.1-Runtime.ps1": "a48adb9db1fc0c11ca5c78361df269ab0bf10a574e3fda8634f11fdef8040d09",
+    "FASE7_R3_1_1_CHANGELOG.txt": "f27cac8f9edfe879229486fa1d1c2216c352e9f70a66418993e72182614b3d33",
+    "FASE7-R3.1.1-LEIA-ME.md": "c976ba9d429a4e4e5413157aa7c91ee30e088fcd26549ed528a600de196eebaa"
+  }
+}

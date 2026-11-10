@@ -1,0 +1,153 @@
+R3.2.57 — verificacao local (Linux; nao substitui Windows PS5.1/WPF)
+
+
+csharp-tests.log
+MainWindowController.cs(1004,32): warning CS4014: Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+UiLanguage.cs(2,1): hidden CS8019: Unnecessary using directive.
+C#5 + .NET Framework 4.8 reference compilation: OK (not a Windows execution).
+
+
+powershell-parse.log
+PowerShell syntax: OK
+
+
+gpu-tests.log
+OK: PCI NVIDIA sem inferir fabricante da CPU
+OK: somente servico do fabricante detectado
+OK: servico removido nao e recriado
+OK: AMD + Intel hibrido
+OK: duas GPUs de fabricantes distintos
+OK: dispositivo nao confirmado: VMware
+OK: dispositivo nao confirmado: Basic Display
+OK: dispositivo nao confirmado: Radeon
+OK: dispositivo nao confirmado: GeForce
+OK: falha de deteccao nao libera ajustes
+OK: suporte desconhecido bloqueado: MLV-004
+OK: suporte desconhecido bloqueado: PERF-018
+OK: suporte desconhecido bloqueado: PERF-007
+OK: suporte desconhecido bloqueado: WS-ADV-003
+OK: suporte desconhecido bloqueado: WS-ADV-002
+OK: Apply e Verify com adaptador isolado
+OK: Undo exato inclusive inicio automatico atrasado
+OK: falha recupera e verifica estado original
+OK: Verify rejeita escritor que nao aplicou
+OK: ausencia diferente de valor de registro
+GPU fixtures aprovadas; nenhuma configuracao do Windows alterada.
+OK: preset Balanceado respeita disponibilidade PRIV-013
+OK: preset Balanceado respeita disponibilidade PRIV-015
+OK: preset Balanceado respeita disponibilidade PERF-007
+OK: preset Balanceado respeita disponibilidade PERF-018
+OK: preset Balanceado respeita disponibilidade MLV-004
+OK: preset Balanceado respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: preset Gamer respeita disponibilidade PRIV-013
+OK: preset Gamer respeita disponibilidade PRIV-015
+OK: preset Gamer respeita disponibilidade PERF-007
+OK: preset Gamer respeita disponibilidade PERF-018
+OK: preset Gamer respeita disponibilidade MLV-004
+OK: preset Gamer respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: preset Extremo respeita disponibilidade PRIV-013
+OK: preset Extremo respeita disponibilidade PRIV-015
+OK: preset Extremo respeita disponibilidade PERF-007
+OK: preset Extremo respeita disponibilidade PERF-018
+OK: preset Extremo respeita disponibilidade MLV-004
+OK: preset Extremo respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: overlay sem suporte rejeitado mesmo fora da UI
+OK: importacao/custom nao contorna bloqueio hardware
+OK: preset Balanceado respeita disponibilidade PRIV-013
+OK: preset Balanceado respeita disponibilidade PRIV-015
+OK: preset Balanceado respeita disponibilidade PERF-007
+OK: preset Balanceado respeita disponibilidade PERF-018
+OK: preset Balanceado respeita disponibilidade MLV-004
+OK: preset Balanceado respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: preset Gamer respeita disponibilidade PRIV-013
+OK: preset Gamer respeita disponibilidade PRIV-015
+OK: preset Gamer respeita disponibilidade PERF-007
+OK: preset Gamer respeita disponibilidade PERF-018
+OK: preset Gamer respeita disponibilidade MLV-004
+OK: preset Gamer respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: preset Extremo respeita disponibilidade PRIV-013
+OK: preset Extremo respeita disponibilidade PRIV-015
+OK: preset Extremo respeita disponibilidade PERF-007
+OK: preset Extremo respeita disponibilidade PERF-018
+OK: preset Extremo respeita disponibilidade MLV-004
+OK: preset Extremo respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: overlay sem suporte rejeitado mesmo fora da UI
+OK: importacao/custom nao contorna bloqueio hardware
+OK: preset Balanceado respeita disponibilidade PRIV-013
+OK: preset Balanceado respeita disponibilidade PRIV-015
+OK: preset Balanceado respeita disponibilidade PERF-007
+OK: preset Balanceado respeita disponibilidade PERF-018
+OK: preset Balanceado respeita disponibilidade MLV-004
+OK: preset Balanceado respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: preset Gamer respeita disponibilidade PRIV-013
+OK: preset Gamer respeita disponibilidade PRIV-015
+OK: preset Gamer respeita disponibilidade PERF-007
+OK: preset Gamer respeita disponibilidade PERF-018
+OK: preset Gamer respeita disponibilidade MLV-004
+OK: preset Gamer respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: preset Extremo respeita disponibilidade PRIV-013
+OK: preset Extremo respeita disponibilidade PRIV-015
+OK: preset Extremo respeita disponibilidade PERF-007
+OK: preset Extremo respeita disponibilidade PERF-018
+OK: preset Extremo respeita disponibilidade MLV-004
+OK: preset Extremo respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: overlay sem suporte rejeitado mesmo fora da UI
+OK: importacao/custom nao contorna bloqueio hardware
+OK: preset Balanceado respeita disponibilidade PRIV-013
+OK: preset Balanceado respeita disponibilidade PRIV-015
+OK: preset Balanceado respeita disponibilidade PERF-007
+OK: preset Balanceado respeita disponibilidade PERF-018
+OK: preset Balanceado respeita disponibilidade MLV-004
+OK: preset Balanceado respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: preset Gamer respeita disponibilidade PRIV-013
+OK: preset Gamer respeita disponibilidade PRIV-015
+OK: preset Gamer respeita disponibilidade PERF-007
+OK: preset Gamer respeita disponibilidade PERF-018
+OK: preset Gamer respeita disponibilidade MLV-004
+OK: preset Gamer respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: preset Extremo respeita disponibilidade PRIV-013
+OK: preset Extremo respeita disponibilidade PRIV-015
+OK: preset Extremo respeita disponibilidade PERF-007
+OK: preset Extremo respeita disponibilidade PERF-018
+OK: preset Extremo respeita disponibilidade MLV-004
+OK: preset Extremo respeita disponibilidade WS-ADV-003
+OK: cache de preset preservado
+OK: preview e resolucao usam os mesmos IDs
+OK: overlay sem suporte rejeitado mesmo fora da UI
+OK: importacao/custom nao contorna bloqueio hardware
+Integracao GPU/presets/planner aprovada com fixtures.
+OK: Verify da previa exige servico parado
+OK: Verify da previa confirma Disabled/Stopped
+OK: contrato de backup valido preserva ausencia
+OK: Undo recusa backup de outra maquina
+OK: Undo recusa servico fora da allowlist
+GPU: todas as verificacoes isoladas concluidas.
+
+
+live-preview-tests.log
+Live preview: estados reais, falhas explicitas, tipos, plano preservado e leitura isolada OK
+Plano bloqueado e operacao incompleta: OK
+R3.2.57: HKU, Num Lock, automatico atrasado, falhas e servicos removidos OK
+

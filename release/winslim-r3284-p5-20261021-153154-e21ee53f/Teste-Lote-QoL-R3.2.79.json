@@ -1,0 +1,12 @@
+{
+  "schema": "WinSlim.CustomPreset/v1",
+  "name": "Teste lote QoL R3.2.79",
+  "basePreset": "Custom",
+  "catalogCount": 230,
+  "selectedIds": [
+    "QOL-003",
+    "QOL-008",
+    "QOL-012"
+  ],
+  "levelSelections": {}
+}

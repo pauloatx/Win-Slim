@@ -1,0 +1,14 @@
+Win-Slim Suite - FASE 3 R4
+
+Causa raiz confirmada no R3:
+- New-Transaction chama Save-Transaction quando Steps ainda e @().
+- Copy-TransactionObject devolvia @(), mas o Windows PowerShell 5.1 enumerava a colecao vazia na saida da funcao.
+- O chamador recebia $null.
+- Write-JsonAtomic tinha Data Mandatory sem AllowNull e o binder gerava ParameterBindingValidationException.
+
+Correcoes R4:
+- Copy-TransactionObject usa Write-Output -NoEnumerate para IEnumerable, preservando arrays vazios.
+- Write-JsonAtomic aceita Data=$null de forma explicita.
+- null e [] sao serializados explicitamente como JSON null e [].
+- Harness adiciona TEST 00 para impedir regressao antes do TEST 01.
+- Nenhum Provider da Fase 2.1B foi alterado.

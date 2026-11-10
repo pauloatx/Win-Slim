@@ -1,0 +1,29 @@
+﻿Win-Slim Suite - FASE 7 R3.1.1
+=====================================
+
+Tipo: hotfix de runtime WPF sobre a FASE 7 R3.1.
+
+Problema corrigido
+------------------
+A R3.1 passava no gate estatico, mas ao abrir a janela no Windows PowerShell 5.1
+o evento ContentRendered era executado fora do escopo local de
+Show-WinSlimFase7Shell. Com isso, helpers locais como Set-WinSlimControlText
+nao eram encontrados pelo callback WPF/Dispatcher.
+
+Correcao
+--------
+- Helpers usados por callbacks foram promovidos para funcoes top-level exclusivas R311.
+- Estado necessario aos callbacks passou a ser exposto por variaveis script-scoped.
+- PresetRuntime e mapa de overlays ficam disponiveis ao ciclo de eventos.
+- Handlers que dependem de variaveis locais usam GetNewClosure quando necessario.
+- O layout XAML da R3.1 nao foi alterado.
+- R3.1, R3, R2, R1 e backend FASE 6.5 R4.1 permanecem preservados.
+- Nenhuma primitiva de mutacao do Windows foi adicionada.
+
+Validacao
+---------
+Executar:
+  .\tests\Test-Fase7-R3.1.1-Runtime.ps1
+
+Depois:
+  Executar-WinSlim-R3.1.1.bat

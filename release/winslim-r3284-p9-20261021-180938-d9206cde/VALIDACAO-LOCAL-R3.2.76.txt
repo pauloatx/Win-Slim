@@ -1,0 +1,1 @@
+XML/XAML, JSON, hashes, referencias dos testes e preservacao da base conferidos. Compilacao .NET Framework/WPF e suites PowerShell 5.1 desta revisao PENDENTES no Windows.

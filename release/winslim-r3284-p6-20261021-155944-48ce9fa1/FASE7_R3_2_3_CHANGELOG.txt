@@ -1,0 +1,11 @@
+Win-Slim Suite - FASE 7 R3.2.3
+
+Hotfix da invocacao do compilador C# WPF.
+
+- Preserva integralmente a R3.2.2 e a baseline FASE 6.5 R4.1.
+- Corrige o warning CS2023: /noconfig nao pode ficar dentro de response file.
+- csc.exe passa a receber /noconfig diretamente na linha de comando.
+- Response file mantem apenas flags normais, referencias explicitas e fontes.
+- Gate rejeita regressao CS2023/CS1703 no log de build.
+- Mantem Native UI read-only; nenhuma mutacao direta do Windows.
+- Mantem 230 tweaks, 16 overlays e presets 105 / 129 / 168.

@@ -1,0 +1,16 @@
+﻿WIN-SLIM SUITE - FASE 6 R2 MANIFEST
+
+Backend: 230 tweaks
+Presets base: Balanceado=105, Gamer=129, Extremo=168
+Perfis condicionais R2: 16 (5 Hardware, 11 Workload)
+Perfis condicionais Alto com gate adicional: 2
+ConflictPolicy: Block
+DependencyPolicy: PlannerExpand
+
+803c2703078b83c07f58022afb374e16decf471293d91ce34b3fd57660f49751  presets/WinSlim-Presets-R1.json
+5a73d9a6c921097ea4034375fc7cd53a4bf1082c93363a735a3bb1ed5ba1474c  presets/WinSlim-PresetRules-R2.json
+cb6f03df6b276cff6213a9237c3fdadce86a61b739bea0c4d47c28d09a014a67  src/Core/PresetResolver.ps1
+b94b5f90b577c54e31214042fb78887a7c10016bd09422385ddead9db41df025  src/Core/PresetPolicyEngine.ps1
+a27ab444744f3011d9ff7c539967c1d75bdcfdbf2a8a81ee2f03d56c48c81ce4  src/Core/Planner.ps1
+ecee3451af44cef809215d4a9045c2a81d7596e57062273e2860c00171f43619  src/Core/Transaction.ps1
+0878c319cfdb2377e40832bfccb4c14f0172ac97bde54c3009261e63a3f5cfad  tests/Test-Fase6-R2-PresetPolicy.ps1

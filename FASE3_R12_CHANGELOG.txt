@@ -1,0 +1,10 @@
+Win-Slim Suite - Fase 3 R12
+
+Correcoes:
+- Write-JsonAtomic nao entrega mais arrays top-level ao ConvertTo-Json do Windows PowerShell 5.1.
+- Novo ConvertTo-TransactionJsonText grava colecoes top-level explicitamente como JSON array real.
+- Arrays vazios permanecem [].
+- Arrays nao vazios sao serializados item-a-item, eliminando wrapper ETS {value,Count}.
+- Suporte defensivo a arrays aninhados no nivel superior.
+- Mantidos backup CliXml normalizado, journals compactos e recovery cross-process endurecido da R11.
+- Harness mostra o JSON bruto caso o gate de shape falhe.

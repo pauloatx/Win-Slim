@@ -1,0 +1,74 @@
+{
+    "schemaVersion": 1,
+    "status": "static-review-complete-before-implementation",
+    "report": "docs/LIMITADOR-AMD-RX480-R3.2.84.md",
+    "hardware": {
+        "vendor": "AMD",
+        "model": "Radeon RX 480",
+        "vramGB": 8,
+        "identitySource": "explicit user confirmation 2026-10-22",
+        "previouslyObservedDriverVersion": "31.0.21925.1001",
+        "vramCapacityMeasuredThisRun": false
+    },
+    "nvidia": {
+        "physicalReadStatus": "pending-hardware-unavailable",
+        "laboratoryAvailable": false,
+        "installNvidiaDriverOnThisHost": false,
+        "existingAdapterPreserved": true
+    },
+    "reviewedSources": {
+        "adlxCommit": "32b5a740d42295c5dfe9026b9f52683da0f3af91",
+        "adlCommit": "84c881cb2136f04287eb3af12de00a9e2867aa9e",
+        "pinnedTextFiles": 13,
+        "manifest": "logs/amd-limiter-review-20261022/official-source-manifest.json",
+        "currentPages": "logs/amd-limiter-review-20261022/web-source-manifest.json"
+    },
+    "candidateReadRoutes": [
+        {
+            "provider": "ADLX",
+            "scope": "GPU",
+            "frtcQueries": ["GetFrameRateTargetControl", "IsSupported", "IsEnabled", "GetFPS", "GetFPSRange"],
+            "chillQueries": ["GetChill", "IsSupported", "IsEnabled", "GetMinFPS", "GetMaxFPS", "GetFPSRange"],
+            "implementationStatus": "not-implemented",
+            "nativeCallsTested": false,
+            "featureSupportConfirmed": false,
+            "perGameControlConfirmed": false,
+            "licenseIntegrationReviewed": false,
+            "legacyInitializationRequiresExplicitReview": true
+        },
+        {
+            "provider": "ADL-legacy",
+            "scope": "global-adapter-AC-DC",
+            "queries": ["ADL2_FPS_Caps", "ADL2_FPS_Settings_Get", "ADL2_Chill_Caps_Get", "ADL2_Chill_Settings_Get"],
+            "profileQueriesForSeparateReview": ["ADL2_ApplicationProfiles_ProfileOfAnApplicationX2_Search", "ADL2_ApplicationProfiles_PropertyType_Get"],
+            "implementationStatus": "not-implemented",
+            "nativeCallsTested": false,
+            "featureSupportConfirmed": false,
+            "perGamePropertySchemaConfirmed": false
+        }
+    ],
+    "installedFilesInspectedStatically": {
+        "metadata": "logs/amd-limiter-review-20261022/installed-library-metadata.json",
+        "exports": "logs/amd-limiter-review-20261022/installed-exports-static.json",
+        "adlxClassicInitializeExportPresent": true,
+        "adlxInitialize2ExportPresent": false,
+        "exportPresenceIsFeatureSupport": false,
+        "signaturePublisherObserved": "Microsoft Windows Hardware Compatibility Publisher",
+        "dllLoaded": false
+    },
+    "limitations": [
+        "Current FRTC product page lists RX 6000/7000 while RX 480 product page lists legacy FRTC: RX 480 current driver support unresolved",
+        "No universal hard-coded FPS range; request range and step from the actual supported driver interface",
+        "ADLX GPU-scoped interfaces do not identify a game executable",
+        "ADL profile API existence does not establish documented FPS/Chill property identity, user override precedence or exact Undo",
+        "Chill is activity-dependent and conflicts with Anti-Lag/Boost; min equals max is not a validated fixed limiter",
+        "FRTC current documentation requires exclusive fullscreen and changes outside the game",
+        "No DLL export or valid signature proves runtime feature availability"
+    ],
+    "nextIndependentStep": "Review ADLX license and readonly ABI/fixture contract before any native query; retain explicit unsupported/unavailable paths",
+    "applicationFeatureAvailable": false,
+    "canApplyToDriver": false,
+    "physicalFrameLimitTested": false,
+    "fullGatePassed": false,
+    "productionApproved": false
+}

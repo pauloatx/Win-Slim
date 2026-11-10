@@ -1,0 +1,571 @@
+{
+  "schemaVersion": "2.1-module",
+  "generatedBy": "Win-Slim Suite - FASE 5 R1 Seal Game+Workload",
+  "sources": {
+    "AuditReference": "Seal backend (IL audit recuperado)",
+    "WS": "Win-Slim Suite"
+  },
+  "count": 10,
+  "tweaks": [
+    {
+      "id": "GAME-001",
+      "name": "VALORANT - Prioridade de CPU alta (IFEO)",
+      "plainName": "Dar prioridade alta ao VALORANT quando ele iniciar",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para VALORANT.exe, VALORANT-Win64-Shipping.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Jogos / Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\VALORANT.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\VALORANT-Win64-Shipping.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\VALORANT.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\VALORANT-Win64-Shipping.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "GAME-002",
+      "name": "Counter-Strike 2 - Prioridade de CPU alta (IFEO)",
+      "plainName": "Dar prioridade alta ao Counter-Strike 2 quando ele iniciar",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para cs2.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Jogos / Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\cs2.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\cs2.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "GAME-003",
+      "name": "Apex Legends - Prioridade de CPU alta (IFEO)",
+      "plainName": "Dar prioridade alta ao Apex Legends quando ele iniciar",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para r5apex.exe, r5apex_dx12.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Jogos / Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\r5apex.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\r5apex_dx12.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\r5apex.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\r5apex_dx12.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "GAME-004",
+      "name": "Fortnite - Prioridade de CPU alta (IFEO)",
+      "plainName": "Dar prioridade alta ao Fortnite quando ele iniciar",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para FortniteClient-Win64-Shipping.exe, FortniteLauncher.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Jogos / Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\FortniteClient-Win64-Shipping.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\FortniteLauncher.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\FortniteClient-Win64-Shipping.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\FortniteLauncher.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "GAME-005",
+      "name": "GTA V - Prioridade de CPU alta (IFEO)",
+      "plainName": "Dar prioridade alta ao GTA V quando ele iniciar",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para GTA5.exe, GTA5_Enhanced.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Jogos / Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\GTA5.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\GTA5_Enhanced.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\GTA5.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\GTA5_Enhanced.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "WORK-001",
+      "name": "Streaming - Prioridade de CPU alta (OBS / Streamlabs)",
+      "plainName": "Dar prioridade alta aos processos de streaming quando iniciarem",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para obs64.exe, obs32.exe, Streamlabs OBS.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\obs64.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\obs32.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Streamlabs OBS.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\obs64.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\obs32.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Streamlabs OBS.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "WORK-002",
+      "name": "Edição de vídeo - Prioridade de CPU alta",
+      "plainName": "Dar prioridade alta aos principais editores de vídeo quando iniciarem",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para Adobe Premiere Pro.exe, AfterFX.exe, Adobe Media Encoder.exe, Resolve.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Adobe Premiere Pro.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\AfterFX.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Adobe Media Encoder.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Resolve.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Adobe Premiere Pro.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\AfterFX.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Adobe Media Encoder.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Resolve.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "WORK-003",
+      "name": "Design - Prioridade de CPU alta",
+      "plainName": "Dar prioridade alta aos principais aplicativos de design quando iniciarem",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para Photoshop.exe, Illustrator.exe, Lightroom.exe, Figma.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Photoshop.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Illustrator.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Lightroom.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Figma.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Photoshop.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Illustrator.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Lightroom.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Figma.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "WORK-004",
+      "name": "Programação - Prioridade de CPU alta",
+      "plainName": "Dar prioridade alta aos principais IDEs e editores quando iniciarem",
+      "description": "Configura CpuPriorityClass=3 (High) em IFEO\\PerfOptions para Code.exe, idea64.exe, pycharm64.exe, rider64.exe, webstorm64.exe, goland64.exe. A política passa a valer na próxima inicialização do processo; não força afinidade de CPU e não altera prioridade de I/O. No caminho transacional, o RegistryProvider restaura exatamente existência, tipo e valor anteriores.",
+      "category": "Workload",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Code.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\idea64.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\pycharm64.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\rider64.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\webstorm64.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\goland64.exe\\PerfOptions",
+          "Name": "CpuPriorityClass",
+          "Value": 3,
+          "Type": "DWord"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\Code.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\idea64.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\pycharm64.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\rider64.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\webstorm64.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\goland64.exe\\PerfOptions' -Name 'CpuPriorityClass' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Feche completamente o aplicativo/jogo e abra novamente para que a prioridade IFEO seja aplicada.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Se o snapshot legado não existir, o fallback remove CpuPriorityClass como o backend referência técnica."
+    },
+    {
+      "id": "PERF-019",
+      "name": "MMCSS Games - Perfil de prioridade Seal",
+      "plainName": "Ajustar o perfil multimídia de jogos para prioridade alta",
+      "description": "Aplica no perfil MMCSS 'Games' os valores recuperados do backend Seal: GPU Priority=8, Priority=6, Scheduling Category='High' e SFIO Priority='High'. O rollback transacional restaura o estado exato de cada valor.",
+      "category": "Performance",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "hardwareRules": {},
+      "presets": [],
+      "type": "registry",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+          "Name": "GPU Priority",
+          "Value": 8,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+          "Name": "Priority",
+          "Value": 6,
+          "Type": "DWord"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+          "Name": "Scheduling Category",
+          "Value": "High",
+          "Type": "String"
+        },
+        {
+          "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+          "Name": "SFIO Priority",
+          "Value": "High",
+          "Type": "String"
+        }
+      ],
+      "UndoScript": [
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games' -Name 'GPU Priority' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games' -Name 'Priority' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games' -Name 'Scheduling Category' -ErrorAction SilentlyContinue",
+        "Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games' -Name 'SFIO Priority' -ErrorAction SilentlyContinue"
+      ],
+      "rollbackClass": [
+        "Registry"
+      ],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "activationNote": "Reabra o jogo para garantir que a nova política MMCSS seja usada pelo processo.",
+      "rollbackNote": "Snapshot transacional é autoritativo. Sem snapshot legado, o fallback remove os quatro valores, compatível com o revert observado no referência técnica."
+    }
+  ]
+}

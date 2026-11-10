@@ -1,0 +1,27 @@
+Win-Slim Suite - FASE 5 R4.2.1
+
+Correção cirúrgica do harness da R4.2.
+
+Causa:
+- erro de parser no TEST 03, gate EDGE-031;
+- faltava o fechamento correto da expressão passada a Assert-Fase5R42.
+
+Correção:
+- EDGE-031 é resolvido em variável intermediária;
+- assert valida DiagnosticData=1 (RequiredData) sem ambiguidade sintática no Windows PowerShell 5.1;
+- cabeçalho/resumo do harness atualizados para R4.2.1.
+
+Preservado sem alterações:
+- catalog.json;
+- catalogs/Game-Workload.json;
+- catalogs/validated/Advanced-Catalog.json;
+- catalogs/validated/Expansion-R4.json;
+- catalogs/validated/Expansion-R4.1.json;
+- catalogs/validated/Expansion-R4.2.json;
+- Transaction Manager R13;
+- Planner R1;
+- RegistryProvider;
+- todos os 230 tweaks do backend candidato.
+
+Objetivo do gate permanece:
+FASE 5 R4.2.1 APROVADA -> FASE 5 encerrada com backend 230 -> FASE 6 Presets.

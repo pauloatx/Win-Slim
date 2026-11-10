@@ -1,0 +1,49 @@
+Win-Slim Suite - Fase 2.1B Provider Conformance
+================================================
+
+Implementado:
+- tests/Test-Fase2-ProviderConformance.ps1
+- tests/FASE2.1B-LEIA-ME.txt
+
+Hardening aplicado para o gate 2.1B:
+1. RegistryProvider
+   - Corrigido ultimo uso remanescente de -Error para -ErrorMessage.
+2. Core/Verify
+   - Verify aplicavel com zero checks agora retorna Success=false.
+3. ProviderContract
+   - Novo Assert-NativeCommandSuccess para mutacoes nativas com ExitCode != 0.
+4. CommandProvider
+   - fsutil set agora valida ExitCode.
+5. BcdProvider
+   - set/deletevalue validam ExitCode.
+   - backup /export so e anunciado quando o arquivo realmente existe.
+   - comparacao/restore de booleanos aceita Yes/No, Sim/Nao, True/False e 1/0.
+6. PowerCfgProvider
+   - parser AC/DC independente do idioma do Windows.
+   - mutacoes powercfg validam ExitCode.
+   - Verify de SettingIndex confere AC e DC.
+   - Verification.Checks deixa de ser vazio.
+7. ServiceProvider
+   - Undo restaura StartupType, DelayedAutoStart e Status Running/Stopped.
+   - Verify confere as tres dimensoes relevantes.
+8. NetworkProvider
+   - Verify confere TcpNoDelay, TcpAckFrequency e TcpDelAckTicks.
+   - Undo/Verify usa os InterfaceGuid persistidos no backup, mesmo se Status do adaptador mudar.
+9. ScheduledTaskProvider
+   - Verification.Checks deixa de ser vazio.
+10. AppxProvider
+   - Apply em pacote ja ausente e idempotente: Success=true, Changed=false.
+   - Undo impossivel inclui Verification explicita Pass=false + Warning.
+11. WinSlimSuite.dev.ps1
+   - Corrigido loader: ProviderContract.ps1 e ServiceProvider.ps1 agora sao dot-sourced.
+
+Gate para Fase 3:
+  Rode como Administrador:
+    .\tests\Test-Fase2-ProviderConformance.ps1
+
+  So iniciar Fase 3 quando o resumo terminar com:
+    FASE 2.1B APROVADA
+
+Observacao:
+- WinSlimSuite.ps1 e Legacy/ permanecem intactos.
+- catalog.json nao foi alterado nesta fase.

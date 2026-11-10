@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "FASE7-R3",
+  "basePhase": "FASE6.5-R4.1",
+  "previousUiGate": "FASE7-R2",
+  "scope": "Presets + overlays condicionais via PresetRuntime canonico; sem Apply",
+  "backendExpectedCount": 230,
+  "presetExpectedCounts": {
+    "Balanceado": 105,
+    "Gamer": 129,
+    "Extremo": 168
+  },
+  "conditionalProfileCount": 16,
+  "highRiskConditionalProfiles": [
+    "HW-CS2-P-CORES",
+    "HW-GPU-IRQ-AFFINITY"
+  ],
+  "r1Baseline": "specs/FASE7-R1-baseline.json",
+  "r2Baseline": "specs/FASE7-R2-baseline.json",
+  "protectedBackendBaseline": "specs/FASE6.5-R4-baseline.json",
+  "r3Files": {
+    "WinSlimSuite.Fase7R3.ps1": "795e29878fac506f6043d80ba1df27ae89e52c41eefdb677faac4f66f845432a",
+    "Executar-WinSlim-R3.bat": "444cdc34a0ce347ee609851131d1663aa29c19419f1f17a099854223c62ac9f6",
+    "src/UI/Fase7/PresetOverlayView.R3.ps1": "215f1be199375821255e4c01736b12e27caba604e030beccdc4d54042686e6e4",
+    "src/UI/Fase7/WinSlimShell.R3.ps1": "1b1fb586499d6550f4baad871bc65faea619f7c09149cc1dc61efea39fa4b5cd",
+    "src/UI/Fase7/WinSlimShell.R3.xaml": "f4660625dc38f6fb420eacb31689e55274897ceaa5515d4bf8564aa02e75b5f3",
+    "tests/Test-Fase7-R3-UI.ps1": "34cad98018db0523aaa0f5f4c440dc9cf2681ca1119243b55ec54889e0f03f46",
+    "FASE7_R3_CHANGELOG.txt": "0904c6887d8b687102fd142e6a9e204df1ff668498cd912d2e6b13dd5e096399",
+    "FASE7-R3-LEIA-ME.md": "024728c82d0e53f59601f47c9981d0dc8576c6717ced405c5fb641952bf4536f"
+  }
+}

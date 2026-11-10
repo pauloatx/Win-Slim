@@ -1,0 +1,40 @@
+name: WinSlim Windows candidate
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: winslim-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  candidate:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Test release packager
+        shell: powershell
+        run: |
+          python -m unittest discover -s tests -p test_package_release.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tools/package_release.py . specs/FASE7-R3.2.84-baseline.json
+          exit $LASTEXITCODE
+      - name: Compile and run all Windows regression suites
+        shell: powershell
+        run: |
+          & .\Validar-Candidato-R3.2.84.ps1 -NoLaunch
+          exit $LASTEXITCODE
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinSlim-R3.2.84-diagnostic
+          path: |
+            WinSlim-Diagnostico-R3.2.84.zip
+            logs/
+          retention-days: 14
+          if-no-files-found: warn

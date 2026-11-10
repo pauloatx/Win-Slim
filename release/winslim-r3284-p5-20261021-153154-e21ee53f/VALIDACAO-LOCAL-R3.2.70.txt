@@ -1,0 +1,193 @@
+Validacao local Linux/PowerShell 7.4.6. WPF e Windows PowerShell 5.1 pendentes.
+
+apply-tests70.log
+[OK] RegistryApply: Planner real autoriza dez ajustes no Windows 10
+[OK] RegistryApply: Planner real autoriza dez ajustes no Windows 11
+[OK] RegistryApply: dez contratos conferidos contra o catalogo real
+[OK] RegistryApply: escopo individual PERF-001
+[OK] RegistryApply: escopo individual UI-007
+[OK] RegistryApply: escopo individual UI-008
+[OK] RegistryApply: escopo individual UI-009
+[OK] RegistryApply: escopo individual UI-014
+[OK] RegistryApply: escopo individual UI-015
+[OK] RegistryApply: escopo individual UI-016
+[OK] RegistryApply: escopo individual PILOT-001
+[OK] RegistryApply: escopo individual PRIV-017
+[OK] RegistryApply: escopo individual PILOT-003
+[OK] RegistryApply: hardware e servicos excluidos explicitamente
+[OK] RegistryApply: contrato adulterado rejeitado: Path
+[OK] RegistryApply: contrato adulterado rejeitado: Name
+[OK] RegistryApply: contrato adulterado rejeitado: Type
+[OK] RegistryApply: contrato adulterado rejeitado: Value
+[OK] RegistryApply: plano bloqueado rejeitado
+[OK] RegistryApply: risco alterado rejeitado
+[OK] RegistryApply: dependencia nao aplicada rejeitada
+[OK] RegistryApply: operacao extra rejeitada
+[OK] RegistryApply: ID duplicado rejeitado
+[OK] RegistryApply: destino revisado UI-014
+[OK] RegistryApply: destino adulterado bloqueado UI-014 Path
+[OK] RegistryApply: destino adulterado bloqueado UI-014 Name
+[OK] RegistryApply: destino adulterado bloqueado UI-014 Type
+[OK] RegistryApply: destino adulterado bloqueado UI-014 Value
+[OK] RegistryApply: reinicio adulterado bloqueado UI-014
+[OK] RegistryApply: destino revisado UI-015
+[OK] RegistryApply: destino adulterado bloqueado UI-015 Path
+[OK] RegistryApply: destino adulterado bloqueado UI-015 Name
+[OK] RegistryApply: destino adulterado bloqueado UI-015 Type
+[OK] RegistryApply: destino adulterado bloqueado UI-015 Value
+[OK] RegistryApply: reinicio adulterado bloqueado UI-015
+[OK] RegistryApply: contrato novo adulterado rejeitado PILOT-001 Path
+[OK] RegistryApply: contrato novo adulterado rejeitado PILOT-001 Name
+[OK] RegistryApply: contrato novo adulterado rejeitado PILOT-001 Type
+[OK] RegistryApply: contrato novo adulterado rejeitado PILOT-001 Value
+[OK] RegistryApply: reinicio novo adulterado rejeitado PILOT-001
+[OK] RegistryApply: contrato novo adulterado rejeitado PRIV-017 Path
+[OK] RegistryApply: contrato novo adulterado rejeitado PRIV-017 Name
+[OK] RegistryApply: contrato novo adulterado rejeitado PRIV-017 Type
+[OK] RegistryApply: contrato novo adulterado rejeitado PRIV-017 Value
+[OK] RegistryApply: reinicio novo adulterado rejeitado PRIV-017
+[OK] RegistryApply: contrato novo adulterado rejeitado PILOT-003 Path
+[OK] RegistryApply: contrato novo adulterado rejeitado PILOT-003 Name
+[OK] RegistryApply: contrato novo adulterado rejeitado PILOT-003 Type
+[OK] RegistryApply: contrato novo adulterado rejeitado PILOT-003 Value
+[OK] RegistryApply: reinicio novo adulterado rejeitado PILOT-003
+[OK] RegistryApply: politica excluida em Core
+[OK] RegistryApply: politica excluida em CoreSingleLanguage
+[OK] RegistryApply: politica excluida em Unknown
+[OK] RegistryApply: politica excluida em ServerStandard
+[OK] RegistryApply: politica compativel em Professional
+[OK] RegistryApply: politica compativel em ProfessionalN
+[OK] RegistryApply: politica compativel em ProfessionalEducation
+[OK] RegistryApply: politica compativel em ProfessionalWorkstation
+[OK] RegistryApply: politica compativel em Enterprise
+[OK] RegistryApply: politica compativel em EnterpriseS
+[OK] RegistryApply: politica compativel em Education
+[OK] RegistryApply: politica compativel em IoTEnterprise
+[OK] RegistryApply: politica compativel em IoTEnterpriseS
+[OK] RegistryApply: build anterior a 1703 exclui politica
+[OK] RegistryApply: build minimo 1703 aceita politica
+[OK] RegistryApply: Windows Server exclui politica
+[OK] RegistryApply: deteccao indisponivel exclui politica
+[OK] RegistryApply: diagnostico mostra fatos e motivo especifico
+[OK] RegistryApply: diagnostico mostra fatos e motivo especifico
+[OK] RegistryApply: diagnostico mostra fatos e motivo especifico
+[OK] RegistryApply: diagnostico indisponivel nao inventa edicao
+[OK] RegistryApply: falha de leitura bloqueia e explica mesmo com campos aparentemente compativeis
+[OK] RegistryApply: Modo de Jogo disponivel em Core
+[OK] RegistryApply: Modo de Jogo disponivel em Professional
+[OK] RegistryApply: Modo de Jogo bloqueia build antiga
+[OK] RegistryApply: Modo de Jogo aceita build minima
+[OK] RegistryApply: fixture inicial tem dez registros com Current explicito
+[OK] RegistryApply: dez alteracoes verificadas
+[OK] RegistryApply: progresso depende das verificacoes reais
+[OK] RegistryApply: journal acompanha inicio e conclusao
+[OK] RegistryApply: fixture de reaplicacao tem dez registros com Current explicito
+[OK] RegistryApply: reaplicacao parte dos valores desejados
+[OK] RegistryApply: fixture de reaplicacao nao modifica os estados originais
+[OK] RegistryApply: reaplicar nao escreve estados ja presentes
+[OK] RegistryApply: drift antes de escrever bloqueia o lote
+[OK] RegistryApply: falha parcial desfaz inclusive o ultimo destino
+[OK] RegistryApply: falha de Verify recupera o estado anterior
+[OK] RegistryApply: recuperacao incompleta nao vira sucesso
+[OK] RegistryApply: falha do journal impede primeira escrita
+[OK] RegistryApply: verificacao final detecta alteracao posterior a verificacao individual
+[OK] RegistryApply: falha parcial recupera lote incluindo UI-014
+[OK] RegistryApply: falha parcial recupera lote incluindo UI-015
+[OK] RegistryApply: falha parcial recupera lote incluindo PILOT-001
+[OK] RegistryApply: falha parcial recupera lote incluindo PRIV-017
+[OK] RegistryApply: falha parcial recupera lote incluindo PILOT-003
+[OK] RegistryApply: lote misto com dez destinos aplicado
+[OK] RegistryApply: restauracao em lote dos dez destinos verificada
+[OK] RegistryApply: restauracao preserva valores existentes e ausencias originais
+[OK] RegistryApply: Modo de Jogo OFF vira ON com verificacao
+[OK] RegistryApply: Modo de Jogo restaura OFF com existencia e tipo originais
+[OK] RegistryApply: aplicar sem confirmacao rejeitado
+[OK] RegistryApply: previa informa contagem real
+[OK] RegistryApply: confirmacao expirada rejeitada
+[OK] RegistryApply: token consumido antes da tentativa
+[OK] RegistryApply: estado alterado entre revisao e aplicacao rejeitado
+[OK] RegistryApply: drift nao escreveu
+[OK] RegistryApply: plano alterado rejeitado
+[OK] RegistryApply: identidade alterada rejeitada
+[OK] RegistryApply: compatibilidade alterada apos previa bloqueia aplicacao
+[OK] RegistryApply: cliente nao pode forcar edicao e nenhuma escrita ocorre
+[OK] RegistryApply: fluxo completo aplica somente valores do catalogo
+[OK] RegistryApply: relatorio final persistido
+[OK] RegistryApply: backup completo e verificado precede as escritas
+[OK] RegistryApply: snapshot guarda ausencia original para Undo
+[OK] RegistryApply: token nao pode ser reutilizado
+[OK] RegistryApply: fluxo completo idempotente
+[OK] RegistryApply: aplicacao interrompida exige recuperacao antes de outro lote
+[OK] RegistryApply: restauracao conferida desbloqueia tentativa futura
+[OK] RegistryApply: recuperacao apos interrupcao deixa recibo
+[OK] RegistryApply: captura parcial bloqueia aplicacao
+[OK] RegistryApply: backup parcial nao autoriza escrita
+[OK] RegistryApply: falha de persistencia do backup bloqueia aplicacao
+[OK] RegistryApply: falha de disco nao autoriza escrita
+[OK] RegistryApply: leitura indisponivel bloqueia escrita
+[OK] RegistryApply: falha de leitura preserva sistema
+RegistryApply: 125 verificacoes passaram. IO de sistema simulado; nenhum tweak real aplicado.
+
+restore-tests70.log
+[OK] Restore: tipo preservado  / None
+[OK] Restore: tipo preservado DWord / Int32Decimal
+[OK] Restore: tipo preservado QWord / Int64Decimal
+[OK] Restore: tipo preservado Binary / Base64
+[OK] Restore: tipo preservado MultiString / StringArray
+[OK] Restore: tipo preservado MultiString / StringArray
+[OK] Restore: tipo preservado ExpandString / String
+[OK] Restore: tipo preservado String / String
+[OK] Restore: encoding incorreto rejeitado
+[OK] Restore: booleano textual rejeitado
+[OK] Restore: base64 invalido rejeitado
+[OK] Restore: todos os destinos do backup autorizados
+[OK] Restore: registro e servico com uma operacao cada mantem cobertura
+[OK] Restore: registro de uma operacao aceita escopo individual
+[OK] Restore: operacao escalar do catalogo normalizada sem perder autorizacao
+[OK] Restore: backup sem operacoes continua rejeitado
+[OK] Restore: operacao extra continua rejeitada
+[OK] Restore: catalogo sem contrato continua rejeitado
+[OK] Restore: escopo de um unico tweak
+[OK] Restore: outro computador rejeitado
+[OK] Restore: outro usuario rejeitado
+[OK] Restore: outra arquitetura rejeitada
+[OK] Restore: destino adulterado rejeitado
+[OK] Restore: ID desconhecido rejeitado
+[OK] Restore: servico em transicao rejeitado
+[OK] Restore: scripts nunca executados pelo restore
+[OK] Restore: escopo ausente rejeitado
+[OK] Restore: ID duplicado rejeitado
+[OK] Restore: restauracao em lote verifica todos os destinos
+[OK] Restore: estado ja presente nao escreve
+[OK] Restore: mudanca externa antes da escrita bloqueia o lote
+[OK] Restore: falha apos escrita recupera inclusive a operacao parcial
+[OK] Restore: falha de Verify recupera o lote
+[OK] Restore: recuperacao incompleta explicitamente reportada
+[OK] Restore: journal indisponivel impede alteracao sem recuperacao
+[OK] Restore: restauracao exige confirmacao valida
+[OK] Restore: token expirado rejeitado
+[OK] Restore: token consumido antes de qualquer tentativa
+[OK] Restore: previa informa cobertura parcial e alteracoes
+[OK] Restore: fluxo completo restaura ausencia sem escrever em registro real
+[OK] Restore: copia anterior a restauracao persistida e verificada
+[OK] Restore: backup original preservado apos restauracao
+[OK] Restore: journal persistente confirma conclusao
+[OK] Restore: token usado nao permite repetir a restauracao
+[OK] Restore: mudanca apos previa exige nova confirmacao
+[OK] Restore: drift apos previa nao escreve
+[OK] Restore: restauracao individual preserva tweaks nao selecionados
+[OK] Restore: copia de recuperacao respeita escopo individual
+[OK] Restore: aplicacao exige administrador
+[OK] Restore: arquivo alterado depois da previa impede restauracao
+Restore fixtures: 50 verificacoes aprovadas; nenhum registro/servico real alterado.
+
+backup-tests70.log
+Backup R3.2.70: captura tipada, cobertura, persistencia, integridade e falhas OK
+
+csharp-tests70.log
+MainWindowController.cs(1120,32): warning CS4014: Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+UiLanguage.cs(2,1): hidden CS8019: Unnecessary using directive.
+C#5 + .NET Framework 4.8 reference compilation: OK (not a Windows execution).
+
+powershell-parse70.log
+PowerShell syntax: OK

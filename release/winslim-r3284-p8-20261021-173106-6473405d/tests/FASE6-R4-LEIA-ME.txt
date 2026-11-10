@@ -1,0 +1,16 @@
+﻿FASE 6 R4 - Preview + Transaction Manager
+
+1. Extraia o pacote.
+2. Abra Windows PowerShell 5.1 como Administrador.
+3. Entre na pasta extraída.
+4. Execute:
+
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   .\tests\Test-Fase6-R4-PreviewTransaction.ps1
+
+O harness NÃO aplica tweaks reais.
+O Transaction Manager é exercitado somente com handlers sintéticos em memória e -NoPersist.
+
+Resultado esperado:
+FASE 6 R4 APROVADA - Preview determinístico, binding Preview/Plan e integração Transaction Manager sintética validados sem mutação do Windows.
+FASE 6 CONCLUÍDA. Próximo gate: FASE 6.5 - cleanup, refactor estrutural, otimização pesada e benchmarks antes/depois.

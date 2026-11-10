@@ -1,0 +1,1 @@
+R3.2.45: marca pena minimalista laranja no lugar do raio nos cabecalhos e Sobre; icone ICO multiresolucao incorporado no executavel e Window.Icon para barra de tarefas/Alt+Tab; fonte SVG; teste de marcas e decodificacao. Windows pendente.

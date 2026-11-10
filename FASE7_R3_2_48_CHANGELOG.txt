@@ -1,0 +1,7 @@
+R3.2.48 — correção do contorno externo e validador
+- Contorno laranja de 1,5 px desenhado acima de todas as páginas, com margem reservada.
+- Borda nativa DWM laranja no Windows 11; alternativa WPF preservada no Windows 10.
+- Cantos de 12 px, redimensionamento e janela única preservados.
+- Validador PowerShell 5.1 usa JavaScriptSerializer para ler chaves distintas por capitalização.
+- Idiomas e motor preservados. Nenhuma otimização real executada.
+- Estrutura local verificada; execução e visual ainda precisam de conferência no Windows.

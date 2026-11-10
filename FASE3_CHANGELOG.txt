@@ -1,0 +1,58 @@
+﻿Win-Slim Suite - FASE 3 CORE / Transaction Manager
+Data: 2026-10-04
+
+Base:
+- Fase 2.1A: PASS em Windows real.
+- Fase 2.1B Provider Conformance: PASS em Windows real para Registry, Command,
+  Service, BCD, PowerCfg, Network, ScheduledTask e AppX.
+
+Implementado nesta entrega:
+1. Transaction Manager persistente em src/Core/Transaction.ps1.
+2. TransactionId no formato yyyyMMdd-HHmmss-xxxxxxxx.
+3. Estados persistidos: Created, Planned, Applying, Failed, RollingBack,
+   RolledBack, RollbackFailed, PartiallyRolledBack, Applied, Committed,
+   CommittedWithErrors, Interrupted e RecoveryRequired.
+4. Rollback LIFO real.
+5. Primeiro BackupData por TweakId preservado como imutavel dentro da transacao.
+6. Persistencia incremental e escrita JSON por arquivo temporario + replace/move.
+7. Diretorios:
+   Transactions/<TransactionId>/
+   Backups/<TransactionId>/
+8. Arquivos por transacao:
+   transaction.json
+   plan.json
+   operations.json
+   rollback.json
+   state-before.json
+   state-after.json
+   result.json
+9. Lock exclusivo .winslim-transaction.lock para impedir duas transacoes
+   persistentes simultaneas.
+10. Recovery cross-process por Import-WinSlimTransaction e
+    Invoke-WinSlimTransactionRecovery.
+11. Get-WinSlimIncompleteTransactions para localizar transacoes pendentes.
+12. FailurePolicy: RollbackTransaction, Stop e Continue.
+13. Invoke-Tweak ganhou -StrictVerify. O comportamento legado nao mudou;
+    somente o Transaction Manager usa o modo estrito por padrao.
+14. Verify divergente sob -StrictVerify transforma a operacao em falha
+    transacional para permitir rollback automatico.
+15. Compatibilidade preservada com New-Transaction, Add-TransactionStep e
+    Invoke-TransactionRollback.
+16. Novo harness seguro tests/Test-Fase3-TransactionManager.ps1.
+
+Harness Fase 3 valida:
+- commit de multiplas operacoes;
+- falha de Apply -> rollback LIFO;
+- Apply com Verify=false -> rollback do proprio passo + anteriores;
+- falha de Undo -> PartiallyRolledBack/RollbackFailed;
+- recovery em novo processo PowerShell;
+- idempotencia Changed=false;
+- protecao de estado terminal;
+- primeiro backup imutavel quando o mesmo TweakId aparece mais de uma vez.
+
+IMPORTANTE:
+- O Transaction Manager CORE ainda NAO foi conectado ao Run-Batch da GUI.
+- Isso e intencional: primeiro o harness Fase 3 deve passar em Windows real.
+- Apos PASS, o proximo subgate e integrar Run-Batch ao Transaction Manager
+  usando o Engine/Providers reais, sem pular o Planner da Fase 4.
+- WinSlimSuite.ps1 (producao/freeze) e catalog.json nao foram alterados.

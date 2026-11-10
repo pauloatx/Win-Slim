@@ -1,0 +1,13 @@
+﻿FASE 6.5 R1 - Runtime Index & Hot Paths
+
+Execute no Windows PowerShell 5.1 como Administrador:
+
+cd D:\Desktop\winslim_fase6_5_r1
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\tests\Test-Fase6.5-R1-RuntimeOptimization.ps1
+
+O teste NAO altera configuracoes do Windows.
+Ele le catalogos, cria objetos em memoria e grava apenas um relatorio local em:
+benchmarks\FASE6.5-R1-last-run.json
+
+Envie a saida completa, principalmente as linhas Lookup / Policy / Pipeline.

@@ -1,0 +1,22 @@
+﻿Win-Slim Suite - FASE 6.5 R3
+
+Baseline: FASE 6.5 R2.1 APROVADA.
+
+Adicionado:
+- src/Core/TransactionOptimized.ps1 (shadow transaction manager)
+- índice FirstBackupByTweakId para lookup O(1) do primeiro backup
+- ArrayList em Steps/StatusHistory/RestartScopes nos hot paths
+- rollback reverso sem Sort-Object quando a sequência já é canônica
+- journaling JSON com cache in-memory e skip de sidecars sem alteração
+- plan.json imutável gravado uma única vez no caminho Invoke-WinSlimTransactionPlanOptimized
+- resumo final em uma única passagem pelos Steps
+- import/recovery otimizado compatível com journals R13
+- benchmark NoPersist e Persist em sandbox temporário
+
+Preservado:
+- src/Core/Transaction.ps1 R13 byte-a-byte
+- src/Core/PlannerOptimized.ps1 R2.1 byte-a-byte
+- backend 230 tweaks
+- semântica de pre-backup, primeiro backup imutável, rollback LIFO e recovery cross-process
+
+R3 permanece shadow validation. A promoção controlada fica para R4 após aprovação do harness.

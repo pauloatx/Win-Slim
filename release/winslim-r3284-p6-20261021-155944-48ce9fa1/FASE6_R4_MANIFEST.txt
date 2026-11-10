@@ -1,0 +1,23 @@
+﻿Win-Slim Suite - FASE 6 R4 / Preview + Transaction Handoff
+
+Backend validado: 230 tweaks
+UI/autoload legado: 187 entradas
+Presets canônicos:
+- Balanceado: 105
+- Gamer: 129
+- Extremo: 168
+Perfis condicionais: 16
+
+Novos arquivos R4:
+- src/Core/PresetPreview.ps1
+- specs/FASE6-R4-baseline.json
+- specs/FASE6-R4-scenarios.json
+- tests/Test-Fase6-R4-PreviewTransaction.ps1
+- tests/FASE6-R4-LEIA-ME.txt
+- FASE6_R4_CHANGELOG.txt
+- FASE6_R4_MANIFEST.txt
+
+Arquitetura validada nesta etapa:
+PresetResolver -> PresetPolicyEngine -> PresetPlannerValidator -> PresetPreview -> Transaction Manager
+
+O harness usa handlers sintéticos, -NoPersist e não chama Providers reais.

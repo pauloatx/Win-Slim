@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "FASE6.5-R4",
+  "baseline": "FASE6.5-R3",
+  "files": {
+    "catalog.json": "0e71c1fba2fb9fefba09d3b8b82007c5b972c30ae2d0c69734a30b93857cc1ba",
+    "catalogs/Game-Workload.json": "19e5d57eb6ac7501ef5fc782445a44bc1bc5aaf6a59100ae45639aea7e25079d",
+    "catalogs/validated/Advanced-Catalog.json": "48b03f6627c7ee9943e9c1094c93036f961fa30a6b9a61bff6b5e34f9b718389",
+    "catalogs/validated/Expansion-R4.json": "303e411d4cafdd1f52eb1af126a6b5551adf77ae45c83eae3f1ecbbe0f1216ee",
+    "catalogs/validated/Expansion-R4.1.json": "5ccba3d18ae2bf8c2144c40d5cfe06fbab825c7b5c1f6708dec2bbeb6beb3973",
+    "catalogs/validated/Expansion-R4.2.json": "2c4d6a286d324f18067518bd0ce5b1ce0ef2d0761d356cb533fbcccf22996bbc",
+    "src/Core/Planner.ps1": "a27ab444744f3011d9ff7c539967c1d75bdcfdbf2a8a81ee2f03d56c48c81ce4",
+    "src/Core/PlannerOptimized.ps1": "5996fe7bd19d2bf9431fad3ea1e03aa067a52f20d6ab43784935bf025bf1c0af",
+    "src/Core/Transaction.ps1": "ecee3451af44cef809215d4a9045c2a81d7596e57062273e2860c00171f43619",
+    "src/Core/TransactionOptimized.ps1": "962d4b01310bc9d63f64766e9143a401166325c4470fdbea60c1df7ffea07d9c",
+    "src/Core/CatalogRuntime.ps1": "19a1852b2f7f4bc9e861e3b7eb0fb3034a4b1686c33934368be2200872b51274",
+    "src/Core/PresetRuntime.ps1": "8ce86d1db3b39b1348688ccd9a1bc6b4f2ca146d3f8287cc2174c2f11e854843",
+    "src/Core/PresetResolver.ps1": "cb6f03df6b276cff6213a9237c3fdadce86a61b739bea0c4d47c28d09a014a67",
+    "src/Core/PresetPolicyEngine.ps1": "b94b5f90b577c54e31214042fb78887a7c10016bd09422385ddead9db41df025",
+    "src/Core/PresetPlannerValidator.ps1": "547dab5017f9f2b14e67c7f988906abe39d334c4c81f7eae1cceb89dacdf3c63",
+    "src/Core/PresetPreview.ps1": "31c18d9d190611fc7d6e06bab5a9fdbf84148bd99f93cdd0ae4f84f319bf83a9",
+    "src/Core/ProviderContract.ps1": "0c25f40cff7c6f191d0d9700142cb5ccd7ae80ee6bdbbcdce64cca0b7ccf6365",
+    "src/Providers/RegistryProvider.ps1": "b01680f038d0eaa075680041ef76a48938bce412991d530fd8cabadf0186a90e",
+    "presets/WinSlim-Presets-R1.json": "803c2703078b83c07f58022afb374e16decf471293d91ce34b3fd57660f49751",
+    "presets/WinSlim-PresetRules-R2.json": "5a73d9a6c921097ea4034375fc7cd53a4bf1082c93363a735a3bb1ed5ba1474c",
+    "tests/Test-Fase6.5-R1-RuntimeOptimization.ps1": "0623becf863fb34157d51e5aaa3ba0219e81335696cf1f6d505583cbd6b1de25",
+    "tests/Test-Fase6.5-R2-PlannerOptimization.ps1": "47062fc00b1e209fb51198424bf783b4cec4905ee43d0a803d568e4779af8884",
+    "tests/Test-Fase6.5-R3-TransactionOptimization.ps1": "52499faec498fb28030b2d83a38a2d279d70cdb2763de612a4d7c3f0efce83c6",
+    "specs/FASE6.5-R1-baseline.json": "322a6f7aa818d890a6936b2fc57c0ffa4e5610c3363bc8fad901d084524f1184",
+    "specs/FASE6.5-R2-baseline.json": "7bd260a62efc3f3f997bd66df1f5796429599d6524eaff3a16c380a0cdd80de9",
+    "specs/FASE6.5-R3-baseline.json": "71353c95a4c4bb20235151d6ee45830926339890fae4f1c0762d55551813e30f"
+  }
+}

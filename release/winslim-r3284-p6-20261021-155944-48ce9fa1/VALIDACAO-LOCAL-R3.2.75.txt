@@ -1,0 +1,1 @@
+Estrutura XML/XAML/JSON, hashes e preservacao verificados. Execucao PowerShell 5.1, compilacao C#/WPF e teste visual Windows PENDENTES. A R3.2.74 foi validada pelo usuario; essa aprovacao nao se transfere a esta revisao.

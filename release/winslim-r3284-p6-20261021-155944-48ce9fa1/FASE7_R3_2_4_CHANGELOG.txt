@@ -1,0 +1,15 @@
+Win-Slim Suite - FASE 7 R3.2.4
+
+Gate Reliability + Build Log Hotfix da Native UI.
+
+- Preserva integralmente a R3.2.3 e a baseline FASE 6.5 R4.1.
+- A R3.2.3 ja compilava e executava o self-test WPF com sucesso no Windows.
+- Corrige falso negativo do gate que procurava a invocacao do csc.exe com regex fragil.
+- Invocacao do compilador passa a usar array splatting explicito: & $csc @compilerArgs.
+- Garante logs\build-native-r3.2.4.log mesmo quando o csc.exe nao emite warnings/erros.
+- Log registra compilador, modo de invocacao, contagem de referencias/fontes e ExitCode.
+- Fast path -IfNeeded tambem gera log persistente com ExitCode 0.
+- Corrige o launcher para apontar para o log da revisao atual.
+- Gate valida ausencia de CS2023/CS1703 e exige ExitCode: 0 no log.
+- Mantem Native UI read-only; nenhuma mutacao direta do Windows.
+- Mantem 230 tweaks, 16 overlays e presets 105 / 129 / 168.

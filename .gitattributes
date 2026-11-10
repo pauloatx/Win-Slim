@@ -1,0 +1,3 @@
+# Baselines and the component-contained review hash the exact delivered bytes.
+# Preserve existing LF/CRLF mixtures on every checkout, including Windows runners.
+* -text

@@ -1,0 +1,34 @@
+﻿Win-Slim Suite - FASE 6.5 R2
+Planner Structural/Performance Refactor - Shadow Validation
+
+Objetivo
+- Refatorar o hot-path do Planner sem substituir silenciosamente Planner R1.
+- Reutilizar CatalogRuntime/PresetRuntime da R1.
+- Preservar decisões, ordem, RiskSummary, RestartRequirements e PlannerFingerprint.
+
+Adicionado
+- src/Core/PlannerOptimized.ps1
+  - New-WinSlimPlannerRuntime
+  - New-WinSlimExecutionPlanOptimized
+  - Invoke-WinSlimPresetRuntimePlannerValidationR2
+- tests/Test-Fase6.5-R2-PlannerOptimization.ps1
+- specs/FASE6.5-R2-baseline.json
+- specs/FASE6.5-R2-benchmark.json
+
+Otimizações principais
+- Reuso de ById/Position/Dependencies/Dependents/Conflicts do CatalogRuntime.
+- Metadados de type/levels/mutex/restart materializados uma vez.
+- ArrayList em hot-paths para evitar += repetitivo.
+- Ordenação topológica Kahn com System.Collections.SortedList e desempate por posição do catálogo.
+- Remoção do scan candidateOrdered | Where-Object a cada nó topológico.
+- Remoção do orderedIds -notcontains no loop topológico.
+
+Proteções
+- Planner.ps1 (Fase 4 R1) permanece byte-a-byte congelado neste subgate.
+- Transaction.ps1 (R13) permanece byte-a-byte congelado.
+- Backend permanece 230; presets 105/129/168.
+- Shadow Planner é puro; não toca Windows.
+- Harness compara fingerprints e assinatura semântica contra Planner R1 em Win10/11, overlays e cenários estruturais.
+
+Próximo subgate
+- FASE 6.5 R3: cleanup/otimização do Transaction Manager/persistência sem quebrar rollback/recovery R13.

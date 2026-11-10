@@ -1,0 +1,1 @@
+R3.2.11: refino visual de Presets; seleção ativa, resumo consistente, capture-presets e argumentos de captura corrigidos. Dashboard aprovado e backend preservados.

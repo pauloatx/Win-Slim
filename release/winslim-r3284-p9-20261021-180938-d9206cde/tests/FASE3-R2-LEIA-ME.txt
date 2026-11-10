@@ -1,0 +1,22 @@
+FASE 3 R2 - TESTE
+
+Execute em Windows PowerShell como Administrador:
+
+  cd D:\Desktop\winslim
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase3-TransactionManager.ps1
+
+Nao reutilize um sandbox antigo. O harness cria automaticamente um novo
+_fase3-sandbox-<timestamp>.
+
+Se houver travamento, NAO execute outra instancia por cima. Abra outro
+PowerShell e leia o trace da transacao mais recente:
+
+  $sb = Get-ChildItem .\tests -Directory -Filter '_fase3-sandbox-*' |
+      Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  $tx = Get-ChildItem "$($sb.FullName)\Transactions" -Directory |
+      Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  Get-Content "$($tx.FullName)\trace.log" -Tail 100
+
+Resultado esperado:
+  FASE 3 CORE APROVADA - Transaction Manager passou em todos os cenarios do harness.

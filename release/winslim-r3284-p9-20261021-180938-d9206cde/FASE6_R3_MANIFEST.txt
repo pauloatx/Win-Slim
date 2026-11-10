@@ -1,0 +1,23 @@
+﻿FASE 6 R3 - ARQUIVOS NOVOS/ALTERADOS
+
+NOVOS:
+- src/Core/PresetPlannerValidator.ps1
+- specs/FASE6-R3-baseline.json
+- specs/FASE6-R3-scenarios.json
+- tests/Test-Fase6-R3-PlannerValidation.ps1
+- tests/FASE6-R3-LEIA-ME.txt
+- FASE6_R3_CHANGELOG.txt
+- FASE6_R3_MANIFEST.txt
+
+ALTERADO:
+- FASE6_STATUS.txt
+
+CONGELADOS:
+- 230 tweaks e todos os catálogos Fase 5
+- Planner R1
+- Transaction Manager R13
+- Providers
+- PresetResolver R1
+- PresetPolicyEngine R2
+- WinSlim-Presets-R1.json
+- WinSlim-PresetRules-R2.json

@@ -1,0 +1,43 @@
+﻿{
+  "schemaVersion": "1.0",
+  "phase": "6-R4",
+  "baseline": "FASE 6 R3 approved / backend 230",
+  "purpose": "Preview deterministico + binding Preview/Plan + Transaction Manager sintético sem mutação do Windows.",
+  "basePresets": {
+    "Balanceado": 105,
+    "Gamer": 129,
+    "Extremo": 168
+  },
+  "previewStack": {
+    "preset": "Gamer",
+    "profiles": [
+      "WL-CS2",
+      "HW-HAGS-ON",
+      "HW-MSI-GPU"
+    ],
+    "expectedSelectedCount": 132
+  },
+  "highRiskPreview": {
+    "preset": "Gamer",
+    "profiles": [
+      "HW-CS2-P-CORES"
+    ],
+    "allowHighRisk": true,
+    "expectedHighRisk": 1
+  },
+  "syntheticTransaction": {
+    "commitSampleSize": 8,
+    "rollbackSampleSize": 3,
+    "failureIndex": 3
+  },
+  "invariants": [
+    "Preview is pure and contains no Windows mutation primitives.",
+    "Preview fingerprint is deterministic for equal validated plans.",
+    "Preview transaction handoff requires Planner fingerprint equality and exact execution order/levels.",
+    "Blocked plans never become transaction-ready.",
+    "Synthetic transaction uses NoPersist and no real Provider/Windows mutation.",
+    "Synthetic commit preserves Planner order.",
+    "Synthetic failure rolls back prior changed steps in strict LIFO order.",
+    "Backend remains 230 and legacy UI/autoload remains 187."
+  ]
+}

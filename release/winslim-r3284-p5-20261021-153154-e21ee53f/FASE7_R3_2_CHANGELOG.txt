@@ -1,0 +1,31 @@
+Win-Slim Suite — FASE 7 R3.2
+Native UI Foundation
+
+ADICIONADO
+- Host C# WPF nativo compilável com csc.exe do .NET Framework 4.8.
+- XAML Native UI dedicado ao designer oficial da FASE 7.
+- Bridge PowerShell persistente read-only com protocolo JSON por stdin/stdout.
+- Presets e 16 overlays condicionais conectados ao PresetRuntime canônico.
+- Toggles/chips com estado ativo em laranja e elegibilidade de hardware.
+- Consentimento adicional para overlays Alto preservado.
+- Dashboard real via snapshot + métricas R2.
+- Transições fade/slide curtas por animações WPF nativas.
+- DPI PerMonitorV2, WindowChrome e integração DWM quando suportada.
+- Self-test do EXE e gate Test-Fase7-R3.2-NativeUI.ps1.
+
+PRESERVADO
+- FASE 6.5 R4.1 byte-a-byte.
+- FASE 7 R3.1.1 byte-a-byte.
+- backend de 230 tweaks.
+- presets 105 / 129 / 168.
+- RuntimePromotion, PresetRuntime, PlannerOptimized e TransactionOptimized.
+- nenhuma mutação direta pela UI.
+
+DELIBERADAMENTE NÃO CONECTADO
+- Planner validation.
+- Preview transacional.
+- Transaction / Apply / Rollback.
+- Providers de mutação.
+
+MOTIVAÇÃO
+Remover o PowerShell da responsabilidade de renderização/eventos WPF e usá-lo somente como bridge/backend, aumentando estabilidade, previsibilidade de callbacks, modernidade visual e capacidade de evolução da interface.

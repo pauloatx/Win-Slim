@@ -1,0 +1,8 @@
+R3.2.47 — moldura e idiomas
+- Moldura compartilhada laranja e cantos arredondados, sem janelas extras ou transparência.
+- Arredondamento nativo Windows 11 e região GDI com escala DPI para versões anteriores.
+- Idioma automático do Windows, com PT-BR/English manual salvo e aplicado imediatamente.
+- Traduções de apresentação; IDs e dados técnicos preservados.
+- Troca reversível por controle, busca em inglês e testes de preservação da seleção.
+- Revisões anteriores e motor preservados byte a byte; integração real pausada.
+- Validação local estrutural concluída; compilação e visual WPF pendentes no Windows.

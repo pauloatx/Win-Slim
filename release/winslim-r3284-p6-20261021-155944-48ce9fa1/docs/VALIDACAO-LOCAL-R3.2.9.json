@@ -1,0 +1,73 @@
+{
+  "revision": "R3.2.9",
+  "checks": [
+    {
+      "name": "all_previous_files_byte_identical",
+      "passed": true,
+      "detail": 333
+    },
+    {
+      "name": "hashes_FASE6.5-R4-baseline.json",
+      "passed": true,
+      "detail": 26
+    },
+    {
+      "name": "hashes_FASE7-R3.2.8-baseline.json",
+      "passed": true,
+      "detail": 14
+    },
+    {
+      "name": "hashes_FASE7-R3.2.9-baseline.json",
+      "passed": true,
+      "detail": 14
+    },
+    {
+      "name": "xaml_well_formed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "window_names_unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "named_controller_controls_resolve",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "static_resources_resolve",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "presets_page_byte_identical",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "16_conditional_overlays",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "compact_dashboard_and_full_presets",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "user_resize_respected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "keyboard_focus_indication",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "status": "local_static_checks_passed_only",
+  "windowsGate": "pending",
+  "visualApproval": "pending"
+}

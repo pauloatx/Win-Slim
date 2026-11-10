@@ -1,0 +1,11 @@
+Win-Slim Suite - FASE 7 R3.2.2
+
+Hotfix da toolchain C# WPF.
+
+- Preserva integralmente a R3.2.1 e a baseline FASE 6.5 R4.1.
+- Corrige CS1703 causado por referencias duplicadas entre csc.rsp e referencias explicitas.
+- Build passa a usar /noconfig + referencias explicitas do runtime .NET Framework.
+- Mantem response file para quoting seguro no Windows PowerShell 5.1.
+- Mantem log persistente em logs\build-native-r3.2.2.log.
+- Mantem Native UI read-only; nenhuma mutacao direta do Windows.
+- Mantem 230 tweaks e presets 105 / 129 / 168.

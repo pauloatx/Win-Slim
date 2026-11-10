@@ -1,0 +1,1 @@
+R3.2.79: tres ajustes QoL, cinco valores; contratos exatos e normalizacao versionada de AllowOnlineTips. Seis testes Python do empacotador, JSON/XML e preservacao da base verificados localmente. Onze suites PowerShell/WPF e compilacao Windows PENDENTES. R3.2.78 corrigida aprovada nas evidencias do usuario; nao atribuir sua aprovacao a esta build.

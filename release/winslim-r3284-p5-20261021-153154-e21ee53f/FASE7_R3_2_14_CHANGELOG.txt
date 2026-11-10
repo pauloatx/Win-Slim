@@ -1,0 +1,1 @@
+R3.2.14: corrige sobreposição dos painéis no Avançado; adiciona validação geométrica no self-test WPF.

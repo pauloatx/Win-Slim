@@ -1,0 +1,1 @@
+R3.2.38: animacoes curtas de hover/pressao mouse e teclado; chaves com deslizamento e transicao verde/cinza; confirmacao visual de checkbox/overlay; entrada suave de paginas, relatorios, categorias e abas; respeita animacoes reduzidas/alto contraste; clocks substituidos e estado final preservado. Gate Windows pendente.

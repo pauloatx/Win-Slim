@@ -1,0 +1,25 @@
+{
+  "revision": "FASE7-R3.2.16",
+  "windowsGate": "pending",
+  "visualApproval": "pending",
+  "r3216Files": {
+    "src\\UI\\Native\\R3_2_16\\MainWindowController.cs": "033ff2bd3f248d3cea5ca317c58c4f6858b2cc266d3a628c7bf1f775c9b83e32",
+    "src\\UI\\Native\\R3_2_16\\WinSlim.UI.Native.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "src\\UI\\Native\\R3_2_16\\BridgeClient.cs": "a8396a942aa49f4e1fe6c61e7dc2ed3b3794a22f42b583bebd6a3332b12acbee",
+    "src\\UI\\Native\\R3_2_16\\WinSlim.UiBridge.ps1": "5e0fc43612dcf75943432fb79b13e4d26958af6202427020a03960321bdca039",
+    "src\\UI\\Native\\R3_2_16\\WinSlimShell.xaml": "4f761460deefee44632cb4f7569fe22ad33f9c541d47668fd114ce981b3178e5",
+    "src\\UI\\Native\\R3_2_16\\WinSlim.NativeUI.manifest": "1005917cd1c5490bcb4a44878bea79bebd492741e4012ba0aaf4c40738a24dcb",
+    "src\\UI\\Native\\R3_2_16\\Program.cs": "039ebec6a6f6deddfab2f8afbf291a8894ea8b0490910507ad79561b986f283e",
+    "Capturar-Presets-Avancado-R3.2.16.bat": "11580ead76ba5c645275522a85a54ce51cc33255b9dbac13306868411a73ff73",
+    "FASE7-R3.2.16-LEIA-ME.md": "ae720c9417fbd2cb67b1322d02deb832e561e80f0d67ed418772d6cd1304a450",
+    "Build-NativeUI-R3.2.16.ps1": "9a22853cb96dc0239195bf57003c4b3846979560fbde7b4f3f8decdf3a8be137",
+    "Capturar-Dashboard-R3.2.16.bat": "7c772714a44e707f627baf4b87029b4da269620f520a29c5496f6e0a50f313d1",
+    "Validar-Presets-R3.2.16.bat": "5b3a9978bed4048774d4795ea66541f2ffaa45d707692b59a2e2953c4fefd858",
+    "Capturar-Presets-R3.2.16.bat": "818868350bab7f65d12636c113178a77e7e2493717e911d2562e866d6398b3c5",
+    "Capturar-Presets-Logs-R3.2.16.bat": "451e14f6c54124f2fe3dbcbdb80cab68ad4726483bbf73fd986fafa8b628d3b4",
+    "Executar-WinSlim-R3.2.16.bat": "119c9f069d522ba3f75b29a27df532b0dad378829be311ada4155d06d7597117",
+    "Validar-Dashboard-R3.2.16.bat": "5b3a9978bed4048774d4795ea66541f2ffaa45d707692b59a2e2953c4fefd858",
+    "Capturar-Presets-Sobre-R3.2.16.bat": "2d09d3d2645bf4774177bd59f4441464c437776dd6fa762de85eaec3be483cd6",
+    "tests\\Test-Fase7-R3.2.16-NativeUI.ps1": "377666cdba6b89c86fdf7763475925c76f286d44d7ec0d60a3e8aaca6278c429"
+  }
+}

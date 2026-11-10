@@ -1,0 +1,12 @@
+Win-Slim Suite - Fase 3 R7
+
+Correcoes:
+- Confirmado pelo trace do Windows PowerShell 5.1: R6 concluiu operations.json e travou em ConvertTo-Json durante rollback.json.
+- rollback.json agora usa journal compacto e nunca persiste UndoResult inteiro.
+- result/state-before/state-after agora usam snapshots explicitos e compactos; BackupData e StateAfter vivos nao sao reserializados.
+- estado original autoritativo permanece nos arquivos imutaveis Backups/<TransactionId>/<step>.json.
+- Copy-TransactionObject restringido a NoteProperty para evitar AliasProperty/adapters inesperados.
+- trace granular adicionado aos artefatos finais.
+- TEST 00 ganhou gates para rollback journal e artefatos finais.
+
+Objetivo: criar uma serialization firewall entre objetos vivos de Provider/Engine e os journals JSON persistentes.

@@ -1,0 +1,293 @@
+﻿{
+  "schemaVersion": "1.0",
+  "phase": "6-R2",
+  "presetCatalog": "WinSlim-Presets-R1.json",
+  "catalogBaseline": "Fase 5 R4.2.1 / 230 tweaks",
+  "conflictPolicy": "Block",
+  "dependencyPolicy": "PlannerExpand",
+  "rules": [
+    "Automatic presets may select only tweaks classified as Auto in R1.",
+    "HardwareConditional and WorkloadConditional tweaks require an explicit conditional profile opt-in.",
+    "ManualOnly, Maintenance and Diagnostic items are never injected by automatic or conditional profiles.",
+    "High-risk conditional tweaks require explicit profile opt-in plus AllowHighRiskConditional consent.",
+    "Conditional overlays never silently remove or replace a base preset selection.",
+    "Any declared conflict, mutex collision or multilevel override conflict blocks resolution.",
+    "Unknown conditional profile names block resolution instead of being ignored.",
+    "Dependency expansion remains the Planner responsibility after policy resolution."
+  ],
+  "modePolicies": {
+    "Auto": {
+      "basePresetEligible": true,
+      "conditionalProfileEligible": false
+    },
+    "ManualOnly": {
+      "basePresetEligible": false,
+      "conditionalProfileEligible": false
+    },
+    "HardwareConditional": {
+      "basePresetEligible": false,
+      "conditionalProfileEligible": true,
+      "profileKind": "Hardware"
+    },
+    "WorkloadConditional": {
+      "basePresetEligible": false,
+      "conditionalProfileEligible": true,
+      "profileKind": "Workload"
+    },
+    "Maintenance": {
+      "basePresetEligible": false,
+      "conditionalProfileEligible": false
+    },
+    "Diagnostic": {
+      "basePresetEligible": false,
+      "conditionalProfileEligible": false
+    }
+  },
+  "profileOrder": [
+    "HW-HAGS-ON",
+    "HW-MSI-GPU",
+    "HW-CORE-PARKING-100",
+    "HW-CS2-P-CORES",
+    "HW-GPU-IRQ-AFFINITY",
+    "WL-VALORANT",
+    "WL-CS2",
+    "WL-APEX",
+    "WL-FORTNITE",
+    "WL-GTAV",
+    "WL-FSO-OFF",
+    "WL-DEFENDER-DEV-EXCLUSIONS",
+    "WL-STREAMING",
+    "WL-VIDEO-EDITING",
+    "WL-DESIGN",
+    "WL-PROGRAMMING"
+  ],
+  "conditionalProfiles": [
+    {
+      "name": "HW-HAGS-ON",
+      "kind": "Hardware",
+      "description": "Ativar HAGS somente por opt-in explícito; a compatibilidade real continua sendo verificada no Planner/Windows.",
+      "selectedIds": [
+        "MLV-004"
+      ],
+      "levelSelections": {
+        "MLV-004": 0
+      },
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "requiresGPU": true
+      }
+    },
+    {
+      "name": "HW-MSI-GPU",
+      "kind": "Hardware",
+      "description": "Ativar MSI Mode para GPU somente por opt-in explícito.",
+      "selectedIds": [
+        "PERF-018"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "requiresGPU": true
+      }
+    },
+    {
+      "name": "HW-CORE-PARKING-100",
+      "kind": "Hardware",
+      "description": "Fixar CPMINCORES em 100% AC/DC usando o Provider validado; não entra automaticamente em preset.",
+      "selectedIds": [
+        "WS-ADV-001"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {}
+    },
+    {
+      "name": "HW-CS2-P-CORES",
+      "kind": "Hardware",
+      "description": "Afinidade dinâmica do CS2 em P-cores. Alto risco e somente com consentimento explícito adicional.",
+      "selectedIds": [
+        "WS-ADV-002"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": true,
+      "eligibilityHints": {
+        "workload": "CS2",
+        "providerMaySkipOnUnsupportedTopology": true
+      }
+    },
+    {
+      "name": "HW-GPU-IRQ-AFFINITY",
+      "kind": "Hardware",
+      "description": "Afinidade de interrupções da GPU. Alto risco e somente com consentimento explícito adicional.",
+      "selectedIds": [
+        "WS-ADV-003"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": true,
+      "eligibilityHints": {
+        "requiresGPU": true,
+        "minLogicalProcessors": 8,
+        "providerMaySkipOnUnsupportedTopology": true
+      }
+    },
+    {
+      "name": "WL-VALORANT",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para VALORANT; opt-in específico do workload.",
+      "selectedIds": [
+        "GAME-001"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "VALORANT"
+      }
+    },
+    {
+      "name": "WL-CS2",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para Counter-Strike 2; não ativa afinidade P-core automaticamente.",
+      "selectedIds": [
+        "GAME-002"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "CS2"
+      }
+    },
+    {
+      "name": "WL-APEX",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para Apex Legends.",
+      "selectedIds": [
+        "GAME-003"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "Apex Legends"
+      }
+    },
+    {
+      "name": "WL-FORTNITE",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para Fortnite.",
+      "selectedIds": [
+        "GAME-004"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "Fortnite"
+      }
+    },
+    {
+      "name": "WL-GTAV",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para GTA V.",
+      "selectedIds": [
+        "GAME-005"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "GTA V"
+      }
+    },
+    {
+      "name": "WL-FSO-OFF",
+      "kind": "Workload",
+      "description": "Desativar Fullscreen Optimizations somente quando o usuário decidir por compatibilidade/latência do workload.",
+      "selectedIds": [
+        "PERF-013"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "Games"
+      }
+    },
+    {
+      "name": "WL-DEFENDER-DEV-EXCLUSIONS",
+      "kind": "Workload",
+      "description": "Exclusões pontuais do Defender para desenvolvimento; exige opt-in porque reduz cobertura nas pastas/processos excluídos.",
+      "selectedIds": [
+        "SEC-011"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "Development"
+      }
+    },
+    {
+      "name": "WL-STREAMING",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para OBS/Streamlabs.",
+      "selectedIds": [
+        "WORK-001"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "Streaming"
+      }
+    },
+    {
+      "name": "WL-VIDEO-EDITING",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para editores de vídeo suportados.",
+      "selectedIds": [
+        "WORK-002"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "VideoEditing"
+      }
+    },
+    {
+      "name": "WL-DESIGN",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para ferramentas de design suportadas.",
+      "selectedIds": [
+        "WORK-003"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "Design"
+      }
+    },
+    {
+      "name": "WL-PROGRAMMING",
+      "kind": "Workload",
+      "description": "Prioridade IFEO alta para IDEs/editores suportados; não adiciona exclusões do Defender automaticamente.",
+      "selectedIds": [
+        "WORK-004"
+      ],
+      "levelSelections": {},
+      "requiresExplicitOptIn": true,
+      "requiresHighRiskConsent": false,
+      "eligibilityHints": {
+        "workload": "Programming"
+      }
+    }
+  ]
+}

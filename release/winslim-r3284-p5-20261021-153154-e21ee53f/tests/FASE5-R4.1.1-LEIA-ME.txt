@@ -1,0 +1,8 @@
+FASE 5 R4.1.1 - Gate corrigido
+
+Execute em Windows PowerShell 5.1 como Administrador:
+  .\tests\Test-Fase5-R4.1-CatalogExpansion.ps1
+
+Esta revisão corrige apenas o harness. O catálogo R4.1 continua com 15 entradas e o backend validado com 217.
+Resultado esperado:
+  FASE 5 R4.1.1 APROVADA - segunda expansão curada validada: backend 217 entradas, rollback e Planner preservados.

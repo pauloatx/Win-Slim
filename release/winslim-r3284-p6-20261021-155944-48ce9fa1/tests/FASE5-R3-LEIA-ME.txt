@@ -1,0 +1,14 @@
+﻿Win-Slim Suite - FASE 5 R3 / Catalog Promotion
+
+Objetivo:
+- promover WS-ADV-001/002/003 após PASS da R2.1;
+- manter Transaction R13, Planner R1 e Providers R2.1 congelados;
+- validar um bridge transacional com backup pre-apply;
+- não expor type=provider à UI legada antes da Fase 7.
+
+Executar como Administrador:
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase5-R3-CatalogPromotion.ps1
+
+O teste de GPU grava somente em HKCU:\Software\WinSlimSuite\Tests\Fase5R3Gpu e remove a chave ao final.
+Core Parking/Task Scheduler/afinidade reais não são alterados: usam adapters sintéticos.

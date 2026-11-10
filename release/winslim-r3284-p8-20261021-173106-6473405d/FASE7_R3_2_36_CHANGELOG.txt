@@ -1,0 +1,1 @@
+R3.2.36: Sobre com versao, finalidade, catalogo/presets, recursos, compatibilidade, limites da etapa visual, referencias, projeto e orientacao de logs. Painel dark/laranja e rolagem global, mesma janela. Nenhuma alteracao no Windows. Validacao Windows pendente.

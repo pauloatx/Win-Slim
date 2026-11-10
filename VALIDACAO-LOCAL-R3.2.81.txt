@@ -1,0 +1,1 @@
+R3.2.81: EDGE-008/011/012/016 revisados; quatro DWORDs, incluindo valor 2 para pesquisa lateral. Seis testes locais do empacotador, JSON/XAML, hashes e preservacao conferidos. Compilacao e treze suites Windows PENDENTES. R3.2.80 concluida no cenario recebido; a falha anterior da build era executavel aberto, e a repeticao terminou em Resultado: 0.

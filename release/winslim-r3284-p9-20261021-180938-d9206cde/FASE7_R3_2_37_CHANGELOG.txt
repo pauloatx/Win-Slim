@@ -1,0 +1,1 @@
+R3.2.37: padronizacao de nomes da interface, catalogos, caminhos, identificadores avancados, codigo, historico empacotado, testes e documentacao. Operacoes dos 230 ajustes preservadas. Especificacoes de integridade atualizadas apos padronizacao. Presets antigos com IDs avancados devem ser salvos novamente. Gate Windows pendente.

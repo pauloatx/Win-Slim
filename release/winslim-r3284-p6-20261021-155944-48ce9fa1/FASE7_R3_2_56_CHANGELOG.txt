@@ -1,0 +1,10 @@
+R3.2.56 — backup real de registro e serviços
+- Captura fresca vinculada ao plano validado.
+- Snapshot de dados tipado, com cobertura e exclusões explícitas.
+- Gravação em pasta temporária, Flush, SHA-256 e publicação sem sobrescrever backups.
+- Criar backup na pré-visualização e consulta verificada em Backup/Restore.
+- Detalhes completos sob demanda e tratamento de timeout do bridge.
+- Testes isolados de persistência, integridade, tipos e falhas.
+- Core, Providers, catálogo e todas as revisões anteriores preservados.
+- Aplicação, restauração e ponto de restauração Windows ainda não integrados.
+- Gate Windows pendente.

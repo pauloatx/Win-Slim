@@ -1,0 +1,12 @@
+Win-Slim R3.2.78 — protótipo isolado de relatório HTML
+
+Arquivos:
+- relatorio_r3278.html: relatório gerado com outcome.json real da R3.2.77
+- build_report.py: gerador independente, sem efeitos sobre Windows
+- test_report.py: testes automatizados de agrupamento, escape HTML e consistência
+
+Uso:
+  python build_report.py CAMINHO_DO_outcome.json relatorio.html
+
+Escopo: demonstra agrupamento por tweak na apresentação mantendo contagens de valores.
+NÃO está integrado à UI nativa; os RARs enviados contêm logs e backups, não o código-fonte.

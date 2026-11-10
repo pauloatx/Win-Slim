@@ -1,0 +1,48 @@
+﻿{
+    "schemaVersion":  1,
+    "repository":  "https://github.com/NVIDIA/nvapi",
+    "commit":  "70d337db9186e968eab622f7e786de7e437faf3d",
+    "scope":  "development headers/license only; no NVIDIA import library or driver binary",
+    "files":  [
+                  {
+                      "path":  "third_party/NvApiSdk/70d337db9186e968eab622f7e786de7e437faf3d/nvapi.h",
+                      "url":  "https://raw.githubusercontent.com/NVIDIA/nvapi/70d337db9186e968eab622f7e786de7e437faf3d/nvapi.h",
+                      "sha256":  "76bbb71107c1388134d41712bed56bb6d80ec426f9bb2c168e2d6941b90f16ca"
+                  },
+                  {
+                      "path":  "third_party/NvApiSdk/70d337db9186e968eab622f7e786de7e437faf3d/nvapi_interface.h",
+                      "url":  "https://raw.githubusercontent.com/NVIDIA/nvapi/70d337db9186e968eab622f7e786de7e437faf3d/nvapi_interface.h",
+                      "sha256":  "d279f81e7f92f2743bfea2ec7ada693001805e13645eb1c6f2af44ef9c342834"
+                  },
+                  {
+                      "path":  "third_party/NvApiSdk/70d337db9186e968eab622f7e786de7e437faf3d/nvapi_lite_common.h",
+                      "url":  "https://raw.githubusercontent.com/NVIDIA/nvapi/70d337db9186e968eab622f7e786de7e437faf3d/nvapi_lite_common.h",
+                      "sha256":  "3904baab8e8501a53746ddf4e5b13a2e1d5acd6ee50f8c3c2eadd8e4d62c55f2"
+                  },
+                  {
+                      "path":  "third_party/NvApiSdk/70d337db9186e968eab622f7e786de7e437faf3d/nvapi_lite_salstart.h",
+                      "url":  "https://raw.githubusercontent.com/NVIDIA/nvapi/70d337db9186e968eab622f7e786de7e437faf3d/nvapi_lite_salstart.h",
+                      "sha256":  "9db770e52947b33d68b0c1f17bc21edd9d736b824ccecee2c5c527d48a89be93"
+                  },
+                  {
+                      "path":  "third_party/NvApiSdk/70d337db9186e968eab622f7e786de7e437faf3d/nvapi_lite_salend.h",
+                      "url":  "https://raw.githubusercontent.com/NVIDIA/nvapi/70d337db9186e968eab622f7e786de7e437faf3d/nvapi_lite_salend.h",
+                      "sha256":  "92017f8e26f585601f4eaac475fa9e542eaa2f99a80e376dde52f2f73ab18e67"
+                  },
+                  {
+                      "path":  "third_party/NvApiSdk/70d337db9186e968eab622f7e786de7e437faf3d/NvApiDriverSettings.h",
+                      "url":  "https://raw.githubusercontent.com/NVIDIA/nvapi/70d337db9186e968eab622f7e786de7e437faf3d/NvApiDriverSettings.h",
+                      "sha256":  "95ffda903832840343a81189e052a0756774bd92e4b37f2dc49598d493f951d4"
+                  },
+                  {
+                      "path":  "third_party/NvApiSdk/70d337db9186e968eab622f7e786de7e437faf3d/README.md",
+                      "url":  "https://raw.githubusercontent.com/NVIDIA/nvapi/70d337db9186e968eab622f7e786de7e437faf3d/README.md",
+                      "sha256":  "9488726dac338de979ae394e48df8af5b75f7c0f8b74d568332706c85ee0d6eb"
+                  },
+                  {
+                      "path":  "third_party/NvApiSdk/70d337db9186e968eab622f7e786de7e437faf3d/License.txt",
+                      "url":  "https://raw.githubusercontent.com/NVIDIA/nvapi/70d337db9186e968eab622f7e786de7e437faf3d/License.txt",
+                      "sha256":  "84726b60c17fe0f71f92a6c074c3d4087370886eba5d21ccc4ec55db37d6c8ba"
+                  }
+              ]
+}

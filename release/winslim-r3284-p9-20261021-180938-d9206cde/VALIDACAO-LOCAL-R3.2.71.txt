@@ -1,0 +1,1 @@
+R3.2.71: XML/XAML, JSON, hashes e preservação de contratos conferidos. Compilação C#5, WPF e testes PowerShell ainda pendentes no Windows. Leia FASE7-R3.2.71-LEIA-ME.md.

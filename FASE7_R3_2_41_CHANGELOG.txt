@@ -1,0 +1,1 @@
+R3.2.41: UI otimizada com pinceis congelados compartilhados, indice por categoria, reaproveitamento das linhas visiveis, busca agrupada 120ms, consultas de presets coalescidas, menos atualizacoes redundantes, logs sem sobreposicao e timers encerrados. Esmaecimento aprovado preservado. Windows/medicao pendentes.

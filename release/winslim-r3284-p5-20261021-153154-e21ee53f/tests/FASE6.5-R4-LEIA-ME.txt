@@ -1,0 +1,10 @@
+﻿Win-Slim Suite - FASE 6.5 R4
+
+Objetivo: promover PlannerOptimized e TransactionOptimized via RuntimePromotion.ps1,
+com fallback explícito e sem apagar as implementações R1/R13 usadas como referência.
+
+Teste:
+  .\tests\Test-Fase6.5-R4-PromotionRegression.ps1
+
+O harness é não destrutivo: usa Context/handlers sintéticos e Transaction -NoPersist
+nos testes funcionais. O benchmark é diagnóstico; equivalência/regressão é o gate.

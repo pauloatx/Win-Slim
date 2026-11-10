@@ -1,0 +1,207 @@
+{
+    "schemaVersion":  1,
+    "revision":  "R3.2.84",
+    "cases":  [
+                  {
+                      "id":  "REG-PROCESS-001",
+                      "bugs":  [
+                                   "exit-code-nulo-falso-failed"
+                               ],
+                      "scenario":  "Capturar códigos 0/1/7 de processos rápidos e drenar stdout/stderr acima do buffer sem perder o resultado.",
+                      "script":  "tests/regression/Test-ProcessExitCode.ps1",
+                      "timeoutSeconds":  90
+                  },
+                  {
+                      "id":  "REG-HARNESS-001",
+                      "bugs":  [
+                                   "caminho-invalido-inicializacao-regressoes",
+                                   "release-regression-id-duplicado"
+                               ],
+                      "scenario":  "Resolver a pasta após vincular parâmetros e executar o harness real em pasta com espaços/acentos, com Root padrão/explicito e saída de falha. Cadastro duplicado deve bloquear todas as execucoes e informar o ID.",
+                      "script":  "tests/regression/Test-RegressionPaths-R3.2.84.ps1",
+                      "timeoutSeconds":  150
+                  },
+                  {
+                      "id":  "REG-BUILD-001",
+                      "bugs":  [
+                                   "CS4014-dispatcher-personalizado"
+                               ],
+                      "scenario":  "O compilador deve rejeitar BeginInvoke ignorado em contexto async e aceitar a operação acompanhada com await; a build completa continua exigida pela suíte nativa.",
+                      "script":  "tests/regression/Test-DispatcherAwait.ps1",
+                      "timeoutSeconds":  90
+                  },
+                  {
+                      "id":  "REG-PERF-001",
+                      "bugs":  [
+                                   "indicadores-esperam-gpu"
+                               ],
+                      "scenario":  "CPU/RAM devem ser publicados antes do fim da consulta GPU; falhas produzem null; falha de publicação não interrompe coleta.",
+                      "script":  "tests/Test-Fase7-R3.2.84-Performance.ps1",
+                      "timeoutSeconds":  90
+                  },
+                  {
+                      "id":  "REG-UI-001",
+                      "bugs":  [
+                                   "categoria-desativar-todos",
+                                   "chave-ativada-posicao-incorreta",
+                                   "CS4014-logs",
+                                   "personalizado-navegacao",
+                                   "logs-acesso-thread-incorreta",
+                                   "benchmark-theme-language-layout",
+                                   "benchmark-unmeasured-selftest-viewport",
+                                   "benchmark-guidance-missing",
+                                   "benchmark-technical-detail-default",
+                                   "benchmark-baseline-self-comparison",
+                                   "benchmark-native-combo-white-surface",
+                                   "benchmark-comparison-chart-height",
+                                   "overlay-controls-interrupt-capture-state",
+                                   "overlay-selftest-transient-cleanup-io"
+                               ],
+                      "scenario":  "Compilar com CS4014 tratado como erro e executar o self-test WPF: seleção/desseleção por categoria incluindo busca, preservação de outras categorias e estado das chaves; reutilização da tela Personalizado. Logs sem SynchronizationContext: sucesso e erro devem atualizar no Dispatcher. Benchmark: navegacao sem nova janela, inativo inicialmente, temas e idiomas. Medir/organizar viewport finito, dois tamanhos, relatorio longo e rejeitar controles cortados ou sobrepostos. Orientacao didatica: dicas inclusive em botoes desabilitados, resumo simples em PT/EN, detalhes tecnicos reversiveis e referencia sem comparacao falsa. Seletor: superficies renderizadas seguem tema claro/escuro, dica vazia traduzida, selecao preservada ao desabilitar; grafico com escala preserva pontos e limites. Comparacao visual: cores e tracejado distintos, escala comum, hover numerico nos extremos com comprimentos diferentes, limpeza ao sair e rejeicao de referencia incompativel/identica. Area do grafico permanece ao menos 90x60 nos dois tamanhos, com legenda e hover presentes; falha inclui dimensoes e viewport. Selecao automatica/manual preserva resultado e referencia, congela durante operacao e nao inicia captura nem overlay sozinha; novos controles medidos nos mesmos temas, idiomas e viewports. Fabrica real do overlay recebe referencia compativel; durante tarefa pendente, mover, trocar tamanho e travar nao alteram processo, tarefa, cancelamento, resultado anterior nem referencia. Limpeza de fixture exclusiva valida caminho, suporta IO transitorio e continua reprovando IO persistente; teste injeta ambas as falhas e prova que diretorio alheio nao e alterado.",
+                      "script":  "tests/Test-Fase7-R3.2.84-NativeUI.ps1",
+                      "timeoutSeconds":  900,
+                      "integratedNative":  true
+                  },
+                  {
+                      "id":  "REG-EDGE-001",
+                      "bugs":  [
+                                   "edge-machine-policy-contract",
+                                   "edge-apply-backup-restore"
+                               ],
+                      "scenario":  "Edge: contratos exatos, versao instalada, elevacao, backup em disco, Apply/Verify/Undo, idempotencia e recuperacao de falha parcial com IO simulado.",
+                      "script":  "tests/Test-Fase7-R3.2.84-Edge.ps1",
+                      "timeoutSeconds":  150
+                  },
+                  {
+                      "id":  "REG-ENDTASK-001",
+                      "bugs":  [
+                                   "endtask-local-compatibility",
+                                   "endtask-roundtrip-original-state"
+                               ],
+                      "scenario":  "UI-006: contrato HKCU, limite local Windows 11, backup obrigatorio, Apply/Verify/Undo, ausencia e DWORD 0, idempotencia e recuperacao apos escrita parcial.",
+                      "script":  "tests/Test-Fase7-R3.2.84-EndTask.ps1",
+                      "timeoutSeconds":  150
+                  },
+                  {
+                      "id":  "REG-SEARCH-001",
+                      "bugs":  [
+                                   "search-mode-conflict-boundary",
+                                   "search-mode-original-state-restore"
+                               ],
+                      "scenario":  "UI-004: contrato, conflitos UI-021, Windows 10/11, Apply/Verify/Undo com ausencia e DWORD 0/2/3, backup, idempotencia e falha parcial.",
+                      "script":  "tests/Test-Fase7-R3.2.84-SearchIcon.ps1",
+                      "timeoutSeconds":  180
+                  },
+                  {
+                      "id":  "REG-UIBATCH-001",
+                      "bugs":  [
+                                   "multivalue-backup-coverage",
+                                   "multivalue-partial-write-recovery",
+                                   "ui-batch-policy-compatibility"
+                               ],
+                      "scenario":  "Seis ajustes UI/QoL: todos os destinos, limites de versao/edicao, conflitos e Apply/Verify/Undo individual e lote; backup multioperacao e recuperacao em cada ponto de falha.",
+                      "script":  "tests/Test-Fase7-R3.2.84-UiBatch.ps1",
+                      "timeoutSeconds":  240
+                  },
+                  {
+                      "id":  "REG-REPORT-001",
+                      "bugs":  [
+                                   "preview-category-alias-split",
+                                   "multivalue-outcome-duplicates",
+                                   "report-false-success"
+                               ],
+                      "scenario":  "Relatorio nativo/HTML agrupa IDs, confere contadores, falhas e exclusoes; escapa HTML. Previa agrega aliases UI/QoL sem alterar catalogo, risco ou reinicio.",
+                      "script":  "tests/Test-Fase7-R3.2.84-Report.ps1",
+                      "timeoutSeconds":  150
+                  },
+                  {
+                      "id":  "REG-QOLBATCH-001",
+                      "bugs":  [
+                                   "qol-online-tips-wrong-registry-path",
+                                   "qol-machine-policy-elevation",
+                                   "qol-multivalue-roundtrip"
+                               ],
+                      "scenario":  "Tres ajustes QoL: rejeitar caminho antigo de AllowOnlineTips, validar contrato completo e limites locais; Apply/Verify/Undo individual e lote com falha em cada escrita e backup incompleto.",
+                      "script":  "tests/Test-Fase7-R3.2.84-QolBatch.ps1",
+                      "timeoutSeconds":  240
+                  },
+                  {
+                      "id":  "REG-EDGEBATCH-001",
+                      "bugs":  [
+                                   "edge-batch-contract-isolation",
+                                   "edge-batch-version-boundaries",
+                                   "edge-batch-transaction-roundtrip"
+                               ],
+                      "scenario":  "EDGE-003 a EDGE-006: destinos e valores exatos, versoes locais e elevacao; Apply Verify Undo por politica e lote; idempotencia, backup incompleto e recuperacao em cada escrita.",
+                      "script":  "tests/Test-Fase7-R3.2.84-EdgeBatch.ps1",
+                      "timeoutSeconds":  240
+                  },
+                  {
+                      "id":  "REG-EDGENEXT-001",
+                      "bugs":  [
+                                   "edge-interface-policy-contracts",
+                                   "edge-sidebar-enum-exact-value",
+                                   "edge-interface-restore-original-state"
+                               ],
+                      "scenario":  "EDGE-008/011/012/016: contrato exato incluindo DWORD 2, limites locais de versao, elevacao e Apply Verify Undo individual e lote; recuperacao em cada escrita.",
+                      "script":  "tests/Test-Fase7-R3.2.84-EdgeNext.ps1",
+                      "timeoutSeconds":  240
+                  },
+                  {
+                      "id":  "REG-EDGEPRIV-001",
+                      "bugs":  [
+                                   "edge-optional-preferences-contract",
+                                   "edge-optional-preferences-version",
+                                   "edge-optional-preferences-roundtrip"
+                               ],
+                      "scenario":  "EDGE-019/020/024/025: destinos e DWORDs exatos, limites locais de versao e permissao; Apply Verify Undo individual e lote, idempotencia e falha em cada escrita.",
+                      "script":  "tests/Test-Fase7-R3.2.84-EdgePrivacy.ps1",
+                      "timeoutSeconds":  240
+                  },
+                  {
+                      "id":  "REG-PIPELINE-001",
+                      "bugs":  [
+                                   "duplicate-nested-regressions",
+                                   "release-empty-report-false-success",
+                                   "release-manual-evidence-collection",
+                                   "candidate-empty-root-from-bat",
+                                   "diagnostic-null-backup-path",
+                                   "diagnostic-stale-zip-false-evidence",
+                                   "diagnostic-current-revision-build-logs"
+                               ],
+                      "scenario":  "Execucao integrada delega dez suites uma unica vez; modo isolado preserva execucao. Gate rejeita resultado vazio, duplicado, ausente ou falho; pipeline real coleta ZIP e so abre app com gate completo. Pasta omitida/vazia/espacos resolvida apos parametros; ambos os BATs reais em pasta acentuada a partir de outro cwd. Substituir ZIP existente com backup de caminho valido, verificar resumo arquivado atual e preservar ZIP antigo quando arquivo estiver bloqueado. ZIP inclui conteudo exato dos logs .log/.json da revisao do resumo (R3.2.84 e revisao futura), exclui outras revisoes e prefixos semelhantes; log opcional ausente nao reaparece; log bloqueado ou revisao invalida reprovam sem alterar ZIP anterior, logs e resumo.",
+                      "script":  "tests/Test-Fase7-R3.2.84-Pipeline.ps1",
+                      "timeoutSeconds":  180
+                  },
+                  {
+                      "id":  "REG-PRESENTMON-001",
+                      "bugs":  [
+                                   "presentmon-invalid-csv-false-result",
+                                   "presentmon-mixed-process-streams",
+                                   "presentmon-partial-capture-success",
+                                   "presentmon-unsafe-session-takeover",
+                                   "presentmon-live-partial-row",
+                                   "presentmon-live-stale-data"
+                               ],
+                      "scenario":  "Coletor oficial fixado por hash; parser CSV e estatisticas com casos numericos, PID/swap chain isolados; processo simulado cobre stderr/stdout, exit 7, cancelamento de sessao propria, sem ETW real; comparacao exige aplicativo/duracao/metrica. Previa incremental usa as mesmas quatro formulas, limita ultimos 240 intervalos por fluxo, ignora PID/nome/cadeia alheios, aguarda linha completa e limpa dados antigos. Processo real simulado publica previa antes do fim, cancela sem aceitar parcial, permite recaptura e preserva resultado completo quando a previa falha.",
+                      "script":  "tests/Test-Fase7-R3.2.84-PresentMon.ps1",
+                      "timeoutSeconds":  150
+                  },
+                  {
+                      "id":  "REG-OVERLAY-001",
+                      "bugs":  [
+                                   "benchmark-overlay-source-before-visual-tree",
+                                   "benchmark-overlay-position-per-game",
+                                   "benchmark-overlay-live-mode-switch",
+                                   "overlay-locked-metrics-block-game-input",
+                                   "overlay-drag-clamped-to-game-monitor",
+                                   "overlay-reference-not-forwarded",
+                                   "overlay-monitor-preference-lost",
+                                   "overlay-selftest-transient-cleanup-io"
+                               ],
+                      "scenario":  "Inicializar HWND oculto antes da arvore visual sem NullReferenceException; Pequeno mostra quatro metricas e Medio acrescenta grafico, troca imediata preserva os valores. Arraste e Mover/Travar, persistencia por executavel, PID reutilizado, entrada invalida/indisponivel e preservacao do perfil anterior e de outro jogo. Fixtures WPF sem ETW, jogo real ou ajustes no computador. Complemento: HWND layered travado permite passagem nativa, janela separada limita entrada aos controles, mensagens recusam ativacao; seletor real preserva valores e referencia laranja/azul com escala comum. Arraste atravessa monitores, persiste monitor por jogo e ajusta resolucao/origem/remocao; topologia indisponivel preserva perfil. Compatibilidade e copia de referencia, comprimentos diferentes, migracao v1/v2 e janela nativa do jogo substituida. Limpeza de fixture exclusiva valida caminho, suporta IO transitorio e continua reprovando IO persistente; teste injeta ambas as falhas e prova que diretorio alheio nao e alterado.",
+                      "script":  "tests/Test-Fase7-R3.2.84-BenchmarkOverlay.ps1",
+                      "timeoutSeconds":  90
+                  }
+              ]
+}

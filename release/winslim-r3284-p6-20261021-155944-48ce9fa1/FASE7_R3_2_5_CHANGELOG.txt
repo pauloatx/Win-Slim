@@ -1,0 +1,17 @@
+Win-Slim Suite - FASE 7 R3.2.5
+Native UI PS5.1 Logging Hotfix
+
+Correcoes:
+- Corrige falha de runtime do build R3.2.4 causada por overload ambiguo de System.IO.File.AppendAllLines no Windows PowerShell 5.1.
+- Substitui AppendAllLines por logger explicito baseado em WriteAllText/AppendAllText com UTF-8 sem BOM.
+- Mantem /noconfig como argumento direto do csc.exe e response file deterministico.
+- Garante gravacao de --- result --- e ExitCode: 0 antes da copia do .config.
+- Valida explicitamente a existencia do .config apos Copy-Item.
+- Mantem Native UI, bridge e backend sem mutacao direta do Windows.
+
+Preservado:
+- FASE 6.5 R4.1 byte-a-byte.
+- FASE 7 R3.2.4 byte-a-byte para auditoria.
+- Backend 230 tweaks e presets 105/129/168.
+- 16 overlays condicionais e contrato de alto risco.
+- WPF nativo, DWM, DPI Per-Monitor V2, transicoes curtas e coleta de metricas sob demanda.

@@ -1,0 +1,41 @@
+﻿WIN-SLIM SUITE - COMO VALIDAR A FASE 4 R1 / PLANNER
+Data: 2026-10-04
+
+PRE-REQUISITO
+- Fase 3 R13 aprovada no mesmo baseline.
+- Windows PowerShell 5.1.
+- O harness da Fase 4 nao altera Registry/Services/BCD/PowerCfg/AppX.
+- O teste de integracao com Transaction Manager usa -NoPersist e handlers sinteticos.
+
+EXECUCAO
+1. Abra Windows PowerShell (Administrador recomendado para manter o mesmo ambiente dos gates anteriores).
+2. Entre na pasta do pacote.
+3. Rode:
+
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   .\tests\Test-Fase4-Planner.ps1
+
+GATES COBERTOS
+- parser + auditoria estatica de pureza;
+- dependencia automatica e transitiva;
+- ordenacao topologica deterministica;
+- dependencias ausentes;
+- ciclos;
+- conflicts;
+- mutexGroup;
+- Windows 10/11;
+- hardwareRules;
+- requiresAdmin;
+- propagacao de dependencia indisponivel;
+- preset e multilevel;
+- resumo de risco/restart;
+- snapshot imutavel do tweak no plano;
+- compatibilidade Planner -> Invoke-TransactionPlan;
+- integridade das referencias do catalog.json real.
+
+RESULTADO ESPERADO
+FASE 4 R1 APROVADA - Planner passou em todos os cenarios do harness.
+
+IMPORTANTE
+Esta entrega NAO troca o Run-Batch da GUI pelo novo Planner. Resolve-Conflicts permanece como shim legado.
+A integracao de producao so deve acontecer depois do PASS deste harness em Windows real.

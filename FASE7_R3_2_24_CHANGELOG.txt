@@ -1,0 +1,2 @@
+R3.2.24: Backup/Restauração conforme referência; abas e seleção, detalhes consultáveis, inventário JSON somente leitura e exemplos identificados. Janela 1180x760 preservada. Restaurar/Excluir desativados. Compilação e gate Windows pendentes.
+Correção de empacotamento: inclusão do config .NET Framework 4.8 e manifesto nativo herdados byte a byte da R3.2.23. Todos os sete arquivos da pasta Native verificados antes do ZIP.

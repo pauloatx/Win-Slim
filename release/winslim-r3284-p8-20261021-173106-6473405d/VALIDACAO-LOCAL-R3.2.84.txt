@@ -1,0 +1,5 @@
+R3.2.84 patch 4
+C# syntax parse: passed (not compilation). XML and JSON: valid.
+Six Python packager tests: passed.
+PresentMon acquisition/statistics and PowerShell backend preserved.
+Windows/WPF and 16 suites for patch 4: pending. Patch 2 passed per user logs.

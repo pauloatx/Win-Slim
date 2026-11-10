@@ -1,0 +1,1 @@
+R3.2.34: Avancado e Logs movidos fisicamente para Configuracoes; Presets sem abas; prototipo de Configuracoes substituido por paineis funcionais e Geral informativo; Sobre somente no menu lateral; selecao/opcoes/navegacao em janela unica preservadas; testes e launchers atualizados. Gate Windows e comparacao visual pendentes.

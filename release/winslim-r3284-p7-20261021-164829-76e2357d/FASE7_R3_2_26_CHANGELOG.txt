@@ -1,0 +1,1 @@
+R3.2.26: Ativar todos da categoria; estado ligado verde; selecao em lote preserva outras categorias e inclui resultados ocultos. Correção da expectativa de busca por ID no self-test. Versões anteriores preservadas. Validação Windows pendente.

@@ -1,0 +1,1 @@
+R3.2.18: dicas didáticas para 16 overlays, atraso 800 ms, quebra de linha, indicação de indisponibilidade e riscos específicos.

@@ -1,0 +1,22 @@
+﻿Win-Slim Suite - FASE 7 R2 MANIFEST
+Dashboard + hardware/contexto
+
+Baseline protegida: FASE 6.5 R4.1
+Gate anterior preservado: FASE 7 R1 byte-a-byte
+Backend esperado: 230 tweaks
+Presets esperados: Balanceado 105 / Gamer 129 / Extremo 168
+
+Arquivos R2 / SHA-256:
+a8f7d3bd83c7e4c6f694ad7f17c70d2d36bb15f6614d389e3f94726907c34ff4  WinSlimSuite.Fase7R2.ps1
+beb301160014869422383ccb0c58964bf97e71e3c09b719f2eaef4ed8f77ccfe  Executar-WinSlim-R2.bat
+3e9dbad8b69475c7ec6e27c0a4c1aa0cab25e7a9b975f7ee1fdb76eb6e74644c  src/UI/Fase7/SystemContextView.R2.ps1
+c85c309e3efe6dea7720cb623d4d2e5bc5d42c727df162cac62801aa80b24f0f  src/UI/Fase7/WinSlimShell.R2.ps1
+131892c7f02bf29adad5dc479692da3278dbef6035d14f67dd92447d6db15c8d  src/UI/Fase7/WinSlimShell.R2.xaml
+5c176c187079dd7f663dc9cece92cec54dce6f97a7d5ff105dbde29a94f01212  tests/Test-Fase7-R2-UI.ps1
+7f9abc4fe9e545ca7ab618a70bd52500384f82d6c8080380c98d6d886c223980  specs/FASE7-R2-baseline.json
+8a045933cec4753bfe3be890182f48bdd05ce3e9af36b657d71b45a3510578b6  FASE7_R2_CHANGELOG.txt
+65526d0b87b59fb00639a62326b770a523e1377da952538c6430cff39abd8815  FASE7-R2-LEIA-ME.md
+
+Entrypoint R2: Executar-WinSlim-R2.bat
+Gate R2: tests\Test-Fase7-R2-UI.ps1
+Proximo subgate: FASE 7 R3 - Presets + overlays condicionais.

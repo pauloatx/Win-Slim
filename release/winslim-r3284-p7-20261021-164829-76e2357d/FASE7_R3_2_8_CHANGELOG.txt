@@ -1,0 +1,2 @@
+R3.2.8 — build/diagnóstico: logs separados, interrupção do gate em falha, publicação após compilação bem-sucedida e proteção contra executável aberto.
+R3.2.7 e backend preservados. Gate Windows e aprovação visual pendentes.

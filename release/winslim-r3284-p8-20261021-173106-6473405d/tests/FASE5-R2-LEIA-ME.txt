@@ -1,0 +1,18 @@
+﻿Win-Slim Suite - FASE 5 R2
+
+Execute em Windows PowerShell 5.1 como Administrador:
+
+  cd D:\Desktop\winslim_fase5_r2
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase5-R2-AdvancedProviders.ps1
+
+Este harness foi desenhado para ser seguro:
+- Core Parking: adapter sintetico, sem alterar plano de energia real.
+- CPU Affinity: adapter sintetico, sem tarefa/processo real.
+- GPU IRQ: HKCU temporario, nunca HKLM\SYSTEM\... real.
+- Topologia real: somente leitura via GetLogicalProcessorInformationEx.
+
+Resultado esperado:
+
+=== RESUMO FASE 5 R2 ===
+FASE 5 R2 APROVADA - Advanced Providers passaram em todos os gates do harness.

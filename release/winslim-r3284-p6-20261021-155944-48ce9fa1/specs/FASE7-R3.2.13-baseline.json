@@ -1,0 +1,26 @@
+{
+  "revision": "FASE7-R3.2.13",
+  "windowsGate": "pending",
+  "visualApproval": "pending",
+  "r3213Files": {
+    "src\\UI\\Native\\R3_2_13\\MainWindowController.cs": "0462a0ffec4e1ecb98e253d2f38f5d85ee2e564f6b9b986586aea25fdd5de688",
+    "src\\UI\\Native\\R3_2_13\\WinSlim.UI.Native.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "src\\UI\\Native\\R3_2_13\\BridgeClient.cs": "b40eec87ef65b6bf0a81aa41199611fe57bbaf10b6c4c9c610781416087bf15e",
+    "src\\UI\\Native\\R3_2_13\\WinSlim.UiBridge.ps1": "58cc1fcdf52efba22bb2e11326232339c1ce57649e699a06c55b0154e54a7567",
+    "src\\UI\\Native\\R3_2_13\\WinSlimShell.xaml": "d3e10b0ef76674e71d75b8158e4a83e52044ca48c99c1351d27dd85b78ceb134",
+    "src\\UI\\Native\\R3_2_13\\WinSlim.NativeUI.manifest": "efb69cb26c4b72ae4864591b17207ab93bfd4cd36c319e7971cef2412c93dbd5",
+    "src\\UI\\Native\\R3_2_13\\Program.cs": "4d20bf6112b8f2adb186689c496873751e1fa5a3be469b2f5a81877381493567",
+    "Build-NativeUI-R3.2.13.ps1": "3d6d8a9fedd3c35d52dee11dec7720900707f46ce89c24ce6524a0bc8cc3c7f5",
+    "Executar-WinSlim-R3.2.13.bat": "20de1f3f2e6b8c9e512c42241046dddbc66ee3c3a9547c92aa893b942bf5bc09",
+    "Capturar-Dashboard-R3.2.13.bat": "3a3072f316fd64c55a5e47f499e3869b1ba5617590706aecd59615e91cdcac6b",
+    "Validar-Dashboard-R3.2.13.bat": "16ca3e390ab6ccbea89bb76cc18a95faf85d2de34e7fae5a55765914721174b1",
+    "Capturar-Presets-R3.2.13.bat": "6f951a962243eb0a0ef45b3f6e00828ada3b844eae046d3800e89b807c50fe7c",
+    "Validar-Presets-R3.2.13.bat": "16ca3e390ab6ccbea89bb76cc18a95faf85d2de34e7fae5a55765914721174b1",
+    "tests\\Test-Fase7-R3.2.13-NativeUI.ps1": "269bbee88dd18b3325f317eff87ab47c4a4012816ee1ae637f121ef6278f8bab",
+    "Capturar-Presets-Logs-R3.2.13.bat": "120560828865aa8aad6a4780a67ddfa112a6e622095a936677892c72d154c247",
+    "Capturar-Presets-Sobre-R3.2.13.bat": "5f9c936c2e680566075be2e4f07891567c7c026dad231a9e64069865569c4eeb",
+    "Capturar-Presets-Avancado-R3.2.13.bat": "b9baa2207b3a465344ef0d30da206b9aefe7d20bd48bf57aa958a38f4ee359d3",
+    "FASE7-R3.2.13-LEIA-ME.md": "cf06ab379b298c32a69ea27b817c7fea37a3f0da5a3c540a924912f773a8ef51",
+    "FASE7_R3_2_13_CHANGELOG.txt": "8b974176f3603f8aa1f5d1dfbfa6e1fac6ebd9d09421a59dcf50963493592ea5"
+  }
+}

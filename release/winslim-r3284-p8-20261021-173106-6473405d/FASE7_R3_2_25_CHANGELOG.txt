@@ -1,0 +1,1 @@
+R3.2.25: Personalizado abre janela independente; catálogo real 230, categorias, busca, descrição plainName, risco/reinício, switches de seleção, reset e persistência durante a sessão. Aplicação real não integrada. Todas as dependências nativas incluídas; versão anterior preservada. Gate Windows pendente.

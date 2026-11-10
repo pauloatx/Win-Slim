@@ -1,0 +1,1 @@
+R3.2.16: modo desenvolvedor com chave deslizante Ativado/Desativado e foco de teclado.

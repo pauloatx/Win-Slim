@@ -1,0 +1,15 @@
+﻿Win-Slim Suite - FASE 7 R1 MANIFEST
+
+231d1507db57c5e8cf87f9e162f6063201c638595562da4c792c0d68af2e63b7  WinSlimSuite.Fase7.ps1
+e5581cbcfbbc63f7379552f8929f0977310fa2587c5691a6b485bee34e27e2e2  Executar-WinSlim.bat
+f6532a8064f65e20188751f4f8f44edd86723898c1206fef7e0187588255fc99  Executar-WinSlim-Legado.bat
+7ebae14f7f138ac189d8e621bd8f773303ff9d1dd088c8b6c29f76f85b513466  src/UI/Fase7/WinSlimShell.ps1
+96b278ba56bc0f64c65137d5ee711b2823a337bf30147ae26b1d2c766ce1fa07  src/UI/Fase7/WinSlimShell.xaml
+b147ab12384dfeacda1d0299a63d7da7c0e3964f72061dd4c28fd5cfc3b610b9  tests/Test-Fase7-R1-UI.ps1
+ad3c38f54c3f6ff485ba62a02d59886cddaffb4d711c2736024d7483bc6d26db  FASE7_R1_CHANGELOG.txt
+03ab1d91dcbc29e0afb947eb20fcdc3ffa8fa703288a270cac2caf689ba41869  FASE7-R1-LEIA-ME.md
+bb4e3ca2bd80d13868afaa241f11dfb5da3c2ac39a63ea10956e42c483ebd34e  specs/FASE7-R1-baseline.json
+
+Protected backend baseline: specs/FASE6.5-R4-baseline.json
+Expected backend: 230 tweaks
+Expected presets: 105 / 129 / 168

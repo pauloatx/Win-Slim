@@ -1,0 +1,493 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "Win-Slim Suite Fase 5 R4 - Curated Catalog Expansion",
+  "count": 12,
+  "visibility": "ValidatedBackendOnlyUntilPhase7",
+  "sources": [
+    "Microsoft Learn policy documentation",
+    "Win-Slim existing RegistryProvider/Planner/Transaction architecture"
+  ],
+  "tweaks": [
+    {
+      "id": "PRIV-016",
+      "name": "ID de publicidade do Windows - Desativar",
+      "plainName": "Impedir que apps usem a ID de publicidade do Windows",
+      "description": "Habilita a política oficial “Turn off the advertising ID”, impedindo que aplicativos usem a ID de publicidade para experiências entre apps. O RegistryProvider captura existência, tipo e valor anteriores antes do Apply e restaura exatamente no Undo.",
+      "category": "Privacidade",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "None",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Privacy Policy CSP / DisableAdvertisingId",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo",
+          "Name": "DisabledByGroupPolicy",
+          "Value": 1,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Aplicativos já abertos podem precisar ser reiniciados para refletir a nova política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "PRIV-017",
+      "name": "Experiências personalizadas com dados de diagnóstico - Desativar",
+      "plainName": "Não usar dados de diagnóstico para recomendações personalizadas",
+      "description": "Ativa a política oficial que impede o Windows de usar dados de diagnóstico para personalizar recomendações, dicas e ofertas. Mantém separados os controles de telemetria já existentes no catálogo.",
+      "category": "Privacidade",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": false,
+      "requiresRestart": false,
+      "restartScope": "None",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Experience Policy CSP / AllowTailoredExperiencesWithDiagnosticData",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\CloudContent",
+          "Name": "DisableTailoredExperiencesWithDiagnosticData",
+          "Value": 1,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política passa a valer para a sessão do usuário; algumas superfícies podem atualizar apenas quando reabertas.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "PRIV-018",
+      "name": "Pesquisa do Windows usando localização - Desativar",
+      "plainName": "Não permitir que a pesquisa use a localização do dispositivo",
+      "description": "Define a política oficial AllowSearchToUseLocation=0 para impedir que Windows Search use informações de localização em resultados sensíveis ao local. Não desativa o serviço de localização inteiro.",
+      "category": "Privacidade",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "Explorer",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Search Policy CSP / AllowSearchToUseLocation",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+          "Name": "AllowSearchToUseLocation",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A interface de pesquisa pode precisar ser reaberta ou o Explorer reiniciado para refletir a política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "UI-023",
+      "name": "Search Highlights - Desativar",
+      "plainName": "Remover destaques e conteúdo dinâmico da Pesquisa do Windows",
+      "description": "Define EnableDynamicContentInWSB=0, política oficial que desativa Search Highlights na pesquisa do menu Iniciar/Search Home e, em versões compatíveis do Windows 10, na caixa de pesquisa da barra de tarefas.",
+      "category": "UI / QoL",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "Explorer",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Search Policy CSP / AllowSearchHighlights",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+          "Name": "EnableDynamicContentInWSB",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "O conteúdo dinâmico desaparece após a pesquisa/Explorer recarregar a política.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "UI-024",
+      "name": "Sites personalizados na seção Recomendados - Ocultar",
+      "plainName": "Ocultar recomendações de sites personalizados no menu Iniciar",
+      "description": "Habilita HideRecommendedPersonalizedSites para remover recomendações de sites personalizadas da área Recomendados do menu Iniciar em versões compatíveis do Windows 11. Não remove a seção inteira.",
+      "category": "UI / QoL",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "Explorer",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Start Policy CSP / HideRecommendedPersonalizedSites",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer",
+          "Name": "HideRecommendedPersonalizedSites",
+          "Value": 1,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Aplicável ao Windows 11; reiniciar o Explorer ou reabrir o menu Iniciar atualiza a superfície.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-001",
+      "name": "Microsoft Edge - Startup Boost desativado",
+      "plainName": "Impedir que o Edge faça pré-inicialização no logon",
+      "description": "Define StartupBoostEnabled=0. Impede que processos do Edge sejam iniciados no logon apenas para acelerar a primeira abertura, reduzindo atividade residente quando esse recurso não é desejado.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy StartupBoostEnabled",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "StartupBoostEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política suporta atualização dinâmica; reiniciar o Edge garante que todos os processos adotem o estado.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-002",
+      "name": "Microsoft Edge - Modo em segundo plano desativado",
+      "plainName": "Encerrar processos de fundo do Edge quando o navegador fechar",
+      "description": "Define BackgroundModeEnabled=0 para impedir que aplicativos/processos de segundo plano do Edge continuem ativos depois que a última janela é fechada.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy BackgroundModeEnabled",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "BackgroundModeEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política suporta atualização dinâmica; feche e abra o Edge para uma transição limpa.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-003",
+      "name": "Microsoft Edge - Recursos de compras desativados",
+      "plainName": "Desativar cupons, comparação de preços e recursos de compras do Edge",
+      "description": "Define EdgeShoppingAssistantEnabled=0. Desativa recursos automáticos de compras, como cupons, rebates, comparação/histórico de preços e assistência de checkout em domínios de varejo.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy EdgeShoppingAssistantEnabled",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "EdgeShoppingAssistantEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política suporta atualização dinâmica; reabrir o Edge garante atualização de todas as superfícies.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-004",
+      "name": "Microsoft Edge - Conteúdo Microsoft na nova guia desativado",
+      "plainName": "Remover notícias e conteúdo Microsoft da página de nova guia",
+      "description": "Define NewTabPageContentEnabled=0. A política oficial remove conteúdo Microsoft da página de nova guia e fixa o controle de conteúdo como desligado.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy NewTabPageContentEnabled",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "NewTabPageContentEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política suporta atualização dinâmica; abrir uma nova guia após o refresh do Edge mostra o novo estado.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-005",
+      "name": "Microsoft Edge - Relatório para personalização desativado",
+      "plainName": "Não usar dados de navegação do Edge para personalização de serviços Microsoft",
+      "description": "Define PersonalizationReportingEnabled=0. Impede a personalização coberta por essa política com histórico, favoritos, coleções, uso e outros dados de navegação.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy PersonalizationReportingEnabled",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "PersonalizationReportingEnabled",
+          "Value": 0,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política suporta atualização dinâmica; reiniciar o Edge garante consistência de todos os perfis ativos.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-006",
+      "name": "Microsoft Edge - Guias em suspensão ativadas",
+      "plainName": "Permitir que o Edge suspenda guias ociosas para economizar recursos",
+      "description": "Define SleepingTabsEnabled=1. Mantém habilitado o mecanismo oficial de guias em suspensão, que reduz uso de CPU, memória e bateria em abas ociosas usando heurísticas do Edge.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy SleepingTabsEnabled",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "SleepingTabsEnabled",
+          "Value": 1,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "A política suporta atualização dinâmica; abas existentes podem precisar de um novo ciclo de ociosidade.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    },
+    {
+      "id": "EDGE-007",
+      "name": "Microsoft Edge - Descartar guias em suspensão antigas",
+      "plainName": "Liberar memória descartando guias suspensas após longo período ocioso",
+      "description": "Define AutoDiscardSleepingTabsEnabled=1. Em versões compatíveis do Edge, abas já suspensas e ociosas podem ser descartadas após aproximadamente 1,5 dia para economizar memória; ao retornar, a página precisa ser recarregada.",
+      "category": "Microsoft Edge",
+      "risk": "Baixo",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [
+        "EDGE-006"
+      ],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "ProcessRestart",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "registry",
+      "source": "MS+WS",
+      "sourceRefs": [
+        "Microsoft Learn - Microsoft Edge policy AutoDiscardSleepingTabsEnabled",
+        "Win-Slim Phase 5 R4"
+      ],
+      "registry": [
+        {
+          "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge",
+          "Name": "AutoDiscardSleepingTabsEnabled",
+          "Value": 1,
+          "Type": "DWord"
+        }
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Requer o mecanismo de guias em suspensão; o Planner inclui EDGE-006 automaticamente pela dependência.",
+      "rollbackNote": "Undo transacional restaura exatamente existência, tipo e valor anteriores."
+    }
+  ]
+}

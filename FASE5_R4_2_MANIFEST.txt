@@ -1,0 +1,8 @@
+﻿Win-Slim Suite - FASE 5 R4.2 package manifest
+
+ecee3451af44cef809215d4a9045c2a81d7596e57062273e2860c00171f43619  src/Core/Transaction.ps1
+a27ab444744f3011d9ff7c539967c1d75bdcfdbf2a8a81ee2f03d56c48c81ce4  src/Core/Planner.ps1
+b01680f038d0eaa075680041ef76a48938bce412991d530fd8cabadf0186a90e  src/Providers/RegistryProvider.ps1
+2c4d6a286d324f18067518bd0ce5b1ce0ef2d0761d356cb533fbcccf22996bbc  catalogs/validated/Expansion-R4.2.json
+26b1b5aa99f1112eb802ac526959f7f4fa6ef03029a894e075237b0d5b4aaf20  specs/FASE5-R4.2-source-map.json
+adde170913642611aff75ef6f85365b2e44f57c1165455ffc8c75424300cb9f2  tests/Test-Fase5-R4.2-CatalogExpansion.ps1

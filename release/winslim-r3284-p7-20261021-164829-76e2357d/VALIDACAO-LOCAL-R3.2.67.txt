@@ -1,0 +1,9 @@
+Validacao local Linux; WPF/Windows PS5.1 pendentes.
+
+MainWindowController.cs(1120,32): warning CS4014: Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+UiLanguage.cs(2,1): hidden CS8019: Unnecessary using directive.
+C#5 + .NET Framework 4.8 reference compilation: OK (not a Windows execution).
+
+PowerShell syntax: OK
+
+XAML valido; botao removido; motor transacional preservado; versoes anteriores identicas.

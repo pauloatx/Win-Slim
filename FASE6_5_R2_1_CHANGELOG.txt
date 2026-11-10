@@ -1,0 +1,23 @@
+Win-Slim Suite - FASE 6.5 R2.1
+Correção cirúrgica do harness Preview/Plan
+
+Causa
+- Test-WinSlimPreviewPlanBinding retorna PSCustomObject com propriedades Valid/ReasonCode/Reason.
+- O harness R2 passava esse PSCustomObject diretamente para Assert-Fase65R2, cujo parâmetro Condition é [bool].
+- Windows PowerShell 5.1 não converte PSCustomObject diretamente para esse parâmetro tipado e abortava o TEST 05.
+
+Correção
+- Captura explícita do resultado em $bindingFast.
+- O gate agora verifica [bool]$bindingFast.Valid e ReasonCode='Bound'.
+
+Preservado
+- Planner.ps1 canônico: inalterado.
+- PlannerOptimized.ps1: inalterado.
+- Transaction.ps1 R13: inalterado.
+- CatalogRuntime/PresetRuntime: inalterados.
+- Backend: 230 tweaks.
+- Presets: 105/129/168.
+- Specs/benchmarks R2: inalterados.
+
+Classificação
+- Harness-only fix; nenhuma semântica de Planner, Preview, Transaction, catálogo ou preset foi alterada.

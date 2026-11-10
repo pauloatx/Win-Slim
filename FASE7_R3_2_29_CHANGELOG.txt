@@ -1,0 +1,1 @@
+R3.2.29: tema global das barras de rolagem WPF, verticais e horizontais, com trilho e marcador arredondados e destaque laranja. Aplica-se a todas as janelas, listas, textos, logs e relatorios. Preserva funcionalidades e layout R3.2.28, aprovado no gate Windows enviado. Validacao Windows da R3.2.29 pendente.

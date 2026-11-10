@@ -1,0 +1,11 @@
+﻿Win-Slim Suite - FASE 7 R1
+
+- Inicia a nova UI sobre a baseline aprovada FASE 6.5 R4.1.
+- Adiciona shell WPF borderless, navegacao lateral e tema preto/laranja alinhado ao mockup aprovado.
+- Adiciona paginas-base: Inicio, Presets, Personalizado, Backup / Restore, Analise do Sistema, Configuracoes e Sobre.
+- Adiciona rotas internas reservadas para Preview, Apply, Result e TweakDetail.
+- Conecta o shell em modo somente leitura ao RuntimePromotion e PresetRuntime.
+- Mantem Planner/Transaction/Preview/Presets/Providers canônicos e otimizados sem alteracao.
+- Backend continua 230 tweaks; presets continuam 105 / 129 / 168.
+- O launcher padrao Executar-WinSlim.bat agora abre WinSlimSuite.Fase7.ps1.
+- Executar-WinSlim-Legado.bat preserva o launcher visual anterior.

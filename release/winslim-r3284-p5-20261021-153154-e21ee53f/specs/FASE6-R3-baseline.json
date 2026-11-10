@@ -1,0 +1,26 @@
+{
+  "phase": "6-R3",
+  "baseline": "Fase 6 R2 approved",
+  "files": {
+    "catalog.json": "0e71c1fba2fb9fefba09d3b8b82007c5b972c30ae2d0c69734a30b93857cc1ba",
+    "catalogs/Game-Workload.json": "19e5d57eb6ac7501ef5fc782445a44bc1bc5aaf6a59100ae45639aea7e25079d",
+    "catalogs/validated/Advanced-Catalog.json": "48b03f6627c7ee9943e9c1094c93036f961fa30a6b9a61bff6b5e34f9b718389",
+    "catalogs/validated/Expansion-R4.json": "303e411d4cafdd1f52eb1af126a6b5551adf77ae45c83eae3f1ecbbe0f1216ee",
+    "catalogs/validated/Expansion-R4.1.json": "5ccba3d18ae2bf8c2144c40d5cfe06fbab825c7b5c1f6708dec2bbeb6beb3973",
+    "catalogs/validated/Expansion-R4.2.json": "2c4d6a286d324f18067518bd0ce5b1ce0ef2d0761d356cb533fbcccf22996bbc",
+    "src/Core/Planner.ps1": "a27ab444744f3011d9ff7c539967c1d75bdcfdbf2a8a81ee2f03d56c48c81ce4",
+    "src/Core/Transaction.ps1": "ecee3451af44cef809215d4a9045c2a81d7596e57062273e2860c00171f43619",
+    "src/Core/PresetResolver.ps1": "cb6f03df6b276cff6213a9237c3fdadce86a61b739bea0c4d47c28d09a014a67",
+    "src/Core/PresetPolicyEngine.ps1": "b94b5f90b577c54e31214042fb78887a7c10016bd09422385ddead9db41df025",
+    "src/Core/ProviderContract.ps1": "0c25f40cff7c6f191d0d9700142cb5ccd7ae80ee6bdbbcdce64cca0b7ccf6365",
+    "src/Providers/RegistryProvider.ps1": "b01680f038d0eaa075680041ef76a48938bce412991d530fd8cabadf0186a90e",
+    "presets/WinSlim-Presets-R1.json": "803c2703078b83c07f58022afb374e16decf471293d91ce34b3fd57660f49751",
+    "presets/WinSlim-PresetRules-R2.json": "5a73d9a6c921097ea4034375fc7cd53a4bf1082c93363a735a3bb1ed5ba1474c",
+    "tests/Test-Fase6-R1-Presets.ps1": "cc1dde0a7c91985c4eccd640d1944f81b83d3aec008ec82048a8777787bf4ca8",
+    "tests/Test-Fase6-R2-PresetPolicy.ps1": "0878c319cfdb2377e40832bfccb4c14f0172ac97bde54c3009261e63a3f5cfad",
+    "specs/FASE6-R1-baseline.json": "7a1a8b22c919a3128ac00a3b90027e5464f06922f8d50650d363c9e170eae4ca",
+    "specs/FASE6-R2-baseline.json": "288655fec4de4b578c6f0e272a64018e2b2dfbb4729d02722dbfb081d3dc922e",
+    "FASE6_R1_CHANGELOG.txt": "83b360d351c2e95294e4b97c09789e90a2d091d23242d20a5a5d9a6581a43201",
+    "FASE6_R2_CHANGELOG.txt": "4eddba1c196a10928507a250ddeac8b87299f7e2abe88ecd39c2342b788a6521"
+  }
+}

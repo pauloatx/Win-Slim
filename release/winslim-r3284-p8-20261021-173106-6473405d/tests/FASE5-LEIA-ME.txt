@@ -1,0 +1,37 @@
+Win-Slim Suite - FASE 5 R1 / Game-Workload Game+Workload
+
+OBJETIVO
+Validar a primeira integração do material recuperado do Seal sem alterar os
+cores aprovados da Fase 3 (Transaction R13) e Fase 4 (Planner R1).
+
+O QUE ENTRA NESTE SUBGATE
+- 5 perfis de prioridade de jogos via IFEO CpuPriorityClass=3.
+- 4 perfis de prioridade de workloads via IFEO CpuPriorityClass=3.
+- MMCSS Games: 8 / 6 / High / High.
+- GamePriorityProvider parametrizado (wrapper seguro do RegistryProvider).
+- MmcssProvider parametrizado (wrapper seguro do RegistryProvider).
+- Especificações técnicas, ainda NÃO executáveis, para:
+  * Core Parking CPMINCORES 100/100;
+  * CS2 P-core affinity por EfficiencyClass;
+  * GPU Interrupt Affinity DevicePolicy/AssignmentSetOverride.
+
+POR QUE OS 3 AVANCADOS AINDA NAO ESTAO NO CATALOGO EXECUTAVEL
+Eles exigem Providers dedicados com Backup/Verify/Undo por estado real. Expor
+scripts dinâmicos antes disso iria contra a arquitetura transacional aprovada.
+
+COMO TESTAR
+Abra Windows PowerShell 5.1 como Administrador e rode:
+
+  cd D:\Desktop\winslim_fase5_r1
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase5-WorkloadCatalog.ps1
+
+O harness cria SOMENTE chaves temporárias em:
+HKCU:\Software\WinSlimSuite\Tests\Fase5
+E remove tudo no próprio teste.
+
+Ele NÃO altera IFEO real, MMCSS real, PowerCfg, afinidade de CPU nem afinidade
+de interrupção da GPU.
+
+RESULTADO ESPERADO
+FASE 5 R1 APROVADA - Seal Game+Workload passou em todos os gates do harness.

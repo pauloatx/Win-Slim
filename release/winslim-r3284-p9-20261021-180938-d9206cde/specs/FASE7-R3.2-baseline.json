@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "FASE7-R3.2",
+  "basePhase": "FASE7-R3.1.1",
+  "scope": "Native UI C# WPF foundation + persistent read-only PowerShell bridge; Presets/overlays functional; no Planner/Preview/Transaction/Provider mutation.",
+  "backendExpectedCount": 230,
+  "presetExpectedCounts": {
+    "Balanceado": 105,
+    "Gamer": 129,
+    "Extremo": 168
+  },
+  "preservedR311Baseline": "specs/FASE7-R3.1.1-baseline.json",
+  "nativeRuntime": ".NET Framework 4.8 / C# WPF",
+  "bridgeMode": "persistent read-only JSON lines",
+  "r32Files": {
+    "Build-NativeUI-R3.2.ps1": "90759afe630611ec225a04d56f36d5448a92f7fe3ab1a098780e54f929dc36b1",
+    "Executar-WinSlim-R3.2.bat": "17bb4e2d8e7268592ae6a3d597256a5179db3661af6d69db95381bca7de864b2",
+    "src/UI/Native/Program.cs": "2e837bcfbd9eed3f50f8de141561957dc341903764e3cb954d279284abbbc784",
+    "src/UI/Native/BridgeClient.cs": "5a84a62792d1e1bf402e0bce48c7ea0fccd190179b91d71c9f8f87fe1ed41f6b",
+    "src/UI/Native/MainWindowController.cs": "263d12db1d033402709f6973f435521e74bc1331e547310fe7cfe02c882e6d6a",
+    "src/UI/Native/WinSlimShell.R3_2.xaml": "8f47894495315f7325192979bb1b1fa99009cd743cbfec9ca2034a2e92e4aa13",
+    "src/UI/Native/WinSlim.UiBridge.R3_2.ps1": "7138b2d73ed855d7a2d6619bb0509a19a07fa09f33e21bf5c7b65bc5956fd2b2",
+    "src/UI/Native/WinSlim.NativeUI.R3_2.manifest": "b8bbcea4d402f3f1adcf273266c7843303540a621996f3a265f08a334112ce84",
+    "src/UI/Native/WinSlim.UI.Native.R3_2.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "tests/Test-Fase7-R3.2-NativeUI.ps1": "dc9a7fcf111a7dc6e0baeb0c84a3a44bf37a1fc782dd30021f37c35487fcdf46",
+    "FASE7_R3_2_CHANGELOG.txt": "cc1e359b9c0594408129053dabbd0f59d5c71b45657b8e704fe0eb6aca1484d9",
+    "FASE7-R3.2-LEIA-ME.md": "68c0e6bb528fde01496e8e9438d67159a13db8b9f23b52b98ba4de9bbf6fc309",
+    "docs/FASE7-R3.2-NATIVE-UI-ARCHITECTURE.md": "83aee4fc207b37bcd6adeef7fd7d9213ce477720c296ca5f5630750aab5ca838"
+  }
+}

@@ -1,0 +1,75 @@
+R3.2.63 - Validacao local (Linux, PowerShell 7.4.6 e referencias .NET Framework 4.8)
+Execucao em Windows PowerShell 5.1, WPF e teste nativo de Registro: pendentes.
+
+
+apply-tests63.log
+[OK] RegistryApply: Planner real autoriza cinco ajustes no Windows 10
+[OK] RegistryApply: Planner real autoriza cinco ajustes no Windows 11
+[OK] RegistryApply: cinco contratos conferidos contra o catalogo real
+[OK] RegistryApply: escopo individual PERF-001
+[OK] RegistryApply: escopo individual UI-007
+[OK] RegistryApply: escopo individual UI-008
+[OK] RegistryApply: escopo individual UI-009
+[OK] RegistryApply: escopo individual UI-016
+[OK] RegistryApply: hardware e servicos excluidos explicitamente
+[OK] RegistryApply: contrato adulterado rejeitado: Path
+[OK] RegistryApply: contrato adulterado rejeitado: Name
+[OK] RegistryApply: contrato adulterado rejeitado: Type
+[OK] RegistryApply: contrato adulterado rejeitado: Value
+[OK] RegistryApply: plano bloqueado rejeitado
+[OK] RegistryApply: risco alterado rejeitado
+[OK] RegistryApply: dependencia nao aplicada rejeitada
+[OK] RegistryApply: operacao extra rejeitada
+[OK] RegistryApply: ID duplicado rejeitado
+[OK] RegistryApply: fixture inicial tem cinco registros com Current explicito
+[OK] RegistryApply: cinco alteracoes verificadas
+[OK] RegistryApply: progresso depende das verificacoes reais
+[OK] RegistryApply: journal acompanha inicio e conclusao
+[OK] RegistryApply: fixture de reaplicacao tem cinco registros com Current explicito
+[OK] RegistryApply: reaplicacao parte dos valores desejados
+[OK] RegistryApply: fixture de reaplicacao nao modifica os estados originais
+[OK] RegistryApply: reaplicar nao escreve estados ja presentes
+[OK] RegistryApply: drift antes de escrever bloqueia o lote
+[OK] RegistryApply: falha parcial desfaz inclusive o ultimo destino
+[OK] RegistryApply: falha de Verify recupera o estado anterior
+[OK] RegistryApply: recuperacao incompleta nao vira sucesso
+[OK] RegistryApply: falha do journal impede primeira escrita
+[OK] RegistryApply: verificacao final detecta alteracao posterior a verificacao individual
+[OK] RegistryApply: aplicar sem confirmacao rejeitado
+[OK] RegistryApply: previa informa contagem real
+[OK] RegistryApply: confirmacao expirada rejeitada
+[OK] RegistryApply: token consumido antes da tentativa
+[OK] RegistryApply: estado alterado entre revisao e aplicacao rejeitado
+[OK] RegistryApply: drift nao escreveu
+[OK] RegistryApply: plano alterado rejeitado
+[OK] RegistryApply: identidade alterada rejeitada
+[OK] RegistryApply: fluxo completo aplica somente valores do catalogo
+[OK] RegistryApply: relatorio final persistido
+[OK] RegistryApply: backup completo e verificado precede as escritas
+[OK] RegistryApply: snapshot guarda ausencia original para Undo
+[OK] RegistryApply: token nao pode ser reutilizado
+[OK] RegistryApply: fluxo completo idempotente
+[OK] RegistryApply: aplicacao interrompida exige recuperacao antes de outro lote
+[OK] RegistryApply: restauracao conferida desbloqueia tentativa futura
+[OK] RegistryApply: recuperacao apos interrupcao deixa recibo
+[OK] RegistryApply: captura parcial bloqueia aplicacao
+[OK] RegistryApply: backup parcial nao autoriza escrita
+[OK] RegistryApply: falha de persistencia do backup bloqueia aplicacao
+[OK] RegistryApply: falha de disco nao autoriza escrita
+[OK] RegistryApply: leitura indisponivel bloqueia escrita
+[OK] RegistryApply: falha de leitura preserva sistema
+RegistryApply: 55 verificacoes passaram. IO de sistema simulado; nenhum tweak real aplicado.
+
+
+csharp-tests63.log
+MainWindowController.cs(1124,32): warning CS4014: Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+UiLanguage.cs(2,1): hidden CS8019: Unnecessary using directive.
+C#5 + .NET Framework 4.8 reference compilation: OK (not a Windows execution).
+
+
+powershell-parse63.log
+PowerShell syntax: OK
+
+
+XAML valido. Motor de aplicacao/backup/restauracao e UI da R62 preservados, exceto identificacoes de revisao.
+Todos os arquivos anteriores conferidos byte a byte.

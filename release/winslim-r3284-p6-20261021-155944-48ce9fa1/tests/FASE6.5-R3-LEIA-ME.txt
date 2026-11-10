@@ -1,0 +1,12 @@
+﻿FASE 6.5 R3 - Transaction Optimization
+
+Execute em Windows PowerShell 5.1 como Administrador:
+
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase6.5-R3-TransactionOptimization.ps1
+
+O harness não altera Registry/Services/BCD/PowerCfg.
+Ele usa estado em memória e arquivos temporários sob tests\_fase65r3-* para validar persistência e recovery cross-process.
+A pasta temporária é removida ao final quando possível.
+
+Performance é diagnóstica; equivalência transacional/recovery é o gate.

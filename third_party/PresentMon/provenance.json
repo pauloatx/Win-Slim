@@ -1,0 +1,33 @@
+﻿{
+    "version":  "2.6.0",
+    "source":  "https://github.com/GameTechDev/PresentMon/releases/download/v2.6.0/PresentMon-2.6.0-x64.exe",
+    "sha256":  "b2a706bc6ad475749e3b7e3409263aa1e6906d45bdcf993f6dbc0f660188f1af",
+    "license":  "MIT",
+    "architecture":  "x64",
+    "release":  "https://github.com/GameTechDev/PresentMon/releases/tag/v2.6.0",
+    "assetId":  579508526,
+    "releasePublishedUtc":  "2026-09-21T17:30:36Z",
+    "githubDigest":  "sha256:b2a706bc6ad475749e3b7e3409263aa1e6906d45bdcf993f6dbc0f660188f1af",
+    "verifiedUtc":  "2026-10-22T23:05:17.2459848Z",
+    "verificationEvidence":  "logs/presentmon-official-20261022/official-origin-verification.json",
+    "authenticode":  {
+                         "status":  "Valid",
+                         "subject":  "CN=Intel Corporation, O=Intel Corporation, S=California, C=US",
+                         "thumbprint":  "BF07AF4995EFFDB3CAA3466D6AB616136A1762CC",
+                         "timestampSubject":  "CN=Sectigo Public Time Stamping Signer R37, O=Sectigo Limited, S=Greater London, C=GB",
+                         "verifiedUtc":  "2026-10-22T23:05:17.2977825Z"
+                     },
+    "fileVersionResource":  null,
+    "productVersionResource":  null,
+    "versionEvidence":  "Official release v2.6.0, GitHub asset digest, and PresentMon 2.6.0 --help banner. File version resources absent.",
+    "licenseFiles":  [
+                         {
+                             "sha256":  "4c949341b1893c8c6ad82f7fb4eedf622cd1fd9c22a9af8f19b2dac19d1947b6",
+                             "path":  "LICENSE.txt"
+                         },
+                         {
+                             "sha256":  "e039937f1a2fc2eb8f24a25b4229551a5a8056026d2da878507e20269eb56267",
+                             "path":  "THIRD_PARTY.txt"
+                         }
+                     ]
+}

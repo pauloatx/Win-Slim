@@ -1,0 +1,66 @@
+{
+  "phase": "FASE 5 R4",
+  "policy": "Only settings with explicit Microsoft policy/registry documentation were promoted in this batch.",
+  "entries": [
+    {
+      "id": "PRIV-016",
+      "reference": "Privacy Policy CSP / DisableAdvertisingId",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-privacy"
+    },
+    {
+      "id": "PRIV-017",
+      "reference": "Experience Policy CSP / AllowTailoredExperiencesWithDiagnosticData",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-experience"
+    },
+    {
+      "id": "PRIV-018",
+      "reference": "Search Policy CSP / AllowSearchToUseLocation",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-search"
+    },
+    {
+      "id": "UI-023",
+      "reference": "Search Policy CSP / AllowSearchHighlights",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-search"
+    },
+    {
+      "id": "UI-024",
+      "reference": "Start Policy CSP / HideRecommendedPersonalizedSites",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-start"
+    },
+    {
+      "id": "EDGE-001",
+      "reference": "Microsoft Edge policy / StartupBoostEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/startupboostenabled"
+    },
+    {
+      "id": "EDGE-002",
+      "reference": "Microsoft Edge policy / BackgroundModeEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/backgroundmodeenabled"
+    },
+    {
+      "id": "EDGE-003",
+      "reference": "Microsoft Edge policy / EdgeShoppingAssistantEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/edgeshoppingassistantenabled"
+    },
+    {
+      "id": "EDGE-004",
+      "reference": "Microsoft Edge policy / NewTabPageContentEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/newtabpagecontentenabled"
+    },
+    {
+      "id": "EDGE-005",
+      "reference": "Microsoft Edge policy / PersonalizationReportingEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/personalizationreportingenabled"
+    },
+    {
+      "id": "EDGE-006",
+      "reference": "Microsoft Edge policy / SleepingTabsEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/sleepingtabsenabled"
+    },
+    {
+      "id": "EDGE-007",
+      "reference": "Microsoft Edge policy / AutoDiscardSleepingTabsEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/autodiscardsleepingtabsenabled"
+    }
+  ]
+}

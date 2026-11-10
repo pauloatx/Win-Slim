@@ -1,0 +1,1 @@
+R3.2.35: chave Modo desenvolvedor verde quando ligada e cinza quando desligada; teste de isolamento dos overlays atualizado para OptDeveloper funcional em Configuracoes. Revisoes anteriores congeladas. Compilacao/WPF Windows pendentes.

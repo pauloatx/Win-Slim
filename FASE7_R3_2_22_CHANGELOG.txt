@@ -1,0 +1,1 @@
+R3.2.22: adiciona using System.IO ao MainWindowController, corrigindo CS0246 no teste de dimensoes uniformes.

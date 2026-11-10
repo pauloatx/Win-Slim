@@ -1,0 +1,1 @@
+R3.2.44: preparacao de Personalizado em ContextIdle apos inicializacao; requisicao unica compartilhada de catalogo; reabertura imediata da pagina pronta com contexto preservado; apenas categoria atual montada; testes de reabertura. Windows pendente.

@@ -1,0 +1,24 @@
+﻿{
+    "schemaVersion":  "1.0",
+    "phase":  "FASE6.5-R4",
+    "timestamp":  "2026-10-05T10:32:27.5793281-03:00",
+    "powershell":  "5.1.26100.7920",
+    "planner":  {
+                    "legacyMs":  3348.524,
+                    "promotedMs":  2346.74,
+                    "speedup":  1.43
+                },
+    "transaction":  {
+                        "legacyMs":  570.323,
+                        "promotedMs":  454.85,
+                        "speedup":  1.25
+                    },
+    "endToEnd":  {
+                     "legacyMs":  2764.672,
+                     "promotedMs":  2048.765,
+                     "speedup":  1.35
+                 },
+    "warnings":  [
+
+                 ]
+}

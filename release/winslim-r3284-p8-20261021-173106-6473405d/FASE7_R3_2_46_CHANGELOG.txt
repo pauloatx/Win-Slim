@@ -1,0 +1,1 @@
+R3.2.46: refinamento da pena com leve curvatura, haste curva e recortes suaves; vetor e ICO atualizados em todos os pontos da marca. Funcionalidades e desempenho preservados. Compilacao Windows pendente.

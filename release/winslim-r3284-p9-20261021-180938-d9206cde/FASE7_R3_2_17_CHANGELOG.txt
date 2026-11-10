@@ -1,0 +1,1 @@
+R3.2.17: pré-visualização real read-only, categorias, risco, reinício por ajuste, detalhes e captura. Backend congelado.

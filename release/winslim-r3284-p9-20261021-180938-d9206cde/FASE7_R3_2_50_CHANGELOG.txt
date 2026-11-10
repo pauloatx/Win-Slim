@@ -1,0 +1,8 @@
+R3.2.50 — ajuste cauteloso dos testes de tema
+- Corrige premissa antiga de pincéis imutáveis no teste de eficiência.
+- Exige cache compartilhado, mutabilidade e acesso pela thread da UI.
+- Testa temas claro/escuro, contraste, restauração dos pincéis e recursos congelados de templates.
+- Testa preservação de página, dimensões, categoria, busca, seleção e identidade das linhas.
+- Nenhuma mudança no comportamento de produção aprovado da R3.2.49.
+- Revisões anteriores e motor preservados byte a byte.
+- Estrutura local verificada; novo teste WPF pendente no Windows.

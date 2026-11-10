@@ -1,0 +1,1 @@
+R3.2.15: checkboxes laranja com confirmação escura na aba Avançado de Presets, estados desmarcado, desabilitado e foco de teclado.

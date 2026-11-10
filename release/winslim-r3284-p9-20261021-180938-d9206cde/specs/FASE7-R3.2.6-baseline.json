@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "phase": "FASE 7 R3.2.6",
+  "parentApproved": "FASE 6.5 R4.1 + FASE 7 R3.1.1; R3.2.5 gate aprovado, mas launcher -IfNeeded falhava no PS5.1 por parsing/binding de Get-Item",
+  "r326Files": {
+    "Build-NativeUI-R3.2.6.ps1": "d6e2a660c268a8a310bff87c0e857bff297c285b9101dd1982f642f1ab1e72a3",
+    "Executar-WinSlim-R3.2.6.bat": "0cd921916bf86e3f51c5e90aacf412e63feac91753425739a33314b116d06e2f",
+    "src\\UI\\Native\\R3_2_6\\Program.cs": "e110763a0c58a693a6f872e3fd874d963ea6c3dfafbaa5c9ce01f2babfa5f7a1",
+    "src\\UI\\Native\\R3_2_6\\BridgeClient.cs": "94205bad419045fa4ce32ef41cec083f68a5f7dbf6dc77b369d40c535275d510",
+    "src\\UI\\Native\\R3_2_6\\MainWindowController.cs": "263d12db1d033402709f6973f435521e74bc1331e547310fe7cfe02c882e6d6a",
+    "src\\UI\\Native\\R3_2_6\\WinSlimShell.xaml": "e7f66bd07b969c4b6751dece9e435fb20aa4499c316fd8f6ff02b6cd52bb4156",
+    "src\\UI\\Native\\R3_2_6\\WinSlim.UiBridge.ps1": "db7a25a4d85030123860956fb165a397cc83599559ff578816829895c5e35a3f",
+    "src\\UI\\Native\\R3_2_6\\WinSlim.UI.Native.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "src\\UI\\Native\\R3_2_6\\WinSlim.NativeUI.manifest": "bf9ec248c90b2b23ecb16e9335659bd6b197aa350a4e324bab35a15527718941",
+    "tests\\Test-Fase7-R3.2.6-NativeUI.ps1": "268aa4329dbd75216a852632be54aa2059a22f7c96955a983d77114c244a1e5b",
+    "FASE7_R3_2_6_CHANGELOG.txt": "bc4d3a17a749cd17176b6e4a7348d1c5b59934fc848169fb2f8c65d202081464",
+    "FASE7-R3.2.6-LEIA-ME.md": "efe02a41f74055a64b156f927e97e274cdef5bb1428b4d28d272789ef49649a8",
+    "docs\\FASE7-R3.2.6-IFNEEDED-LAUNCHER-HOTFIX.md": "0981043f3a6b0d4a8807d6e735e0d52d26eb1af0673690c2eaca5b8801c3afee"
+  }
+}

@@ -1,0 +1,17 @@
+﻿Win-Slim Suite - FASE 5 R3
+
+Mudancas:
+1. Promove WS-ADV-001 Core Parking, WS-ADV-002 CS2 P-core affinity e WS-ADV-003 GPU IRQ affinity para catalogo backend validado.
+2. Mantem a UI legada em 187 entradas por seguranca: o novo modulo vive em catalogs/validated e nao e auto-carregado pelo loader nao-recursivo.
+3. Adiciona AdvancedProviderBridge.ps1 com whitelist explicita de Providers.
+4. O bridge captura BackupData antes do Apply, compatível com a invariavel da Fase 3.
+5. Adiciona handlers Apply/Backup/Undo para uso pelo Transaction Manager R13, com fallbacks opcionais para planos mistos.
+6. Mantem os 3 advanced fora dos presets ate a Fase 6 e fora da UI legada ate a Fase 7.
+7. Atualiza a spec Game-Workload advanced para status validado/promovido.
+
+Contagem:
+- Base: 177
+- Game-Workload Game/Workload: 10
+- Advanced validado: 3
+- Total backend validado: 190
+- Total auto-carregado pela UI legada: 187

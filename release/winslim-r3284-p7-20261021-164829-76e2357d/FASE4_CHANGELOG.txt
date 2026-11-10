@@ -1,0 +1,56 @@
+﻿Win-Slim Suite - FASE 4 R1 / Planner
+Data: 2026-10-04
+Baseline: Fase 3 R13 aprovada em Windows PowerShell 5.1.
+
+IMPLEMENTADO
+1. Planner puro em src/Core/Planner.ps1; nenhuma mutacao do Windows.
+2. New-WinSlimExecutionPlan como API principal.
+3. Selecao manual + preset + LevelSelections.
+4. Expansao transitiva de dependencies.
+5. Ordenacao topologica estavel/deterministica por ordem do catalogo.
+6. Detecta MissingDependency e DependencyCycle; falha fechada.
+7. Detecta conflicts mesmo quando somente um lado declara o conflito.
+8. Detecta mutexGroup.
+9. ConflictPolicy:
+   - Block (padrao): nao escolhe silenciosamente entre alternativas;
+   - PreferFirst: modo deterministico util para compatibilidade/preview.
+10. Aplicabilidade por windowsVersion.
+11. Aplicabilidade por hardwareRules, incluindo o schema atual requiresGPU/vendors e suporte defensivo a regras futuras documentadas no codigo.
+12. requiresAdmin: bloqueia quando o contexto nao esta elevado.
+13. Dependencia Skip/Blocked propaga DependencyUnavailable ao dependente.
+14. ExecutionOrder contem Tweak snapshot, Level e metadados e pode ser entregue diretamente a Invoke-TransactionPlan.
+15. Preview estruturado:
+    SelectedTweaks, ExpandedDependencies, ExecutionOrder, SkippedTweaks,
+    BlockedTweaks, Conflicts, MutexDecisions, DependencyCycles, Warnings,
+    WindowsApplicability, HardwareApplicability, AdminApplicability,
+    RiskSummary, RestartRequirements, CanExecute, HasWork, Summary.
+16. Fingerprint SHA-256 deterministico do plano; sem timestamp/randomness no Planner.
+17. Snapshot profundo dos Tweaks no plano para evitar mutacao posterior do catalogo.
+18. Test-WinSlimPlannerCatalog para referencias de dependencies/conflicts e IDs duplicados.
+19. Get-WinSlimTransactionItemsFromPlan bloqueia envio ao Transaction Manager quando CanExecute=false.
+20. Resolve-Conflicts legado preservado para a GUI atual; Run-Batch ainda nao foi migrado nesta entrega.
+
+HARNESS
+Novo tests/Test-Fase4-Planner.ps1 com 10 blocos de gate:
+- pureza;
+- deps/transitive/topological;
+- determinismo;
+- missing/cycle;
+- conflicts/mutex;
+- Windows/hardware/admin/propagacao;
+- preset/multilevel;
+- risco/restart/imutabilidade;
+- integracao in-memory com Transaction Manager;
+- catalogo real (177 entradas do baseline R13).
+
+NAO ALTERADO
+- src/Core/Transaction.ps1 R13: congelado.
+- Providers: congelados.
+- catalog.json: congelado.
+- WinSlimSuite.ps1 de producao: congelado.
+- Run-Batch da GUI: ainda usa Resolve-Conflicts legado.
+
+PROXIMO GATE APOS PASS NO WINDOWS
+FASE 4 R2 / integracao controlada do Run-Batch:
+Catalog -> Planner -> Preview -> Transaction Manager -> Providers,
+sem execucao se CanExecute=false.

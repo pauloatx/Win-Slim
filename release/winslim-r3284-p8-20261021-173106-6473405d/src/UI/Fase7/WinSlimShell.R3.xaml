@@ -1,0 +1,562 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="RootWindow"
+        Title="Win-Slim Suite — FASE 7"
+        Width="1360" Height="820" MinWidth="1120" MinHeight="700"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" ResizeMode="CanResize"
+        Background="#080808" FontFamily="Segoe UI"
+        SnapsToDevicePixels="True" UseLayoutRounding="True">
+    <Window.Resources>
+        <SolidColorBrush x:Key="Bg" Color="#080808"/>
+        <SolidColorBrush x:Key="Panel" Color="#111111"/>
+        <SolidColorBrush x:Key="Panel2" Color="#151515"/>
+        <SolidColorBrush x:Key="Panel3" Color="#1A1A1A"/>
+        <SolidColorBrush x:Key="Stroke" Color="#2A2A2A"/>
+        <SolidColorBrush x:Key="StrokeSoft" Color="#202020"/>
+        <SolidColorBrush x:Key="Accent" Color="#FF7A00"/>
+        <SolidColorBrush x:Key="AccentLight" Color="#FF9A2E"/>
+        <SolidColorBrush x:Key="AccentDark" Color="#C85A00"/>
+        <SolidColorBrush x:Key="Text" Color="#F4F4F4"/>
+        <SolidColorBrush x:Key="Text2" Color="#B9B9B9"/>
+        <SolidColorBrush x:Key="Muted" Color="#808080"/>
+        <SolidColorBrush x:Key="Green" Color="#24D66F"/>
+        <SolidColorBrush x:Key="Yellow" Color="#FFBC35"/>
+        <SolidColorBrush x:Key="Red" Color="#FF4D4D"/>
+        <LinearGradientBrush x:Key="OrangeGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFF9A2E" Offset="0"/>
+            <GradientStop Color="#FFFF7A00" Offset="0.55"/>
+            <GradientStop Color="#FFC85A00" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource Panel}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Stroke}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+        <Style x:Key="PageTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style x:Key="PageSubtitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Text2}"/>
+            <Setter Property="FontSize" Value="12.5"/>
+        </Style>
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style x:Key="MetricLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Text2}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource Text2}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Margin" Value="7,2"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#18120D"/>
+                                <Setter Property="Foreground" Value="{StaticResource AccentLight}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="Foreground" Value="#100A04"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12.5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentLight}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#171717"/>
+            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+            <Setter Property="BorderBrush" Value="#373737"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Background" Value="#222222"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#0D0D0D"/>
+            <Setter Property="Foreground" Value="{StaticResource Text}"/>
+            <Setter Property="BorderBrush" Value="#2D2D2D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,7"/>
+            <Setter Property="CaretBrush" Value="{StaticResource Accent}"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource Text2}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,4"/>
+        </Style>
+    </Window.Resources>
+
+    <Border BorderBrush="#5A2B08" BorderThickness="1" Background="{StaticResource Bg}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="27"/>
+            </Grid.RowDefinitions>
+
+            <!-- TOP BAR -->
+            <Border Grid.Row="0" Background="#0B0B0B" BorderBrush="#632D06" BorderThickness="0,0,0,1">
+                <Grid x:Name="TopDragArea" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="360"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="385"/>
+                        <ColumnDefinition Width="112"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
+                        <Viewbox Width="30" Height="42" Margin="0,0,10,0">
+                            <Canvas Width="32" Height="46">
+                                <Path Fill="{StaticResource Accent}" Data="M18,1 L5,24 L15,24 L9,45 L28,18 L18,18 L26,1 Z"/>
+                            </Canvas>
+                        </Viewbox>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Win-Slim Suite" Foreground="{StaticResource Text}" FontSize="20" FontWeight="SemiBold"/>
+                            <TextBlock Text="Windows Optimization Suite" Foreground="{StaticResource Text2}" FontSize="10.5"/>
+                        </StackPanel>
+                        <Border Width="1" Height="34" Background="{StaticResource AccentDark}" Margin="20,0"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="{StaticResource Text2}" FontSize="12.5">
+                        <Run Text="Mais desempenho." Foreground="{StaticResource AccentLight}"/><Run Text="  Mais controle.  "/><Run Text="Seu Windows no seu melhor." Foreground="{StaticResource AccentLight}" FontWeight="SemiBold"/>
+                    </TextBlock>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
+                            <Border Width="30" Height="30" CornerRadius="15" BorderBrush="{StaticResource Accent}" BorderThickness="1"><TextBlock Text="✓" Foreground="{StaticResource Accent}" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <StackPanel Margin="8,0,0,0"><TextBlock Text="Seguro" Foreground="{StaticResource Text}" FontWeight="SemiBold" FontSize="11"/><TextBlock Text="Backup automático" Foreground="{StaticResource Muted}" FontSize="9"/></StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,24,0">
+                            <Border Width="30" Height="30" CornerRadius="15" BorderBrush="{StaticResource Accent}" BorderThickness="1"><TextBlock Text="◇" Foreground="{StaticResource Accent}" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <StackPanel Margin="8,0,0,0"><TextBlock Text="Confiável" Foreground="{StaticResource Text}" FontWeight="SemiBold" FontSize="11"/><TextBlock Text="Verificação e rollback" Foreground="{StaticResource Muted}" FontSize="9"/></StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="30" Height="30" CornerRadius="15" BorderBrush="{StaticResource Accent}" BorderThickness="1"><TextBlock Text="◷" Foreground="{StaticResource Accent}" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <StackPanel Margin="8,0,0,0"><TextBlock Text="Simples" Foreground="{StaticResource Text}" FontWeight="SemiBold" FontSize="11"/><TextBlock Text="Interface intuitiva" Foreground="{StaticResource Muted}" FontSize="9"/></StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="34">
+                        <Button x:Name="BtnMinimize" Content="─" Width="36" Height="30" Background="Transparent" Foreground="#B0B0B0" BorderThickness="0" FontSize="14"/>
+                        <Button x:Name="BtnMaximize" Content="□" Width="36" Height="30" Background="Transparent" Foreground="#B0B0B0" BorderThickness="0" FontSize="12"/>
+                        <Button x:Name="BtnClose" Content="×" Width="36" Height="30" Background="Transparent" Foreground="#D0D0D0" BorderThickness="0" FontSize="17"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- BODY -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="218"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- SIDEBAR -->
+                <Border Grid.Column="0" Background="#0C0C0C" BorderBrush="#202020" BorderThickness="0,0,1,0">
+                    <Grid>
+                        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Margin="0,12,0,0">
+                            <Button x:Name="NavInicio" Content="⌂   Início" Style="{StaticResource NavButton}"/>
+                            <Button x:Name="NavPresets" Content="✂   Presets" Style="{StaticResource NavButton}"/>
+                            <Button x:Name="NavPersonalizado" Content="☷   Personalizado" Style="{StaticResource NavButton}"/>
+                            <Button x:Name="NavBackup" Content="↶   Backup / Restore" Style="{StaticResource NavButton}"/>
+                            <Button x:Name="NavAnalise" Content="◉   Análise do Sistema" Style="{StaticResource NavButton}"/>
+                            <Button x:Name="NavConfiguracoes" Content="⚙   Configurações" Style="{StaticResource NavButton}"/>
+                            <Button x:Name="NavSobre" Content="ⓘ   Sobre" Style="{StaticResource NavButton}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Margin="14,0,14,14">
+                            <Border Style="{StaticResource Card}" Padding="12" Background="#0F0F0F">
+                                <StackPanel>
+                                    <TextBlock Text="FASE 7 R3" Foreground="{StaticResource Accent}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock x:Name="TxtRuntimeState" Text="Runtime: carregando..." Foreground="{StaticResource Text2}" FontSize="10.5" Margin="0,5,0,0"/>
+                                    <TextBlock x:Name="TxtBackendState" Text="Backend: carregando..." Foreground="{StaticResource Text2}" FontSize="10.5" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- CONTENT HOST -->
+                <Grid Grid.Column="1" Background="{StaticResource Bg}" Margin="0">
+
+                    <!-- INÍCIO / DASHBOARD -->
+                    <ScrollViewer x:Name="PageInicio" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <Grid Margin="26,22,26,24">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Margin="0,0,0,18">
+                                <TextBlock Text="Início — Dashboard" Style="{StaticResource PageTitle}"/>
+                                <TextBlock Text="Visão geral do sistema, desempenho em tempo real e drive de ação principal." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0"/>
+                            </StackPanel>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="1.55*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="0.85*"/></Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource Card}">
+                                    <Grid>
+                                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                        <StackPanel Grid.Row="0">
+                                            <TextBlock Text="Bem-vindo ao Win-Slim Suite" Style="{StaticResource SectionTitle}"/>
+                                            <TextBlock Text="Otimização segura do seu sistema em um só lugar." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                        <Grid Grid.Row="1" Margin="0,18,0,16">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="1.25*"/><ColumnDefinition Width="1.05*"/></Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Background="#0C0C0C" CornerRadius="8" BorderBrush="#242424" BorderThickness="1" Padding="14" Margin="0,0,8,0">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Width="46" Height="46" CornerRadius="7" Background="#1D1107" Margin="0,0,12,0"><TextBlock Text="⊞" Foreground="{StaticResource Accent}" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock x:Name="TxtSystemPrimary" Text="Windows" Foreground="{StaticResource Text}" FontSize="13" FontWeight="SemiBold"/>
+                                                        <TextBlock x:Name="TxtSystemSecondary" Text="Detectando build e hardware..." Foreground="{StaticResource Text2}" FontSize="10.5" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock x:Name="TxtSystemHardware" Text="CPU · GPU · RAM" Foreground="{StaticResource Muted}" FontSize="9.7" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Border>
+                                            <Border Grid.Column="1" Background="#0C0C0C" CornerRadius="8" BorderBrush="#242424" BorderThickness="1" Padding="14" Margin="8,0,0,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="Backend aprovado" Foreground="{StaticResource Text}" FontSize="12.5" FontWeight="SemiBold"/>
+                                                    <TextBlock x:Name="TxtRuntimeDetail" Text="Planner / Transaction" Foreground="{StaticResource AccentLight}" FontSize="10.5" Margin="0,5,0,0"/>
+                                                    <TextBlock x:Name="TxtDeviceType" Text="Dispositivo: detectando..." Foreground="{StaticResource Text2}" FontSize="10" Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                        <WrapPanel Grid.Row="2">
+                                            <Border Background="#0A1710" BorderBrush="#164D2B" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,8,6"><TextBlock x:Name="TxtCompatibilityBadge" Text="✓ Sistema compatível" Foreground="{StaticResource Green}" FontSize="10.5"/></Border>
+                                            <Border Background="#0A1710" BorderBrush="#164D2B" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,8,6"><TextBlock Text="✓ Runtime promovido" Foreground="{StaticResource Green}" FontSize="10.5"/></Border>
+                                            <Border Background="#0A1710" BorderBrush="#164D2B" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,8,6"><TextBlock x:Name="TxtAdminBadge" Text="✓ Administrador" Foreground="{StaticResource Green}" FontSize="10.5"/></Border>
+                                            <Border Background="#0A1710" BorderBrush="#164D2B" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,0,6"><TextBlock Text="✓ Rollback preservado" Foreground="{StaticResource Green}" FontSize="10.5"/></Border>
+                                        </WrapPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="2" Style="{StaticResource Card}">
+                                    <StackPanel>
+                                        <TextBlock Text="Status do Win-Slim" Style="{StaticResource SectionTitle}"/>
+                                        <Grid Margin="0,16,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Tweaks disponíveis" Foreground="{StaticResource Text2}" FontSize="11"/><TextBlock x:Name="TxtTweakCount" Grid.Column="1" Text="230 / 230" Foreground="{StaticResource Text}" FontWeight="SemiBold" FontSize="11"/></Grid>
+                                        <Separator Background="#242424" Margin="0,10"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Presets" Foreground="{StaticResource Text2}" FontSize="11"/><TextBlock Grid.Column="1" Text="105 · 129 · 168" Foreground="{StaticResource AccentLight}" FontSize="10.5"/></Grid>
+                                        <Separator Background="#242424" Margin="0,10"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Reinício pendente" Foreground="{StaticResource Text2}" FontSize="11"/><TextBlock x:Name="TxtPendingReboot" Grid.Column="1" Text="Detectando..." Foreground="{StaticResource Text}" FontSize="10.5"/></Grid>
+                                        <Separator Background="#242424" Margin="0,10"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Fase ativa" Foreground="{StaticResource Text2}" FontSize="11"/><TextBlock Grid.Column="1" Text="7 R3 · Presets" Foreground="{StaticResource Green}" FontSize="10.5"/></Grid>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <Grid Grid.Row="2" Margin="0,14,0,0">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="1.55*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="0.85*"/></Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource Card}">
+                                    <Grid>
+                                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Desempenho atual" Style="{StaticResource SectionTitle}"/><TextBlock x:Name="TxtMetricTimestamp" Grid.Column="1" Text="Atualizando..." Foreground="{StaticResource Muted}" FontSize="9.5" VerticalAlignment="Center"/></Grid>
+                                        <UniformGrid Grid.Row="1" Columns="4" Margin="0,16,0,0">
+                                            <StackPanel><Border Width="72" Height="72" CornerRadius="36" BorderBrush="{StaticResource Accent}" BorderThickness="2"><TextBlock x:Name="TxtMetricCpu" Text="--" Foreground="{StaticResource Text}" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="CPU" Style="{StaticResource MetricLabel}" Margin="0,7,0,0"/></StackPanel>
+                                            <StackPanel><Border Width="72" Height="72" CornerRadius="36" BorderBrush="{StaticResource Accent}" BorderThickness="2"><TextBlock x:Name="TxtMetricGpu" Text="--" Foreground="{StaticResource Text}" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="GPU" Style="{StaticResource MetricLabel}" Margin="0,7,0,0"/></StackPanel>
+                                            <StackPanel><Border Width="72" Height="72" CornerRadius="36" BorderBrush="{StaticResource Accent}" BorderThickness="2"><TextBlock x:Name="TxtMetricRam" Text="--" Foreground="{StaticResource Text}" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="RAM" Style="{StaticResource MetricLabel}" Margin="0,7,0,0"/></StackPanel>
+                                            <StackPanel><Border Width="72" Height="72" CornerRadius="36" BorderBrush="{StaticResource Accent}" BorderThickness="2"><TextBlock x:Name="TxtMetricDisk" Text="--" Foreground="{StaticResource Text}" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Text="Disco" Style="{StaticResource MetricLabel}" Margin="0,7,0,0"/></StackPanel>
+                                        </UniformGrid>
+                                        <TextBlock Grid.Row="2" Text="Métricas de uso são somente leitura e atualizadas periodicamente. GPU pode ficar indisponível em drivers que não expõem contadores WDDM." Foreground="{StaticResource Muted}" FontSize="9.5" TextWrapping="Wrap" Margin="0,13,0,0"/>
+                                    </Grid>
+                                </Border>
+                                <Border Grid.Column="2" Style="{StaticResource Card}">
+                                    <StackPanel>
+                                        <TextBlock Text="Ação principal" Style="{StaticResource SectionTitle}"/>
+                                        <TextBlock Text="Revise hardware, segurança e contexto antes de escolher um preset. Nenhuma otimização é aplicada nesta etapa." TextWrapping="Wrap" Foreground="{StaticResource Text2}" FontSize="11.5" LineHeight="18" Margin="0,10,0,16"/>
+                                        <Button x:Name="BtnAnalyzeSystem" Content="ANALISAR SISTEMA" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Stretch"/>
+                                        <Button x:Name="BtnRefreshDashboard" Content="Atualizar leitura" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Stretch" Margin="0,8,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <!-- PRESETS / R3 -->
+                    <ScrollViewer x:Name="PagePresets" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <Grid Margin="26,22,26,24">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                                <TextBlock Text="Presets" Style="{StaticResource PageTitle}"/>
+                                <TextBlock Text="Escolha um perfil base e, opcionalmente, adicione overlays condicionais. Esta etapa apenas resolve a seleção; nenhuma alteração é aplicada." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+
+                            <UniformGrid Grid.Row="1" Columns="3">
+                                <Border x:Name="CardPresetBalanced" Style="{StaticResource Card}" BorderBrush="#1D8C4B" Margin="0,0,8,0" Padding="22">
+                                    <StackPanel>
+                                        <TextBlock Text="◢" Foreground="{StaticResource Green}" FontSize="32" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Equilibrado" Foreground="{StaticResource Green}" FontSize="19" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,8,0,3"/>
+                                        <TextBlock Text="Estabilidade e responsividade sem mudanças agressivas." Foreground="{StaticResource Text2}" TextWrapping="Wrap" TextAlignment="Center" FontSize="11"/>
+                                        <Separator Background="#24422F" Margin="0,16"/>
+                                        <TextBlock Text="✓ Performance" Foreground="{StaticResource Green}" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ Privacidade moderada" Foreground="{StaticResource Green}" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ Limpeza do sistema" Foreground="{StaticResource Green}" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ Baixo risco" Foreground="{StaticResource Green}" FontSize="11" Margin="0,4"/>
+                                        <Button x:Name="BtnPresetBalanced" Content="Selecionar · 105 tweaks" Style="{StaticResource SecondaryButton}" Margin="0,18,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border x:Name="CardPresetGamer" Style="{StaticResource Card}" BorderBrush="{StaticResource AccentDark}" Margin="8,0" Padding="22">
+                                    <StackPanel>
+                                        <TextBlock Text="◉" Foreground="{StaticResource Accent}" FontSize="32" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Gamer" Foreground="{StaticResource AccentLight}" FontSize="19" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,8,0,3"/>
+                                        <TextBlock Text="Otimizações para jogos, latência, fluidez e FPS." Foreground="{StaticResource Text2}" TextWrapping="Wrap" TextAlignment="Center" FontSize="11"/>
+                                        <Separator Background="#4B2A10" Margin="0,16"/>
+                                        <TextBlock Text="✓ FPS / Latência" Foreground="{StaticResource AccentLight}" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ GPU e CPU" Foreground="{StaticResource AccentLight}" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ Rede e energia" Foreground="{StaticResource AccentLight}" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ Game Mode" Foreground="{StaticResource AccentLight}" FontSize="11" Margin="0,4"/>
+                                        <Button x:Name="BtnPresetGamer" Content="Selecionar · 129 tweaks" Style="{StaticResource PrimaryButton}" Margin="0,18,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border x:Name="CardPresetExtreme" Style="{StaticResource Card}" BorderBrush="#8A2929" Margin="8,0,0,0" Padding="22">
+                                    <StackPanel>
+                                        <TextBlock Text="▲" Foreground="{StaticResource Red}" FontSize="32" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Extremo" Foreground="{StaticResource Red}" FontSize="19" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,8,0,3"/>
+                                        <TextBlock Text="Máximo desempenho com ajustes avançados e maior impacto." Foreground="{StaticResource Text2}" TextWrapping="Wrap" TextAlignment="Center" FontSize="11"/>
+                                        <Separator Background="#4A2020" Margin="0,16"/>
+                                        <TextBlock Text="✓ Menos processos" Foreground="#FF7777" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ Mais desempenho" Foreground="#FF7777" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ Maior risco" Foreground="#FF7777" FontSize="11" Margin="0,4"/>
+                                        <TextBlock Text="✓ Alterações avançadas" Foreground="#FF7777" FontSize="11" Margin="0,4"/>
+                                        <Button x:Name="BtnPresetExtreme" Content="Selecionar · 168 tweaks" Style="{StaticResource SecondaryButton}" Margin="0,18,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </UniformGrid>
+
+                            <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,16,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="Overlays condicionais" Style="{StaticResource SectionTitle}"/>
+                                            <TextBlock Text="Todos são opt-in explícito. O Runtime de Presets continua responsável por conflito, mutex, níveis e consentimento de alto risco." Foreground="{StaticResource Text2}" FontSize="10.8" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                        <TextBlock x:Name="TxtOverlayHardwareHint" Grid.Column="1" Text="Selecione um preset para habilitar" Foreground="{StaticResource Muted}" FontSize="10" VerticalAlignment="Center" Margin="18,0,0,0"/>
+                                    </Grid>
+
+                                    <Grid x:Name="PanelOverlays" Grid.Row="1" Margin="0,16,0,0" IsEnabled="False">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="1*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="1.35*"/></Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Background="#0C0C0C" BorderBrush="#282828" BorderThickness="1" CornerRadius="8" Padding="14">
+                                            <StackPanel>
+                                                <TextBlock Text="Hardware" Foreground="{StaticResource AccentLight}" FontWeight="SemiBold" FontSize="12.5" Margin="0,0,0,7"/>
+                                                <CheckBox x:Name="ChkOverlayHags" Tag="HW-HAGS-ON" Content="HAGS — agendamento de GPU" ToolTip="Opt-in de Hardware Accelerated GPU Scheduling; compatibilidade final continua no Planner/Windows."/>
+                                                <CheckBox x:Name="ChkOverlayMsiGpu" Tag="HW-MSI-GPU" Content="MSI Mode — GPU" ToolTip="Ativa MSI Mode para GPU somente como seleção condicional explícita."/>
+                                                <CheckBox x:Name="ChkOverlayCoreParking" Tag="HW-CORE-PARKING-100" Content="Core Parking — CPMINCORES 100%" ToolTip="Usa o Provider validado para CPMINCORES 100% AC/DC."/>
+                                                <CheckBox x:Name="ChkOverlayCs2PCores" Tag="HW-CS2-P-CORES" Content="CS2 — afinidade P-cores  [ALTO]" Foreground="#FF7777" ToolTip="Alto risco. Exige consentimento adicional; o Provider pode ignorar topologias não suportadas."/>
+                                                <CheckBox x:Name="ChkOverlayGpuIrq" Tag="HW-GPU-IRQ-AFFINITY" Content="GPU IRQ affinity  [ALTO]" Foreground="#FF7777" ToolTip="Alto risco. Exige GPU, ao menos 8 processadores lógicos e consentimento adicional."/>
+                                                <CheckBox x:Name="ChkAllowHighRiskConditional" Content="Autorizo overlays condicionais de risco Alto" Foreground="{StaticResource Yellow}" Margin="0,11,0,0" ToolTip="Não aplica nada por si só; apenas permite que o PresetRuntime resolva perfis condicionais marcados como Alto."/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Grid.Column="2" Background="#0C0C0C" BorderBrush="#282828" BorderThickness="1" CornerRadius="8" Padding="14">
+                                            <StackPanel>
+                                                <TextBlock Text="Workloads" Foreground="{StaticResource AccentLight}" FontWeight="SemiBold" FontSize="12.5" Margin="0,0,0,7"/>
+                                                <WrapPanel>
+                                                    <CheckBox x:Name="ChkOverlayValorant" Tag="WL-VALORANT" Content="VALORANT" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayCs2" Tag="WL-CS2" Content="Counter-Strike 2" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayApex" Tag="WL-APEX" Content="Apex Legends" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayFortnite" Tag="WL-FORTNITE" Content="Fortnite" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayGtav" Tag="WL-GTAV" Content="GTA V" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayFso" Tag="WL-FSO-OFF" Content="Fullscreen Opt. OFF" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayDefenderDev" Tag="WL-DEFENDER-DEV-EXCLUSIONS" Content="Defender Dev exclusions" Width="190"/>
+                                                    <CheckBox x:Name="ChkOverlayStreaming" Tag="WL-STREAMING" Content="Streaming" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayVideo" Tag="WL-VIDEO-EDITING" Content="Edição de vídeo" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayDesign" Tag="WL-DESIGN" Content="Design" Width="150"/>
+                                                    <CheckBox x:Name="ChkOverlayProgramming" Tag="WL-PROGRAMMING" Content="Programação" Width="150"/>
+                                                </WrapPanel>
+                                                <TextBlock Text="Os workloads não são detectados automaticamente nesta revisão: habilite somente os que realmente usa." Foreground="{StaticResource Muted}" FontSize="9.8" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+
+                                    <Grid Grid.Row="2" Margin="0,16,0,0">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock x:Name="TxtPresetSelectionStatus" Text="Nenhum preset selecionado." Foreground="{StaticResource Text}" FontSize="12.5" FontWeight="SemiBold"/>
+                                            <TextBlock x:Name="TxtPresetSelectionDetail" Text="Base — · overlays — · total — · bloqueios —" Foreground="{StaticResource Text2}" FontSize="10.7" Margin="0,5,0,0"/>
+                                            <TextBlock x:Name="TxtPresetSelectionFingerprint" Text="Fingerprint: —" Foreground="{StaticResource Muted}" FontSize="9.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+                                            <Button x:Name="BtnClearOverlays" Content="Limpar overlays" Style="{StaticResource SecondaryButton}" IsEnabled="False"/>
+                                            <Button x:Name="BtnPresetNext" Content="Pré-visualização na R5" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" IsEnabled="False" ToolTip="A seleção funcional é concluída na R3. A tela de pré-visualização transacional será conectada na FASE 7 R5."/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+
+                            <Button x:Name="BtnGoCustom" Grid.Row="3" Content="⚙  Personalizar seleção" Style="{StaticResource SecondaryButton}" Margin="0,16,0,0" HorizontalAlignment="Stretch"/>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <!-- PERSONALIZADO -->
+                    <Grid x:Name="PagePersonalizado" Visibility="Collapsed" Margin="26,22,26,24">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Margin="0,0,0,16"><TextBlock Text="Personalizado" Style="{StaticResource PageTitle}"/><TextBlock Text="Seleção manual de tweaks por categoria — estrutura visual preparada para a FASE 7 R4." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0"/></StackPanel>
+                        <TextBox Grid.Row="1" x:Name="TxtCustomSearch" Text="" ToolTip="Buscar tweaks..." Margin="0,0,0,12"/>
+                        <Grid Grid.Row="2"><Grid.ColumnDefinitions><ColumnDefinition Width="190"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource Card}" Padding="10"><StackPanel><TextBlock Text="Categorias" Style="{StaticResource SectionTitle}" Margin="8,6,0,10"/><TextBlock Text="Performance      18" Foreground="{StaticResource AccentLight}" Margin="8,7"/><TextBlock Text="Gaming            14" Foreground="{StaticResource Text2}" Margin="8,7"/><TextBlock Text="CPU / GPU         20" Foreground="{StaticResource Text2}" Margin="8,7"/><TextBlock Text="Memória            6" Foreground="{StaticResource Text2}" Margin="8,7"/><TextBlock Text="Storage             7" Foreground="{StaticResource Text2}" Margin="8,7"/><TextBlock Text="Rede                 9" Foreground="{StaticResource Text2}" Margin="8,7"/><TextBlock Text="Privacidade       10" Foreground="{StaticResource Text2}" Margin="8,7"/><TextBlock Text="Serviços           12" Foreground="{StaticResource Text2}" Margin="8,7"/></StackPanel></Border>
+                            <Border Grid.Column="2" Style="{StaticResource Card}" Padding="14"><StackPanel><TextBlock Text="Catálogo conectado: 230 tweaks" Style="{StaticResource SectionTitle}"/><TextBlock Text="A listagem real, filtros, switches, risco e níveis serão conectados ao CatalogRuntime na FASE 7 R4." Foreground="{StaticResource Text2}" TextWrapping="Wrap" FontSize="11.5" Margin="0,8,0,16"/><Border Background="#0D0D0D" CornerRadius="7" BorderBrush="#2A2A2A" BorderThickness="1" Padding="14" Margin="0,0,0,8"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Disable Power Throttling" Foreground="{StaticResource Text}" FontWeight="SemiBold"/><TextBlock Text="Exemplo visual de linha de tweak" Foreground="{StaticResource Muted}" FontSize="10"/></StackPanel><TextBlock Grid.Column="1" Text="Baixo" Foreground="{StaticResource Green}" VerticalAlignment="Center"/></Grid></Border><Border Background="#0D0D0D" CornerRadius="7" BorderBrush="#2A2A2A" BorderThickness="1" Padding="14"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Dynamic Tick" Foreground="{StaticResource Text}" FontWeight="SemiBold"/><TextBlock Text="Exemplo visual — ainda não aplica alterações" Foreground="{StaticResource Muted}" FontSize="10"/></StackPanel><TextBlock Grid.Column="1" Text="Médio" Foreground="{StaticResource Yellow}" VerticalAlignment="Center"/></Grid></Border></StackPanel></Border>
+                        </Grid>
+                    </Grid>
+
+                    <!-- BACKUP -->
+                    <Grid x:Name="PageBackup" Visibility="Collapsed" Margin="26,22,26,24">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Margin="0,0,0,18"><TextBlock Text="Backup / Restore" Style="{StaticResource PageTitle}"/><TextBlock Text="Gerencie seus backups e restaurações. Integração transacional prevista para a FASE 7 R7." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0"/></StackPanel>
+                        <Border Grid.Row="1" Style="{StaticResource Card}"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><StackPanel Orientation="Horizontal"><Button Content="Backups" Style="{StaticResource PrimaryButton}"/><Button Content="Restaurar por tweak" Style="{StaticResource SecondaryButton}" Margin="8,0,0,0"/></StackPanel><Border Grid.Row="1" Background="#0C0C0C" BorderBrush="#262626" BorderThickness="1" CornerRadius="7" Margin="0,14,0,14"><StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"><TextBlock Text="↶" Foreground="{StaticResource Accent}" FontSize="34" HorizontalAlignment="Center"/><TextBlock Text="Nenhum histórico carregado nesta revisão" Foreground="{StaticResource Text}" FontSize="14" FontWeight="SemiBold" Margin="0,8,0,0"/><TextBlock Text="A FASE 7 R7 conectará o journal e os backups reais." Foreground="{StaticResource Text2}" FontSize="11" Margin="0,4,0,0"/></StackPanel></Border><StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"><Button Content="Detalhes" Style="{StaticResource SecondaryButton}" IsEnabled="False"/><Button Content="Restaurar" Style="{StaticResource SecondaryButton}" Margin="8,0,0,0" IsEnabled="False"/></StackPanel></Grid></Border>
+                    </Grid>
+
+                    <!-- ANÁLISE -->
+                    <ScrollViewer x:Name="PageAnalise" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <Grid Margin="26,22,26,24">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <StackPanel><TextBlock Text="Análise do Sistema" Style="{StaticResource PageTitle}"/><TextBlock Text="Diagnóstico de hardware, segurança e contexto em modo somente leitura." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0"/></StackPanel>
+                                <Button x:Name="BtnRefreshSystem" Grid.Column="1" Content="↻  Atualizar diagnóstico" Style="{StaticResource SecondaryButton}" VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="1.15*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="1*"/></Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource Card}">
+                                    <StackPanel>
+                                        <TextBlock Text="Hardware e sistema" Style="{StaticResource SectionTitle}" Margin="0,0,0,12"/>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Windows" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisWindows" Grid.Column="1" Text="Detectando..." Foreground="{StaticResource Text}" TextWrapping="Wrap"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Arquitetura" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisArch" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="CPU" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisCpu" Grid.Column="1" Text="Detectando..." Foreground="{StaticResource Text}" TextWrapping="Wrap"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="GPU" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisGpu" Grid.Column="1" Text="Detectando..." Foreground="{StaticResource Text}" TextWrapping="Wrap"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Driver GPU" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisGpuDriver" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Memória" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisRam" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Armazenamento" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisStorage" Grid.Column="1" Text="—" Foreground="{StaticResource Text}" TextWrapping="Wrap"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Tipo de máquina" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisDevice" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Temperatura" Foreground="{StaticResource Text2}"/><TextBlock Grid.Column="1" Text="Não exposta de forma confiável pela API padrão do Windows" Foreground="{StaticResource Muted}" TextWrapping="Wrap"/></Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Column="2" Style="{StaticResource Card}">
+                                    <StackPanel>
+                                        <TextBlock Text="Segurança e contexto" Style="{StaticResource SectionTitle}" Margin="0,0,0,12"/>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Administrador" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisAdmin" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Secure Boot" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisSecureBoot" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="TPM" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisTpm" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="VBS" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisVbs" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="HVCI" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisHvci" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="BitLocker" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisBitLocker" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Reinício pendente" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisReboot" Grid.Column="1" Text="—" Foreground="{StaticResource Text}"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Rede ativa" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisNetwork" Grid.Column="1" Text="—" Foreground="{StaticResource Text}" TextWrapping="Wrap"/></Grid>
+                                        <Grid Margin="0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="Plano de energia" Foreground="{StaticResource Text2}"/><TextBlock x:Name="TxtAnalysisPower" Grid.Column="1" Text="—" Foreground="{StaticResource Text}" TextWrapping="Wrap"/></Grid>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,14,0,0">
+                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Status do diagnóstico" Style="{StaticResource SectionTitle}"/><TextBlock x:Name="TxtAnalysisSummary" Text="Aguardando leitura do sistema." Foreground="{StaticResource Text2}" FontSize="11" Margin="0,6,0,0" TextWrapping="Wrap"/></StackPanel><TextBlock x:Name="TxtAnalysisTime" Grid.Column="1" Text="—" Foreground="{StaticResource Muted}" FontSize="10" VerticalAlignment="Center"/></Grid>
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <!-- CONFIG -->
+                    <ScrollViewer x:Name="PageConfiguracoes" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                        <Grid Margin="26,22,26,24">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Margin="0,0,0,18"><TextBlock Text="Configurações / Avançado" Style="{StaticResource PageTitle}"/><TextBlock Text="Ajustes da aplicação e opções de exibição." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0"/></StackPanel>
+                            <Border Grid.Row="1" Style="{StaticResource Card}" MaxWidth="760" HorizontalAlignment="Left">
+                                <StackPanel>
+                                    <TextBlock Text="Modo desenvolvedor" Style="{StaticResource SectionTitle}" Margin="0,0,0,8"/>
+                                    <CheckBox Content="Mostrar tweaks experimentais"/>
+                                    <CheckBox Content="Mostrar comandos"/>
+                                    <CheckBox Content="Mostrar Registry"/>
+                                    <CheckBox Content="Mostrar Providers"/>
+                                    <CheckBox Content="Mostrar hardware rules"/>
+                                    <CheckBox Content="Mostrar dependências e conflitos"/>
+                                    <Separator Background="#252525" Margin="0,15"/>
+                                    <TextBlock Text="Outras opções" Style="{StaticResource SectionTitle}" Margin="0,0,0,8"/>
+                                    <CheckBox Content="Exportar relatório automaticamente"/>
+                                    <CheckBox Content="Modo Dry Run (sem aplicar)" IsChecked="True"/>
+                                    <CheckBox Content="Confirmar tweaks de alto risco" IsChecked="True"/>
+                                    <Button Content="Exportar configurações" Style="{StaticResource SecondaryButton}" Margin="0,16,0,0" HorizontalAlignment="Left"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <!-- SOBRE -->
+                    <Grid x:Name="PageSobre" Visibility="Collapsed" Margin="26,22,26,24">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Margin="0,0,0,18"><TextBlock Text="Sobre" Style="{StaticResource PageTitle}"/><TextBlock Text="Win-Slim Suite — nova interface sobre o backend promovido da FASE 6.5 R4.1." Style="{StaticResource PageSubtitle}" Margin="0,4,0,0"/></StackPanel>
+                        <Border Grid.Row="1" Style="{StaticResource Card}" MaxWidth="760" HorizontalAlignment="Left"><StackPanel><TextBlock Text="Win-Slim Suite" Foreground="{StaticResource Text}" FontSize="23" FontWeight="SemiBold"/><TextBlock Text="FASE 7 R3 — Presets + overlays condicionais" Foreground="{StaticResource Accent}" FontSize="12" Margin="0,6,0,14"/><TextBlock Text="Esta revisão preserva o Dashboard/Análise da R2 e conecta Presets + overlays condicionais ao PresetRuntime canônico, sem executar Planner, Transaction ou Providers." Foreground="{StaticResource Text2}" TextWrapping="Wrap" FontSize="12" LineHeight="19"/><TextBlock Text="Backend: 230 tweaks · Presets: 105 / 129 / 168" Foreground="{StaticResource Text}" Margin="0,16,0,0"/></StackPanel></Border>
+                    </Grid>
+
+                    <!-- FUTURE FLOW ROUTES (R5/R6), ocultas nesta revisão -->
+                    <Grid x:Name="PagePreview" Visibility="Collapsed"/>
+                    <Grid x:Name="PageApply" Visibility="Collapsed"/>
+                    <Grid x:Name="PageResult" Visibility="Collapsed"/>
+                    <Grid x:Name="PageTweakDetail" Visibility="Collapsed"/>
+                </Grid>
+            </Grid>
+
+            <!-- STATUS BAR -->
+            <Border Grid.Row="2" Background="#090909" BorderBrush="#242424" BorderThickness="0,1,0,0">
+                <Grid Margin="12,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="TxtStatus" Text="Pronto — FASE 7 R3" Foreground="#7F7F7F" FontSize="9.5" VerticalAlignment="Center"/><TextBlock Grid.Column="1" Text="UI → RuntimePromotion → PlannerOptimized → TransactionOptimized" Foreground="#6F6F6F" FontSize="9.5" VerticalAlignment="Center"/></Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

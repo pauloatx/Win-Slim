@@ -1,0 +1,31 @@
+# Generated logs and evidence
+logs/
+evidencias/
+
+# Build outputs
+bin/
+*.exe
+*.dll
+*.pdb
+
+# Diagnostic packages
+WinSlim-Diagnostico-*.zip
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# IDE/Editor
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+Desktop.ini

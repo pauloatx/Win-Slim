@@ -1,0 +1,15 @@
+Win-Slim Suite - FASE 3 R3 Transaction Manager
+
+Diagnostico R2 (Windows PowerShell 5.1):
+- trace chegava ate STEP 1 / VERIFY RESULT=True CHANGED=True;
+- nao chegava a COMPLETE;
+- portanto o bloqueio estava no Save-Transaction imediatamente apos Verify.
+
+Correcoes R3:
+1. transaction.json agora persiste apenas metadata/status da transacao.
+2. Plan e Steps sao persistidos separadamente em plan.json e operations.json.
+3. Write-JsonAtomic nunca recebe o grafo vivo; normaliza por Copy-TransactionObject antes do ConvertTo-Json.
+4. Import-WinSlimTransaction recompõe Plan/Steps dos sidecars e continua compativel com snapshots R2.
+5. Trace detalhado dentro de Save-Transaction antes/depois de cada arquivo JSON.
+6. Checkpoints SAVE VERIFIED BEFORE/AFTER ao final de cada passo.
+7. Nenhuma alteracao em Providers, catalog.json ou WinSlimSuite.ps1.

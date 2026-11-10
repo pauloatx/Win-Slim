@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "FASE7-R3.1",
+  "basePhase": "FASE7-R3",
+  "scope": "Correcao visual do layout para reproduzir as telas internas da referencia fornecida pelo usuario; sem nova semantica de Apply.",
+  "backendExpectedCount": 230,
+  "presetExpectedCounts": {
+    "Balanceado": 105,
+    "Gamer": 129,
+    "Extremo": 168
+  },
+  "r3Baseline": "specs/FASE7-R3-baseline.json",
+  "r31Files": {
+    "WinSlimSuite.Fase7R3_1.ps1": "0b3eb21426b6157ba097b72fb9d4473ec72bb62962e1ba0170129ea170fb967b",
+    "Executar-WinSlim-R3.1.bat": "054c42d9965cb15d11274e56cec153df48a057dc3043fb2fc489946f76476c0e",
+    "src/UI/Fase7/WinSlimShell.R3_1.ps1": "2d5aefcf1612fffdf21ba6530d33c4148c629698be353eb352a9a2640623dc41",
+    "src/UI/Fase7/WinSlimShell.R3_1.xaml": "34fb700df50de63dc2daeffcdd810119fb7917f96ae6068e25396f46b3793fa1",
+    "tests/Test-Fase7-R3.1-Layout.ps1": "c3179d9f73fd7f402a39d59d3b743e2582695815056b59eae14fe442c2476712",
+    "FASE7_R3_1_CHANGELOG.txt": "0ac748c34087875bfd3c15366ccb5e8c506d6c1eceb026184013b1a863654ff3",
+    "FASE7-R3.1-LEIA-ME.md": "4338b9019551dfbb6f779ffb411315e68d98e737c6700c19ed287220aa438727"
+  }
+}

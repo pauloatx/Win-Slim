@@ -1,0 +1,35 @@
+# R3.2.84 P9 — acabamento final do overlay
+
+O usuário confirmou o funcionamento observado do overlay no teste real apresentado. Essa evidência e os aceites P4 de comparação FrameTime e cancelar/capturar novamente permanecem válidos no escopo observado. O lote P9 e os testes físicos ainda não realizados continuam pendentes. Edge real permanece pendente, somente na VM; CI Windows hospedada pendente; produção não aprovada.
+
+## Configurações
+
+Três abas com controles persistentes: Aparência, Informações e Atalhos. Cabeçalho e rodapé fixos; cada aba tem rolagem interna automática quando falta altura. Os três atalhos ficam na sua própria aba; erros de validação ou registro levam à aba Atalhos. Prévia centralizada com escala proporcional (não normalizada pelo encaixe), valores ilustrativos, sem coletor adicional e sem acesso de gravação aos resultados reais. Explicações de FPS atual/médio, 1% low, P99 e gráfico ficam em Informações/dicas.
+
+Overlay / Atalhos abre por clique explícito sem jogo, com monitor desligado/ligado, durante benchmark, após concluir/cancelar e durante transição do monitor. Sem jogo abre “Padrão para novos jogos”; com jogo mostra seu nome. Janela não modal, única por instância do aplicativo: novo clique traz a mesma janela à frente, preservando rascunho e aba. Atualizações automáticas não a abrem nem a ativam. Detecção automática de alvo fica suspensa enquanto se edita, preservando a seleção. A coleta existente continua.
+
+Salvar persiste por identidade do executável; Cancelar/X restauram a abertura; Restaurar padrão altera o rascunho e mantém posição/trava. Perfil geral usa identidade reservada e só fornece preferências a jogos sem arquivo próprio; não copia coordenadas de outro jogo. Salvar o geral não substitui os atalhos do jogo ativo. Perfis existentes conservam suas escolhas; padrão inicial Pequeno, sensores desligados. Se o monitor começar com a configuração aberta, o novo overlay recebe o rascunho do mesmo jogo e participa do rollback. Atalhos de comando ficam suspensos enquanto a configuração tem foco; voltam a funcionar ao retornar ao jogo. Captura de teclas não executa comandos.
+
+## Overlay e gráfico
+
+Pequeno mantém quatro métricas; Médio acrescenta gráfico. Rótulos: FPS atual/médio, 1% low, Quadro médio, P99; unidades discretas, números tabulares com ajuste para não cortar. Controles com largura estável, seleção laranja e cadeado com Travado/Destravado. Arraste entre monitores, cliques passantes nas métricas travadas e HWND de controles sem ativação preservados.
+
+Curva atual laranja contínua; referência azul tracejada. Ref. mostra/oculta a curva sem apagar dados e salva a preferência. Escala comum considera as curvas visíveis; o maior valor permanece dentro do gráfico. Identificação vertical em ms, linhas discretas e domínio horizontal 0–100% das amostras, com aviso de ausência de sincronização temporal.
+
+Correção da redução visual: a P8 escolhia uma amostra a cada passo e podia perder picos intermediários ou no final. Agora conjuntos acima de 360 intervalos são divididos em 360 faixas contíguas; cada ponto representa o máximo da sua faixa. Isso vale para o gráfico ao vivo e para novas capturas/importações. Séries menores mantêm cada amostra e sua ordem. A dica e as configurações explicam a redução. Referências já reduzidas por versões anteriores não recuperam intervalos ausentes; para obter a nova redução é necessário importar novamente o CSV original ou guardar nova referência. Referência existente não é apagada ou reprocessada silenciosamente.
+
+**Definições estatísticas preservadas:** FPS médio = 1000/média dos intervalos; 1% low = 1000/média do 1% mais lento, arredondado para cima; P99 por posto mais próximo, arredondado para cima. Os cálculos continuam sobre todos os intervalos válidos do conjunto correspondente. Nenhuma mudança no ciclo ETW, sessão exclusiva, hash oficial, duração de benchmark, cancelamento ou limites dos buffers. O estado ao vivo informa “janela móvel”, sem prometer exatamente cinco segundos: limite existente de até 5 s/4096 quadros; FPS atual até 1 s; benchmark usa captura completa.
+
+Sensores opcionais em linhas com colunas alinhadas. Ausências identificam Uso/Temperatura indisponível. VRAM do adaptador em GB decimais: MiB × 1.048.576 / 1.000.000.000, duas casas. Não é consumo exclusivo do jogo. Ausência continua nula/indisponível, nunca substituída por zero. Fontes e intervalo de sensores preservados.
+
+## Verificações e evidências
+
+- Antes da correção: self-test falhou em REG-OVERLAYENTRY-001 ao abrir sem jogo (`logs/p9-entry-before.log`). O novo teste de picos, compilado com fontes da P8 preservada, falhou em REG-CHARTPEAKS-001 (`logs/p9-peaks-before.log`).
+- Durante a estabilização, o novo teste de largura renderizada reproduziu o encaixe que escondia a escala da prévia (`logs/p9-preview-before.log`). Corrigido com fator proporcional independente da escala selecionada; razão 2:1 entre 75% e 150% validada nos três DPI simulados. O primeiro gate completo passou, mas antecede essa correção visual; uma nova execução completa é exigida para a entrega.
+- Componentes: compilação C# 5, self-test WPF, overlay nativo (cliques/estilos/ativação/geometria em fixtures), configurações, parser/estatísticas e coletor simulado, monitor e sensores em fixtures. Casos antigos preservados; cadastro ampliado nos IDs existentes sem duplicar suítes.
+- Configurações: prévia versus novos dados reais, Salvar/Cancelar/X/restaurar, falha de armazenamento/atalhos, outro jogo, perfis gerais/novos/existentes, anexação de monitor ao rascunho e troca de abas. Self-test exercita abertura única nos estados off/on/gravando/concluído/cancelado/transição; Save durante gravação e após conclusão preserva dados e referência. Trata-se de estados injetados, sem ETW de jogo real.
+- DPI 100/125/150%: medição e renderização WPF simuladas das três abas e dois tamanhos, rodapé sem sobreposição, três atalhos alcançáveis, controles do overlay dentro do painel. Quinze imagens em `logs/p9-layout/`. Inspeção das renderizações também realizada. Não foi alterado o DPI físico do Windows.
+- Ambiente de desenvolvimento: lançamento do executável temporário de teste com nome fixo apresentou bloqueio/arquivo em uso. O harness usa agora nome único por execução; cenários e expectativas não foram removidos. O mesmo conjunto passou. Não se alterou proteção do Windows.
+- Gate final: **19/19 suítes Windows/WPF aprovadas**, execução `regressao-20261021-181259-341-9470659d`; seis testes Python aprovados. Cadastro único e hashes conferidos pelo empacotador. Caminhos e hashes na retomada P9 e em `logs/candidate-p9.json`. A primeira execução completa foi superada pela nova execução após corrigir a escala da prévia.
+
+Aceite físico pendente: jogo real, foco/cliques/arraste, vários monitores e DPI físico 100/125/150, teclas em conflito com outros programas, sensores físicos e abertura da configuração em cada estado real. Nenhum ajuste aplicado ao computador; VM não modificada.

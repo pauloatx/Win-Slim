@@ -1,0 +1,21 @@
+﻿Win-Slim Suite - FASE 6.5 R2 Manifest
+
+NOVOS
+- src/Core/PlannerOptimized.ps1
+- tests/Test-Fase6.5-R2-PlannerOptimization.ps1
+- tests/FASE6.5-R2-LEIA-ME.txt
+- specs/FASE6.5-R2-baseline.json
+- specs/FASE6.5-R2-benchmark.json
+- FASE6_5_R2_CHANGELOG.txt
+- FASE6_5_R2_MANIFEST.txt
+
+ATUALIZADO
+- FASE6_5_STATUS.txt (R1 APROVADA / R2 TESTAR)
+
+PRESERVADOS
+- src/Core/Planner.ps1 (Planner R1 canônico)
+- src/Core/Transaction.ps1 (R13)
+- src/Core/CatalogRuntime.ps1
+- src/Core/PresetRuntime.ps1
+- catálogo backend 230
+- presets Balanceado=105 / Gamer=129 / Extremo=168

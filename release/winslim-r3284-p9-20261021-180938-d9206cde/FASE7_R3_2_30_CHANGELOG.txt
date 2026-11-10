@@ -1,0 +1,1 @@
+R3.2.30: clique/Enter/Espaco na linha de tweak abre janela de detalhes com layout dark e laranja da referencia; metadados e compatibilidade reais via bridge read-only; estado de selecao; Desfazer remove ID; Aplicar abre previa individual com niveis preservados. Chaves e dicas mantidas. Janela padronizada e barras arredondadas globais. Gate Windows da nova revisao pendente.

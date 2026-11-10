@@ -1,0 +1,8 @@
+R3.2.49 — temas do sistema
+- Detecta tema de aplicativos do Windows; escolha manual claro/escuro salva.
+- Botão Seguir o Windows e atualização por evento do sistema, sem polling.
+- Recursos dinâmicos e pincéis compartilhados para todas as telas e estados.
+- Texto escuro, fundos claros, riscos e alertas contrastantes; pena e contorno laranja preservados.
+- Testes de contraste, detecção, restauração da paleta escura e reutilização de pincéis.
+- Teste do ícone corrigido para o frame de 16 px selecionado pelo Windows.
+- Motor e revisões anteriores preservados; execução WPF pendente de teste no Windows.

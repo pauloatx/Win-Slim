@@ -1,0 +1,1 @@
+R3.2.82: EDGE-019/020/024/025 revisados, quatro DWORDs 0. Seis testes Python do empacotador passaram. JSON/XAML, contratos estaticos, hashes e preservacao da base conferidos. Compilacao e 14 suites Windows PENDENTES. R3.2.81 concluiu 13 suites e ciclo de quatro valores aplicado/verificado/restaurado no cenario recebido; hashes de ambos os backups validos.

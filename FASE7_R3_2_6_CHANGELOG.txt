@@ -1,0 +1,26 @@
+Win-Slim Suite - FASE 7 R3.2.6
+Native UI Launcher / IfNeeded Hotfix
+
+CORRECAO PRINCIPAL
+- Corrige falha exclusiva do caminho Build-NativeUI -IfNeeded usado pelo launcher.
+- A colecao de inputs do freshness-check nao usa mais comandos Get-Item separados por virgulas dentro de @(...).
+- Em Windows PowerShell 5.1, a forma anterior podia ser interpretada como argumentos adicionais do mesmo Get-Item e causar ParameterAlreadyBound para -LiteralPath.
+- R3.2.6 usa ArrayList + Get-Item parentetizado e adicionado explicitamente, eliminando ambiguidade de parsing/binding.
+
+REGRESSAO NOVA
+- O gate executa build completo.
+- Em seguida executa o mesmo build com -IfNeeded.
+- Exige exit code 0.
+- Confirma que o executavel nao foi recompilado quando esta atualizado.
+- Confirma preservacao do .config.
+- Confirma log Mode: IfNeeded / up-to-date e ExitCode: 0.
+- Confirma que o launcher oficial chama exatamente o build R3.2.6 com -IfNeeded.
+
+PRESERVADO
+- Backend FASE 6.5 R4.1.
+- 230 tweaks / 230 IDs unicos.
+- Presets 105 / 129 / 168.
+- 16 overlays condicionais.
+- Native UI C# WPF, XAML, DWM, DPI, transicoes e timers.
+- Bridge read-only.
+- Sem Apply / Preview transacional / Provider direto nesta etapa.

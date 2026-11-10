@@ -1,0 +1,19 @@
+Win-Slim Suite - FASE 5 R4.1.1
+
+Correção estritamente no harness da Fase 5 R4.1.
+
+Causa das 4 falhas observadas na R4.1:
+- O catálogo aprovado contém 15 entradas: 1 política Windows/Explorer (QOL-015) + 14 Edge.
+- O TEST 02 ainda esperava duas entradas antigas/stale: PRIV-019/AllowCloudSearch e QOL-015/DisableSearchBoxSuggestions.
+- O catálogo/source-map reais definem QOL-015 como HKCU\\Software\\Policies\\Microsoft\\Windows\\Explorer / NoSearchInternetTryHarderButton = 1.
+- O TEST 07 selecionava QOL-015 + EDGE-008, porém RegistryOpsMap fornecia PRIV-019 + EDGE-008. Assim QOL-015 recebia operações nulas, falhava antes do terceiro passo sintético e nunca podia ficar Changed=true/RolledBack.
+
+R4.1.1:
+- preserva todos os 217 tweaks e seus metadados;
+- preserva Transaction.ps1, Planner.ps1, RegistryProvider.ps1 e todos os providers;
+- corrige TEST 02 para validar QOL-015/NoSearchInternetTryHarderButton;
+- elimina a referência inexistente PRIV-019 do harness;
+- corrige TEST 07 para usar QOL-015 também no RegistryOpsMap e no estado seed/restauração;
+- adiciona gate explícito 1 Windows/Explorer + 14 Edge.
+
+Nenhum tweak de produção foi alterado nesta revisão.

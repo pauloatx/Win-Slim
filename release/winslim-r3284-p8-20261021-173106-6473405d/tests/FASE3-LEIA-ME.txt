@@ -1,0 +1,27 @@
+﻿WIN-SLIM SUITE - COMO VALIDAR A FASE 3 CORE
+
+1. Abra Windows PowerShell como Administrador.
+2. Entre na pasta do Win-Slim:
+
+   cd D:\Desktop\winslim
+
+3. Nesta sessao:
+
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+4. Execute:
+
+   .\tests\Test-Fase3-TransactionManager.ps1
+
+Resultado esperado:
+
+   FASE 3 CORE APROVADA - Transaction Manager passou em todos os cenarios do harness.
+
+O harness usa somente arquivos temporarios dentro de tests\_fase3-sandbox-<data>.
+Ele NAO altera BCD, servicos, registro, rede, AppX ou powercfg.
+
+Nao conecte ainda o Transaction Manager ao Run-Batch manualmente. A integracao
+com a GUI deve ser feita somente apos o PASS deste harness.
+
+
+R11: corrige wrapper JSON {value,Count} no Windows PowerShell 5.1 e endurece recovery cross-process.

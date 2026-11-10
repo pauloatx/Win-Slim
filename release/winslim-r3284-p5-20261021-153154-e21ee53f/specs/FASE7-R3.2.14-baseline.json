@@ -1,0 +1,26 @@
+{
+  "revision": "FASE7-R3.2.14",
+  "windowsGate": "pending",
+  "visualApproval": "pending",
+  "r3214Files": {
+    "src\\UI\\Native\\R3_2_14\\MainWindowController.cs": "1818fcee0b821686ce07fc319a87fcc502fa2cd187a8ec591cbfd5ccd3634fd8",
+    "src\\UI\\Native\\R3_2_14\\WinSlim.UI.Native.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "src\\UI\\Native\\R3_2_14\\BridgeClient.cs": "dc8578e88759065c9055d4af73b1d06fd6fee93973729cc445a71a369b5523e8",
+    "src\\UI\\Native\\R3_2_14\\WinSlim.UiBridge.ps1": "1eba00b19924491c2ef1e0a8fa2613d54a03e7a4dd202f44479d897ffe7fc27b",
+    "src\\UI\\Native\\R3_2_14\\WinSlimShell.xaml": "60473e7a8e26fa98a1c00eb0a5a63710d6ef9946650057641b5bba74b1b24d22",
+    "src\\UI\\Native\\R3_2_14\\WinSlim.NativeUI.manifest": "eea0b7439c394c7dce226663ed68abe101938a8878b8c34f5a8727e76103c5be",
+    "src\\UI\\Native\\R3_2_14\\Program.cs": "e18ae5f4f87339264fba30071207326047ba30dbf9ed4a237f9e08598a383438",
+    "Capturar-Presets-Logs-R3.2.14.bat": "9142527e452644594d5a0f9bb163cd0ddc7b155cd26ae1fb468dd5f338bbee02",
+    "Capturar-Dashboard-R3.2.14.bat": "743784bfa5370f96afd4798713571d9265a2fa6395d34a01c5e5887c9e5fe81a",
+    "Validar-Dashboard-R3.2.14.bat": "4cb36399a432b19f4b42565359322160fe915e8ceb8fb250d62816f671d11aeb",
+    "Validar-Presets-R3.2.14.bat": "4cb36399a432b19f4b42565359322160fe915e8ceb8fb250d62816f671d11aeb",
+    "Build-NativeUI-R3.2.14.ps1": "5c8451a19bb202b626c2bab30a5962c73132ad7038215e36ec9d6a620c478614",
+    "Capturar-Presets-Sobre-R3.2.14.bat": "9a8bcb53b8ab73da39e5b1475a7418d8f8494c40eb095efde99452509e1ac814",
+    "Capturar-Presets-Avancado-R3.2.14.bat": "6446e4dd8491196395d6f5009fdae8b6238c22702aa97b3b95d112945e76970e",
+    "Executar-WinSlim-R3.2.14.bat": "8db66a3c3c3c8ec3ad640b9a71112302bd9a67c14e387312ea0c3b4c23a8ab87",
+    "Capturar-Presets-R3.2.14.bat": "0e9a64c222b0a2e40bbdc5562199de6d5884418f8e993e9ab52e4d3a7e7b1c85",
+    "FASE7-R3.2.14-LEIA-ME.md": "641fd545bff39ae47946bd2c71b872d831943dce08008ab63c1b68a3ba204471",
+    "tests\\Test-Fase7-R3.2.14-NativeUI.ps1": "22affcde6c4d5f57338d971eeb7a2590a6afa6fe82fdc768c1d3525afaf67802",
+    "FASE7_R3_2_14_CHANGELOG.txt": "e33e1a85e238d451d1753712e4a528440839af9ef66f335178901354af3ff812"
+  }
+}

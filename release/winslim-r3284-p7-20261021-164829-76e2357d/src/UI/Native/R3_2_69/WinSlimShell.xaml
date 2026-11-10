@@ -1,0 +1,663 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="RootWindow"
+        Title="Win-Slim Suite"
+        Width="1180" Height="760" MinWidth="1040" MinHeight="680"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" ResizeMode="CanResize"
+        Background="{DynamicResource ThemeBrush_080808}" AllowsTransparency="False"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        FontFamily="Segoe UI" Foreground="{DynamicResource ThemeBrush_F5F5F5}">
+    <Window.Resources>
+<Style x:Key="ThemeSwitch" TargetType="ToggleButton">
+ <Setter Property="Width" Value="126"/><Setter Property="Height" Value="28"/><Setter Property="Cursor" Value="Hand"/><Setter Property="Foreground" Value="{DynamicResource ThemeBrush_E5E7EB}"/><Setter Property="FontSize" Value="11"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+ <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ToggleButton">
+  <Border x:Name="SwitchFocus" Background="Transparent" BorderBrush="Transparent" BorderThickness="1" CornerRadius="5" Padding="2"><Grid><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+   <Border x:Name="SwitchTrack" Width="38" Height="20" CornerRadius="10" Background="{DynamicResource ThemeBrush_42474D}" BorderBrush="{DynamicResource ThemeBrush_747B84}" BorderThickness="1" VerticalAlignment="Center"><Ellipse x:Name="SwitchThumb" Width="14" Height="14" Fill="White" HorizontalAlignment="Left" Margin="2,0"/></Border>
+   <ContentPresenter Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+  </Grid><Border x:Name="MotionGlow" Background="{DynamicResource ThemeBrush_FF9A2E}" CornerRadius="6" Opacity="0" IsHitTestVisible="False"/></Grid></Border>
+  <ControlTemplate.Triggers>
+   <Trigger Property="IsChecked" Value="True"><Setter TargetName="SwitchTrack" Property="Background" Value="{DynamicResource ThemeBrush_00C853}"/><Setter TargetName="SwitchTrack" Property="BorderBrush" Value="{DynamicResource ThemeBrush_55DD91}"/></Trigger>
+   <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="SwitchTrack" Property="BorderBrush" Value="{DynamicResource ThemeBrush_55DD91}"/></Trigger>
+   <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="SwitchFocus" Property="BorderBrush" Value="{DynamicResource ThemeBrush_55DD91}"/></Trigger>
+   <Trigger Property="IsEnabled" Value="False"><Setter TargetName="SwitchFocus" Property="Opacity" Value="0.5"/><Setter Property="Cursor" Value="Arrow"/></Trigger>
+  </ControlTemplate.Triggers>
+ </ControlTemplate></Setter.Value></Setter>
+</Style>
+        <SolidColorBrush x:Key="Bg" Color="{DynamicResource ThemeColor_080808}"/>
+        <SolidColorBrush x:Key="Panel" Color="{DynamicResource ThemeColor_111111}"/>
+        <SolidColorBrush x:Key="Panel2" Color="{DynamicResource ThemeColor_151515}"/>
+        <SolidColorBrush x:Key="Panel3" Color="{DynamicResource ThemeColor_0D0D0D}"/>
+        <SolidColorBrush x:Key="Border" Color="{DynamicResource ThemeColor_2A2A2A}"/>
+        <SolidColorBrush x:Key="Orange" Color="{DynamicResource ThemeColor_FF7A00}"/>
+        <SolidColorBrush x:Key="OrangeLight" Color="{DynamicResource ThemeColor_FF9A2E}"/>
+        <SolidColorBrush x:Key="OrangeDark" Color="{DynamicResource ThemeColor_C85A00}"/>
+        <SolidColorBrush x:Key="Muted" Color="{DynamicResource ThemeColor_A9AFB8}"/>
+        <SolidColorBrush x:Key="Green" Color="{DynamicResource ThemeColor_14C767}"/>
+        <SolidColorBrush x:Key="Red" Color="{DynamicResource ThemeColor_FF3152}"/>
+        <SolidColorBrush x:Key="Amber" Color="{DynamicResource ThemeColor_FFC107}"/>
+
+        <Style x:Key="TitleBarButton" TargetType="Button">
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_C8CDD5}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"><Grid>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="MotionGlow" Background="{DynamicResource ThemeBrush_FF9A2E}" CornerRadius="6" Opacity="0" IsHitTestVisible="False"/></Grid></Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBrush_202020}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeTintText}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBrush_2A2A2A}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseButton" TargetType="Button" BasedOn="{StaticResource TitleBarButton}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ThemeBrush_C42B1C}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource ThemeTintText}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Height" Value="43"/>
+            <Setter Property="Margin" Value="8,2"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_C7CCD4}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="11.5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="6" BorderBrush="Transparent" BorderThickness="1"><Grid>
+                            <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                        <Border x:Name="MotionGlow" Background="{DynamicResource ThemeBrush_FF9A2E}" CornerRadius="6" Opacity="0" IsHitTestVisible="False"/></Grid></Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF9A2E}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBrush_171717}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeTintText}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBrush_23170D}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeBrush_FF7A00}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF9A2E}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6"><Grid>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        <Border x:Name="MotionGlow" Background="{DynamicResource ThemeBrush_FF9A2E}" CornerRadius="6" Opacity="0" IsHitTestVisible="False"/></Grid></Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBrush_FF8A18}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBrush_C85A00}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.42"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DashboardLink" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_39BFC3}"/>
+            <Setter Property="FontSize" Value="10.5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+                <Border x:Name="LinkBorder" BorderBrush="Transparent" BorderThickness="0,0,0,1" Padding="0,2"><Grid>
+                    <ContentPresenter/>
+                <Border x:Name="MotionGlow" Background="{DynamicResource ThemeBrush_FF9A2E}" CornerRadius="6" Opacity="0" IsHitTestVisible="False"/></Grid></Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True"><Setter Property="Foreground" Value="{DynamicResource ThemeBrush_7CDADD}"/></Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="LinkBorder" Property="BorderBrush" Value="{DynamicResource ThemeBrush_39BFC3}"/></Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeBrush_111111}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_E7E9ED}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBrush_3A3A3A}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6"><Grid>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        <Border x:Name="MotionGlow" Background="{DynamicResource ThemeBrush_FF9A2E}" CornerRadius="6" Opacity="0" IsHitTestVisible="False"/></Grid></Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF7A00}"/>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBrush_171717}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeBrush_21170E}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="OverlayChip" TargetType="ToggleButton">
+            <Setter Property="MinWidth" Value="104"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Margin" Value="0,0,8,8"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeBrush_101215}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_C8CDD5}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBrush_343A42}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Chip" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7"><Grid>
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border x:Name="Dot" Width="15" Height="15" CornerRadius="8" BorderBrush="{DynamicResource ThemeBrush_737A84}" BorderThickness="2" Background="Transparent" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="1" Text="{TemplateBinding Content}" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" FontWeight="SemiBold"/>
+                            </Grid>
+                        <Border x:Name="MotionGlow" Background="{DynamicResource ThemeBrush_FF9A2E}" CornerRadius="6" Opacity="0" IsHitTestVisible="False"/></Grid></Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Chip" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF7A00}"/>
+                                <Setter TargetName="Chip" Property="Background" Value="{DynamicResource ThemeBrush_18130F}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Chip" Property="Background" Value="{DynamicResource ThemeBrush_4A2407}"/>
+                                <Setter TargetName="Chip" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF7A00}"/>
+                                <Setter TargetName="Dot" Property="Background" Value="{DynamicResource ThemeBrush_FF7A00}"/>
+                                <Setter TargetName="Dot" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF9A2E}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeTintText}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Chip" Property="Opacity" Value="0.35"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HighRiskChip" TargetType="ToggleButton" BasedOn="{StaticResource OverlayChip}">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBrush_78591A}"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ThemeBrush_422B08}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeBrush_FFC107}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_FFE08A}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SettingsSwitch" TargetType="ToggleButton" BasedOn="{StaticResource OverlayChip}">
+            <Setter Property="MinWidth" Value="88"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="FontSize" Value="10.5"/>
+        </Style>
+
+        <Style x:Key="SmallCheck" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_E5E7EB}"/>
+            <Setter Property="Margin" Value="0,3"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="ThinProgress" TargetType="ProgressBar">
+            <Setter Property="Height" Value="14"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_FF7A00}"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeBrush_202020}"/>
+        </Style>
+
+        <Style x:Key="BackupRow" TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Height" Value="52"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeBrush_0C0F10}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_F5F5F5}"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem">
+                <Border x:Name="BackupRowBorder" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource ThemeBrush_242B30}" BorderThickness="0,0,0,1" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="BackupRowBorder" Property="Background" Value="{DynamicResource ThemeBrush_21170E}"/></Trigger>
+                    <Trigger Property="IsSelected" Value="True"><Setter TargetName="BackupRowBorder" Property="Background" Value="{DynamicResource ThemeBrush_3A1E0B}"/><Setter TargetName="BackupRowBorder" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF7A00}"/></Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="BackupRowBorder" Property="BorderThickness" Value="1"/><Setter TargetName="BackupRowBorder" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF9A2E}"/></Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+    <Style x:Key="PresetAdvancedCheck" TargetType="CheckBox">
+ <Setter Property="Foreground" Value="{DynamicResource ThemeBrush_E5E7EB}"/><Setter Property="FontSize" Value="12"/><Setter Property="Margin" Value="0,3"/><Setter Property="MinHeight" Value="16"/><Setter Property="Cursor" Value="Hand"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+ <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="CheckBox">
+  <Grid x:Name="CheckRoot" Background="Transparent"><Grid.ColumnDefinitions><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+   <Border x:Name="CheckSquare" Width="12" Height="12" CornerRadius="2" Background="{DynamicResource ThemeBrush_101010}" BorderBrush="{DynamicResource ThemeBrush_737B85}" BorderThickness="1" VerticalAlignment="Center">
+    <Grid><Path x:Name="CheckMark" Data="M 1,4 L 3.5,6.5 L 8,1.5" Stroke="{DynamicResource ThemeBrush_17100A}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"/><Rectangle x:Name="MixedMark" Width="6" Height="2" Fill="{DynamicResource ThemeBrush_17100A}" Visibility="Collapsed"/></Grid>
+   </Border>
+   <ContentPresenter Grid.Column="1" Margin="4,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+  </Grid>
+  <ControlTemplate.Triggers>
+   <Trigger Property="IsChecked" Value="True"><Setter TargetName="CheckSquare" Property="Background" Value="{DynamicResource ThemeBrush_FF7A00}"/><Setter TargetName="CheckSquare" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF9A2E}"/><Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/></Trigger>
+   <Trigger Property="IsChecked" Value="{x:Null}"><Setter TargetName="CheckSquare" Property="Background" Value="{DynamicResource ThemeBrush_FF7A00}"/><Setter TargetName="MixedMark" Property="Visibility" Value="Visible"/></Trigger>
+   <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="CheckSquare" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF9A2E}"/></Trigger>
+   <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="CheckRoot" Property="Background" Value="{DynamicResource ThemeBrush_25180D}"/><Setter TargetName="CheckSquare" Property="BorderBrush" Value="{DynamicResource ThemeBrush_FFD4A6}"/></Trigger>
+   <Trigger Property="IsEnabled" Value="False"><Setter Property="Foreground" Value="{DynamicResource ThemeBrush_8E949C}"/><Setter Property="Cursor" Value="Arrow"/><Setter TargetName="CheckSquare" Property="Opacity" Value="0.65"/></Trigger>
+  </ControlTemplate.Triggers>
+ </ControlTemplate></Setter.Value></Setter>
+</Style>
+</Window.Resources>
+
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Grid Background="{DynamicResource ThemeBrush_080808}">
+                <ContentPresenter x:Name="UnifiedContent" Margin="2" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                <!-- Draw after every page, independent of its opaque background. -->
+                <Border x:Name="UnifiedFrame" Margin="1" Panel.ZIndex="100" BorderBrush="{DynamicResource ThemeAccent}" BorderThickness="1.5" CornerRadius="12" SnapsToDevicePixels="True" IsHitTestVisible="False"/>
+            </Grid>
+        </ControlTemplate>
+    </Window.Template>
+    <Border BorderThickness="0" Background="{DynamicResource ThemeBrush_080808}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="46"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="24"/>
+            </Grid.RowDefinitions>
+
+            <!-- Compact native title bar -->
+            <Grid x:Name="TitleBar" Grid.Row="0" Background="{DynamicResource ThemeBrush_090909}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                    <Path x:Name="ShellBrandMark" Data="F0 M34 2 C22 2 11 10 7 21 C9 21 12 20 15 18 C13 21 10 23 7 24 C7 28 8 31 11 33 C9 36 6 39 4 41 C3 42 5 44 6 43 C9 40 12 37 14 34 C20 33 25 29 29 23 C26 24 23 25 20 25 C24 23 28 21 31 18 C33 13 34 7 34 2 Z M11 33 C15 23 23 13 30 7 C24 15 18 25 13 34 Z" Fill="{DynamicResource ThemeAccent}" Width="22" Height="28" Stretch="Uniform" Margin="0,0,9,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Win-Slim Suite" FontWeight="Bold" FontSize="15" Foreground="{DynamicResource ThemeTintText}"/>
+                        <TextBlock Text="Windows Optimization Suite" FontSize="9.5" Foreground="{DynamicResource ThemeBrush_9298A1}" Margin="0,-1,0,0"/>
+                    </StackPanel>
+                    <Border Width="1" Height="24" Background="{DynamicResource ThemeBrush_4B2A12}" Margin="16,0"/>
+                    <TextBlock Text="Seu Windows no seu melhor." FontSize="11" Foreground="{DynamicResource ThemeBrush_FF9A2E}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="BtnMinimize" Style="{StaticResource TitleBarButton}" Content="—"/>
+                    <Button x:Name="BtnMaximize" Style="{StaticResource TitleBarButton}" Content="□"/>
+                    <Button x:Name="BtnClose" Style="{StaticResource CloseButton}" Content="×"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="164"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sidebar -->
+                <Border Grid.Column="0" Background="{DynamicResource ThemeBrush_0A0A0A}" BorderBrush="{DynamicResource ThemeBrush_242424}" BorderThickness="0,1,1,0">
+                    <Grid>
+                        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <StackPanel Margin="0,10,0,0">
+                            <Button x:Name="NavInicio" Style="{StaticResource NavButton}" Tag="Dashboard">
+                                <StackPanel Orientation="Horizontal"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80F;" Width="22"/><TextBlock Text="Início"/></StackPanel>
+                            </Button>
+                            <Button x:Name="NavPresets" Style="{StaticResource NavButton}" Tag="Presets">
+                                <StackPanel Orientation="Horizontal"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71D;" Width="22"/><TextBlock Text="Presets"/></StackPanel>
+                            </Button>
+                            <Button x:Name="NavPersonalizado" Style="{StaticResource NavButton}" Tag="Custom">
+                                <StackPanel Orientation="Horizontal"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;" Width="22"/><TextBlock Text="Personalizado"/></StackPanel>
+                            </Button>
+                            <Button x:Name="NavBackup" Style="{StaticResource NavButton}" Tag="Backup">
+                                <StackPanel Orientation="Horizontal"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE81C;" Width="22"/><TextBlock x:Name="NavLabelBackup" Text="Backup / Restore"/></StackPanel>
+                            </Button>
+                            <Button x:Name="NavAnalise" Style="{StaticResource NavButton}" Tag="Analysis">
+                                <StackPanel Orientation="Horizontal"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE9D9;" Width="22"/><TextBlock x:Name="NavLabelAnalysis" Text="Análise do Sistema"/></StackPanel>
+                            </Button>
+                            <Button x:Name="NavConfiguracoes" Style="{StaticResource NavButton}" Tag="Settings">
+                                <StackPanel Orientation="Horizontal"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;" Width="22"/><TextBlock Text="Configurações"/></StackPanel>
+                            </Button>
+                            <Button x:Name="NavSobre" Style="{StaticResource NavButton}" Tag="About">
+                                <StackPanel Orientation="Horizontal"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE946;" Width="22"/><TextBlock Text="Sobre"/></StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Border Grid.Row="1" Margin="10,0,10,10" Padding="9" Background="{DynamicResource ThemeBrush_0E0E0E}" BorderBrush="{DynamicResource ThemeBrush_282828}" BorderThickness="1" CornerRadius="7">
+                            <StackPanel>
+                                <TextBlock Text="Win-Slim Suite" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="9.5" FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtBridgeState" Text="Conectando ao runtime..." Foreground="{DynamicResource ThemeBrush_8E949D}" FontSize="9" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Content pages -->
+                <Grid Grid.Column="1" x:Name="ContentHost" Background="{DynamicResource ThemeBrush_080808}" ClipToBounds="True">
+
+                    <!-- Dashboard R3.2.69: reference composition, live read-only data -->
+                    <Grid x:Name="PageDashboard" Visibility="Collapsed" Margin="20,18,20,18">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/><RowDefinition Height="102"/>
+                            <RowDefinition Height="70"/><RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Margin="0,0,0,16">
+                            <TextBlock Text="Bem-vindo ao Win-Slim Suite" FontSize="22" FontWeight="SemiBold"/>
+                            <TextBlock Text="Otimização e segurança do seu sistema em um só lugar." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" Margin="0,5,0,0"/>
+                        </StackPanel>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="1.03*"/><ColumnDefinition Width="1.1*"/><ColumnDefinition Width="1.1*"/></Grid.ColumnDefinitions>
+                            <Border Background="{DynamicResource ThemeBrush_0B1011}" BorderBrush="{DynamicResource ThemeBrush_17302B}" BorderThickness="1" CornerRadius="7" Padding="15" Margin="0,0,10,0">
+                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="43"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Path Data="M0,3 L14,1 L14,15 L0,15 Z M17,1 L34,0 L34,15 L17,15 Z M0,18 L14,18 L14,31 L0,29 Z M17,18 L34,18 L34,33 L17,31 Z" Fill="{DynamicResource ThemeBrush_FF9A2E}" Width="34" Height="33" Stretch="Fill" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock x:Name="TxtDashWindows" Text="Windows · aguardando leitura" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                        <TextBlock x:Name="TxtDashBuild" Text="Build —" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" Margin="0,3,0,0"/>
+                                        <Button x:Name="BtnDashDetails" Style="{StaticResource DashboardLink}" HorizontalAlignment="Left" Padding="0" Margin="0,7,0,0" Content="Ver detalhes" Cursor="Hand"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0B1011}" BorderBrush="{DynamicResource ThemeBrush_17302B}" BorderThickness="1" CornerRadius="7" Padding="15" Margin="0,0,10,0">
+                                <StackPanel VerticalAlignment="Center">
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="25"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE950;" Foreground="{DynamicResource ThemeBrush_39BFC3}" FontSize="15" VerticalAlignment="Center"/><TextBlock Grid.Column="1" x:Name="TxtDashCpu" Text="CPU · aguardando leitura" FontSize="11.5" TextTrimming="CharacterEllipsis"/></Grid>
+                                    <Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="25"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7F4;" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/><TextBlock Grid.Column="1" x:Name="TxtDashCores" Text="Núcleos / threads · —" FontSize="10.5" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/></Grid>
+                                    <Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="25"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7F4;" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/><TextBlock Grid.Column="1" x:Name="TxtDashRam" Text="RAM · —" FontSize="10.5" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/></Grid>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Background="{DynamicResource ThemeBrush_0B1011}" BorderBrush="{DynamicResource ThemeBrush_17302B}" BorderThickness="1" CornerRadius="7" Padding="15">
+                                <StackPanel VerticalAlignment="Center">
+                                    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="25"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7F4;" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="14"/><TextBlock Grid.Column="1" x:Name="TxtDashGpu" Text="GPU · aguardando leitura" FontSize="11.5" TextTrimming="CharacterEllipsis"/></Grid>
+                                    <Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="25"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEDA2;" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/><TextBlock Grid.Column="1" x:Name="TxtDashDriver" Text="Driver · —" FontSize="10.5" Foreground="{DynamicResource ThemeBrush_A9AFB8}" TextTrimming="CharacterEllipsis"/></Grid>
+                                    <Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="25"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE958;" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/><TextBlock Grid.Column="1" x:Name="TxtDashStorage" Text="Armazenamento · —" FontSize="10.5" Foreground="{DynamicResource ThemeBrush_A9AFB8}" TextTrimming="CharacterEllipsis"/></Grid>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="0,12,0,8">
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <Border Background="{DynamicResource ThemeBrush_0B1011}" BorderBrush="{DynamicResource ThemeBrush_17302B}" BorderThickness="1" CornerRadius="7" Padding="14,8" Margin="0,0,10,0"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="30"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock x:Name="IconDashCompatible" FontFamily="Segoe MDL2 Assets" Text="&#xE946;" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="22" VerticalAlignment="Center"/><TextBlock Grid.Column="1" x:Name="TxtDashCompatible" Text="Compatibilidade&#x0A;a verificar" FontSize="12" VerticalAlignment="Center"/></Grid></Border>
+                            <Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0B1011}" BorderBrush="{DynamicResource ThemeBrush_17302B}" BorderThickness="1" CornerRadius="7" Padding="14,8" Margin="0,0,10,0"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="30"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock x:Name="IconDashAdmin" FontFamily="Segoe MDL2 Assets" Text="&#xE77B;" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="22" VerticalAlignment="Center"/><TextBlock Grid.Column="1" x:Name="TxtDashAdmin" Text="Administrador&#x0A;a verificar" FontSize="12" VerticalAlignment="Center"/></Grid></Border>
+                            <Border Grid.Column="2" Background="{DynamicResource ThemeBrush_0B1011}" BorderBrush="{DynamicResource ThemeBrush_17302B}" BorderThickness="1" CornerRadius="7" Padding="14,8"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="30"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE81C;" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="22" VerticalAlignment="Center"/><TextBlock Grid.Column="1" x:Name="TxtDashBackup" Text="Backup&#x0A;não informado" FontSize="12" VerticalAlignment="Center" ToolTip="O bridge desta etapa não consulta o histórico de backups."/></Grid></Border>
+                        </Grid>
+                        <Grid Grid.Row="3" Margin="0,12,0,0" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="1.4*"/><ColumnDefinition Width="1*"/></Grid.ColumnDefinitions>
+                            <Grid Margin="0,0,18,0">
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="142"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <TextBlock Text="Desempenho atual" FontWeight="SemiBold" FontSize="15"/>
+                                <UniformGrid Grid.Row="1" Columns="4" Margin="0,16,0,0">
+                                    <StackPanel HorizontalAlignment="Center"><Grid Width="88" Height="88"><Ellipse Stroke="{DynamicResource ThemeBrush_28302F}" StrokeThickness="4" Margin="4"/><Path x:Name="ArcMetricCpu" Stroke="{DynamicResource ThemeBrush_FF7A00}" StrokeThickness="4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/><TextBlock x:Name="TxtMetricCpu" Text="—" FontSize="21" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid><TextBlock Text="CPU" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Center" FontSize="12" Margin="0,9,0,0"/></StackPanel>
+<StackPanel HorizontalAlignment="Center"><Grid Width="88" Height="88"><Ellipse Stroke="{DynamicResource ThemeBrush_28302F}" StrokeThickness="4" Margin="4"/><Path x:Name="ArcMetricGpu" Stroke="{DynamicResource ThemeBrush_FF7A00}" StrokeThickness="4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/><TextBlock x:Name="TxtMetricGpu" Text="—" FontSize="21" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid><TextBlock Text="GPU" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Center" FontSize="12" Margin="0,9,0,0"/></StackPanel>
+<StackPanel HorizontalAlignment="Center"><Grid Width="88" Height="88"><Ellipse Stroke="{DynamicResource ThemeBrush_28302F}" StrokeThickness="4" Margin="4"/><Path x:Name="ArcMetricRam" Stroke="{DynamicResource ThemeBrush_FF7A00}" StrokeThickness="4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/><TextBlock x:Name="TxtMetricRam" Text="—" FontSize="21" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid><TextBlock Text="RAM" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Center" FontSize="12" Margin="0,9,0,0"/></StackPanel>
+<StackPanel HorizontalAlignment="Center"><Grid Width="88" Height="88"><Ellipse Stroke="{DynamicResource ThemeBrush_28302F}" StrokeThickness="4" Margin="4"/><Path x:Name="ArcMetricDisk" Stroke="{DynamicResource ThemeBrush_FF7A00}" StrokeThickness="4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/><TextBlock x:Name="TxtMetricDisk" Text="—" FontSize="21" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid><TextBlock Text="Disco" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Center" FontSize="12" Margin="0,9,0,0"/></StackPanel>
+                                </UniformGrid>
+                                <Button x:Name="BtnDashAnalyze" Grid.Row="2" Style="{StaticResource PrimaryButton}" Height="46" Margin="0,12,0,0">
+                                    <StackPanel Orientation="Horizontal"><TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE9D9;" Margin="0,0,10,0" VerticalAlignment="Center"/><TextBlock Text="ANALISAR SISTEMA" VerticalAlignment="Center"/></StackPanel>
+                                </Button>
+                            </Grid>
+                            <Border Grid.Column="1" BorderBrush="{DynamicResource ThemeBrush_3A2A19}" BorderThickness="1,0,0,0" Padding="18,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Status do Win-Slim" FontWeight="SemiBold" FontSize="15" Margin="0,0,0,12"/>
+                                    <Border Background="{DynamicResource ThemeBrush_0B0E10}" BorderBrush="{DynamicResource ThemeBrush_20262A}" BorderThickness="1" CornerRadius="6" Padding="12">
+                                        <StackPanel>
+                                            <Grid Margin="0,6"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Tweaks aplicados" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11"/><TextBlock Grid.Column="1" x:Name="TxtDashTweaks" Text="Não informado" FontSize="11" Margin="10,0,0,0"/></Grid>
+<Grid Margin="0,6"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Pendentes" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11"/><TextBlock Grid.Column="1" x:Name="TxtDashPending" Text="Não informado" FontSize="11" Margin="10,0,0,0"/></Grid>
+<Grid Margin="0,6"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Último backup" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11"/><TextBlock Grid.Column="1" x:Name="TxtDashLastBackup" Text="Não informado" FontSize="11" Margin="10,0,0,0"/></Grid>
+<Grid Margin="0,6"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Última otimização" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11"/><TextBlock Grid.Column="1" x:Name="TxtDashLastOptimization" Text="Não informado" FontSize="11" Margin="10,0,0,0"/></Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Grid>
+
+                    <!-- PRESETS: primary implemented screen -->
+                    <Grid x:Name="PagePresets" Margin="20,15,20,14"><Grid x:Name="PresetTabGeneral" Grid.Row="0" Margin="0">
+ <Grid.Resources>
+ <Style x:Key="PresetOverlayChip" TargetType="ToggleButton" BasedOn="{StaticResource OverlayChip}"><Setter Property="MinWidth" Value="96"/><Setter Property="Height" Value="32"/><Setter Property="FontSize" Value="10.5"/><Setter Property="Padding" Value="9,0"/><Setter Property="Margin" Value="0,0,6,4"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/><Style.Triggers><Trigger Property="IsKeyboardFocused" Value="True"><Setter Property="BorderBrush" Value="{DynamicResource ThemeBrush_FF9A2E}"/></Trigger></Style.Triggers></Style>
+ <Style x:Key="PresetHighRiskChip" TargetType="ToggleButton" BasedOn="{StaticResource PresetOverlayChip}"><Setter Property="BorderBrush" Value="{DynamicResource ThemeBrush_B88213}"/></Style>
+ </Grid.Resources>
+ <Grid.RowDefinitions><RowDefinition Height="54"/><RowDefinition Height="260"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+ <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="310"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Presets" FontSize="25" FontWeight="SemiBold"/><TextBlock Text="Escolha um perfil de otimização." Foreground="{DynamicResource ThemeBrush_BEC7D4}" FontSize="12" Margin="0,3,0,0"/></StackPanel><Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0B0E11}" BorderBrush="{DynamicResource ThemeBrush_262F34}" BorderThickness="1" CornerRadius="7" Padding="10,6" VerticalAlignment="Top"><TextBlock Text="Selecione e revise os ajustes. Nenhuma alteração é aplicada nesta tela." Foreground="{DynamicResource ThemeBrush_B0BDCD}" FontSize="10.5" TextWrapping="Wrap"/></Border></Grid>
+ <Grid Grid.Row="1" Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Border x:Name="CardPresetBalanced" Grid.Column="0" Background="{DynamicResource ThemeBrush_07120D}" BorderBrush="{DynamicResource ThemeBrush_00CC69}" BorderThickness="1" CornerRadius="9" Margin="0,0,5,0" Padding="13">
+ <Grid><Grid.RowDefinitions><RowDefinition Height="64"/><RowDefinition/><RowDefinition Height="36"/></Grid.RowDefinitions>
+ <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition/></Grid.ColumnDefinitions><Path Data="M 2,28 C 4,8 18,2 32,2 C 32,18 22,30 8,27 L 2,34 M 8,27 L 23,12" Stroke="{DynamicResource ThemeBrush_00CC69}" StrokeThickness="2.6" Width="36" Height="36" Stretch="Uniform" VerticalAlignment="Center"/>
+ <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Margin="2,0,0,7"><TextBlock Text="Equilibrado" FontSize="20" FontWeight="SemiBold"/><TextBlock Text="Estabilidade e responsividade no dia a dia." Foreground="{DynamicResource ThemeBrush_B7C0CD}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel></Grid>
+ <Border Grid.Row="1" Background="{DynamicResource ThemeBrush_0A0C0E}" BorderBrush="{DynamicResource ThemeBrush_30363B}" BorderThickness="1" CornerRadius="7" Padding="9,5" Margin="0,3,0,8"><StackPanel x:Name="ListPresetBalanced"><TextBlock Text="✓  Performance consistente" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Privacidade reforçada" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Menos serviços desnecessários" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Estabilidade do sistema" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Ideal para uso geral" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/></StackPanel></Border>
+ <Button x:Name="BtnPresetBalanced" Grid.Row="2" Style="{StaticResource PrimaryButton}" Background="{DynamicResource ThemeBrush_00CC69}" BorderBrush="{DynamicResource ThemeBrush_00CC69}" Content="Selecionar Equilibrado" ToolTip="105 ajustes no perfil base. Revise a seleção antes de aplicar."/>
+ </Grid></Border><Border x:Name="CardPresetGamer" Grid.Column="1" Background="{DynamicResource ThemeBrush_180E06}" BorderBrush="{DynamicResource ThemeBrush_FF7A00}" BorderThickness="1" CornerRadius="9" Margin="5,0,5,0" Padding="13">
+ <Grid><Grid.RowDefinitions><RowDefinition Height="64"/><RowDefinition/><RowDefinition Height="36"/></Grid.RowDefinitions>
+ <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition/></Grid.ColumnDefinitions><Path Data="M 9,9 L 27,9 C 33,9 36,28 32,30 C 28,32 25,24 23,24 L 13,24 C 11,24 8,32 4,30 C 0,28 3,9 9,9 Z M 8,16 L 16,16 M 12,12 L 12,20 M 26,14 L 26,16 M 30,18 L 30,20" Stroke="{DynamicResource ThemeBrush_FF7A00}" StrokeThickness="2.6" Width="36" Height="36" Stretch="Uniform" VerticalAlignment="Center"/>
+ <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Margin="2,0,0,7"><TextBlock Text="Gamer" FontSize="20" FontWeight="SemiBold"/><TextBlock Text="Desempenho em jogos com foco em baixa latência." Foreground="{DynamicResource ThemeBrush_B7C0CD}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel><Border x:Name="BdgPresetRecommendation" Grid.ColumnSpan="2" Background="{DynamicResource ThemeBrush_FF7A00}" CornerRadius="4" Padding="8,3" HorizontalAlignment="Right" VerticalAlignment="Top"><TextBlock x:Name="TxtPresetRecommendation" Text="RECOMENDADO" Foreground="Black" FontSize="9" FontWeight="Bold"/></Border></Grid>
+ <Border Grid.Row="1" Background="{DynamicResource ThemeBrush_0A0C0E}" BorderBrush="{DynamicResource ThemeBrush_30363B}" BorderThickness="1" CornerRadius="7" Padding="9,5" Margin="0,3,0,8"><StackPanel x:Name="ListPresetGamer"><TextBlock Text="✓  FPS e latência" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Prioridade para jogos" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Ajustes de CPU e GPU" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Menos processos em segundo plano" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Rede e energia" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/></StackPanel></Border>
+ <Button x:Name="BtnPresetGamer" Grid.Row="2" Style="{StaticResource PrimaryButton}" Background="{DynamicResource ThemeBrush_FF7A00}" BorderBrush="{DynamicResource ThemeBrush_FF7A00}" Content="Selecionar Gamer" ToolTip="129 ajustes no perfil base. Revise a seleção antes de aplicar."/>
+ </Grid></Border><Border x:Name="CardPresetExtreme" Grid.Column="2" Background="{DynamicResource ThemeBrush_19090E}" BorderBrush="{DynamicResource ThemeBrush_FF1745}" BorderThickness="1" CornerRadius="9" Margin="5,0,0,0" Padding="13">
+ <Grid><Grid.RowDefinitions><RowDefinition Height="64"/><RowDefinition/><RowDefinition Height="36"/></Grid.RowDefinitions>
+ <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition/></Grid.ColumnDefinitions><Path Data="M 12,22 C 13,11 24,3 34,2 C 33,15 26,25 17,26 Z M 12,18 L 5,19 L 2,28 L 13,24 M 21,26 L 21,33 L 13,36 L 16,26 M 9,28 L 3,35 M 26,9 L 26,12" Stroke="{DynamicResource ThemeBrush_FF1745}" StrokeThickness="2.6" Width="36" Height="36" Stretch="Uniform" VerticalAlignment="Center"/>
+ <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Margin="2,0,0,7"><TextBlock Text="Extremo" FontSize="20" FontWeight="SemiBold"/><TextBlock Text="Ajustes avançados para cenários de maior impacto." Foreground="{DynamicResource ThemeBrush_B7C0CD}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel></Grid>
+ <Border Grid.Row="1" Background="{DynamicResource ThemeBrush_0A0C0E}" BorderBrush="{DynamicResource ThemeBrush_30363B}" BorderThickness="1" CornerRadius="7" Padding="9,5" Margin="0,3,0,8"><StackPanel x:Name="ListPresetExtreme"><TextBlock Text="✓  Menos serviços" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Ajustes mais agressivos" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Remoção de componentes" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Menor consumo de recursos" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/><TextBlock Text="✓  Alterações de alto impacto" Foreground="{DynamicResource ThemeBrush_D4D9E0}" FontSize="11.5" Height="18" VerticalAlignment="Center"/></StackPanel></Border>
+ <Button x:Name="BtnPresetExtreme" Grid.Row="2" Style="{StaticResource PrimaryButton}" Background="{DynamicResource ThemeBrush_FF1745}" BorderBrush="{DynamicResource ThemeBrush_FF1745}" Content="Selecionar Extremo" ToolTip="168 ajustes no perfil base. Revise a seleção antes de aplicar."/>
+ </Grid></Border></Grid>
+ <Grid Grid.Row="2"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="232"/></Grid.ColumnDefinitions>
+ <Border BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="9" Padding="10" Margin="0,0,10,0" Background="{DynamicResource ThemeBrush_090A0A}"><Grid><Grid.RowDefinitions><RowDefinition Height="46"/><RowDefinition/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+ <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="⚙  Overlays Condicionais" FontSize="17" FontWeight="SemiBold"/><TextBlock Text="Combine ajustes para o seu cenário." Foreground="{DynamicResource ThemeBrush_AAB6C4}" FontSize="10.5" Margin="0,3,0,0"/></StackPanel><Button x:Name="BtnResetOverlays" Grid.Column="1" Style="{StaticResource SecondaryButton}" Height="28" Padding="10,0" Content="Limpar" VerticalAlignment="Top"/></Grid>
+ <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel><Border Background="{DynamicResource ThemeBrush_090C0D}" BorderBrush="{DynamicResource ThemeBrush_242D30}" BorderThickness="1" CornerRadius="7" Padding="8,7" Margin="0,0,0,6"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="120"/><ColumnDefinition/></Grid.ColumnDefinitions><StackPanel VerticalAlignment="Center"><TextBlock Text="Hardware" FontSize="13" FontWeight="SemiBold"/><TextBlock Text="CPU, GPU e energia" Foreground="{DynamicResource ThemeBrush_95A2AF}" FontSize="9.5" TextWrapping="Wrap" Margin="0,3,4,0"/></StackPanel><WrapPanel Grid.Column="1"><ToggleButton x:Name="OverlayHags" Tag="HW-HAGS-ON" Style="{StaticResource PresetOverlayChip}" Content="HAGS"/><ToggleButton x:Name="OverlayMsiGpu" Tag="HW-MSI-GPU" Style="{StaticResource PresetOverlayChip}" Content="MSI GPU"/><ToggleButton x:Name="OverlayCoreParking" Tag="HW-CORE-PARKING-100" Style="{StaticResource PresetOverlayChip}" Content="Core Parking"/><ToggleButton x:Name="OverlayGpuIrq" Tag="HW-GPU-IRQ-AFFINITY" Style="{StaticResource PresetHighRiskChip}" Content="GPU IRQ"/></WrapPanel></Grid></Border><Border Background="{DynamicResource ThemeBrush_090C0D}" BorderBrush="{DynamicResource ThemeBrush_242D30}" BorderThickness="1" CornerRadius="7" Padding="8,7" Margin="0,0,0,6"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="120"/><ColumnDefinition/></Grid.ColumnDefinitions><StackPanel VerticalAlignment="Center"><TextBlock Text="Jogos" FontSize="13" FontWeight="SemiBold"/><TextBlock Text="Ajustes por jogo" Foreground="{DynamicResource ThemeBrush_95A2AF}" FontSize="9.5" TextWrapping="Wrap" Margin="0,3,4,0"/></StackPanel><WrapPanel Grid.Column="1"><ToggleButton x:Name="OverlayCs2PCores" Tag="HW-CS2-P-CORES" Style="{StaticResource PresetHighRiskChip}" Content="P-Cores CS2"/><ToggleButton x:Name="OverlayValorant" Tag="WL-VALORANT" Style="{StaticResource PresetOverlayChip}" Content="VALORANT"/><ToggleButton x:Name="OverlayCs2" Tag="WL-CS2" Style="{StaticResource PresetOverlayChip}" Content="CS2"/><ToggleButton x:Name="OverlayApex" Tag="WL-APEX" Style="{StaticResource PresetOverlayChip}" Content="Apex"/><ToggleButton x:Name="OverlayFortnite" Tag="WL-FORTNITE" Style="{StaticResource PresetOverlayChip}" Content="Fortnite"/><ToggleButton x:Name="OverlayGtav" Tag="WL-GTAV" Style="{StaticResource PresetOverlayChip}" Content="GTA V"/><ToggleButton x:Name="OverlayFso" Tag="WL-FSO-OFF" Style="{StaticResource PresetOverlayChip}" Content="FSO OFF"/><ToggleButton x:Name="OverlayStreaming" Tag="WL-STREAMING" Style="{StaticResource PresetOverlayChip}" Content="Streaming"/></WrapPanel></Grid></Border><Border Background="{DynamicResource ThemeBrush_090C0D}" BorderBrush="{DynamicResource ThemeBrush_242D30}" BorderThickness="1" CornerRadius="7" Padding="8,7" Margin="0,0,0,6"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="120"/><ColumnDefinition/></Grid.ColumnDefinitions><StackPanel VerticalAlignment="Center"><TextBlock Text="Produtividade" FontSize="13" FontWeight="SemiBold"/><TextBlock Text="Conteúdo e trabalho" Foreground="{DynamicResource ThemeBrush_95A2AF}" FontSize="9.5" TextWrapping="Wrap" Margin="0,3,4,0"/></StackPanel><WrapPanel Grid.Column="1"><ToggleButton x:Name="OverlayVideo" Tag="WL-VIDEO-EDITING" Style="{StaticResource PresetOverlayChip}" Content="Vídeo"/><ToggleButton x:Name="OverlayDesign" Tag="WL-DESIGN" Style="{StaticResource PresetOverlayChip}" Content="Design"/><ToggleButton x:Name="OverlayProgramming" Tag="WL-PROGRAMMING" Style="{StaticResource PresetOverlayChip}" Content="Programação"/><ToggleButton x:Name="OverlayDefenderDev" Tag="WL-DEFENDER-DEV-EXCLUSIONS" Style="{StaticResource PresetOverlayChip}" Content="Defender Dev"/></WrapPanel></Grid></Border></StackPanel></ScrollViewer>
+ <Border x:Name="HighRiskBanner" Grid.Row="2" Background="{DynamicResource ThemeBrush_281D08}" BorderBrush="{DynamicResource ThemeBrush_9D701A}" BorderThickness="1" CornerRadius="6" Padding="7" Margin="0,4,0,0" Visibility="Collapsed"><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="TxtHighRiskBanner" Text="Ajuste de alto risco: revise antes de permitir." Foreground="{DynamicResource ThemeBrush_FFE08A}" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center"/><Button x:Name="BtnGrantHighRisk" Grid.Column="1" Style="{StaticResource SecondaryButton}" Height="28" Padding="8,0" Margin="8,0,0,0" Content="Permitir nesta sessão"/></Grid></Border>
+ </Grid></Border>
+ <Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0B0E0F}" BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="9" Padding="12"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/><RowDefinition Height="36"/></Grid.RowDefinitions><TextBlock Text="Resumo da Configuração" FontSize="13.5" FontWeight="SemiBold"/>
+ <StackPanel Grid.Row="1" Margin="0,7,0,7"><Grid Margin="0,8"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Preset base" Foreground="{DynamicResource ThemeBrush_A9B4C2}" FontSize="11"/><TextBlock x:Name="TxtSummaryPreset" Grid.Column="1" Text="Equilibrado" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="11"/></Grid><Border Height="1" Background="{DynamicResource ThemeBrush_252D31}"/><Grid Margin="0,8"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Overlays ativos" Foreground="{DynamicResource ThemeBrush_A9B4C2}" FontSize="11"/><TextBlock x:Name="TxtSummaryOverlays" Grid.Column="1" Text="0" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_E5E8ED}" FontSize="11"/></Grid><Border Height="1" Background="{DynamicResource ThemeBrush_252D31}"/><Grid Margin="0,8"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Total final" Foreground="{DynamicResource ThemeBrush_A9B4C2}" FontSize="11"/><TextBlock x:Name="TxtSummaryTotal" Grid.Column="1" Text="105 tweaks" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_E5E8ED}" FontSize="11"/></Grid><Border Height="1" Background="{DynamicResource ThemeBrush_252D31}"/><Grid Margin="0,8"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Risco adicional" Foreground="{DynamicResource ThemeBrush_A9B4C2}" FontSize="11"/><TextBlock x:Name="TxtSummaryRisk" Grid.Column="1" Text="Baixo" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_14C767}" FontSize="11"/></Grid><Border Height="1" Background="{DynamicResource ThemeBrush_252D31}"/><TextBlock Text="Fingerprint" Foreground="{DynamicResource ThemeBrush_A9B4C2}" FontSize="10.5" Margin="0,8,0,3"/><TextBlock x:Name="TxtSummaryFingerprint" Text="—" FontFamily="Consolas" FontSize="10" TextTrimming="CharacterEllipsis"/><TextBlock x:Name="TxtResolveState" Text="Carregando seleção..." Foreground="{DynamicResource ThemeBrush_98AABD}" FontSize="10" TextWrapping="Wrap" Margin="0,8,0,0"/></StackPanel>
+ <Button x:Name="BtnPreviewFromPreset" Grid.Row="2" Style="{StaticResource PrimaryButton}" FontSize="11.5" Content="Ver pré-visualização  →"/>
+ </Grid></Border></Grid></Grid>
+
+</Grid>
+
+                    <!-- Preview prototype -->
+                    <Grid x:Name="PagePreview" Visibility="Collapsed" Margin="24,20">
+<Grid.RowDefinitions><RowDefinition Height="60"/><RowDefinition Height="100"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="50"/></Grid.RowDefinitions>
+<StackPanel><TextBlock Text="Visualizar alterações" FontSize="23" FontWeight="SemiBold"/><TextBlock x:Name="TxtPreviewSelection" Text="Confira os ajustes antes de continuar." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" Margin="0,5,0,0" TextWrapping="Wrap"/></StackPanel>
+<Grid Grid.Row="1" Margin="0,6,0,14"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+<Border Grid.Column="0" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Margin="0,0,4,0"><StackPanel VerticalAlignment="Center"><TextBlock x:Name="TxtPreviewCount" Text="—" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center"/><TextBlock Text="Tweaks aptos no plano" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" HorizontalAlignment="Center" Margin="0,5,0,0"/></StackPanel></Border><Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Margin="4,0,4,0"><StackPanel VerticalAlignment="Center"><TextBlock x:Name="TxtPreviewRestart" Text="—" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center"/><TextBlock Text="Ajustes que exigem reinício" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" HorizontalAlignment="Center" Margin="0,5,0,0"/></StackPanel></Border><Border Grid.Column="2" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Margin="4,0,0,0"><StackPanel VerticalAlignment="Center"><TextBlock x:Name="TxtPreviewRisk" Text="—" Foreground="{DynamicResource ThemeBrush_14C767}" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center"/><TextBlock Text="Risco geral" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" HorizontalAlignment="Center" Margin="0,5,0,0"/></StackPanel></Border></Grid>
+<Grid x:Name="PreviewCategoryPanel" Grid.Row="2"><Grid.RowDefinitions><RowDefinition Height="28"/><RowDefinition Height="34"/><RowDefinition/></Grid.RowDefinitions><TextBlock Text="Por categoria" FontSize="16" FontWeight="SemiBold"/>
+<Border Grid.Row="1" Background="{DynamicResource ThemeBrush_111111}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="5,5,0,0" Padding="12,6"><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="90"/><ColumnDefinition Width="120"/><ColumnDefinition Width="120"/></Grid.ColumnDefinitions><TextBlock Text="Categoria" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/><TextBlock Grid.Column="1" Text="Qtd." Foreground="{DynamicResource ThemeBrush_A9AFB8}"/><TextBlock Grid.Column="2" Text="Risco" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/><TextBlock Grid.Column="3" Text="Reinício" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/></Grid></Border>
+<Border Grid.Row="2" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="0,0,5,5"><ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel x:Name="PreviewCategoryRows"/></ScrollViewer></Border></Grid>
+<Border x:Name="PreviewStatusPanel" Grid.Row="3" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="14,12" Margin="0,12,0,0"><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="130"/></Grid.ColumnDefinitions><StackPanel><Border x:Name="BackupSuccessNotice" Visibility="Collapsed" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,10"><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel VerticalAlignment="Center"><TextBlock Text="✓ Backup concluído e verificado" FontSize="17" FontWeight="SemiBold" TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush_00C853}"/><TextBlock Text="Consulte suas cópias em Backup / Restauração no menu lateral." TextWrapping="Wrap" Margin="0,5,0,0" Foreground="{DynamicResource ThemeTintText}"/></StackPanel><Button x:Name="BtnViewCreatedBackup" Grid.Column="1" Content="Ver backups" Style="{StaticResource SecondaryButton}" Margin="14,0,0,0" MinWidth="135" Height="32" VerticalAlignment="Center"/></Grid></Border><TextBlock x:Name="TxtPreviewBackup" TextWrapping="Wrap" Text="○ Backup obrigatório antes de aplicar · ainda não criado" Foreground="{DynamicResource ThemeBrush_FF9A2E}"/><TextBlock x:Name="TxtPreviewConflicts" Text="○ Verificando conflitos..." Foreground="{DynamicResource ThemeBrush_A9AFB8}" Margin="0,7,0,0"/><TextBlock x:Name="TxtPreviewHardware" Text="○ Verificando Windows e hardware..." Foreground="{DynamicResource ThemeBrush_A9AFB8}" Margin="0,7,0,0"/><TextBlock x:Name="TxtPreviewState" Text="Modo de consulta: nenhuma alteração será aplicada." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="10" Margin="0,7,0,0" TextWrapping="Wrap"/></StackPanel><Button x:Name="BtnPreviewDetails" Grid.Column="1" Style="{StaticResource SecondaryButton}" Content="Ver detalhes" VerticalAlignment="Bottom" Height="32"/></Grid></Border>
+<Grid x:Name="PreviewActionsPanel" Grid.Row="4" VerticalAlignment="Bottom"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="205"/></Grid.ColumnDefinitions><StackPanel Orientation="Horizontal"><Button x:Name="BtnPreviewBack" Style="{StaticResource SecondaryButton}" Content="← Voltar aos Presets" HorizontalAlignment="Left"/><Button x:Name="BtnPreviewResultDemo" Style="{StaticResource SecondaryButton}" Content="Demonstração" Margin="8,0,0,0"/></StackPanel><Button x:Name="BtnPreviewApplyRegistry" Grid.Column="1" Style="{StaticResource PrimaryButton}" Content="Revisar aplicação real" IsEnabled="False" ToolTip="Primeira etapa: nove preferências de Registro de baixo risco. Revise os ajustes liberados antes de confirmar."/></Grid>
+</Grid>
+
+<Grid x:Name="PageRegistryApply" Visibility="Collapsed" Margin="24,20">
+<Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+<StackPanel Margin="0,0,0,14"><TextBlock x:Name="TxtRegistryTitle" Text="Revisar aplicação real" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_E5E7EB}"/><TextBlock x:Name="TxtRegistrySummary" Margin="0,8,0,0" TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/></StackPanel>
+<Border Grid.Row="1" CornerRadius="9" BorderBrush="{DynamicResource ThemeBrush_FF7A00}" BorderThickness="1" Padding="14" Margin="0,0,0,12" Background="{DynamicResource ThemeBrush_0D1012}"><StackPanel><TextBlock x:Name="TxtRegistryStatus" Text="Revise a lista antes de confirmar." TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush_E5E7EB}"/><ProgressBar x:Name="RegistryProgress" Minimum="0" Maximum="100" Height="7" Margin="0,10,0,0" Foreground="{DynamicResource ThemeBrush_FF7A00}"/></StackPanel></Border>
+<Border Grid.Row="2" CornerRadius="9" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" Padding="14" Background="{DynamicResource ThemeBrush_0D1012}"><TextBox x:Name="TxtRegistryDetails" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource ThemeBrush_E5E7EB}" FontSize="13"/></Border>
+<Grid Grid.Row="3" Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="170"/><ColumnDefinition Width="230"/></Grid.ColumnDefinitions><Button x:Name="BtnRegistryBack" Content="← Voltar à prévia" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left"/><Button x:Name="BtnRegistryBackups" Grid.Column="1" Content="Ver backups" Style="{StaticResource SecondaryButton}" Margin="0,0,10,0"/><Button x:Name="BtnRegistryConfirm" IsEnabled="False" Grid.Column="2" Content="Criar backup e aplicar" Style="{StaticResource PrimaryButton}"/></Grid>
+</Grid>
+<Grid x:Name="PageApply" Visibility="Collapsed" Margin="24,20"><StackPanel>
+<TextBlock Text="Aplicando otimizações" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="O processo será executado em etapas. Não feche o aplicativo." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" Margin="0,5,0,20"/>
+<Grid Height="28" Margin="0,0,0,8"><ProgressBar x:Name="ApplyProgress" Minimum="0" Maximum="100" Value="67" Background="{DynamicResource ThemeBrush_151820}" Foreground="{DynamicResource ThemeBrush_FF7A00}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1"><ProgressBar.Template><ControlTemplate TargetType="ProgressBar"><Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7"><Grid x:Name="PART_Track" ClipToBounds="True"><Border x:Name="PART_Indicator" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}" CornerRadius="6"/></Grid></Border></ControlTemplate></ProgressBar.Template></ProgressBar><TextBlock x:Name="TxtApplyPercent" Text="67%" Foreground="{DynamicResource ThemeBrush_E5E7EB}" FontWeight="Bold" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/></Grid>
+<StackPanel Margin="0,0,0,14"><Grid Height="48"><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition/><ColumnDefinition Width="170"/></Grid.ColumnDefinitions><Border x:Name="ApplyStageIcon0" Width="24" Height="24" CornerRadius="12" Background="{DynamicResource ThemeBrush_082617}" BorderBrush="{DynamicResource ThemeBrush_14693F}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock x:Name="ApplyStageMark0" Text="○" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_14C767}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Criando backup do sistema" Foreground="{DynamicResource ThemeBrush_D9DDE3}" FontSize="13" VerticalAlignment="Center"/><TextBlock x:Name="ApplyStageStatus0" Grid.Column="2" Text="(pendente)" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12"/></Grid><Grid Height="48"><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition/><ColumnDefinition Width="170"/></Grid.ColumnDefinitions><Border x:Name="ApplyStageIcon1" Width="24" Height="24" CornerRadius="12" Background="{DynamicResource ThemeBrush_082617}" BorderBrush="{DynamicResource ThemeBrush_14693F}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock x:Name="ApplyStageMark1" Text="○" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_14C767}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Aplicando tweaks de performance" Foreground="{DynamicResource ThemeBrush_D9DDE3}" FontSize="13" VerticalAlignment="Center"/><TextBlock x:Name="ApplyStageStatus1" Grid.Column="2" Text="(pendente)" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12"/></Grid><Grid Height="48"><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition/><ColumnDefinition Width="170"/></Grid.ColumnDefinitions><Border x:Name="ApplyStageIcon2" Width="24" Height="24" CornerRadius="12" Background="{DynamicResource ThemeBrush_082617}" BorderBrush="{DynamicResource ThemeBrush_14693F}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock x:Name="ApplyStageMark2" Text="○" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_14C767}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Configurando rede e internet" Foreground="{DynamicResource ThemeBrush_D9DDE3}" FontSize="13" VerticalAlignment="Center"/><TextBlock x:Name="ApplyStageStatus2" Grid.Column="2" Text="(pendente)" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12"/></Grid><Grid Height="48"><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition/><ColumnDefinition Width="170"/></Grid.ColumnDefinitions><Border x:Name="ApplyStageIcon3" Width="24" Height="24" CornerRadius="12" Background="{DynamicResource ThemeBrush_082617}" BorderBrush="{DynamicResource ThemeBrush_14693F}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock x:Name="ApplyStageMark3" Text="○" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_14C767}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Ajustando serviços do Windows" Foreground="{DynamicResource ThemeBrush_D9DDE3}" FontSize="13" VerticalAlignment="Center"/><TextBlock x:Name="ApplyStageStatus3" Grid.Column="2" Text="(pendente)" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12"/></Grid><Grid Height="48"><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition/><ColumnDefinition Width="170"/></Grid.ColumnDefinitions><Border x:Name="ApplyStageIcon4" Width="24" Height="24" CornerRadius="12" Background="{DynamicResource ThemeBrush_082617}" BorderBrush="{DynamicResource ThemeBrush_14693F}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock x:Name="ApplyStageMark4" Text="○" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_14C767}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Otimizações avançadas" Foreground="{DynamicResource ThemeBrush_D9DDE3}" FontSize="13" VerticalAlignment="Center"/><TextBlock x:Name="ApplyStageStatus4" Grid.Column="2" Text="(pendente)" Foreground="{DynamicResource ThemeBrush_A9AFB8}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12"/></Grid></StackPanel>
+<Grid Height="86"><Grid.ColumnDefinitions><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/></Grid.ColumnDefinitions><Border Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="14" Margin="0,0,6,0"><StackPanel VerticalAlignment="Center"><TextBlock Text="Em andamento:" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontWeight="SemiBold"/><TextBlock x:Name="TxtApplyCurrent" Text="PERF-016 — MSI Mode GPU" Foreground="{DynamicResource ThemeBrush_52D3DB}" FontSize="12" Margin="0,7,0,0" TextWrapping="Wrap"/></StackPanel></Border><Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="14" Margin="6,0,0,0"><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="Operação" FontSize="12" VerticalAlignment="Center"/><TextBlock Text="  ⊙  " Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="17" VerticalAlignment="Center"/><TextBlock x:Name="TxtApplyOperation" Text="Em andamento" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="12" VerticalAlignment="Center"/></StackPanel></Border></Grid>
+<Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="160"/><ColumnDefinition Width="116"/></Grid.ColumnDefinitions><TextBlock x:Name="TxtApplyStatus" Text="Operação atual: aplicando alteração no dispositivo GPU." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,12,0"/><Button x:Name="BtnApplyDemoStart" Grid.Column="1" Style="{StaticResource SecondaryButton}" Content="Iniciar demonstração" Margin="0,0,10,0"/><Button x:Name="BtnApplyCancel" Grid.Column="2" Style="{StaticResource SecondaryButton}" Content="Cancelar"/></Grid>
+<TextBlock x:Name="TxtApplyDemo" Text="Demonstração visual · progresso e etapas ilustrativos · nenhuma alteração no Windows." Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="11" TextWrapping="Wrap" Margin="0,14,0,0"/>
+</StackPanel></Grid>
+
+                    <!-- Conclusion: visual demonstration until transaction integration -->
+<Grid x:Name="PageResult" Visibility="Collapsed" Margin="24,20">
+<StackPanel VerticalAlignment="Top">
+<Grid Margin="0,6,0,24"><Grid.ColumnDefinitions><ColumnDefinition Width="80"/><ColumnDefinition/></Grid.ColumnDefinitions>
+<Border Width="64" Height="64" CornerRadius="32" Background="{DynamicResource ThemeBrush_00C853}" HorizontalAlignment="Left"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_082617}" FontSize="39" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+<StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock x:Name="TxtResultTitle" Text="Conclusão" FontSize="25" FontWeight="SemiBold"/><TextBlock x:Name="TxtResultSubtitle" Text="Nenhuma operação foi executada." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" TextWrapping="Wrap" Margin="0,5,0,0"/></StackPanel></Grid>
+<Grid Height="112" Margin="0,0,0,24"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Border Grid.Column="0" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Margin="0,0,5,0"><StackPanel VerticalAlignment="Center"><TextBlock x:Name="TxtResultApplied" Text="—" FontSize="25" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_FF9A2E}" HorizontalAlignment="Center"/><TextBlock Text="Aplicadas" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" HorizontalAlignment="Center" Margin="0,6,0,0"/></StackPanel></Border><Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Margin="5,0,5,0"><StackPanel VerticalAlignment="Center"><TextBlock x:Name="TxtResultRestart" Text="—" FontSize="25" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_FF9A2E}" HorizontalAlignment="Center"/><TextBlock Text="Aguardando reinício" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" HorizontalAlignment="Center" Margin="0,6,0,0"/></StackPanel></Border><Border Grid.Column="2" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Margin="5,0,5,0"><StackPanel VerticalAlignment="Center"><TextBlock x:Name="TxtResultFailed" Text="—" FontSize="25" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_FF1744}" HorizontalAlignment="Center"/><TextBlock Text="Falhas" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" HorizontalAlignment="Center" Margin="0,6,0,0"/></StackPanel></Border><Border Grid.Column="3" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Margin="5,0,0,0"><StackPanel VerticalAlignment="Center"><TextBlock x:Name="TxtResultConflicts" Text="—" FontSize="25" FontWeight="Bold" Foreground="{DynamicResource ThemeBrush_E5E7EB}" HorizontalAlignment="Center"/><TextBlock Text="Conflitos" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" HorizontalAlignment="Center" Margin="0,6,0,0"/></StackPanel></Border></Grid>
+<Border x:Name="PanelResultRestart" Background="{DynamicResource ThemeBrush_061C10}" BorderBrush="{DynamicResource ThemeBrush_14693F}" BorderThickness="1" CornerRadius="7" Padding="20,18"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock Text="ⓘ" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="24"/><StackPanel Grid.Column="1"><TextBlock Text="Reinicialização necessária" FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_55DD91}"/><TextBlock Text="Para que todas as alterações tenham efeito, reinicie o sistema." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0"/></StackPanel></Grid></Border>
+<Grid Margin="0,18,0,14"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Button x:Name="BtnResultRestartNow" Style="{StaticResource PrimaryButton}" Content="Reiniciar agora" Height="44" Margin="0,0,6,0" IsEnabled="False" ToolTip="Indisponível na demonstração: nenhuma alteração foi aplicada."/><Button x:Name="BtnResultRestartLater" Grid.Column="1" Style="{StaticResource SecondaryButton}" Content="Reiniciar mais tarde" Height="44" Margin="6,0,0,0" BorderBrush="{DynamicResource ThemeBrush_FF7A00}" ToolTip="Voltar aos Presets sem reiniciar o computador."/></Grid>
+<Button x:Name="BtnResultReport" Style="{StaticResource SecondaryButton}" Content="Ver relatório detalhado" Height="40" HorizontalContentAlignment="Center"/>
+<TextBlock x:Name="TxtResultDemo" Text="Demonstração visual · números ilustrativos · nenhuma alteração aplicada no Windows." Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="11" TextWrapping="Wrap" Margin="0,15,0,0"/>
+</StackPanel></Grid>
+
+                    <!-- Backup prototype -->
+                    <Grid x:Name="PageBackup" Visibility="Collapsed" Margin="24,20">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel><TextBlock Text="Backup / Restauração" FontSize="23" FontWeight="SemiBold"/><TextBlock Text="Gerencie seus backups e restaurações." Foreground="{DynamicResource ThemeBrush_A9AFB8}" Margin="0,5,0,0"/></StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"><Button x:Name="BtnBackupRefresh" Style="{StaticResource SecondaryButton}" Content="Atualizar" Height="30"/><Button x:Name="BtnBackupDemo" Style="{StaticResource SecondaryButton}" Content="Ver demonstração" Height="30" Margin="8,0,0,0"/></StackPanel>
+                        </Grid>
+                        <Border Grid.Row="1" Margin="0,16,0,0" Background="{DynamicResource ThemeBrush_0C0F10}" BorderBrush="{DynamicResource ThemeBrush_FF7A00}" BorderThickness="1" CornerRadius="8" Padding="16">
+                            <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal"><Button x:Name="BtnBackupTabBackups" Style="{StaticResource PrimaryButton}" Content="Backups" Width="180" Height="36"/><Button x:Name="BtnBackupTabTweaks" Style="{StaticResource SecondaryButton}" Content="Restaurar por tweak" Width="200" Height="36" Margin="8,0,0,0"/></StackPanel>
+                                <TextBlock x:Name="TxtBackupHint" Grid.Row="1" Text="Selecione um backup para consultar os detalhes." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" Margin="0,12,0,12" TextWrapping="Wrap"/>
+                                <Border Grid.Row="2" BorderBrush="{DynamicResource ThemeBrush_2A343C}" BorderThickness="1" CornerRadius="5" ClipToBounds="True">
+                                    <Grid><Grid.RowDefinitions><RowDefinition Height="38"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                        <Grid Background="{DynamicResource ThemeBrush_12171D}"><Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition Width="1.3*"/><ColumnDefinition Width="1*"/><ColumnDefinition Width="1.3*"/></Grid.ColumnDefinitions>
+                                            <TextBlock x:Name="TxtBackupColumn0" Text="Data / Hora" Margin="12,0" VerticalAlignment="Center" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/>
+                                            <TextBlock x:Name="TxtBackupColumn1" Grid.Column="1" Text="Perfil" Margin="12,0" VerticalAlignment="Center" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/>
+                                            <TextBlock x:Name="TxtBackupColumn2" Grid.Column="2" Text="Alterações" Margin="12,0" VerticalAlignment="Center" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/>
+                                            <TextBlock x:Name="TxtBackupColumn3" Grid.Column="3" Text="Status" Margin="12,0" VerticalAlignment="Center" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/>
+                                        </Grid>
+                                        <ListBox x:Name="ListBackups" Grid.Row="1" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource ThemeTintText}" ItemContainerStyle="{StaticResource BackupRow}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                                        <ListBox x:Name="ListBackupTweaks" Grid.Row="1" Visibility="Collapsed" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource ThemeTintText}" ItemContainerStyle="{StaticResource BackupRow}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                                        <TextBlock x:Name="TxtBackupEmpty" Grid.Row="1" Text="Nenhum backup encontrado." HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource ThemeBrush_A9AFB8}" TextWrapping="Wrap" MaxWidth="480" TextAlignment="Center" Margin="20" IsHitTestVisible="False"/>
+                                    </Grid>
+                                </Border>
+                                <Grid Grid.Row="3" Margin="0,16,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Button x:Name="BtnBackupDetails" Style="{StaticResource SecondaryButton}" Content="Detalhes" Height="44" IsEnabled="False" Margin="0,0,6,0"/>
+                                    <Button x:Name="BtnBackupRestore" Grid.Column="1" Style="{StaticResource SecondaryButton}" Content="Restaurar selecionado" Height="44" IsEnabled="False" Margin="6,0" ToolTip="Restaura somente o tweak selecionado na aba Restaurar por tweak." ToolTipService.ShowOnDisabled="True"/>
+                                    <Button x:Name="BtnBackupRestoreAll" Grid.Column="2" Style="{StaticResource PrimaryButton}" Content="Restaurar tudo" Height="44" IsEnabled="False" Margin="6,0" ToolTip="Restaura todos os ajustes cobertos pelo backup escolhido."/>
+                                    <Button x:Name="BtnBackupDelete" Grid.Column="3" Style="{StaticResource SecondaryButton}" Content="Excluir" Height="44" IsEnabled="False" Margin="6,0,0,0" ToolTip="Esta etapa permite somente consultar os backups." ToolTipService.ShowOnDisabled="True"/>
+                                </Grid>
+                                <TextBlock x:Name="TxtBackupState" Grid.Row="4" Text="Modo de consulta · nenhum backup será alterado." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Grid.Row="2" Text="Restaurar recupera as configurações salvas no backup escolhido." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                    </Grid>
+                    <!-- Custom prototype -->
+                    <Grid x:Name="PageCustom" Visibility="Collapsed" Margin="24,20"><StackPanel><TextBlock Text="Personalizado" FontSize="23" FontWeight="SemiBold"/><TextBlock Text="A seleção manual de ajustes abre em uma janela própria, com categorias e busca." Foreground="{DynamicResource ThemeBrush_A9AFB8}" TextWrapping="Wrap" Margin="0,8,0,0"/></StackPanel></Grid>
+                    <!-- Tweak detail prototype -->
+                    <Grid x:Name="PageTweakDetail" Visibility="Collapsed" Margin="110,55"><Border Background="{DynamicResource ThemeBrush_111111}" BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="9" Padding="18"><StackPanel><Grid><TextBlock Text="WinSlim: CPU Idle States" FontSize="18" FontWeight="SemiBold"/><Border HorizontalAlignment="Right" Background="{DynamicResource ThemeBrush_0A2E1B}" CornerRadius="10" Padding="9,3"><TextBlock Text="● Ativo" Foreground="{DynamicResource ThemeBrush_14C767}"/></Border></Grid><TextBlock Text="Experimental" Foreground="{DynamicResource ThemeBrush_FFB54C}" FontSize="10" Margin="0,5,0,12"/><TextBlock Text="Desativa os estados de economia de energia da CPU, mantendo o processador em estados de maior atividade." TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush_B9BEC6}"/><Grid Margin="0,15,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="130"/><ColumnDefinition/></Grid.ColumnDefinitions><StackPanel TextElement.Foreground="{DynamicResource ThemeBrush_969CA5}"><TextBlock Text="Risco:"/><TextBlock Text="Reinício:" Margin="0,5"/><TextBlock Text="Rollback:" Margin="0,5"/><TextBlock Text="Compatibilidade:" Margin="0,5"/><TextBlock Text="Hardware:" Margin="0,5"/><TextBlock Text="Dependências:" Margin="0,5"/><TextBlock Text="Conflitos:" Margin="0,5"/></StackPanel><StackPanel Grid.Column="1"><TextBlock Text="Médio" Foreground="{DynamicResource ThemeBrush_FFC107}"/><TextBlock Text="Sim" Margin="0,5"/><TextBlock Text="Disponível" Foreground="{DynamicResource ThemeBrush_14C767}" Margin="0,5"/><TextBlock Text="OK" Foreground="{DynamicResource ThemeBrush_14C767}" Margin="0,5"/><TextBlock Text="CPU compatível" Margin="0,5"/><TextBlock Text="Nenhuma" Margin="0,5"/><TextBlock Text="CPU Power Saving" Margin="0,5"/></StackPanel></Grid><Border Background="{DynamicResource ThemeBrush_3A2708}" BorderBrush="{DynamicResource ThemeBrush_8E6411}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,12"><TextBlock Text="⚠ Pode aumentar o consumo de energia e temperatura. Use apenas se souber o efeito desta alteração." Foreground="{DynamicResource ThemeBrush_FFD86A}" TextWrapping="Wrap"/></Border><StackPanel Orientation="Horizontal" HorizontalAlignment="Right"><Button Style="{StaticResource SecondaryButton}" Content="Desfazer" Width="120"/><Button Style="{StaticResource PrimaryButton}" Content="Aplicar (R4+)" IsEnabled="False" Width="150" Margin="8,0,0,0"/></StackPanel></StackPanel></Border></Grid>
+
+                    <!-- System analysis reference layout -->
+                    <Grid x:Name="PageAnalysis" Visibility="Collapsed" Margin="24,18">
+<Border BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="12" Background="{DynamicResource ThemeBrush_080808}" Padding="24,16" MaxWidth="820" HorizontalAlignment="Stretch">
+<Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+<StackPanel Margin="0,0,0,12"><StackPanel Orientation="Horizontal"><TextBlock Text="ϟ" Foreground="{DynamicResource ThemeBrush_FF7A00}" FontSize="28" Margin="0,0,10,0"/><TextBlock Text="Análise do Sistema" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel><TextBlock Text="Diagnóstico completo do seu hardware e configurações." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" TextWrapping="Wrap" Margin="0,5,0,0"/></StackPanel>
+<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel x:Name="AnalysisCheckRows" Margin="4,4,8,4"><Grid x:Name="AnalysisRow1" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Windows (versão e build)" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow2" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="CPU e temperatura" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow3" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="GPU e driver" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow4" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Memória (RAM)" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow5" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Armazenamento (SSD/NVMe)" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow6" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Laptop / Desktop" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow7" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Secure Boot" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow8" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="BitLocker" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow9" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="VBS / HVCI" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow10" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Hyper-V" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow11" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Serviços relevantes" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid><Grid x:Name="AnalysisRow12" MinHeight="34" Margin="0,1"><Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="55"/></Grid.ColumnDefinitions><Border Width="23" Height="23" CornerRadius="12" Background="{DynamicResource ThemeBrush_062E16}" BorderBrush="{DynamicResource ThemeBrush_157C3C}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"><TextBlock Text="✓" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><TextBlock Grid.Column="1" Text="Estado dos tweaks" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource ThemeBrush_C8CFD8}" VerticalAlignment="Center" TextWrapping="Wrap"/><TextBlock Grid.Column="2" Text="OK" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right"/></Grid></StackPanel></ScrollViewer>
+<Button x:Name="BtnAnalysisReport" Grid.Row="2" Style="{StaticResource PrimaryButton}" Content="Ver relatório completo" Height="48" FontSize="16" Margin="0,16,0,0" HorizontalContentAlignment="Center"/>
+<TextBlock x:Name="TxtAnalysisDemo" Grid.Row="3" Text="Demonstração visual · indicadores OK ilustrativos · diagnóstico completo ainda não integrado." Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="11" TextWrapping="Wrap" Margin="0,12,0,0"/>
+</Grid></Border></Grid>
+
+                    <!-- Settings with migrated functional tabs -->
+                    <Grid x:Name="PageSettings" Visibility="Collapsed" Margin="20,15,20,14"><Grid.Resources><Style x:Key="SettingsTabButton" TargetType="Button" BasedOn="{StaticResource SecondaryButton}"><Setter Property="Height" Value="30"/><Setter Property="MinWidth" Value="96"/><Setter Property="Margin" Value="0,0,6,0"/></Style></Grid.Resources>
+<Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="42"/><RowDefinition/></Grid.RowDefinitions>
+<StackPanel Margin="0,0,0,16"><TextBlock Text="Configurações" FontSize="24" FontWeight="SemiBold"/><TextBlock Text="Preferências de exibição, opções avançadas e logs do aplicativo." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" Margin="0,5,0,0"/></StackPanel>
+<StackPanel Grid.Row="1" Orientation="Horizontal"><Button x:Name="BtnSettingsTabGeneral" Style="{StaticResource SettingsTabButton}" Content="Geral"/><Button x:Name="BtnSettingsTabAdvanced" Style="{StaticResource SettingsTabButton}" Content="Avançado"/><Button x:Name="BtnSettingsTabLogs" Style="{StaticResource SettingsTabButton}" Content="Logs"/></StackPanel>
+<Border x:Name="SettingsTabGeneral" Grid.Row="2" Background="{DynamicResource ThemeBrush_111111}" BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="8" Padding="20"><ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel><TextBlock Text="Preferências do aplicativo" FontSize="19" FontWeight="SemiBold"/><TextBlock Text="Idioma" FontSize="14" FontWeight="SemiBold" Margin="0,18,0,8"/><StackPanel Orientation="Horizontal"><Button x:Name="BtnLanguageAuto" Content="Automático" Style="{StaticResource SecondaryButton}" Width="120" Margin="0,0,8,0"/><Button x:Name="BtnLanguagePt" Content="PT-BR" Style="{StaticResource SecondaryButton}" Width="100" Margin="0,0,8,0"/><Button x:Name="BtnLanguageEn" Content="English" Style="{StaticResource SecondaryButton}" Width="100"/></StackPanel><TextBlock Text="Segue o Windows. Você pode escolher português ou inglês manualmente." FontSize="12" Foreground="{DynamicResource ThemeBrush_A9AFB8}" TextWrapping="Wrap" Margin="0,8,0,0"/><TextBlock x:Name="TxtLanguageStatus" Text="A escolha é salva neste computador e aplicada imediatamente." FontSize="11" Foreground="{DynamicResource ThemeBrush_FF9A2E}" TextWrapping="Wrap" Margin="0,5,0,0"/><TextBlock Text="Aparência" FontSize="14" FontWeight="SemiBold" Margin="0,16,0,8"/><StackPanel Orientation="Horizontal"><Button x:Name="BtnThemeAuto" Content="Seguir o Windows" Style="{StaticResource SecondaryButton}" Width="150" Margin="0,0,14,0"/><ToggleButton x:Name="OptLightTheme" Style="{StaticResource ThemeSwitch}" Content="Modo claro" AutomationProperties.Name="Modo claro" VerticalAlignment="Center"/></StackPanel><TextBlock x:Name="TxtThemeStatus" Text="O tema acompanha o Windows. Use a chave para escolher manualmente." FontSize="11" Foreground="{DynamicResource ThemeBrush_A9AFB8}" TextWrapping="Wrap" Margin="0,7,0,0"/><CheckBox x:Name="OptAnimations" Style="{StaticResource PresetAdvancedCheck}" Content="Animações da interface" IsChecked="True" Margin="0,18,0,0"/><TextBlock Text="Esmaecimento suave nos botões, indicadores e mudanças de tela. Desative se preferir interações instantâneas." Foreground="{DynamicResource ThemeBrush_A9AFB8}" TextWrapping="Wrap" Margin="0,8,0,0"/><TextBlock Text="Na aba Avançado, configure o modo desenvolvedor e quais informações deseja consultar sobre a seleção atual." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" TextWrapping="Wrap" Margin="0,10,0,0"/><TextBlock Text="Na aba Logs, acompanhe os registros desta versão, atualize a lista ou exporte o arquivo." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" TextWrapping="Wrap" Margin="0,10,0,0"/><TextBlock Text="As preferências são salvas neste computador. Consulte a seção GPU para os ajustes com aplicação e desfazer disponíveis." Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="12" TextWrapping="Wrap" Margin="0,20,0,0"/></StackPanel></ScrollViewer></Border>
+<Grid x:Name="SettingsTabAdvanced" Grid.Row="2" Visibility="Collapsed"><Grid.Resources>
+<Style x:Key="PresetDeveloperSwitch" TargetType="ToggleButton">
+ <Setter Property="Width" Value="126"/><Setter Property="Height" Value="28"/><Setter Property="Cursor" Value="Hand"/><Setter Property="Foreground" Value="{DynamicResource ThemeBrush_E5E7EB}"/><Setter Property="FontSize" Value="11"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+ <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ToggleButton">
+  <Border x:Name="SwitchFocus" Background="Transparent" BorderBrush="Transparent" BorderThickness="1" CornerRadius="5" Padding="2"><Grid><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+   <Border x:Name="SwitchTrack" Width="38" Height="20" CornerRadius="10" Background="{DynamicResource ThemeBrush_42474D}" BorderBrush="{DynamicResource ThemeBrush_747B84}" BorderThickness="1" VerticalAlignment="Center"><Ellipse x:Name="SwitchThumb" Width="14" Height="14" Fill="{DynamicResource ThemeBrush_E5E7EB}" HorizontalAlignment="Left" Margin="2,0"/></Border>
+   <ContentPresenter Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+  </Grid><Border x:Name="MotionGlow" Background="{DynamicResource ThemeBrush_FF9A2E}" CornerRadius="6" Opacity="0" IsHitTestVisible="False"/></Grid></Border>
+  <ControlTemplate.Triggers>
+   <Trigger Property="IsChecked" Value="True"><Setter TargetName="SwitchTrack" Property="Background" Value="{DynamicResource ThemeBrush_00C853}"/><Setter TargetName="SwitchTrack" Property="BorderBrush" Value="{DynamicResource ThemeBrush_55DD91}"/></Trigger>
+   <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="SwitchTrack" Property="BorderBrush" Value="{DynamicResource ThemeBrush_55DD91}"/></Trigger>
+   <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="SwitchFocus" Property="BorderBrush" Value="{DynamicResource ThemeBrush_55DD91}"/></Trigger>
+   <Trigger Property="IsEnabled" Value="False"><Setter TargetName="SwitchFocus" Property="Opacity" Value="0.5"/><Setter Property="Cursor" Value="Arrow"/></Trigger>
+  </ControlTemplate.Triggers>
+ </ControlTemplate></Setter.Value></Setter>
+</Style>
+
+</Grid.Resources><Grid.ColumnDefinitions><ColumnDefinition Width="370"/><ColumnDefinition/></Grid.ColumnDefinitions>
+<Border x:Name="PanelPresetAdvancedOptions" Grid.Column="0" Background="{DynamicResource ThemeBrush_111111}" BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="8" Padding="18" Margin="0,0,12,0"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+<Button x:Name="BtnAdvancedGpu" Content="GPU · detecção e ajustes" Style="{StaticResource SecondaryButton}" Margin="0,0,0,16"/><Grid Margin="0,0,0,12"><TextBlock Text="Modo desenvolvedor" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><ToggleButton x:Name="OptDeveloper" Style="{StaticResource PresetDeveloperSwitch}" Content="Desativado" AutomationProperties.Name="Modo desenvolvedor" HorizontalAlignment="Right"/></Grid>
+<TextBlock Text="Veja os metadados da seleção atual." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,10"/>
+<StackPanel x:Name="DeveloperOptions" IsEnabled="False">
+<CheckBox x:Name="OptExperimental" Style="{StaticResource PresetAdvancedCheck}" Content="Mostrar tweaks experimentais" IsChecked="True" IsEnabled="False" ToolTip="O catálogo atual não tem classificação experimental padronizada."/>
+<CheckBox x:Name="OptIncompatible" Style="{StaticResource PresetAdvancedCheck}" Content="Mostrar tweaks incompatíveis" IsChecked="True" IsEnabled="False" ToolTip="A elegibilidade individual será avaliada na etapa de pré-visualização."/>
+<CheckBox x:Name="OptCommands" Style="{StaticResource PresetAdvancedCheck}" Content="Mostrar comandos" IsChecked="True"/><CheckBox x:Name="OptRegistry" Style="{StaticResource PresetAdvancedCheck}" Content="Mostrar Registry" IsChecked="True"/><CheckBox x:Name="OptProviders" Style="{StaticResource PresetAdvancedCheck}" Content="Mostrar Providers" IsChecked="True"/><CheckBox x:Name="OptHardware" Style="{StaticResource PresetAdvancedCheck}" Content="Mostrar regras de hardware" IsChecked="True"/><CheckBox x:Name="OptDependencies" Style="{StaticResource PresetAdvancedCheck}" Content="Mostrar dependências" IsChecked="True"/><CheckBox x:Name="OptConflicts" Style="{StaticResource PresetAdvancedCheck}" Content="Mostrar conflitos" IsChecked="True"/></StackPanel>
+<TextBlock Text="Outras opções" FontWeight="SemiBold" FontSize="14" Margin="0,14,0,6"/>
+<CheckBox x:Name="OptAutoReport" Style="{StaticResource PresetAdvancedCheck}" Content="Exportar relatório automaticamente"/>
+<CheckBox x:Name="OptDryRun" Style="{StaticResource PresetAdvancedCheck}" Content="Aplicação real limitada a nove preferências de Registro" IsChecked="True" IsEnabled="False" ToolTip="A execução individual dos serviços GPU fica disponível na seção GPU, com backup obrigatório."/>
+<CheckBox x:Name="OptDetailedLog" Style="{StaticResource PresetAdvancedCheck}" Content="Log detalhado" IsChecked="True"/>
+<CheckBox x:Name="OptConfirmRisk" Style="{StaticResource PresetAdvancedCheck}" Content="Confirmar tweaks de alto risco" IsChecked="True" IsEnabled="False" ToolTip="O consentimento de alto risco é obrigatório."/>
+<Button x:Name="BtnExportPresetOptions" Style="{StaticResource SecondaryButton}" Content="Exportar configurações" Margin="0,16,0,0"/>
+<TextBlock x:Name="TxtAdvancedStatus" Text="Opções de exibição salvas neste computador." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="10" TextWrapping="Wrap" Margin="0,10,0,0"/>
+</StackPanel></ScrollViewer></Border>
+<Border x:Name="PanelPresetAdvancedDetails" Grid.Column="1" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="8" Padding="14"><Grid><Grid.RowDefinitions><RowDefinition Height="54"/><RowDefinition/></Grid.RowDefinitions><StackPanel><TextBlock Text="Detalhes da seleção" FontSize="17" FontWeight="SemiBold"/><TextBlock Text="Os campos são lidos do catálogo; exibir comandos não os executa." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0"/></StackPanel><TextBox x:Name="TxtPresetDiagnostics" Grid.Row="1" IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{DynamicResource ThemeBrush_090B0D}" Foreground="{DynamicResource ThemeBrush_C8D3E0}" BorderThickness="0" FontFamily="Consolas" FontSize="11" Padding="8" Text="Ative o modo desenvolvedor para consultar os detalhes."/></Grid></Border><Border x:Name="PanelGpu" Grid.ColumnSpan="2" Visibility="Collapsed" Background="{DynamicResource ThemeBrush_111111}" BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="8" Padding="16"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><StackPanel><Button x:Name="BtnGpuBack" Content="← Voltar ao Avançado" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left"/><TextBlock Text="GPU · ajustes por fabricante" FontSize="20" FontWeight="SemiBold" Margin="0,12,0,8"/><TextBlock x:Name="TxtGpuHardware" Text="Detectando GPUs e drivers…" TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush_A9AFB8}"/><TextBlock Text="O preset seleciona os ajustes compatíveis. Aplicar altera somente o item escolhido, após criar um backup." TextWrapping="Wrap" Margin="0,8,0,12"/></StackPanel><ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel x:Name="GpuGroups"/></ScrollViewer><TextBlock x:Name="TxtGpuStatus" Grid.Row="2" TextWrapping="Wrap" Margin="0,12,0,0" Foreground="{DynamicResource ThemeBrush_FF9A2E}"/></Grid></Border></Grid><Border x:Name="SettingsTabLogs" Grid.Row="2" Visibility="Collapsed" Background="{DynamicResource ThemeBrush_111111}" BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="8" Padding="18"><Grid><Grid.RowDefinitions><RowDefinition Height="50"/><RowDefinition/><RowDefinition Height="28"/></Grid.RowDefinitions>
+<Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Logs do Win-Slim" FontSize="19" FontWeight="SemiBold"/><TextBlock Text="Últimas 200 linhas do log desta versão." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" Margin="0,3,0,0"/></StackPanel><Button x:Name="BtnRefreshPresetLogs" Grid.Column="1" Style="{StaticResource SecondaryButton}" Content="Atualizar" Height="30" Margin="8,0"/><Button x:Name="BtnExportPresetLogs" Grid.Column="2" Style="{StaticResource SecondaryButton}" Content="Exportar logs" Height="30"/></Grid>
+<TextBox x:Name="TxtPresetLogs" Grid.Row="1" IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{DynamicResource ThemeBrush_080B0D}" Foreground="{DynamicResource ThemeBrush_C8D3E0}" BorderBrush="{DynamicResource ThemeBrush_283039}" FontFamily="Consolas" FontSize="11" Padding="12" Text="Nenhum log carregado."/>
+<TextBlock x:Name="TxtPresetLogStatus" Grid.Row="2" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="10" VerticalAlignment="Bottom" Text="Logs de diagnóstico e seleção; nenhuma alteração aplicada."/></Grid></Border></Grid>
+
+                    <Grid x:Name="PageAbout" Visibility="Collapsed" Margin="24,20">
+<Border Background="{DynamicResource ThemeBrush_111111}" BorderBrush="{DynamicResource ThemeBrush_C85A00}" BorderThickness="1" CornerRadius="10" Padding="24,20" MaxWidth="920">
+<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel Margin="0,0,8,0">
+<Grid Margin="0,0,0,18"><Grid.ColumnDefinitions><ColumnDefinition Width="66"/><ColumnDefinition/></Grid.ColumnDefinitions><Path x:Name="AboutBrandMark" Data="F0 M34 2 C22 2 11 10 7 21 C9 21 12 20 15 18 C13 21 10 23 7 24 C7 28 8 31 11 33 C9 36 6 39 4 41 C3 42 5 44 6 43 C9 40 12 37 14 34 C20 33 25 29 29 23 C26 24 23 25 20 25 C24 23 28 21 31 18 C33 13 34 7 34 2 Z M11 33 C15 23 23 13 30 7 C24 15 18 25 13 34 Z" Fill="{DynamicResource ThemeAccent}" Width="38" Height="48" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Center"/><StackPanel Grid.Column="1"><TextBlock Text="Win-Slim Suite" FontSize="28" FontWeight="SemiBold"/><TextBlock x:Name="TxtAboutVersion" Text="R3.2.69 · Windows Optimization Suite" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="13" Margin="0,4,0,0"/><TextBlock Text="Seu Windows no seu melhor." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" Margin="0,5,0,0"/></StackPanel></Grid>
+<TextBlock Text="Escolha, combine e revise ajustes de desempenho, privacidade e uso do Windows em um só lugar." Foreground="{DynamicResource ThemeBrush_C8CFD8}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,18"/>
+<Grid Margin="0,0,0,18"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+<Border Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="12" Margin="0,0,5,0"><StackPanel><TextBlock Text="230" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center"/><TextBlock Text="Ajustes no catálogo" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" HorizontalAlignment="Center"/></StackPanel></Border>
+<Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="12" Margin="5,0"><StackPanel><TextBlock Text="105" Foreground="{DynamicResource ThemeBrush_00C853}" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center"/><TextBlock Text="Equilibrado" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" HorizontalAlignment="Center"/></StackPanel></Border>
+<Border Grid.Column="2" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="12" Margin="5,0"><StackPanel><TextBlock Text="129" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center"/><TextBlock Text="Gamer" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" HorizontalAlignment="Center"/></StackPanel></Border>
+<Border Grid.Column="3" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="12" Margin="5,0,0,0"><StackPanel><TextBlock Text="168" Foreground="{DynamicResource ThemeBrush_FF1744}" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center"/><TextBlock Text="Extremo" Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" HorizontalAlignment="Center"/></StackPanel></Border>
+</Grid>
+<TextBlock Text="Contagens dos presets base; overlays e edições em Personalizado podem alterar a seleção final." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,18"/>
+<Grid Margin="0,0,0,18"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+<Border Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="16" Margin="0,0,6,0"><StackPanel><TextBlock Text="O que você pode fazer" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="• Escolher um preset e combinar overlays.&#10;• Adicionar ou remover ajustes em Personalizado.&#10;• Salvar e importar um preset personalizado.&#10;• Revisar riscos, compatibilidade e reinício na prévia." TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush_C8CFD8}" FontSize="12" LineHeight="22" Margin="0,10,0,0"/></StackPanel></Border>
+<Border Grid.Column="1" Background="{DynamicResource ThemeBrush_0D1012}" BorderBrush="{DynamicResource ThemeBrush_30383F}" BorderThickness="1" CornerRadius="7" Padding="16" Margin="6,0,0,0"><StackPanel><TextBlock Text="Compatibilidade e informações" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="Destinado ao Windows 10 e 11. A disponibilidade de cada ajuste depende da versão do Windows e do hardware." TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush_C8CFD8}" FontSize="12" Margin="0,10,0,0"/><TextBlock Text="Cada ajuste apresenta descrição, risco e informações de reinício, dependências e conflitos quando disponíveis." TextWrapping="Wrap" Foreground="{DynamicResource ThemeBrush_C8CFD8}" FontSize="12" Margin="0,10,0,0"/></StackPanel></Border>
+</Grid>
+<Border Background="{DynamicResource ThemeBrush_241A0D}" BorderBrush="{DynamicResource ThemeBrush_8A5525}" BorderThickness="1" CornerRadius="7" Padding="16" Margin="0,0,0,18"><StackPanel><TextBlock Text="Etapa atual: aplicação inicial do Registro" Foreground="{DynamicResource ThemeBrush_FFB54C}" FontSize="15" FontWeight="SemiBold"/><TextBlock x:Name="TxtAboutMode" Text="Ativado significa selecionado. A pré-visualização consulta o estado real e permite salvar backups de registro e serviços, com cobertura informada nos detalhes. A aplicação real está liberada para nove preferências de Registro de baixo risco, com revisão, backup completo, verificação e recuperação em caso de falha. Os demais ajustes permanecem fora desta aplicação. Em Configurações → Avançado → GPU, os serviços opcionais compatíveis permitem backup, aplicação, verificação e desfazer reais. Em Backup / Restauração, restaure os ajustes cobertos de uma cópia ou somente um tweak. O app cria uma cópia do estado atual antes de restaurar e verifica o resultado. O reinício pelo aplicativo permanece indisponível." Foreground="{DynamicResource ThemeBrush_D8C6AE}" FontSize="12" TextWrapping="Wrap" Margin="0,8,0,0"/></StackPanel></Border>
+<TextBlock Text="Referências e créditos" FontSize="16" FontWeight="SemiBold"/><TextBlock Text="Catálogo desenvolvido a partir das referências WinUtil (Chris Titus Tech), AtlasOS, ReviOS (Revision), Win-Debloat-Tools (LeDragoX) e Win-Slim. São projetos independentes; as referências não indicam afiliação ou endosso." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="12" TextWrapping="Wrap" Margin="0,8,0,14"/>
+<Border Height="1" Background="{DynamicResource ThemeBrush_30383F}" Margin="0,0,0,14"/>
+<TextBlock Text="Projeto: github.com/pauloatx/Win-Slim" Foreground="{DynamicResource ThemeBrush_FF9A2E}" FontSize="12"/>
+<TextBlock Text="Para consultar ou exportar registros: Configurações → Logs. Preferências de exibição ficam em config; relatórios gerados ficam em reports." Foreground="{DynamicResource ThemeBrush_A9AFB8}" FontSize="11" TextWrapping="Wrap" Margin="0,8,0,0"/>
+</StackPanel></ScrollViewer></Border></Grid>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="2" Background="{DynamicResource ThemeBrush_0A0A0A}" Margin="1,0,1,1">
+                <TextBlock x:Name="TxtStatusBar" Text="Pronto — Native UI" Foreground="{DynamicResource ThemeBrush_777E87}" FontSize="9" VerticalAlignment="Center" Margin="10,0"/>
+                <TextBlock Text="Win-Slim Suite · R3.2.69" Foreground="{DynamicResource ThemeBrush_555B64}" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

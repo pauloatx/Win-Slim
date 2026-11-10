@@ -1,0 +1,14 @@
+﻿Win-Slim Suite - FASE 6 R2
+
+Objetivo:
+- formalizar inclusão/exclusão dos presets;
+- manter ConflictPolicy=Block;
+- criar 16 perfis condicionais opt-in para os 5 HardwareConditional e 11 WorkloadConditional;
+- exigir consentimento adicional para condicionais de risco Alto;
+- preservar integralmente a baseline R1 e o backend de 230 tweaks.
+
+Teste (Windows PowerShell 5.1, Administrador):
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase6-R2-PresetPolicy.ps1
+
+O harness é não destrutivo. Não aplica tweaks ao Windows.

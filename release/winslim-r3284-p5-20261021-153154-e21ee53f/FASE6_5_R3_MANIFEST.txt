@@ -1,0 +1,19 @@
+﻿Win-Slim Suite - FASE 6.5 R3 Manifest
+
+NOVOS
+ src/Core/TransactionOptimized.ps1
+ tests/Test-Fase6.5-R3-TransactionOptimization.ps1
+ specs/FASE6.5-R3-baseline.json
+ specs/FASE6.5-R3-benchmark.json
+ FASE6_5_R3_CHANGELOG.txt
+ FASE6_5_R3_MANIFEST.txt
+
+CONGELADOS
+ src/Core/Transaction.ps1 (R13 canônico)
+ src/Core/Planner.ps1
+ src/Core/PlannerOptimized.ps1
+ CatalogRuntime / PresetRuntime / Preview / Providers
+ catálogos e presets
+
+GATE
+ Commit, Apply fail, Verify fail, Undo parcial, idempotência, primeiro backup, restart scopes, persistência, import canônico, recovery cross-process, terminal states e benchmarks.

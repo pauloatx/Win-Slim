@@ -1,0 +1,4 @@
+FASE 7 R3.2.7 — Dashboard conforme composição de referência.
+Nova revisão isolada; R3.2.6 e backend preservados.
+Gate Windows e aprovação visual pendentes.
+Leia FASE7-R3.2.7-LEIA-ME.md.

@@ -1,0 +1,12 @@
+Win-Slim Suite - Fase 3 R8
+
+Correcao principal:
+- BackupData autoritativo deixa de usar JSON e passa a usar CliXml/PSSerializer.
+- Journals/metadados continuam em JSON compacto e legivel.
+- Backup de rollback preserva tipos (inclusive byte[]) e e reidratavel cross-process.
+- Primeiro backup por TweakId continua imutavel; repeticoes apontam para o primeiro snapshot.
+- Recovery mantem compatibilidade de leitura com backups JSON das R3-R7.
+- Trace interno de Save-TransactionBackup foi ampliado.
+
+Motivacao:
+R7 passou TEST 00/01, mas TEST 02 travou em BACKUP PERSIST BEFORE com snapshot de arquivo existente (Content != null), sem criar arquivo temporario ou backup L1. O backup generico nao deve depender do ConvertTo-Json do Windows PowerShell 5.1.

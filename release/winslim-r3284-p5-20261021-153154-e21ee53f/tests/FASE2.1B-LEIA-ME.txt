@@ -1,0 +1,19 @@
+WIN-SLIM SUITE - FASE 2.1B PROVIDER CONFORMANCE
+
+Abra Windows PowerShell como Administrador, na raiz do projeto:
+
+  cd D:\Desktop\winslim
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase2-ProviderConformance.ps1
+
+Resultado esperado para liberar a Fase 3:
+  FASE 2.1B APROVADA - todos os Providers passaram no gate de conformidade.
+
+O harness cria somente recursos temporarios para Service/ScheduledTask,
+usa bootlog temporariamente para BCD, VIDEOIDLE para PowerCfg e restaura
+os estados em blocos finally. AppX e testado sem remover pacote real.
+
+Saidas:
+  Logs\provider-conformance-<timestamp>.log
+  Logs\provider-conformance-<timestamp>.json
+  Backups\Conformance\... (snapshots de seguranca usados no teste)

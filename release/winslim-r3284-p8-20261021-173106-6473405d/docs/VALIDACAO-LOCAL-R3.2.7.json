@@ -1,0 +1,94 @@
+{
+  "environment": "Linux; WPF and Windows PowerShell 5.1 unavailable",
+  "revision": "R3.2.7",
+  "checks": [
+    {
+      "name": "all_received_files_byte_identical",
+      "passed": true,
+      "detail": {
+        "filesCompared": 298,
+        "changed": []
+      }
+    },
+    {
+      "name": "hashes_FASE6.5-R4-baseline.json",
+      "passed": true,
+      "detail": {
+        "filesCompared": 26,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "hashes_FASE7-R3.2.6-baseline.json",
+      "passed": true,
+      "detail": {
+        "filesCompared": 13,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "hashes_FASE7-R3.2.7-baseline.json",
+      "passed": true,
+      "detail": {
+        "filesCompared": 14,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "230_unique_catalog_ids",
+      "passed": true
+    },
+    {
+      "name": "presets_105_129_168",
+      "passed": true
+    },
+    {
+      "name": "xaml_well_formed",
+      "passed": true
+    },
+    {
+      "name": "unique_window_namescope",
+      "passed": true,
+      "detail": 88
+    },
+    {
+      "name": "controller_named_controls_resolve",
+      "passed": true,
+      "detail": {
+        "references": 70,
+        "missing": []
+      }
+    },
+    {
+      "name": "static_resources_resolve",
+      "passed": true
+    },
+    {
+      "name": "16_overlay_controls_preserved",
+      "passed": true
+    },
+    {
+      "name": "presets_page_byte_identical",
+      "passed": true
+    },
+    {
+      "name": "four_metric_arcs",
+      "passed": true
+    },
+    {
+      "name": "history_fields_do_not_report_catalog_as_applied",
+      "passed": true
+    },
+    {
+      "name": "no_direct_windows_mutation",
+      "passed": true
+    },
+    {
+      "name": "r327_paths_and_bridge_version",
+      "passed": true
+    }
+  ],
+  "windowsGate": "pending",
+  "visualApproval": "pending",
+  "status": "local_static_checks_passed_only"
+}

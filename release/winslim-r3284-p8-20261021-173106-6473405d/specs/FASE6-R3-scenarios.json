@@ -1,0 +1,213 @@
+﻿{
+  "schemaVersion": "1.0",
+  "phase": "6-R3",
+  "baseline": "Fase 6 R2 approved / backend 230",
+  "purpose": "Deep Planner validation for canonical presets and R2 conditional overlays without Windows mutation.",
+  "basePresets": {
+    "Balanceado": {
+      "expectedSelectedCount": 105,
+      "expectedAutomaticHighRisk": 0
+    },
+    "Gamer": {
+      "expectedSelectedCount": 129,
+      "expectedAutomaticHighRisk": 0
+    },
+    "Extremo": {
+      "expectedSelectedCount": 168,
+      "expectedAutomaticHighRisk": 0
+    }
+  },
+  "contexts": [
+    {
+      "name": "Win11Admin",
+      "os": "11",
+      "isAdmin": true,
+      "gpu": true
+    },
+    {
+      "name": "Win10Admin",
+      "os": "10",
+      "isAdmin": true,
+      "gpu": true
+    },
+    {
+      "name": "Win11NoGpu",
+      "os": "11",
+      "isAdmin": true,
+      "gpu": false
+    },
+    {
+      "name": "Win11NonAdmin",
+      "os": "11",
+      "isAdmin": false,
+      "gpu": true
+    }
+  ],
+  "conditionalProfiles": [
+    {
+      "name": "HW-HAGS-ON",
+      "kind": "Hardware",
+      "selectedIds": [
+        "MLV-004"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "HW-MSI-GPU",
+      "kind": "Hardware",
+      "selectedIds": [
+        "PERF-018"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "HW-CORE-PARKING-100",
+      "kind": "Hardware",
+      "selectedIds": [
+        "WS-ADV-001"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "HW-CS2-P-CORES",
+      "kind": "Hardware",
+      "selectedIds": [
+        "WS-ADV-002"
+      ],
+      "requiresHighRiskConsent": true
+    },
+    {
+      "name": "HW-GPU-IRQ-AFFINITY",
+      "kind": "Hardware",
+      "selectedIds": [
+        "WS-ADV-003"
+      ],
+      "requiresHighRiskConsent": true
+    },
+    {
+      "name": "WL-VALORANT",
+      "kind": "Workload",
+      "selectedIds": [
+        "GAME-001"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-CS2",
+      "kind": "Workload",
+      "selectedIds": [
+        "GAME-002"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-APEX",
+      "kind": "Workload",
+      "selectedIds": [
+        "GAME-003"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-FORTNITE",
+      "kind": "Workload",
+      "selectedIds": [
+        "GAME-004"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-GTAV",
+      "kind": "Workload",
+      "selectedIds": [
+        "GAME-005"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-FSO-OFF",
+      "kind": "Workload",
+      "selectedIds": [
+        "PERF-013"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-DEFENDER-DEV-EXCLUSIONS",
+      "kind": "Workload",
+      "selectedIds": [
+        "SEC-011"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-STREAMING",
+      "kind": "Workload",
+      "selectedIds": [
+        "WORK-001"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-VIDEO-EDITING",
+      "kind": "Workload",
+      "selectedIds": [
+        "WORK-002"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-DESIGN",
+      "kind": "Workload",
+      "selectedIds": [
+        "WORK-003"
+      ],
+      "requiresHighRiskConsent": false
+    },
+    {
+      "name": "WL-PROGRAMMING",
+      "kind": "Workload",
+      "selectedIds": [
+        "WORK-004"
+      ],
+      "requiresHighRiskConsent": false
+    }
+  ],
+  "mediumStack": {
+    "preset": "Gamer",
+    "profiles": [
+      "HW-HAGS-ON",
+      "HW-MSI-GPU",
+      "HW-CORE-PARKING-100",
+      "WL-VALORANT",
+      "WL-CS2",
+      "WL-APEX",
+      "WL-FORTNITE",
+      "WL-GTAV",
+      "WL-FSO-OFF",
+      "WL-DEFENDER-DEV-EXCLUSIONS",
+      "WL-STREAMING",
+      "WL-VIDEO-EDITING",
+      "WL-DESIGN",
+      "WL-PROGRAMMING"
+    ],
+    "expectedSelectedCount": 143,
+    "expectedHighRisk": 0
+  },
+  "highRiskProfiles": [
+    "HW-CS2-P-CORES",
+    "HW-GPU-IRQ-AFFINITY"
+  ],
+  "invariants": [
+    "Policy must resolve before Planner execution.",
+    "ConflictPolicy remains Block.",
+    "Every active dependency must precede its depender in ExecutionOrder.",
+    "RiskSummary must exactly match executable items.",
+    "RestartRequirements must exactly match executable items.",
+    "Equal inputs and context must produce equal fingerprints.",
+    "Changing OS context must alter the Planner fingerprint while leaving the policy fingerprint unchanged.",
+    "Non-admin context must block administrator-required work instead of silently skipping it.",
+    "Missing GPU may skip GPU-required tweaks but must not create a structural Planner block.",
+    "Valid plans must convert to Transaction items without changing order."
+  ]
+}

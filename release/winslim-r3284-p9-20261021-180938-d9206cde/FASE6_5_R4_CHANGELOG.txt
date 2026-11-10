@@ -1,0 +1,9 @@
+﻿Win-Slim Suite - FASE 6.5 R4
+
+- Adiciona src/Core/RuntimePromotion.ps1.
+- PlannerOptimized R2.1 e TransactionOptimized R3 passam a ser roteáveis pelas APIs canônicas.
+- Mantém fallback explícito para Planner R1 / Transaction R13.
+- Integra promoção ao WinSlimSuite.dev.ps1.
+- Adiciona regressão Preview/TOCTOU, commit, rollback LIFO e pipeline end-to-end.
+- Adiciona benchmark final legado vs promovido.
+- Backend/presets permanecem 230 / 105 / 129 / 168.

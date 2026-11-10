@@ -1,0 +1,79 @@
+{
+  "revision": "R3.2.8",
+  "checks": [
+    {
+      "name": "previous_revision_files_byte_identical",
+      "passed": true,
+      "detail": 317
+    },
+    {
+      "name": "hashes_FASE6.5-R4-baseline.json",
+      "passed": true,
+      "detail": 26
+    },
+    {
+      "name": "hashes_FASE7-R3.2.7-baseline.json",
+      "passed": true,
+      "detail": 14
+    },
+    {
+      "name": "hashes_FASE7-R3.2.8-baseline.json",
+      "passed": true,
+      "detail": 14
+    },
+    {
+      "name": "xaml_well_formed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "dashboard_layout_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ifneeded_uses_separate_log",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "failed_build_not_reused",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "compiler_targets_staging",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "publish_follows_compiler_success",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "gate_stops_before_ifneeded_and_selftest",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "gate_preserves_child_streams",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "gate_checks_log_preservation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "build_guard_does_not_terminate_apps",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "status": "local_static_checks_passed_only",
+  "windowsGate": "pending",
+  "visualApproval": "pending",
+  "r327_received_gate": "failed_build; original compiler diagnostic overwritten by IfNeeded"
+}

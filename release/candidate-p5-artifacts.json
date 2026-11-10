@@ -1,0 +1,18 @@
+﻿{
+    "Revision":  "R3.2.84",
+    "Patch":  5,
+    "Candidate":  "D:\\Desktop\\winslim_fase7_r3_2_84\\release\\winslim-r3284-p5-20261021-153154-e21ee53f",
+    "Zip":  "D:\\Desktop\\winslim_fase7_r3_2_84\\release\\winslim-r3284-p5-20261021-153154-e21ee53f.zip",
+    "ZipBytes":  17241088,
+    "ZipSHA256":  "C5E625B805D43836E6CF2447E53FEF9622777F3B87138F08E81C87E2266BE921",
+    "BinarySHA256":  "E638D1341F202B73ED8827AB796D2230ECEBD4036DF12A44EF04F2E29E0F857A",
+    "RegressionPassed":  17,
+    "RegressionTotal":  17,
+    "PackagerTestsPassed":  6,
+    "ValidatedHashes":  134,
+    "ProductionApproved":  false,
+    "EdgeManual":  "Pending",
+    "OverlayManual":  "Pending",
+    "HostedCI":  "Pending",
+    "PriorP4BinaryPreserved":  true
+}

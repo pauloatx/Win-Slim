@@ -1,0 +1,12 @@
+﻿{
+  "schemaVersion": "1.0",
+  "phase": "FASE6.5-R2",
+  "plannerIterations": 6,
+  "pipelineIterations": 3,
+  "benchmarkIsGate": false,
+  "notes": [
+    "Tempos sao diagnosticos; equivalencia funcional/fingerprint e o gate.",
+    "CatalogRuntime/PresetRuntime/PlannerRuntime sao inicializados uma vez antes das medicoes.",
+    "Planner R1 permanece como comparador canônico nesta shadow validation."
+  ]
+}

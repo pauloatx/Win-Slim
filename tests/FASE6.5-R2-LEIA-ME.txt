@@ -1,0 +1,16 @@
+﻿FASE 6.5 R2 - Planner Structural Refactor / Shadow Validation
+
+Execute no Windows PowerShell 5.1 como Administrador:
+
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase6.5-R2-PlannerOptimization.ps1
+
+O harness NAO aplica tweaks no Windows.
+Ele compara Planner R1 contra PlannerOptimized em memória e grava somente:
+  benchmarks\FASE6.5-R2-last-run.json
+
+Gate principal:
+- fingerprints/decisões/ordem equivalentes;
+- Preview/binding preservados;
+- Transaction Manager R13 e Planner R1 canônico congelados;
+- benchmark é diagnóstico, não gate por tempo.

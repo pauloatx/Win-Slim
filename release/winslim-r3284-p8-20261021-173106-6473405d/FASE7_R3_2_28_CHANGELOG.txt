@@ -1,0 +1,1 @@
+R3.2.28: Voltar destacado sutilmente; preset/overlays inicializam Personalizado; edicao e restauracao da selecao base; exportacao/importacao JSON portavel com IDs e niveis; previa customizada pelo Planner; demonstracao utiliza plano customizado. Execucao real permanece indisponivel. Gate Windows R3.2.28 pendente.

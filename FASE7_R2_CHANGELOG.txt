@@ -1,0 +1,26 @@
+Win-Slim Suite - FASE 7 R2
+Dashboard + hardware/contexto
+
+BASE
+- FASE 6.5 R4.1 continua como fonte de verdade do backend.
+- FASE 7 R1 foi preservada byte-a-byte para permitir regressao do gate anterior.
+- R2 usa entrypoint e arquivos de UI próprios durante o desenvolvimento.
+
+ADICIONADO
+- Dashboard conectado a dados reais do sistema.
+- Windows, build, arquitetura, CPU, GPU, RAM, armazenamento e tipo de dispositivo.
+- Diagnostico read-only de Secure Boot, TPM, VBS, HVCI, BitLocker, reboot pendente, rede e plano de energia.
+- Metricas CPU/GPU/RAM/Disco com atualizacao periodica de 3 segundos.
+- Tela Analise do Sistema conectada ao snapshot real.
+- Atualizacao manual do Dashboard e do diagnostico.
+- Launcher Executar-WinSlim-R2.bat / WinSlimSuite.Fase7R2.ps1.
+
+GARANTIAS
+- Nenhuma primitiva de mutacao do Windows foi adicionada a UI R2.
+- Nenhum provider e executado pela UI R2.
+- Planner/Transaction/Preview/Presets permanecem semanticamente inalterados.
+- Backend permanece 230 tweaks; presets 105/129/168.
+- Arquivos congelados da FASE 7 R1 permanecem byte-a-byte intactos.
+
+PROXIMO SUBGATE
+- FASE 7 R3: Presets + overlays condicionais.

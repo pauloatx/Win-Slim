@@ -1,0 +1,71 @@
+{
+  "phase": "FASE 5 R4.2",
+  "policy": "Final curated Phase 5 batch. Only current policies with explicit Microsoft registry/policy documentation were promoted; obsolete/deprecated Edge policies were excluded.",
+  "entries": [
+    {
+      "id": "PRIV-019",
+      "reference": "System Policy CSP / AllowDeviceNameInDiagnosticData",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-system#allowdevicenameindiagnosticdata"
+    },
+    {
+      "id": "PRIV-020",
+      "reference": "Experience Policy CSP / AllowClipboardHistory",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-experience#allowclipboardhistory"
+    },
+    {
+      "id": "SEARCH-001",
+      "reference": "Search Policy CSP / DisableRemovableDriveIndexing",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-search#disableremovabledriveindexing"
+    },
+    {
+      "id": "EDGE-022",
+      "reference": "Microsoft Edge policy / NetworkPredictionOptions",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/networkpredictionoptions"
+    },
+    {
+      "id": "EDGE-023",
+      "reference": "Microsoft Edge policy / NewTabPagePrerenderEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/newtabpageprerenderenabled"
+    },
+    {
+      "id": "EDGE-024",
+      "reference": "Microsoft Edge policy / AlternateErrorPagesEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/alternateerrorpagesenabled"
+    },
+    {
+      "id": "EDGE-025",
+      "reference": "Microsoft Edge policy / SearchSuggestEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/searchsuggestenabled"
+    },
+    {
+      "id": "EDGE-026",
+      "reference": "Microsoft Edge policy / TextPredictionEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/textpredictionenabled"
+    },
+    {
+      "id": "EDGE-027",
+      "reference": "Microsoft Edge policy / VisualSearchEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/visualsearchenabled"
+    },
+    {
+      "id": "EDGE-028",
+      "reference": "Microsoft Edge policy / AutofillMembershipsEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/autofillmembershipsenabled"
+    },
+    {
+      "id": "EDGE-029",
+      "reference": "Microsoft Edge policy / MicrosoftEditorProofingEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/microsofteditorproofingenabled"
+    },
+    {
+      "id": "EDGE-030",
+      "reference": "Microsoft Edge policy / PaymentMethodQueryEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/paymentmethodqueryenabled"
+    },
+    {
+      "id": "EDGE-031",
+      "reference": "Microsoft Edge policy / DiagnosticData",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/diagnosticdata"
+    }
+  ]
+}

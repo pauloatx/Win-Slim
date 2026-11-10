@@ -1,0 +1,12 @@
+﻿{
+  "schemaVersion": "1.0",
+  "phase": "FASE6.5-R1",
+  "lookupOuterIterations": 25,
+  "policyIterations": 15,
+  "pipelineIterations": 4,
+  "benchmarkIsGate": false,
+  "notes": [
+    "Timings sao diagnosticos; equivalencia funcional e o gate.",
+    "Runtime e inicializado uma vez antes das medicoes."
+  ]
+}

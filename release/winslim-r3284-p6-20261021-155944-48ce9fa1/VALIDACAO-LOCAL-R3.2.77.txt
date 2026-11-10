@@ -1,0 +1,1 @@
+R3.2.77: XML/XAML, JSON, hashes, referencia de nove suites, preservacao de base e ZIP conferidos. PowerShell 5.1, compilacao C#/WPF e validacao de efeitos no Windows PENDENTES.

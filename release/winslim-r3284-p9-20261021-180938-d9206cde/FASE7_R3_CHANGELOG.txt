@@ -1,0 +1,26 @@
+Win-Slim Suite - FASE 7 R3
+Presets + overlays condicionais
+
+BASE
+- FASE 6.5 R4.1 continua como fonte de verdade do backend.
+- FASE 7 R1 e R2 permanecem byte-a-byte preservadas.
+- R3 usa entrypoint e arquivos proprios durante o desenvolvimento.
+
+ADICIONADO
+- Selecao funcional dos presets Balanceado, Gamer e Extremo via PresetRuntime canonico.
+- Destaque visual do preset ativo.
+- 16 overlays condicionais aprovados, separados em Hardware e Workloads.
+- Elegibilidade visual de hardware usando o snapshot read-only da R2.
+- Consentimento explicito separado para os dois overlays de risco Alto.
+- Resumo ao vivo de base, overlays habilitados, total selecionado, bloqueios, avisos e policy fingerprint.
+- Bloqueios e warnings continuam vindo do PresetRuntime; a UI nao reimplementa conflito/mutex/niveis.
+- Limpeza de overlays sem alterar o preset base.
+
+GARANTIAS
+- R3 nao chama Planner, Preview, Transaction ou Providers para executar alteracoes.
+- Nenhuma primitiva de mutacao do Windows foi adicionada a UI.
+- Backend permanece 230 tweaks; presets base permanecem 105/129/168.
+- Overlays permanecem opt-in explicito; risco Alto exige consentimento adicional.
+
+PROXIMO SUBGATE
+- FASE 7 R4: Catalogo Personalizado.

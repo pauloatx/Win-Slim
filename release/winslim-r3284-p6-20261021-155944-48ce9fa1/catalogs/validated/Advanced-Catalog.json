@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "2.1-module",
+  "generatedBy": "Win-Slim Suite - FASE 5 R3 / Advanced Promotion",
+  "count": 3,
+  "visibility": "BackendValidated;LegacyUIHiddenUntilPhase7",
+  "tweaks": [
+    {
+      "id": "WS-ADV-001",
+      "name": "Core Parking - CPMINCORES 100% AC/DC",
+      "plainName": "Manter todos os núcleos disponíveis no plano de energia ativo",
+      "description": "Define CPMINCORES em 100% para AC e DC usando o CoreParkingProvider. O estado AC/DC anterior é capturado antes da alteração e restaurado exatamente no Undo. Se CPMINCORES não puder ser consultado no plano/sistema atual, o Provider retorna SKIP seguro.",
+      "category": "Performance / CPU",
+      "risk": "Médio",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": null,
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "None",
+      "rollbackClass": [
+        "PowerCfg"
+      ],
+      "type": "provider",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5 R2.1 Windows gate"
+      ],
+      "provider": {
+        "name": "CoreParkingProvider",
+        "entryPoint": "Invoke-CoreParkingProvider",
+        "arguments": {
+          "TargetAc": 100,
+          "TargetDc": 100
+        }
+      },
+      "providerGuards": [
+        "CPMINCORES queryable in active power scheme"
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Efeito aplicado ao plano de energia ativo; não requer reinicialização do Windows.",
+      "rollbackNote": "Undo restaura os índices AC/DC capturados antes do Apply."
+    },
+    {
+      "id": "WS-ADV-002",
+      "name": "Counter-Strike 2 - Afinidade dinâmica somente P-cores",
+      "plainName": "Usar somente P-cores no CS2 quando a CPU híbrida permitir detecção confiável",
+      "description": "Calcula dinamicamente a máscara de P-cores via GetLogicalProcessorInformationEx(RelationProcessorCore), usando EfficiencyClass >= 1. Instala um worker do Win-Slim e tarefa agendada para reaplicar a afinidade ao CS2. Em CPU homogênea, múltiplos processor groups ou topologia incerta, o Provider retorna SKIP e não cria artefatos.",
+      "category": "Jogos / CPU",
+      "risk": "Alto",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {},
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": "CS2_CPU_AFFINITY_POLICY",
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": false,
+      "restartScope": "None",
+      "rollbackClass": [
+        "ScheduledTask",
+        "File",
+        "ProcessAffinity"
+      ],
+      "type": "provider",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5 R2.1 Windows gate"
+      ],
+      "provider": {
+        "name": "CpuAffinityProvider",
+        "entryPoint": "Invoke-CpuAffinityProvider",
+        "arguments": {
+          "ProcessName": "cs2.exe",
+          "TaskName": "WinSlimSuite-AffinityCs2"
+        }
+      },
+      "providerGuards": [
+        "single processor group",
+        "logical processors <= 63",
+        "P/E classes distinguishable",
+        "EfficiencyClass >= 1"
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Aplica imediatamente aos processos CS2 já existentes e mantém um worker para sessões futuras.",
+      "rollbackNote": "Undo restaura tarefa prévia, bytes do worker anterior e afinidade original dos PIDs ainda existentes."
+    },
+    {
+      "id": "WS-ADV-003",
+      "name": "GPU Interrupt Affinity - DevicePolicy + AssignmentSetOverride",
+      "plainName": "Definir afinidade de interrupções da GPU conforme a topologia da CPU",
+      "description": "Configura DevicePolicy=4 e AssignmentSetOverride por GPU PCI. A máscara não é fixa: é derivada de dois núcleos físicos distintos; em topologia compatível pode resultar naturalmente em 0x14, como observado no backend referência técnica. Se a topologia for incerta ou houver menos de 8 processadores lógicos, o Provider retorna SKIP.",
+      "category": "Performance / GPU",
+      "risk": "Alto",
+      "windowsVersion": [
+        "10",
+        "11"
+      ],
+      "hardwareRules": {
+        "requiresGPU": true
+      },
+      "dependencies": [],
+      "conflicts": [],
+      "mutexGroup": "GPU_INTERRUPT_AFFINITY_POLICY",
+      "presets": [],
+      "requiresAdmin": true,
+      "requiresRestart": true,
+      "restartScope": "Reboot",
+      "rollbackClass": [
+        "Registry"
+      ],
+      "type": "provider",
+      "source": "Seal+WS",
+      "sourceRefs": [
+        "Seal IL audit",
+        "Win-Slim Phase 5 R2.1 Windows gate"
+      ],
+      "provider": {
+        "name": "GpuInterruptAffinityProvider",
+        "entryPoint": "Invoke-GpuInterruptAffinityProvider",
+        "arguments": {}
+      },
+      "providerGuards": [
+        ">= 8 logical processors",
+        "detectable PCI display device",
+        "deterministic topology-derived mask"
+      ],
+      "uiAvailability": "Phase7",
+      "activationNote": "Requer reinicialização para garantir que a política de afinidade de interrupção seja retomada pelo dispositivo/driver.",
+      "rollbackNote": "Undo restaura por GPU a existência, tipo e bytes originais de DevicePolicy e AssignmentSetOverride."
+    }
+  ]
+}

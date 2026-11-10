@@ -1,0 +1,55 @@
+Win-Slim Suite - FASE 5 R1 / Game-Workload Game+Workload
+Data: 2026-10-04
+Baseline: Fase 4 R1 aprovada em Windows PowerShell 5.1.
+
+IMPLEMENTADO
+1. Novo módulo modular catalogs/Game-Workload.json, carregável automaticamente pela GUI atual.
+2. 10 novos tweaks executáveis, todos fora dos presets até a Fase 6:
+   - GAME-001 VALORANT IFEO High
+   - GAME-002 CS2 IFEO High
+   - GAME-003 Apex IFEO High
+   - GAME-004 Fortnite IFEO High
+   - GAME-005 GTA V IFEO High
+   - WORK-001 OBS/Streamlabs IFEO High
+   - WORK-002 Premiere/AfterFX/Media Encoder/Resolve IFEO High
+   - WORK-003 Photoshop/Illustrator/Lightroom/Figma IFEO High
+   - WORK-004 VS Code/JetBrains IFEO High
+   - PERF-019 MMCSS Games 8/6/High/High
+3. src/Providers/GamePriorityProvider.ps1:
+   wrapper parametrizado sobre RegistryProvider; Backup/Undo exatos por executável.
+4. src/Providers/MmcssProvider.ps1:
+   wrapper parametrizado sobre RegistryProvider; 4 valores MMCSS com rollback exato.
+5. WinSlimSuite.dev.ps1 passa a carregar os dois Providers novos.
+6. specs/Workload-advanced-pending.json documenta sem expor prematuramente:
+   - Core Parking CPMINCORES AC/DC=100;
+   - CS2 P-core affinity via GetLogicalProcessorInformationEx + EfficiencyClass>=1;
+   - GPU IRQ affinity DevicePolicy=4 + máscara referência técnica observada 0x14 (bits 2/4).
+7. Deduplicação explícita:
+   - referência técnica Win32PrioritySeparation 0x26/38 -> reutiliza PERF-006;
+   - referência técnica SystemResponsiveness 10 -> reutiliza PERF-012;
+   - EXTRA-005=0 continua alternativa agressiva, conflitante.
+8. Novo harness tests/Test-Fase5-WorkloadCatalog.ps1 com 11 blocos de gate.
+
+DECISÕES DE SEGURANÇA / ARQUITETURA
+- Transaction.ps1 R13 congelado.
+- Planner.ps1 R1 congelado.
+- RegistryProvider aprovado congelado.
+- catalog.json base congelado em 177 entradas; Seal entra em módulo separado.
+- Core parking, CPU affinity e GPU IRQ affinity NÃO entram no catálogo executável em R1.
+  Primeiro precisam de Providers dedicados com Backup/Verify/Undo exatos.
+- Nenhum novo tweak entra automaticamente em Balanceado/Gamer/Extremo na Fase 5 R1.
+  A política de presets será feita na Fase 6.
+
+CONTAGEM
+- catalog.json base: 177
+- catalogs/Game-Workload.json: +10
+- total carregado pela GUI: 187
+- specs pendentes não executáveis: 3
+
+PRÓXIMO SUBGATE
+FASE 5 R2:
+- CoreParkingProvider;
+- CpuAffinityProvider;
+- GpuInterruptAffinityProvider;
+- hardwareRules/contexto necessários;
+- harness real/sintético com rollback exato.

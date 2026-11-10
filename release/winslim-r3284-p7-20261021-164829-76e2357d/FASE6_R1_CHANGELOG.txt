@@ -1,0 +1,64 @@
+Win-Slim Suite - FASE 6 R1
+Canonical Preset Composition
+
+BASELINE
+- Fase 5 R4.2.1 aprovada: 230 tweaks backend.
+- Planner R1 preservado.
+- Transaction Manager R13 preservado.
+- Providers e catálogos da Fase 5 preservados por SHA-256.
+
+NOVO
+1. presets/WinSlim-Presets-R1.json
+   - classificação explícita dos 230 tweaks;
+   - presets canônicos Balanceado, Gamer e Extremo;
+   - modos Auto, ManualOnly, HardwareConditional, WorkloadConditional,
+     Maintenance e Diagnostic;
+   - decisões explícitas para mutex/conflicts já conhecidos.
+
+2. src/Core/PresetResolver.ps1
+   - camada pura;
+   - não altera Windows;
+   - não modifica o catálogo validado;
+   - converte preset canônico em SelectedIds + LevelSelections para o Planner.
+
+3. tests/Test-Fase6-R1-Presets.ps1
+   - congela baseline Fase 5;
+   - exige cobertura 230/230;
+   - proíbe risco Alto em preset automático;
+   - valida conflicts/mutex/dependencies/levels;
+   - valida determinismo do Planner;
+   - protege a UI/autoload legado em 187 entradas.
+
+COMPOSIÇÃO R1
+- Balanceado: 105 tweaks.
+- Gamer: 129 tweaks.
+- Extremo: 168 tweaks.
+- Auto (união): 171 tweaks.
+- ManualOnly: 35.
+- HardwareConditional: 5.
+- WorkloadConditional: 11.
+- Maintenance: 6.
+- Diagnostic: 2.
+
+DECISÕES IMPORTANTES
+- RESP-005 x RESP-006:
+  Balanceado/Gamer = RESP-006; Extremo = RESP-005.
+- PERF-012 x EXTRA-005:
+  Gamer = PERF-012 (10); Extremo = EXTRA-005 (0).
+- UI-004 x UI-021:
+  Balanceado/Gamer = UI-004; Extremo = UI-021.
+- APP-032 x APP-032X:
+  somente APP-032 entra no Extremo; APP-032X permanece manual.
+- UPD-002 x UPD-003:
+  todos os presets usam UPD-002; UPD-003 permanece manual.
+- PERF-011 x SEC-006:
+  nenhum entra automaticamente.
+
+POLÍTICA DE SEGURANÇA
+Nenhum tweak de risco Alto é aplicado por Balanceado, Gamer ou Extremo.
+Defender, VBS/HVCI, mitigacões Spectre/Meltdown e pausa agressiva do Windows
+Update continuam fora dos presets automáticos.
+
+PRÓXIMO
+FASE 6 R2 - formalização de regras condicionais, inclusões/exclusões e grupos
+mutex/conflict antes da integração transacional completa dos presets.

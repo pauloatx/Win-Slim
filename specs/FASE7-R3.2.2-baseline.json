@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "phase": "FASE 7 R3.2.2",
+  "parentApproved": "FASE 7 R3.1.1 + FASE 6.5 R4.1; R3.2.1 preservada para auditoria",
+  "r322Files": {
+    "Build-NativeUI-R3.2.2.ps1": "efcb573b4774e23369c6e3bdfa87edc4821b17d77e7c62d01861103dfa88cd2e",
+    "Executar-WinSlim-R3.2.2.bat": "10f098f7781e6c2b611458844c3aa7c04ae8037bc92243ee1b47462797255613",
+    "src\\UI\\Native\\R3_2_2\\Program.cs": "df011f8ed613d1cd7086fd95bc79ae6b47f8e81ec5fa05ea73ec612b74fc750a",
+    "src\\UI\\Native\\R3_2_2\\BridgeClient.cs": "ba8425f58be9f235962b489df4be961a45af1af3060e1cda57f77af211fb8d03",
+    "src\\UI\\Native\\R3_2_2\\MainWindowController.cs": "263d12db1d033402709f6973f435521e74bc1331e547310fe7cfe02c882e6d6a",
+    "src\\UI\\Native\\R3_2_2\\WinSlimShell.xaml": "d12ebf44a74ffa97ef44c9c5ce825bd89fd7a69316242a4b8bca39b7ab77649a",
+    "src\\UI\\Native\\R3_2_2\\WinSlim.UiBridge.ps1": "ae0167d20e15ad2c32d7994c36b0812a3143a389688f26889c711f6c9d9c0c9e",
+    "src\\UI\\Native\\R3_2_2\\WinSlim.UI.Native.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "src\\UI\\Native\\R3_2_2\\WinSlim.NativeUI.manifest": "b30bb437c9a628a891f37fc53c0652843d1b2d21541debed4f096b6d6fe2fba9",
+    "tests\\Test-Fase7-R3.2.2-NativeUI.ps1": "f142b63235c2854a853e54951830ca26a1521abfe8295225b22b6d407aa0f797",
+    "FASE7_R3_2_2_CHANGELOG.txt": "571dfe5b7c495f12a197115d5c5aeed9a48e99122a9f6c1c2ab713796aef6644",
+    "FASE7-R3.2.2-LEIA-ME.md": "dd908ae064ea3fdf9f47854aa80dad2b461a4c5730df96032b5adae0b0a29dd8",
+    "docs\\FASE7-R3.2.2-NATIVE-UI-BUILD-HOTFIX.md": "77633302a123828b5339893e4cfbf38b9fcea7e17aef48f8bc1b62882f4b9193"
+  }
+}

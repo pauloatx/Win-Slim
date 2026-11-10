@@ -1,0 +1,6 @@
+R3.2.53 — validador alinhado ao build atual
+- Substitui duas verificações obsoletas pelo contrato de cache SHA-256.
+- Verifica assinatura e hashes reais do executável/config publicados.
+- Mantém testes de reaproveitamento e preservação do log.
+- Comportamento do build, UI e motor preservado.
+- Novo gate pendente de execução no Windows.

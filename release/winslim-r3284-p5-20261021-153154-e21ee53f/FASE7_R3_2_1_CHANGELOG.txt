@@ -1,0 +1,13 @@
+Win-Slim Suite - FASE 7 R3.2.1 / Native UI Hotfix
+
+Correcoes sobre a R3.2 reprovada:
+1. Corrigida a contagem visual dos overlays: o toggle de Modo desenvolvedor ganhou estilo proprio (SettingsSwitch), deixando exatamente 16 chips condicionais.
+2. Corrigido o modo one-shot do bridge no Windows PowerShell 5.1: ProfilesJson agora possui parser tolerante a remocao de aspas pelo argv nativo.
+3. Preservado o protocolo JSON canonico do modo servidor persistente usado pela UI C#.
+4. Build nativo refeito com response file do csc.exe, /codepage:65001 e diagnostico persistente em logs/build-native-r3.2.1.log.
+5. Removida a dependencia do manifest customizado como pre-condicao de compilacao; DPI Per-Monitor V2 passa a ser solicitado programaticamente antes da criacao do WPF, com fallback seguro.
+6. Native UI R3.2.1 isolada em src/UI/Native/R3_2_1 para manter a R3.2 reprovada intacta para auditoria.
+7. Novo gate R3.2.1 executa build com diagnostico visivel e self-test WPF real.
+
+Sem alteracoes em Planner, Transaction, PresetRuntime, Preview, Providers ou catalogos aprovados.
+A R3.2.1 continua read-only: nao aplica tweaks e nao inicia transacao.

@@ -1,0 +1,1 @@
+R3.2.72: estrutura e integridade conferidas. Regressao compilada e execucao WPF pendentes no Windows. Leia FASE7-R3.2.72-LEIA-ME.md.

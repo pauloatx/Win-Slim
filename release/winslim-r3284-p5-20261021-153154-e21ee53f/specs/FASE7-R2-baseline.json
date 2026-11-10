@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "phase": "FASE7-R2",
+  "basePhase": "FASE6.5-R4.1",
+  "previousUiGate": "FASE7-R1",
+  "scope": "Dashboard + hardware/contexto real em modo read-only",
+  "backendExpectedCount": 230,
+  "presetExpectedCounts": {
+    "Balanceado": 105,
+    "Gamer": 129,
+    "Extremo": 168
+  },
+  "performanceRefreshSeconds": 3,
+  "r1Baseline": "specs/FASE7-R1-baseline.json",
+  "protectedBackendBaseline": "specs/FASE6.5-R4-baseline.json",
+  "r2Files": {
+    "WinSlimSuite.Fase7R2.ps1": "a8f7d3bd83c7e4c6f694ad7f17c70d2d36bb15f6614d389e3f94726907c34ff4",
+    "Executar-WinSlim-R2.bat": "beb301160014869422383ccb0c58964bf97e71e3c09b719f2eaef4ed8f77ccfe",
+    "src/UI/Fase7/SystemContextView.R2.ps1": "3e9dbad8b69475c7ec6e27c0a4c1aa0cab25e7a9b975f7ee1fdb76eb6e74644c",
+    "src/UI/Fase7/WinSlimShell.R2.ps1": "c85c309e3efe6dea7720cb623d4d2e5bc5d42c727df162cac62801aa80b24f0f",
+    "src/UI/Fase7/WinSlimShell.R2.xaml": "131892c7f02bf29adad5dc479692da3278dbef6035d14f67dd92447d6db15c8d",
+    "tests/Test-Fase7-R2-UI.ps1": "5c176c187079dd7f663dc9cece92cec54dce6f97a7d5ff105dbde29a94f01212",
+    "FASE7_R2_CHANGELOG.txt": "8a045933cec4753bfe3be890182f48bdd05ce3e9af36b657d71b45a3510578b6",
+    "FASE7-R2-LEIA-ME.md": "65526d0b87b59fb00639a62326b770a523e1377da952538c6430cff39abd8815"
+  }
+}

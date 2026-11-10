@@ -1,0 +1,37 @@
+﻿Win-Slim Suite - FASE 6.5 R1
+
+Objetivo
+- Iniciar cleanup/refactor/otimizacao pesada sem alterar comportamento aprovado.
+- Criar runtime indexado do catalogo e hot-path otimizado de presets.
+- Registrar benchmark antes/depois no Windows PowerShell 5.1.
+
+Adicionado
+- src/Core/CatalogRuntime.ps1
+  * ById O(1), Position, DependenciesById, DependentsById, ConflictsById, MutexGroups, RiskById.
+  * Fingerprint deterministico do runtime.
+- src/Core/PresetRuntime.ps1
+  * Validacao de catalogos uma unica vez.
+  * Pre-resolucao Balanceado/Gamer/Extremo.
+  * Reuso de perfil condicional e CatalogRuntime.
+  * Resolve-WinSlimPresetRuntimeSelection.
+  * Invoke-WinSlimPresetRuntimePlannerValidation.
+- tests/Test-Fase6.5-R1-RuntimeOptimization.ps1
+- specs/FASE6.5-R1-baseline.json
+- specs/FASE6.5-R1-benchmark.json
+
+Congelado nesta R1
+- Planner R1 byte-a-byte.
+- Transaction Manager R13 byte-a-byte.
+- Catalogos 230 tweaks.
+- Presets e regras da Fase 6.
+- Preview/binding da Fase 6 R4.
+
+Benchmark
+- lookup legado por scan vs ById indexado;
+- Policy Engine legado vs PresetRuntime;
+- pipeline Preset->Planner legado vs Runtime->Planner.
+- tempo e diagnostico, nao gate rigido por desempenho devido variacao ambiental.
+- resultado salvo em benchmarks/FASE6.5-R1-last-run.json.
+
+Proximo
+- FASE 6.5 R2: refactor/otimizacao interna do Planner, preservando fingerprints e invariantes.

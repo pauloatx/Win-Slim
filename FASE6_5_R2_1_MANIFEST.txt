@@ -1,0 +1,19 @@
+Win-Slim Suite - FASE 6.5 R2.1 Manifest
+
+ATUALIZADO
+- tests/Test-Fase6.5-R2-PlannerOptimization.ps1
+  - gate Preview/Plan usa .Valid/.ReasonCode do objeto retornado.
+  - cabeçalho/resumo identificam R2.1.
+
+NOVOS
+- FASE6_5_R2_1_CHANGELOG.txt
+- FASE6_5_R2_1_MANIFEST.txt
+
+PRESERVADOS
+- src/Core/Planner.ps1
+- src/Core/PlannerOptimized.ps1
+- src/Core/Transaction.ps1
+- src/Core/CatalogRuntime.ps1
+- src/Core/PresetRuntime.ps1
+- catálogo backend 230
+- presets Balanceado=105 / Gamer=129 / Extremo=168

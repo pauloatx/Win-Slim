@@ -1,0 +1,2567 @@
+﻿{
+  "schemaVersion": "1.0",
+  "phase": "6-R1",
+  "catalogBaseline": "Fase 5 R4.2.1",
+  "catalogCount": 230,
+  "presetOrder": [
+    "Balanceado",
+    "Gamer",
+    "Extremo"
+  ],
+  "designRules": [
+    "No automatic preset may contain a risk=Alto tweak.",
+    "Balanceado favors stability, reversibility and preservation of common Windows features.",
+    "Gamer adds general gaming/latency tuning but leaves game-specific IFEO/affinity choices outside the automatic preset.",
+    "Extremo is aggressive but still does not automatically disable core security, Windows Update, Defender, VBS/HVCI or CPU vulnerability mitigations.",
+    "User-choice, hardware-specific, workload-specific, maintenance and diagnostic actions are classified outside automatic presets.",
+    "ConflictPolicy remains Block; preset composition must be conflict-free before it reaches the Planner."
+  ],
+  "presets": {
+    "Balanceado": {
+      "description": "Otimização conservadora para uso diário: remove bloat evidente, reduz telemetria e atividade em segundo plano, preserva recursos comuns e não aplica nenhum tweak de risco Alto.",
+      "conflictPolicy": "Block",
+      "selectedIds": [
+        "PRIV-001",
+        "PRIV-002",
+        "PRIV-004",
+        "PRIV-005",
+        "PRIV-006",
+        "PRIV-007",
+        "PRIV-008",
+        "PRIV-009",
+        "PRIV-011",
+        "IA-001",
+        "APP-001",
+        "APP-002",
+        "APP-004",
+        "APP-005",
+        "APP-006",
+        "APP-007",
+        "APP-009",
+        "APP-014",
+        "APP-018",
+        "APP-019",
+        "APP-020",
+        "APP-023",
+        "APP-025",
+        "APP-026",
+        "APP-029",
+        "APP-031",
+        "APP-035",
+        "APP-036",
+        "APP-037",
+        "APP-045",
+        "APP-047",
+        "APP-048",
+        "APP-052",
+        "APP-053",
+        "SVC-002",
+        "SVC-003",
+        "SVC-004",
+        "SVC-006",
+        "SVC-008",
+        "SVC-009",
+        "SVC-010",
+        "PERF-001",
+        "UI-002",
+        "UI-003",
+        "UI-004",
+        "UI-006",
+        "UI-007",
+        "UI-008",
+        "NET-005",
+        "NET-006",
+        "SEC-001",
+        "UPD-002",
+        "MLV-002",
+        "RESP-001",
+        "RESP-003",
+        "RESP-006",
+        "RESP-007",
+        "QOL-001",
+        "QOL-004",
+        "QOL-006",
+        "QOL-008",
+        "QOL-009",
+        "QOL-011",
+        "EXTRA-002",
+        "PRIV-013",
+        "PRIV-014",
+        "UI-011",
+        "UI-012",
+        "UI-014",
+        "UI-015",
+        "UI-016",
+        "UI-018",
+        "UI-019",
+        "NET-007",
+        "QOL-014",
+        "PRIV-015",
+        "SVC-011",
+        "PRIV-016",
+        "PRIV-017",
+        "PRIV-018",
+        "UI-023",
+        "UI-024",
+        "EDGE-001",
+        "EDGE-002",
+        "EDGE-003",
+        "EDGE-004",
+        "EDGE-005",
+        "EDGE-006",
+        "QOL-015",
+        "EDGE-008",
+        "EDGE-011",
+        "EDGE-012",
+        "EDGE-013",
+        "EDGE-017",
+        "EDGE-018",
+        "EDGE-019",
+        "EDGE-020",
+        "EDGE-021",
+        "PRIV-019",
+        "SEARCH-001",
+        "EDGE-023",
+        "EDGE-024",
+        "EDGE-026",
+        "EDGE-027",
+        "EDGE-031"
+      ],
+      "levelSelections": {
+        "MLV-002": 1
+      },
+      "expectedSelectedCount": 105,
+      "principles": [
+        "Exact backup/undo remains mandatory at execution time.",
+        "High-risk tweaks never enter automatic presets.",
+        "Hardware/workload-specific tweaks remain conditional or manual.",
+        "Declared conflicts are resolved explicitly before Planner execution."
+      ]
+    },
+    "Gamer": {
+      "description": "Parte do Balanceado e acrescenta otimizações gerais de jogos/latência com bom perfil de reversibilidade. Não remove a pilha Xbox/Game Pass e evita tweaks dependentes de hardware ou jogo específico.",
+      "conflictPolicy": "Block",
+      "selectedIds": [
+        "PRIV-001",
+        "PRIV-002",
+        "PRIV-004",
+        "PRIV-005",
+        "PRIV-006",
+        "PRIV-007",
+        "PRIV-008",
+        "PRIV-009",
+        "PRIV-011",
+        "IA-001",
+        "APP-001",
+        "APP-002",
+        "APP-004",
+        "APP-005",
+        "APP-006",
+        "APP-007",
+        "APP-008",
+        "APP-009",
+        "APP-014",
+        "APP-018",
+        "APP-019",
+        "APP-020",
+        "APP-023",
+        "APP-025",
+        "APP-026",
+        "APP-029",
+        "APP-031",
+        "APP-033",
+        "APP-035",
+        "APP-036",
+        "APP-037",
+        "APP-044",
+        "APP-045",
+        "APP-047",
+        "APP-048",
+        "APP-052",
+        "APP-053",
+        "SVC-001",
+        "SVC-002",
+        "SVC-003",
+        "SVC-004",
+        "SVC-005",
+        "SVC-006",
+        "SVC-008",
+        "SVC-009",
+        "SVC-010",
+        "PERF-001",
+        "PERF-006",
+        "PERF-007",
+        "PERF-008",
+        "PERF-012",
+        "UI-002",
+        "UI-003",
+        "UI-004",
+        "UI-006",
+        "UI-007",
+        "UI-008",
+        "NET-002",
+        "NET-005",
+        "NET-006",
+        "SEC-001",
+        "UPD-002",
+        "MLV-001",
+        "MLV-002",
+        "RESP-001",
+        "RESP-003",
+        "RESP-006",
+        "RESP-007",
+        "RESP-008",
+        "QOL-001",
+        "QOL-004",
+        "QOL-006",
+        "QOL-008",
+        "QOL-009",
+        "QOL-011",
+        "EXTRA-002",
+        "PRIV-013",
+        "PRIV-014",
+        "PERF-014",
+        "PERF-015",
+        "PERF-016",
+        "UI-011",
+        "UI-012",
+        "UI-014",
+        "UI-015",
+        "UI-016",
+        "UI-017",
+        "UI-018",
+        "UI-019",
+        "NET-007",
+        "NET-008",
+        "QOL-014",
+        "PRIV-015",
+        "UI-022",
+        "SVC-011",
+        "PILOT-001",
+        "PILOT-002",
+        "PILOT-003",
+        "PERF-019",
+        "PRIV-016",
+        "PRIV-017",
+        "PRIV-018",
+        "UI-023",
+        "UI-024",
+        "EDGE-001",
+        "EDGE-002",
+        "EDGE-003",
+        "EDGE-004",
+        "EDGE-005",
+        "EDGE-006",
+        "EDGE-007",
+        "QOL-015",
+        "EDGE-008",
+        "EDGE-011",
+        "EDGE-012",
+        "EDGE-013",
+        "EDGE-017",
+        "EDGE-018",
+        "EDGE-019",
+        "EDGE-020",
+        "EDGE-021",
+        "PRIV-019",
+        "SEARCH-001",
+        "EDGE-022",
+        "EDGE-023",
+        "EDGE-024",
+        "EDGE-026",
+        "EDGE-027",
+        "EDGE-031"
+      ],
+      "levelSelections": {
+        "MLV-001": 1,
+        "MLV-002": 1
+      },
+      "expectedSelectedCount": 129,
+      "principles": [
+        "Exact backup/undo remains mandatory at execution time.",
+        "High-risk tweaks never enter automatic presets.",
+        "Hardware/workload-specific tweaks remain conditional or manual.",
+        "Declared conflicts are resolved explicitly before Planner execution."
+      ]
+    },
+    "Extremo": {
+      "description": "Perfil agressivo e ainda transacional: amplia debloat, privacidade e redução de recursos. Não desativa Defender, VBS/HVCI, mitigacões de CPU, Windows Update nem aplica tweaks de risco Alto automaticamente.",
+      "conflictPolicy": "Block",
+      "selectedIds": [
+        "PRIV-001",
+        "PRIV-002",
+        "PRIV-003",
+        "PRIV-004",
+        "PRIV-005",
+        "PRIV-006",
+        "PRIV-007",
+        "PRIV-008",
+        "PRIV-009",
+        "PRIV-010",
+        "PRIV-011",
+        "PRIV-012",
+        "IA-001",
+        "APP-001",
+        "APP-002",
+        "APP-004",
+        "APP-005",
+        "APP-006",
+        "APP-007",
+        "APP-008",
+        "APP-009",
+        "APP-010",
+        "APP-011",
+        "APP-012",
+        "APP-014",
+        "APP-015",
+        "APP-016",
+        "APP-017",
+        "APP-018",
+        "APP-019",
+        "APP-020",
+        "APP-021",
+        "APP-022",
+        "APP-023",
+        "APP-024",
+        "APP-025",
+        "APP-026",
+        "APP-027",
+        "APP-028",
+        "APP-029",
+        "APP-030",
+        "APP-031",
+        "APP-032",
+        "APP-033",
+        "APP-034",
+        "APP-035",
+        "APP-036",
+        "APP-037",
+        "APP-044",
+        "APP-045",
+        "APP-046",
+        "APP-047",
+        "APP-048",
+        "APP-049",
+        "APP-050",
+        "APP-051",
+        "APP-052",
+        "APP-053",
+        "SVC-001",
+        "SVC-002",
+        "SVC-003",
+        "SVC-004",
+        "SVC-005",
+        "SVC-006",
+        "SVC-008",
+        "SVC-009",
+        "SVC-010",
+        "PERF-001",
+        "PERF-006",
+        "PERF-007",
+        "PERF-008",
+        "PERF-009",
+        "UI-002",
+        "UI-003",
+        "UI-006",
+        "UI-007",
+        "UI-008",
+        "UI-009",
+        "NET-002",
+        "NET-005",
+        "NET-006",
+        "SEC-001",
+        "UPD-002",
+        "MLV-001",
+        "MLV-002",
+        "RESP-001",
+        "RESP-002",
+        "RESP-003",
+        "RESP-005",
+        "RESP-007",
+        "RESP-008",
+        "QOL-001",
+        "QOL-004",
+        "QOL-005",
+        "QOL-006",
+        "QOL-008",
+        "QOL-009",
+        "QOL-011",
+        "QOL-012",
+        "EXTRA-002",
+        "EXTRA-004",
+        "EXTRA-005",
+        "PRIV-013",
+        "PRIV-014",
+        "PERF-014",
+        "PERF-015",
+        "PERF-016",
+        "PERF-017",
+        "UI-011",
+        "UI-012",
+        "UI-013",
+        "UI-014",
+        "UI-015",
+        "UI-016",
+        "UI-017",
+        "UI-018",
+        "UI-019",
+        "UI-020",
+        "NET-007",
+        "NET-008",
+        "QOL-014",
+        "PRIV-015",
+        "UI-021",
+        "UI-022",
+        "SVC-011",
+        "PILOT-001",
+        "PILOT-002",
+        "PILOT-003",
+        "PERF-019",
+        "PRIV-016",
+        "PRIV-017",
+        "PRIV-018",
+        "UI-023",
+        "UI-024",
+        "EDGE-001",
+        "EDGE-002",
+        "EDGE-003",
+        "EDGE-004",
+        "EDGE-005",
+        "EDGE-006",
+        "EDGE-007",
+        "QOL-015",
+        "EDGE-008",
+        "EDGE-009",
+        "EDGE-011",
+        "EDGE-012",
+        "EDGE-013",
+        "EDGE-014",
+        "EDGE-015",
+        "EDGE-016",
+        "EDGE-017",
+        "EDGE-018",
+        "EDGE-019",
+        "EDGE-020",
+        "EDGE-021",
+        "PRIV-019",
+        "PRIV-020",
+        "SEARCH-001",
+        "EDGE-022",
+        "EDGE-023",
+        "EDGE-024",
+        "EDGE-025",
+        "EDGE-026",
+        "EDGE-027",
+        "EDGE-028",
+        "EDGE-029",
+        "EDGE-030",
+        "EDGE-031"
+      ],
+      "levelSelections": {
+        "MLV-001": 2,
+        "MLV-002": 1
+      },
+      "expectedSelectedCount": 168,
+      "principles": [
+        "Exact backup/undo remains mandatory at execution time.",
+        "High-risk tweaks never enter automatic presets.",
+        "Hardware/workload-specific tweaks remain conditional or manual.",
+        "Declared conflicts are resolved explicitly before Planner execution."
+      ]
+    }
+  },
+  "classifications": [
+    {
+      "id": "PRIV-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-002",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-003",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "PRIV-004",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-005",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-006",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-007",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-008",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-009",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-010",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "PRIV-011",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-012",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "IA-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-002",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-003",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "APP-004",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-005",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-006",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-007",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-008",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "APP-009",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-010",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-011",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-012",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-014",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-015",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-016",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-017",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-018",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-019",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-020",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-021",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-022",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-023",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-024",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-025",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-026",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-027",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-028",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-029",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-030",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-031",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-032",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-032X",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "APP-033",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "APP-034",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-035",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-036",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-037",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-038",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "APP-039",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "APP-040",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "APP-041",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "APP-042",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "APP-043",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "APP-044",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "APP-045",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-046",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-047",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-048",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-049",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-050",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-051",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "APP-052",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-053",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SVC-001",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "SVC-002",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SVC-003",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SVC-004",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SVC-005",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "SVC-006",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SVC-008",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SVC-009",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SVC-010",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PERF-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PERF-004",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "PERF-005",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "PERF-006",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "PERF-007",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "PERF-008",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "PERF-009",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "MLV-005",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "PERF-011",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "PERF-012",
+      "mode": "Auto",
+      "presets": [
+        "Gamer"
+      ],
+      "reasonCode": "PresetReplacement"
+    },
+    {
+      "id": "UI-001",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "UI-002",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-003",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-004",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer"
+      ],
+      "reasonCode": "PresetReplacement"
+    },
+    {
+      "id": "UI-005",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "UI-006",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-007",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-008",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-009",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "UI-010",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "NET-002",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "NET-003",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "NET-004",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "NET-005",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "NET-006",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SEC-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "SEC-003",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "SEC-004",
+      "mode": "Diagnostic",
+      "presets": [],
+      "reasonCode": "DiagnosticOnly"
+    },
+    {
+      "id": "SEC-005",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "SEC-006",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "SEC-007",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "UPD-002",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UPD-003",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "EXT-001",
+      "mode": "Maintenance",
+      "presets": [],
+      "reasonCode": "MaintenanceAction"
+    },
+    {
+      "id": "EXT-002",
+      "mode": "Maintenance",
+      "presets": [],
+      "reasonCode": "MaintenanceAction"
+    },
+    {
+      "id": "EXT-003",
+      "mode": "Maintenance",
+      "presets": [],
+      "reasonCode": "MaintenanceAction"
+    },
+    {
+      "id": "EXT-004",
+      "mode": "Maintenance",
+      "presets": [],
+      "reasonCode": "MaintenanceAction"
+    },
+    {
+      "id": "MLV-001",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "MLV-002",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "MLV-003",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "RESP-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "RESP-002",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "RESP-003",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "RESP-004",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "RESP-005",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "RESP-006",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer"
+      ],
+      "reasonCode": "PresetReplacement"
+    },
+    {
+      "id": "RESP-007",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "RESP-008",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "QOL-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "QOL-002",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "QOL-003",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "QOL-004",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "QOL-005",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "QOL-006",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "QOL-007",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "QOL-008",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "QOL-009",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "QOL-010",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "QOL-011",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "QOL-012",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EXTRA-001",
+      "mode": "Maintenance",
+      "presets": [],
+      "reasonCode": "MaintenanceAction"
+    },
+    {
+      "id": "EXTRA-002",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EXTRA-003",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "EXTRA-004",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EXTRA-005",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "PRIV-013",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-014",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "APP-054",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "PERF-013",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "PERF-014",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "PERF-015",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "PERF-016",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "PERF-017",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "MLV-004",
+      "mode": "HardwareConditional",
+      "presets": [],
+      "reasonCode": "HardwareDependent"
+    },
+    {
+      "id": "UI-011",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-012",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-013",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "UI-014",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-015",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-016",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-017",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "UI-018",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-019",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-020",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "NET-007",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "NET-008",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "SEC-008",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "SEC-009",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "SEC-010",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "QOL-013",
+      "mode": "Diagnostic",
+      "presets": [],
+      "reasonCode": "DiagnosticOnly"
+    },
+    {
+      "id": "QOL-014",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EXTRA-006",
+      "mode": "Maintenance",
+      "presets": [],
+      "reasonCode": "MaintenanceAction"
+    },
+    {
+      "id": "PRIV-015",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PERF-018",
+      "mode": "HardwareConditional",
+      "presets": [],
+      "reasonCode": "HardwareDependent"
+    },
+    {
+      "id": "UI-021",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "UI-022",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "SEC-011",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "SVC-007",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "SVC-011",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PILOT-001",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "PILOT-002",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "PILOT-003",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "GAME-001",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "GAME-002",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "GAME-003",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "GAME-004",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "GAME-005",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "WORK-001",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "WORK-002",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "WORK-003",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "WORK-004",
+      "mode": "WorkloadConditional",
+      "presets": [],
+      "reasonCode": "WorkloadDependent"
+    },
+    {
+      "id": "PERF-019",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "WS-ADV-001",
+      "mode": "HardwareConditional",
+      "presets": [],
+      "reasonCode": "HardwareDependent"
+    },
+    {
+      "id": "WS-ADV-002",
+      "mode": "HardwareConditional",
+      "presets": [],
+      "reasonCode": "HardwareDependent"
+    },
+    {
+      "id": "WS-ADV-003",
+      "mode": "HardwareConditional",
+      "presets": [],
+      "reasonCode": "HardwareDependent"
+    },
+    {
+      "id": "PRIV-016",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-017",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-018",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-023",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "UI-024",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-002",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-003",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-004",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-005",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-006",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-007",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "QOL-015",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-008",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-009",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EDGE-010",
+      "mode": "ManualOnly",
+      "presets": [],
+      "reasonCode": "UserChoiceOrRisk"
+    },
+    {
+      "id": "EDGE-011",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-012",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-013",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-014",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EDGE-015",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EDGE-016",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EDGE-017",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-018",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-019",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-020",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-021",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-019",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "PRIV-020",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "SEARCH-001",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-022",
+      "mode": "Auto",
+      "presets": [
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "PerformanceTier"
+    },
+    {
+      "id": "EDGE-023",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-024",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-025",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EDGE-026",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-027",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    },
+    {
+      "id": "EDGE-028",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EDGE-029",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EDGE-030",
+      "mode": "Auto",
+      "presets": [
+        "Extremo"
+      ],
+      "reasonCode": "AggressiveTier"
+    },
+    {
+      "id": "EDGE-031",
+      "mode": "Auto",
+      "presets": [
+        "Balanceado",
+        "Gamer",
+        "Extremo"
+      ],
+      "reasonCode": "CoreSafe"
+    }
+  ],
+  "specialGroups": {
+    "ManualOnly": [
+      "APP-003",
+      "APP-032X",
+      "APP-038",
+      "APP-039",
+      "APP-040",
+      "APP-041",
+      "APP-042",
+      "APP-043",
+      "APP-054",
+      "EDGE-010",
+      "EXTRA-003",
+      "MLV-003",
+      "MLV-005",
+      "NET-003",
+      "NET-004",
+      "PERF-004",
+      "PERF-005",
+      "PERF-011",
+      "QOL-002",
+      "QOL-003",
+      "QOL-007",
+      "QOL-010",
+      "RESP-004",
+      "SEC-003",
+      "SEC-005",
+      "SEC-006",
+      "SEC-007",
+      "SEC-008",
+      "SEC-009",
+      "SEC-010",
+      "SVC-007",
+      "UI-001",
+      "UI-005",
+      "UI-010",
+      "UPD-003"
+    ],
+    "HardwareConditional": [
+      "MLV-004",
+      "PERF-018",
+      "WS-ADV-001",
+      "WS-ADV-002",
+      "WS-ADV-003"
+    ],
+    "WorkloadConditional": [
+      "GAME-001",
+      "GAME-002",
+      "GAME-003",
+      "GAME-004",
+      "GAME-005",
+      "PERF-013",
+      "SEC-011",
+      "WORK-001",
+      "WORK-002",
+      "WORK-003",
+      "WORK-004"
+    ],
+    "Maintenance": [
+      "EXT-001",
+      "EXT-002",
+      "EXT-003",
+      "EXT-004",
+      "EXTRA-001",
+      "EXTRA-006"
+    ],
+    "Diagnostic": [
+      "QOL-013",
+      "SEC-004"
+    ]
+  },
+  "conflictResolutions": [
+    {
+      "mutexGroup": "HIBERNATION_DEPENDENT",
+      "members": [
+        "RESP-005",
+        "RESP-006"
+      ],
+      "Balanceado": "RESP-006",
+      "Gamer": "RESP-006",
+      "Extremo": "RESP-005",
+      "rationale": "Extremo desativa hibernação; Balanceado/Gamer apenas desativam Fast Startup. Nunca selecionar os dois."
+    },
+    {
+      "mutexGroup": "SYSTEM_RESPONSIVENESS",
+      "members": [
+        "PERF-012",
+        "EXTRA-005"
+      ],
+      "Balanceado": null,
+      "Gamer": "PERF-012",
+      "Extremo": "EXTRA-005",
+      "rationale": "Gamer usa SystemResponsiveness=10; Extremo usa 0."
+    },
+    {
+      "mutexGroup": "TASKBAR_SEARCH_MODE",
+      "members": [
+        "UI-004",
+        "UI-021"
+      ],
+      "Balanceado": "UI-004",
+      "Gamer": "UI-004",
+      "Extremo": "UI-021",
+      "rationale": "Balanceado/Gamer mantêm pesquisa como ícone; Extremo oculta pesquisa e Task View."
+    },
+    {
+      "mutexGroup": "ONEDRIVE_REMOVAL",
+      "members": [
+        "APP-032",
+        "APP-032X"
+      ],
+      "Balanceado": null,
+      "Gamer": null,
+      "Extremo": "APP-032",
+      "rationale": "A remoção definitiva continua manual-only; Extremo pode usar somente a variante reversível."
+    },
+    {
+      "mutexGroup": "WINDOWS_UPDATE_CONTROL",
+      "members": [
+        "UPD-002",
+        "UPD-003"
+      ],
+      "Balanceado": "UPD-002",
+      "Gamer": "UPD-002",
+      "Extremo": "UPD-002",
+      "rationale": "Nenhum preset automático pausa Windows Update por anos."
+    },
+    {
+      "mutexGroup": "HVCI_VBS",
+      "members": [
+        "PERF-011",
+        "SEC-006"
+      ],
+      "Balanceado": null,
+      "Gamer": null,
+      "Extremo": null,
+      "rationale": "Reduções de segurança permanecem manuais."
+    }
+  ]
+}

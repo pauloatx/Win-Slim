@@ -1,0 +1,1 @@
+R3.2.20: tela Aplicacao conforme referencia; progresso, cinco etapas, painel do ajuste atual, status, cancelamento da demonstracao e navegacao para Conclusao. Nenhuma alteracao no Windows.

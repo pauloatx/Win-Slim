@@ -1,0 +1,1 @@
+CORRECAO: duplicacao REG-REPORT-001 reproduzida e rejeitada antes do empacotamento. Cadastro corrigido: dez IDs unicos. Seis testes locais do empacotador aprovados; hashes e ZIP verificados. Compilacao C# e aplicacao/restauracao da build inicial confirmadas pelos arquivos do usuario. A regressao Windows completa da copia corrigida permanece PENDENTE.

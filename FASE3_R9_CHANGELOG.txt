@@ -1,0 +1,9 @@
+﻿Win-Slim Suite - Fase 3 R9
+
+Correcoes sobre R8:
+- Causa raiz do OutOfMemory no TEST 02: strings vindas de Get-Content no Windows PowerShell 5.1 podem carregar propriedades ETS (PSPath, PSDrive, PSProvider, ReadCount). PSSerializer recebia esse objeto vivo e podia expandir um grafo enorme.
+- Copy-TransactionObject agora usa PSObject.BaseObject para escalares e colecoes antes de clonar, removendo a capa ETS.
+- Write-TransactionBackupAtomic nunca serializa BackupData vivo: primeiro normaliza pelo serialization firewall e so entao usa PSSerializer.
+- Profundidade CliXml reduzida de 32 para 16 como limite defensivo; backups do contrato sao estruturas de dados rasas.
+- TEST 00 ganhou probe com string real retornada por Get-Content para impedir regressao do bug observado na R8.
+- Journals JSON compactos e recovery tipado da R8 preservados.

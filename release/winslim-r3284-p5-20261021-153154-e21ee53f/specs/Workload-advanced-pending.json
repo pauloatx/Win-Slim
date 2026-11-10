@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "status": "ProvidersValidatedOnWindowsAndPromotedToValidatedCatalog",
+  "generatedBy": "Win-Slim Suite - FASE 5 R3",
+  "items": [
+    {
+      "id": "WS-ADV-001",
+      "name": "Core Parking - CPMINCORES 100% AC/DC",
+      "status": "ProviderValidatedOnWindowsAndPromoted",
+      "reason": "CoreParkingProvider implementado com Backup/Apply/Verify/Undo exatos; gate R2.1 aprovado em Windows; promovido ao catálogo backend validado.",
+      "source": "Seal IL audit",
+      "providerTarget": "CoreParkingProvider",
+      "mode": "SettingIndex",
+      "subgroupGuid": "54533251-82be-4824-96c1-47b60b740d00",
+      "settingGuid": "0cc5b647-c1df-4637-891a-dec35c318583",
+      "targetAC": 100,
+      "targetDC": 100,
+      "rollback": "Restaurar AC/DC capturados antes do Apply; nunca assumir 100/100 como default.",
+      "promotionCatalog": "catalogs/validated/Advanced-Catalog.json"
+    },
+    {
+      "id": "WS-ADV-002",
+      "name": "CS2 - Afinidade dinâmica somente P-cores",
+      "status": "ProviderValidatedOnWindowsAndPromoted",
+      "reason": "CpuAffinityProvider implementado com GetLogicalProcessorInformationEx, guardas de processor-group/topologia híbrida e rollback de tarefa/script/processos; gate R2.1 aprovado em Windows; promovido ao catálogo backend validado.",
+      "source": "Seal IL audit",
+      "providerTarget": "CpuAffinityProvider + ScheduledTaskProvider",
+      "process": "cs2.exe",
+      "topologyApi": "GetLogicalProcessorInformationEx(RelationProcessorCore)",
+      "pCoreRule": "EfficiencyClass >= 1",
+      "observedTlTaskName": "TlOptimizer_AffinityCs2",
+      "winSlimTaskName": "WinSlimSuite-AffinityCs2",
+      "schedule": "ONLOGON + /RI 1 /DU 9999:00",
+      "apply": "Get-Process cs2; ProcessorAffinity=[IntPtr]<dynamic P-core mask>",
+      "rollback": "Remover artefatos Win-Slim e restaurar configuração prévia da tarefa, se existente.",
+      "winSlimGuards": [
+        "single processor group",
+        "logical processors <= 63",
+        "P/E classes must be distinguishable"
+      ],
+      "promotionCatalog": "catalogs/validated/Advanced-Catalog.json"
+    },
+    {
+      "id": "WS-ADV-003",
+      "name": "GPU Interrupt Affinity - DevicePolicy + AssignmentSetOverride",
+      "status": "ProviderValidatedOnWindowsAndPromoted",
+      "reason": "GpuInterruptAffinityProvider implementado com máscara derivada da topologia, backup/restore exato dos valores e bytes; gate R2.1 aprovado em Windows; promovido ao catálogo backend validado.",
+      "source": "Seal IL audit",
+      "providerTarget": "GpuInterruptAffinityProvider",
+      "precondition": {
+        "minLogicalProcessors": 8
+      },
+      "pathTemplate": "HKLM:\\SYSTEM\\CurrentControlSet\\Enum\\PCI\\<instance>\\Device Parameters\\Interrupt Management\\Affinity Policy",
+      "devicePolicy": {
+        "name": "DevicePolicy",
+        "type": "DWord",
+        "value": 4
+      },
+      "assignmentSetOverride": {
+        "name": "AssignmentSetOverride",
+        "type": "Binary",
+        "observedTlMaskHex": "0x14",
+        "observedBits": [
+          2,
+          4
+        ]
+      },
+      "rollback": "Backup/restore por GPU PCI: existência, tipo e bytes originais de DevicePolicy e AssignmentSetOverride.",
+      "winSlimPolicy": "Calcular/aprovar máscara por topologia; se a topologia for incerta, SKIP.",
+      "winSlimMaskPolicy": "TwoPhysicalCoreRepresentatives; em CPU híbrida prefere P-cores; evita CPU0 quando há >=3 candidatos.",
+      "promotionCatalog": "catalogs/validated/Advanced-Catalog.json"
+    }
+  ],
+  "deduplication": [
+    {
+      "sourceFinding": "Win32PrioritySeparation = 0x26 / 38",
+      "winSlimId": "PERF-006",
+      "decision": "Reuse",
+      "reason": "Já existe no catálogo base com valor 38; não duplicar."
+    },
+    {
+      "sourceFinding": "SystemResponsiveness = 10",
+      "winSlimId": "PERF-012",
+      "decision": "Reuse",
+      "reason": "Já existe no catálogo base com valor 10. EXTRA-005=0 permanece alternativa agressiva e conflitante."
+    }
+  ],
+  "promotionNote": "Os 3 itens somam 190 entradas backend validadas (177 base + 10 Seal + 3 avançados). Permanecem fora do auto-load da UI legada até a Fase 7; a pasta catalogs/validated não é varrida recursivamente pelo loader atual."
+}

@@ -1,0 +1,1 @@
+R3.2.42: corrige CS0103 no Program.cs capturando as estatisticas dentro do escopo do controller e usando variavel local no JSON. Otimizacoes da UI e fade mantidos. Compilacao Windows pendente.

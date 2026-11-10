@@ -1,0 +1,1 @@
+R3.2.21: dimensoes iniciais 1180x760 em todas as paginas e janelas de detalhes/relatorio; removido redimensionamento por pagina; tamanho manual preservado.

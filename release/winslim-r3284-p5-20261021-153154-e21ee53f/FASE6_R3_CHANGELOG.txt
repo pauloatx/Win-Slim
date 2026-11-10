@@ -1,0 +1,10 @@
+﻿Win-Slim Suite - FASE 6 R3
+
+- Baseline R2 congelada por SHA-256.
+- Novo src/Core/PresetPlannerValidator.ps1, camada pura e aditiva.
+- Novo specs/FASE6-R3-scenarios.json com matriz Win10/Win11, admin/non-admin, GPU/no-GPU e overlays.
+- Validação aprofundada dos presets Balanceado/Gamer/Extremo no Planner.
+- Validação individual dos 16 perfis condicionais R2.
+- Validação do stack de 14 overlays não-Alto sobre Gamer (143 seleções).
+- Invariantes de dependência/topologia, RiskSummary, RestartRequirements, fingerprints e shape para Transaction.
+- Nenhuma alteração nos 230 tweaks, Planner R1, Transaction Manager R13, Providers ou composições R1/R2.

@@ -1,0 +1,6 @@
+R3.2.52 — fechar legível e reaproveitamento de build
+- Texto do botão Fechar acompanha o tema, incluindo hover, nos três templates.
+- Reaproveitamento compara conteúdo SHA-256 das entradas, binário e config.
+- Cache publicado atomicamente após sucesso; cache inválido ou arquivo alterado exige recompilar.
+- Revisões anteriores, motor e funcionamento da UI preservados.
+- Execução dos novos testes pendente no Windows.

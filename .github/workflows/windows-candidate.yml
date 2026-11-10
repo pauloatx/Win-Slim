@@ -1,0 +1,93 @@
+name: WinSlim Windows candidate
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: winslim-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  candidate:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: powershell
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.13.12'
+          architecture: x64
+      - name: Initialize current-run evidence
+        run: |
+          $ciEvidence = Join-Path $env:RUNNER_TEMP ('winslim-ci-' + $env:GITHUB_RUN_ID + '-' + $env:GITHUB_RUN_ATTEMPT)
+          ('CI_EVIDENCE=' + $ciEvidence) | Add-Content -Encoding UTF8 $env:GITHUB_ENV
+          python tools/ci_evidence.py start --root . --output "$ciEvidence"
+          exit $LASTEXITCODE
+      - name: Record Windows dependencies
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $compiler = Join-Path $env:WINDIR 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
+          Add-Type -AssemblyName PresentationFramework
+          [ordered]@{
+            PowerShell = $PSVersionTable.PSVersion.ToString()
+            Process64Bit = [Environment]::Is64BitProcess
+            OS = [Environment]::OSVersion.VersionString
+            FrameworkRelease = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full').Release
+            Compiler = $compiler
+            CompilerVersion = (Get-Item $compiler).VersionInfo.FileVersion
+            CompilerSHA256 = (Get-FileHash $compiler -Algorithm SHA256).Hash
+            WPF = [Windows.Window].Assembly.FullName
+            WPFLocation = [Windows.Window].Assembly.Location
+            Git = (git --version)
+          } | ConvertTo-Json | Set-Content -Encoding UTF8 (Join-Path $env:CI_EVIDENCE 'dependencies.json')
+          if ($PSVersionTable.PSVersion.Major -ne 5 -or -not [Environment]::Is64BitProcess) {
+            throw 'The official pipeline requires Windows PowerShell 5.1 x64.'
+          }
+      - name: Validate registered cases and delivered hashes without packaging
+        run: |
+          python tools/package_release.py . specs/FASE7-R3.2.84-baseline.json
+          exit $LASTEXITCODE
+      - name: Run official candidate pipeline (build, WPF and current registry)
+        id: candidate
+        run: |
+          & .\Iniciar-Validacao.bat /ci
+          exit $LASTEXITCODE
+      - name: Collect current-run text evidence and integrity
+        if: always()
+        env:
+          CI_GATE_OUTCOME: ${{ steps.candidate.outcome }}
+        run: |
+          $ciEvidence = Join-Path $env:RUNNER_TEMP ('winslim-ci-' + $env:GITHUB_RUN_ID + '-' + $env:GITHUB_RUN_ATTEMPT)
+          python tools/ci_evidence.py collect --root . --output "$ciEvidence" --outcome "$env:CI_GATE_OUTCOME"
+          exit $LASTEXITCODE
+      - name: Preserve evidence (no distribution binaries or archives)
+        if: always()
+        id: evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: WinSlim-CI-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/winslim-ci-${{ github.run_id }}-${{ github.run_attempt }}/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Record artifact receipt
+        if: always()
+        env:
+          CI_GATE_OUTCOME: ${{ steps.candidate.outcome }}
+          CI_ARTIFACT_URL: ${{ steps.evidence.outputs.artifact-url }}
+          CI_ARTIFACT_ID: ${{ steps.evidence.outputs.artifact-id }}
+          CI_ARTIFACT_DIGEST: ${{ steps.evidence.outputs.artifact-digest }}
+        run: |
+          @(
+            'Official gate outcome: ' + $env:CI_GATE_OUTCOME
+            'Evidence URL: ' + $env:CI_ARTIFACT_URL
+            'Artifact ID: ' + $env:CI_ARTIFACT_ID
+            'Artifact SHA-256: ' + $env:CI_ARTIFACT_DIGEST
+            'Physical/interactive/VM acceptance: not performed by this workflow.'
+            'Distribution/publication/production: pending; no distribution package created.'
+          ) | Add-Content -Encoding UTF8 $env:GITHUB_STEP_SUMMARY

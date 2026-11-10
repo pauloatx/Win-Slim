@@ -1,0 +1,47 @@
+﻿Win-Slim Suite - FASE 5 R4.2
+
+Expansão final curada da Fase 5.
+
+Baseline:
+- R4.1.1 aprovada no Windows.
+- Transaction Manager R13 congelado.
+- Planner R1 congelado.
+- RegistryProvider congelado.
+- Backend anterior: 217 entradas.
+- UI/autoload legado: 187 entradas.
+
+R4.2 adiciona 13 políticas Microsoft documentadas:
+- 3 políticas Windows;
+- 10 políticas Microsoft Edge.
+
+Total backend validado alvo:
+177 base
++10 Seal Game+Workload
++3 Advanced Providers
++12 Expansion R4
++15 Expansion R4.1
++13 Expansion R4.2
+=230 entradas.
+
+Critérios:
+- nenhum ID duplicado;
+- nenhum alvo Registry Path/Name duplicado contra os 217 anteriores;
+- somente RegistryProvider conformado;
+- rollback Registry explícito;
+- nenhum preset antecipado;
+- UI somente Phase7;
+- source-map oficial por ID;
+- políticas Edge obsoletas/depreciadas conhecidas excluídas;
+- EDGE-031 usa DiagnosticData=1 (RequiredData), não Off=0.
+
+Gates:
+- baseline R4.1.1 congelada;
+- shape e contagem 230;
+- valores exatos Windows/Edge;
+- Planner determinístico e admin-aware;
+- Apply/Verify/Undo em HKCU temporário;
+- Planner -> Transaction -> RegistryProvider com rollback LIFO;
+- UI legada preservada em 187.
+
+Próximo gate após aprovação:
+FASE 6 - Presets.

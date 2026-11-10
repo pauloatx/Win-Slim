@@ -1,0 +1,1 @@
+R3.2.39: animacoes visiveis e ativadas no aplicativo por padrao; preferencia em Configuracoes/Geral; realce laranja progressivo; hover/pressao mais perceptiveis; chaves 260ms sem setter conflitante; entradas 280-300ms; corrigida verificacao obsoleta de 160ms. Validacao Windows pendente.

@@ -1,0 +1,1 @@
+R3.2.13: quatro abas dentro de Presets; diagnósticos por seleção, exportação JSON, relatório opcional, logs e preferências locais. Bridge projeta metadados existentes sem executar comandos.

@@ -1,0 +1,1 @@
+R3.2.19: tela Conclusao conforme referencia; demonstracao explicitamente identificada; 4 cards, aviso de reinicio, retorno aos Presets, relatorio e captura dedicados. Sem aplicacao ou reinicializacao.

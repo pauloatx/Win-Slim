@@ -1,0 +1,81 @@
+{
+  "phase": "FASE 5 R4.1",
+  "policy": "Second curated batch. Only policies with explicit Microsoft registry/policy documentation were promoted.",
+  "entries": [
+    {
+      "id": "QOL-015",
+      "reference": "ADMX_WindowsExplorer Policy CSP / NoSearchInternetTryHarderButton",
+      "url": "https://learn.microsoft.com/windows/client-management/mdm/policy-csp-admx-windowsexplorer"
+    },
+    {
+      "id": "EDGE-008",
+      "reference": "Microsoft Edge policy / HideFirstRunExperience",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/hidefirstrunexperience"
+    },
+    {
+      "id": "EDGE-009",
+      "reference": "Microsoft Edge policy / SyncDisabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/syncdisabled"
+    },
+    {
+      "id": "EDGE-010",
+      "reference": "Microsoft Edge policy / BrowserSignin",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/browsersignin"
+    },
+    {
+      "id": "EDGE-011",
+      "reference": "Microsoft Edge policy / SearchInSidebarEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/searchinsidebarenabled"
+    },
+    {
+      "id": "EDGE-012",
+      "reference": "Microsoft Edge policy / ShowRecommendationsEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/showrecommendationsenabled"
+    },
+    {
+      "id": "EDGE-013",
+      "reference": "Microsoft Edge policy / ShowMicrosoftRewards",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/showmicrosoftrewards"
+    },
+    {
+      "id": "EDGE-014",
+      "reference": "Microsoft Edge policy / AutofillAddressEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/autofilladdressenabled"
+    },
+    {
+      "id": "EDGE-015",
+      "reference": "Microsoft Edge policy / AutofillCreditCardEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/autofillcreditcardenabled"
+    },
+    {
+      "id": "EDGE-016",
+      "reference": "Microsoft Edge policy / NewTabPageQuickLinksEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/newtabpagequicklinksenabled"
+    },
+    {
+      "id": "EDGE-017",
+      "reference": "Microsoft Edge policy / WebToBrowserSignInEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/webtobrowsersigninenabled"
+    },
+    {
+      "id": "EDGE-018",
+      "reference": "Microsoft Edge policy / UrlDiagnosticDataEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/urldiagnosticdataenabled"
+    },
+    {
+      "id": "EDGE-019",
+      "reference": "Microsoft Edge policy / UserFeedbackAllowed",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/userfeedbackallowed"
+    },
+    {
+      "id": "EDGE-020",
+      "reference": "Microsoft Edge policy / MicrosoftEdgeInsiderPromotionEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/microsoftedgeinsiderpromotionenabled"
+    },
+    {
+      "id": "EDGE-021",
+      "reference": "Microsoft Edge policy / Microsoft365CopilotChatIconEnabled",
+      "url": "https://learn.microsoft.com/deployedge/microsoft-edge-policies/microsoft365copilotchaticonenabled"
+    }
+  ]
+}

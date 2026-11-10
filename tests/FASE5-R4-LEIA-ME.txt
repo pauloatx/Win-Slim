@@ -1,0 +1,15 @@
+﻿FASE 5 R4 - TESTE NO WINDOWS
+
+Abra Windows PowerShell 5.1 como Administrador e execute:
+
+  cd D:\Desktop\winslim_fase5_r4
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase5-R4-CatalogExpansion.ps1
+
+O harness não altera as políticas reais do Windows/Edge. Os testes de Apply/Undo usam somente:
+  HKCU:\Software\WinSlimSuite\Tests\Fase5R4*
+
+e removem as chaves temporárias ao final.
+
+Resultado esperado:
+  FASE 5 R4 APROVADA - expansão curada validada: backend 202 entradas, rollback e Planner preservados.

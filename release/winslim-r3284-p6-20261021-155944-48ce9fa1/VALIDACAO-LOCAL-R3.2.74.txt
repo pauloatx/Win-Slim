@@ -1,0 +1,1 @@
+R3.2.74: XML/JSON, hashes e preservacao conferidos. Suites PowerShell, compilacao/WPF e Edge real pendentes no Windows.

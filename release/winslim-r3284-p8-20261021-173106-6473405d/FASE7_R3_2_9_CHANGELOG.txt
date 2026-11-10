@@ -1,0 +1,3 @@
+R3.2.9 — Dashboard compacto, menu sem corte e foco por teclado no tema.
+Backend e revisões anteriores preservados.
+R3.2.8: gate técnico aprovado no Windows; R3.2.9: gate e visual pendentes.

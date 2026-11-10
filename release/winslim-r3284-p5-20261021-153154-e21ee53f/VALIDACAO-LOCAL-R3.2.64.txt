@@ -1,0 +1,16 @@
+R3.2.64 - Validacao local (Linux, PowerShell 7.4.6 e referencias .NET Framework 4.8)
+Execucao em Windows PowerShell 5.1, WPF e teste nativo de Registro: pendentes.
+
+
+csharp-tests64.log
+MainWindowController.cs(1124,32): warning CS4014: Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+UiLanguage.cs(2,1): hidden CS8019: Unnecessary using directive.
+C#5 + .NET Framework 4.8 reference compilation: OK (not a Windows execution).
+
+
+powershell-parse64.log
+PowerShell syntax: OK
+
+
+XAML valido. Motor de aplicacao/backup/restauracao, XAML, temas e idioma da R63 preservados, exceto identificacoes de revisao. Alteracoes C# limitadas ao self-test da largura/legibilidade dos botoes.
+Todos os arquivos anteriores conferidos byte a byte.

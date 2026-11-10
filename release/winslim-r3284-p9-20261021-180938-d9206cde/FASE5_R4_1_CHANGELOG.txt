@@ -1,0 +1,27 @@
+﻿Win-Slim Suite - FASE 5 R4.1 / Curated Catalog Expansion II
+
+Baseline: FASE 5 R4 APROVADA (202 entradas backend).
+
+Objetivo
+- Expandir o backend validado de 202 para 217 entradas.
+- Preservar Transaction R13, Planner R1 e RegistryProvider aprovados.
+- Promover somente politicas com mapeamento Registry explicito na documentacao Microsoft.
+
+Novos IDs
+- PRIV-019: AllowCloudSearch=0
+- QOL-015: DisableSearchBoxSuggestions=1
+- EDGE-008: HideFirstRunExperience=1
+- EDGE-009: SyncDisabled=1
+- EDGE-010: BrowserSignin=0
+- EDGE-011: SearchInSidebarEnabled=2
+- EDGE-012: ShowRecommendationsEnabled=0
+- EDGE-013: ShowMicrosoftRewards=0
+- EDGE-014: AutofillAddressEnabled=0
+- EDGE-015: AutofillCreditCardEnabled=0
+- EDGE-016: NewTabPageQuickLinksEnabled=0
+- EDGE-017: WebToBrowserSignInEnabled=0
+- EDGE-018: UrlDiagnosticDataEnabled=0
+- EDGE-019: UserFeedbackAllowed=0
+- EDGE-020: MicrosoftEdgeInsiderPromotionEnabled=0
+
+Todos permanecem manual-only (presets vazios) ate a Fase 6 e backend-only ate a Fase 7.

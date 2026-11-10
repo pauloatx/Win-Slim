@@ -1,0 +1,1 @@
+R3.2.73: verificacoes estruturais e de integridade locais; compilacao/WPF/PowerShell pendentes no Windows.

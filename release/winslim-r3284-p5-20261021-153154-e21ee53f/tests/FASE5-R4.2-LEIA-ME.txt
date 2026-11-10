@@ -1,0 +1,48 @@
+﻿Win-Slim Suite - FASE 5 R4.2 / Curated Catalog Expansion III
+
+Objetivo
+- Fechar a expansão curada da Fase 5 em 230 entradas de backend validadas.
+- Preservar Transaction Manager R13, Planner R1 e RegistryProvider conformado.
+- Manter a UI/autoload legado em 187 entradas até a Fase 7.
+
+Lote R4.2 (+13)
+Windows:
+- PRIV-019 AllowDeviceNameInDiagnosticData = 0
+- PRIV-020 AllowClipboardHistory = 0
+- SEARCH-001 DisableRemovableDriveIndexing = 1
+
+Microsoft Edge:
+- EDGE-022 NetworkPredictionOptions = 2
+- EDGE-023 NewTabPagePrerenderEnabled = 0
+- EDGE-024 AlternateErrorPagesEnabled = 0
+- EDGE-025 SearchSuggestEnabled = 0
+- EDGE-026 TextPredictionEnabled = 0
+- EDGE-027 VisualSearchEnabled = 0
+- EDGE-028 AutofillMembershipsEnabled = 0
+- EDGE-029 MicrosoftEditorProofingEnabled = 0
+- EDGE-030 PaymentMethodQueryEnabled = 0
+- EDGE-031 DiagnosticData = 1 (RequiredData)
+
+Curadoria
+- Políticas Edge obsoletas/depreciadas conhecidas ficaram fora deste lote.
+- Nenhum item entra em preset antes da Fase 6.
+- Nenhum item é exposto pela UI legada antes da Fase 7.
+- Todos os 13 usam RegistryProvider, com backup/verify/undo exatos.
+
+Teste seguro
+O harness NÃO altera as políticas reais acima.
+Apply/Undo e rollback transacional usam somente:
+HKCU:\Software\WinSlimSuite\Tests\Fase5R42
+HKCU:\Software\WinSlimSuite\Tests\Fase5R42Tx
+
+Executar em Windows PowerShell 5.1 como Administrador:
+  cd D:\Desktop\winslim_fase5_r4_2
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase5-R4.2-CatalogExpansion.ps1
+
+Resultado esperado:
+FASE 5 R4.2 APROVADA - expansão final validada: backend 230 entradas, rollback e Planner preservados.
+
+Se aprovado:
+- congelar R4.2 como baseline final da Fase 5;
+- próximo gate: FASE 6 - Presets.

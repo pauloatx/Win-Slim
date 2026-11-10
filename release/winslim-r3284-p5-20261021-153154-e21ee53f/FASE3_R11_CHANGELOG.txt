@@ -1,0 +1,19 @@
+Win-Slim Suite - Fase 3 R11
+
+Causa raiz corrigida:
+- Write-Output -NoEnumerate criava um PSObject wrapper em colecoes no Windows PowerShell 5.1.
+- operations.json podia ser persistido como {"value":[...],"Count":N} em vez de array JSON.
+- No recovery cross-process, esse wrapper era interpretado como um Step unico sem TweakId/Sequence, depois sobrescrito como step vazio.
+- Invoke-TransactionRollback via zero candidatos e declarava RolledBack porque failed == 0.
+
+Correcoes:
+- normalizador interno por [ref] sem pipeline;
+- Write-JsonAtomic preserva arrays top-level reais;
+- snapshots de colecao usam return ,$out em vez de Write-Output -NoEnumerate;
+- Import reconhece wrapper legado {value,Count} para compatibilidade;
+- Import rejeita operations.json com Step sem Sequence/TweakId;
+- Recovery.Required + zero candidatos agora resulta em RollbackFailed;
+- rollback recusa candidato sem BackupData;
+- novos gates para formato real de arrays e reidratacao cross-process.
+
+SchemaVersion: 3

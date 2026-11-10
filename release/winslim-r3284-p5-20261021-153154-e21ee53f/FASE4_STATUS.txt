@@ -1,0 +1,21 @@
+﻿Win-Slim Suite - Status de desenvolvimento
+
+FASE 0  Freeze                  PASS
+FASE 1  Architecture            PASS
+FASE 2  Providers               PASS
+FASE 2.1 Corrections            PASS
+FASE 2.1A Pilots                PASS em Windows real
+FASE 2.1B Conformance           PASS em Windows real
+FASE 3  Transaction Manager     PASS em Windows real (R13)
+FASE 4  Planner                 PASS em Windows real (R1)
+
+Baseline de producao preservado nesta entrega:
+- Transaction.ps1 R13 congelado
+- Providers congelados
+- catalog.json congelado
+- WinSlimSuite.ps1 congelado
+- Run-Batch ainda nao migrado para o Planner
+
+Para validar:
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\tests\Test-Fase4-Planner.ps1

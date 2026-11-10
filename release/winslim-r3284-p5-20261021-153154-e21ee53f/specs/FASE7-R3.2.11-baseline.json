@@ -1,0 +1,24 @@
+{
+  "revision": "FASE7-R3.2.11",
+  "windowsGate": "pending",
+  "visualApproval": "pending",
+  "dashboardApproval": "R3.2.10 approved 2026-10-06",
+  "r3211Files": {
+    "src\\UI\\Native\\R3_2_11\\WinSlim.UiBridge.ps1": "8cadac3a3ce2671fb0f2e5997337a03ed1006d18b0127b34a08fc6965152087b",
+    "src\\UI\\Native\\R3_2_11\\Program.cs": "020ed9827a97517324e5280baf396210bfdab36bc052065f4befd3d030164703",
+    "src\\UI\\Native\\R3_2_11\\WinSlimShell.xaml": "70b4164e85125d2cbcf4f24f295c6bf713b871251e26717497c0fcdd16b83f4e",
+    "src\\UI\\Native\\R3_2_11\\WinSlim.NativeUI.manifest": "f809ce51f6e62e72d19f6a2b72a9cacdcfa4c98534412f1b798ff23125224eef",
+    "src\\UI\\Native\\R3_2_11\\BridgeClient.cs": "9d727bc535b12e5b19e4099ea9af427eda2bd186f492b6bdb36d65eedcd5c5eb",
+    "src\\UI\\Native\\R3_2_11\\MainWindowController.cs": "50380e2fe22d39161ec251583a3bbb6ae012b0679242ad328117f0b17e5a43aa",
+    "src\\UI\\Native\\R3_2_11\\WinSlim.UI.Native.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "Build-NativeUI-R3.2.11.ps1": "a02cc69abfba63887dd148111057f0c74c94975eeeac004eff605791ddea62c1",
+    "Executar-WinSlim-R3.2.11.bat": "9d4424e0788ad5f99b4e1d3479001e070ffd1e37d2f15707589af8546ec58cff",
+    "Capturar-Dashboard-R3.2.11.bat": "9851c8f9f8328de9d3daa5b6f5c57757a19926aaff4829468228677b831c694f",
+    "Validar-Dashboard-R3.2.11.bat": "f4138d9859c96e25d62e834dd1f7998f02788bd93a482126f273070b8dc97e61",
+    "Capturar-Presets-R3.2.11.bat": "281f1906a57f4d2e4fcf9d02e7e918e987834c93b6171f42447a14067445c7a6",
+    "Validar-Presets-R3.2.11.bat": "f4138d9859c96e25d62e834dd1f7998f02788bd93a482126f273070b8dc97e61",
+    "tests\\Test-Fase7-R3.2.11-NativeUI.ps1": "accf2c1e0f30539ffa718d51f5d194ec33428161acaa42dd901ef40ba0df7eb6",
+    "FASE7-R3.2.11-LEIA-ME.md": "e3c8ca212cf0d8602641c8fa5bacbdd1e92eb7e08e727d1f5c59a64a9ec03c25",
+    "FASE7_R3_2_11_CHANGELOG.txt": "52997610973e5cc802ed6b551c754891c4cc1d1d7a6a50c2d28c6699b2c6bd80"
+  }
+}

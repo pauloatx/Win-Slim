@@ -1,0 +1,15 @@
+﻿{
+  "schemaVersion": "1.0",
+  "phase": "FASE6.5-R3",
+  "noPersistIterations": 3,
+  "noPersistItems": 60,
+  "persistIterations": 2,
+  "persistItems": 5,
+  "benchmarkIsGate": false,
+  "notes": [
+    "Tempos sao diagnosticos; equivalencia transacional e recovery sao o gate.",
+    "NoPersist estressa Steps/backup lookup/status sem IO.",
+    "Persist mede journaling atomico em sandbox temporario; nao altera Windows.",
+    "Transaction.ps1 R13 permanece comparador canonico nesta shadow validation."
+  ]
+}

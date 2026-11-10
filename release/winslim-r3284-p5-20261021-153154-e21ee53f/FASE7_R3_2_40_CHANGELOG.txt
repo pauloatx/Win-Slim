@@ -1,0 +1,1 @@
+R3.2.40: estilo esmaecer para telas, abas, categorias, botoes e indicadores; curva EaseInOut; removidos escala e deslocamento de entrada; cor verde/cinza e deslize funcional das chaves preservados; curva validada no self-test. Windows pendente.

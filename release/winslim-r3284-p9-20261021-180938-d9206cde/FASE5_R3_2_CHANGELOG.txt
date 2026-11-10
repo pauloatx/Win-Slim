@@ -1,0 +1,27 @@
+Win-Slim Suite - FASE 5 R3.2
+
+Correção do gate transacional Advanced Providers no Windows PowerShell 5.1.
+
+Causa isolada na R3.1:
+- o primeiro Step (WS-ADV-001) terminava Failed/Changed=False/NotRequired;
+- portanto a falha ocorria antes do Apply efetivo, no wiring do BackupHandler;
+- o harness transportava adapters sintéticos com estado $script: através de closures aninhadas;
+- no Windows PowerShell 5.1 esse seam não era confiável para validar estado mutável.
+
+Mudanças R3.2:
+- AdvancedProviderBridge aceita Context.AdvancedProviderArguments[TweakId];
+- ArgumentResolver continua suportado e tem precedência, preservando compatibilidade;
+- harness usa referências mutáveis capturadas e mapa no Context, sem closure resolver aninhada;
+- TEST 07 exige que a falha real seja F5R3-FAIL (terceiro passo);
+- WS-ADV-001 e WS-ADV-002 precisam registrar Changed=True antes do rollback;
+- ambos precisam terminar Status=RolledBack e RollbackStatus=RolledBack;
+- diagnóstico agora imprime Error e ApplyError de cada Step em caso de falha.
+
+Inalterados:
+- Transaction Manager R13;
+- Planner R1;
+- CoreParkingProvider;
+- CpuAffinityProvider;
+- GpuInterruptAffinityProvider;
+- RegistryProvider/PowerCfg/ScheduledTask;
+- catálogos base/Game-Workload/Advanced.

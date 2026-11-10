@@ -1,0 +1,1 @@
+R3.2.80: quatro politicas Edge revisadas, um DWORD cada. Seis testes locais do empacotador, JSON/XAML, hashes e preservacao da base conferidos. Compilacao e doze suites PowerShell/WPF PENDENTES no Windows. R3.2.79 aprovada nas onze regressoes recebidas; QOL-003/012 aplicados e restaurados; QOL-008 excluido, sem teste real de aplicacao nessa maquina.

@@ -1,0 +1,36 @@
+﻿Win-Slim Suite - FASE 5 R4 / Curated Catalog Expansion
+
+Baseline: FASE 5 R3.3 APROVADA.
+
+Objetivo
+- Expandir o backend validado de 190 para 202 entradas sem alterar Transaction R13, Planner R1 ou Providers aprovados.
+- Promover somente políticas com mapeamento Registry explícito em documentação Microsoft nesta rodada.
+
+Novos módulos
+- catalogs/validated/Expansion-R4.json (+12)
+- specs/FASE5-R4-source-map.json
+- tests/Test-Fase5-R4-CatalogExpansion.ps1
+
+Novos IDs
+- PRIV-016: Advertising ID off
+- PRIV-017: Tailored experiences with diagnostic data off
+- PRIV-018: Search location off
+- UI-023: Search Highlights off
+- UI-024: Personalized recommended sites off (Windows 11)
+- EDGE-001: Startup Boost off
+- EDGE-002: Background mode off
+- EDGE-003: Shopping assistant off
+- EDGE-004: Microsoft content on New Tab Page off
+- EDGE-005: Personalization reporting off
+- EDGE-006: Sleeping Tabs on
+- EDGE-007: Auto-discard old sleeping tabs on; depends on EDGE-006
+
+Arquitetura
+- Todos os novos itens usam RegistryProvider já aprovado na Fase 2.1B.
+- Presets vazios até a Fase 6.
+- uiAvailability=Phase7; módulo fica em catalogs/validated e não entra no autoload legado.
+- Backup/Undo continua baseado no snapshot transacional real, não em valores default inventados.
+
+Contagem
+177 base + 10 Seal + 3 Advanced + 12 R4 = 202 backend validado.
+UI legada/autoload continua em 187 até a Fase 7.

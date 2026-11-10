@@ -1,0 +1,26 @@
+{
+  "revision": "FASE7-R3.2.15",
+  "windowsGate": "pending",
+  "visualApproval": "pending",
+  "r3215Files": {
+    "Capturar-Presets-Avancado-R3.2.15.bat": "78d9d88048384deb2ea3247d37d3033dcbb62625569af7cdce0a03cd045c2cac",
+    "FASE7-R3.2.15-LEIA-ME.md": "961a4fa14b59164806b8470e0dd6e254964167e18fa4c08dca0d6ec3f69434e1",
+    "Build-NativeUI-R3.2.15.ps1": "51dd628d1765d0f935a7ab86faff0370c4769c8bbfe92ae82a3a20046d0f82fd",
+    "FASE7_R3_2_15_CHANGELOG.txt": "8d1af437f6f8cda75097a316c59286e24942187615ce241dd5ca727a00c9f7f3",
+    "Capturar-Dashboard-R3.2.15.bat": "4d8871d0da97aba9a0c45ef41bbed328e8530ca00deb75ba2abe61e24a3e9e20",
+    "Validar-Presets-R3.2.15.bat": "7314adbac7b42356938b71714d1ce103e0e10f7a3148315d68761236c1898df6",
+    "Capturar-Presets-R3.2.15.bat": "958cc20b92bd7e94ad1cb33d7dac14d5077abae6caae23d0aa56763fb6ec69b7",
+    "Capturar-Presets-Logs-R3.2.15.bat": "d78df7457cd113ae78f80a76edaf7b6647c45181bec954c07eba99161c282a93",
+    "Executar-WinSlim-R3.2.15.bat": "41eacea76a64f1893a5835d50cd121cca823651bbdbc096765f685abd22369ac",
+    "Validar-Dashboard-R3.2.15.bat": "7314adbac7b42356938b71714d1ce103e0e10f7a3148315d68761236c1898df6",
+    "Capturar-Presets-Sobre-R3.2.15.bat": "684be469080e9108da6bef007b295b1a9597079d85a68bbcccc616e7096b7c17",
+    "tests\\Test-Fase7-R3.2.15-NativeUI.ps1": "d35746ddf53d79212f4f6e28c61e91d03971cc6d9bfcf28195672aa37fb85a41",
+    "src\\UI\\Native\\R3_2_15\\MainWindowController.cs": "ca8c51d46e58314ec40851f33d8815ff9c6044f1554b3de61bdc303987fec6e9",
+    "src\\UI\\Native\\R3_2_15\\WinSlim.UI.Native.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
+    "src\\UI\\Native\\R3_2_15\\BridgeClient.cs": "53f40b2e37a86c6baca9cdbbd3e32547409e6832822008e22924ea651371eed5",
+    "src\\UI\\Native\\R3_2_15\\WinSlim.UiBridge.ps1": "159bea3607cb21ecd2eb38ad022730f81d51da51c2c90e29243cc44800d6dbc5",
+    "src\\UI\\Native\\R3_2_15\\WinSlimShell.xaml": "a398a329e2cac70c76d148c2a6ecc54d0b342d5329272d9e730164610eb23642",
+    "src\\UI\\Native\\R3_2_15\\WinSlim.NativeUI.manifest": "568a8e5d19b18a165408d57a763d966244c570821ad639bf7b60183ee480b77d",
+    "src\\UI\\Native\\R3_2_15\\Program.cs": "96ed320704df743c541c9485c62933948ac875007928f5a6ebefaba15e1bb577"
+  }
+}
