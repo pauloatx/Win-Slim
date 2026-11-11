@@ -1,0 +1,11 @@
+R3.2.84 — CI Windows hospedada executada e consolidada
+- Repositorio Git inicializado com remoto pauloatx/Win-Slim e branch master; corpus de entrega completo rastreado byte a byte (250 ficheiros do baseline).
+- Workflow .github/workflows/windows-candidate.yml validado com actionlint e com o parser do Windows PowerShell 5.1 em cada bloco run:.
+- tools/validation/HostedDisplayPreparation.ps1: prepara um modo de ecra compativel antes do gate, falha fechada quando a sessao nao comporta a janela contratada de 1180x760 e le a area de trabalho directamente do sistema operativo.
+- tests/regression/Test-HostedDisplay-R3.2.84.ps1 e REG-HOSTEDDISPLAY-001: 23 verificacoes comportamentais (estado real, recusa de requisito impossivel, nao mutacao no modo de observacao, coerencia entre area observada e contrato da janela).
+- Execucao hospedada aprovada: run 43032309531, conclusao success, 31/31 suites, TechnicalPassed=true, FreshCandidateEvidence=true.
+- Diagnostico do REG-UI-001: a area de trabalho do runner (1024x728) nao comporta a janela 1180x760 e o sistema operativo restringe-a a 1044x760; a expectativa do self-test nao foi afrouxada.
+- docs/BUGLOG.md criado com o registo WS-BUG-0001 a WS-BUG-0010 e a classificacao das suites quanto ao ambiente de execucao.
+- AGENTS.md revisto (N3-lite): requisitos do ambiente da CI hospedada e do registo de bugs.
+- ProductionApproved=false e distribuicao em hold: incidente AV-20261021-001 continua sem resolucao do fabricante e os acceptes fisicos permanecem pendentes.
+- Defeito conhecido e nao corrigido: o gate local e one-shot porque o build forcado substitui bin/ (WS-BUG-0007, remediacao REG-RESTORE-001 especificada).

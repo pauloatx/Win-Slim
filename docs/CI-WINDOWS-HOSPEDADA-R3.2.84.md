@@ -72,7 +72,15 @@ Como esta alteração é de infraestrutura, o EXE operacional aceito `62eb381958
 | [42918325245](https://github.com/pauloatx/Win-Slim/actions/runs/42918325245) | `push` | `8de239b` | **failure** | `[FAIL] R3.2.84 recebido: third_party/PresentMon/PresentMon-2.6.0-x64.exe` → `Integridade de entrada reprovada; compilacao bloqueada.` (TEST 06B, REG-UI-001) |
 | [42977834181](https://github.com/pauloatx/Win-Slim/actions/runs/42977834181) | `push` | `7ac35c2` | **failure** | workflow inválido: o corpo do here-string PowerShell ficou com indentação 0 e encerrou o bloco YAML; nenhuma suíte executou |
 | [42978644088](https://github.com/pauloatx/Win-Slim/actions/runs/42978644088) | `push` | `c02f516` | **failure** | diagnóstico executado: `Detalhe: dimensão ou nome incorreto.` reproduzido; nome confirmado correto pelo bridge e janela medida pelo SO |
-| [42980308809](https://github.com/pauloatx/Win-Slim/actions/runs/42980308809) | `push` | `39431b2` | **success** | **CI hospedada aprovada**: 30/30 suítes, build e self-test WPF verdes, `TechnicalPassed=true` |
+| [42980308809](https://github.com/pauloatx/Win-Slim/actions/runs/42980308809) | `push` | `39431b2` | **success** | primeira CI hospedada aprovada (30/30, antes do caso de ecrã): preparador de ecrã ainda dentro do *workflow* |
+| [42982286279](https://github.com/pauloatx/Win-Slim/actions/runs/42982286279) | `push` | `60e65dd` | **success** | reprodutibilidade da aprovação (30/30) |
+| [43021519431](https://github.com/pauloatx/Win-Slim/actions/runs/43021519431) | `push` | `fb08b03` | **failure** | `Reviewed regression registry changed` — a cadeia de revisão não acompanhou o registo de casos |
+| [43025119487](https://github.com/pauloatx/Win-Slim/actions/runs/43025119487) | `push` | `71d965d` | **failure** | `Reviewed case set incomplete` — `requiredIds` sem o caso novo; a política falhou fechada como deve |
+| [43028580983](https://github.com/pauloatx/Win-Slim/actions/runs/43028580983) | `push` | `f2e9392` | **failure** | a preparação mudou o modo (`ApiResult: 0`) mas reportou falha: métricas de ecrã em cache |
+| [43029400378](https://github.com/pauloatx/Win-Slim/actions/runs/43029400378) | `push` | `693f6d3` | **failure** | mesma causa: a operação de baixo nível passou a ser executada em código gerido, mas a medição continuava em cache |
+| [43030442755](https://github.com/pauloatx/Win-Slim/actions/runs/43030442755) | `push` | `5465689` | **failure** | mesma causa: o instrumento foi executado no processo do *step* e a falha persistiu, isolando a medição como causa |
+| [43031381793](https://github.com/pauloatx/Win-Slim/actions/runs/43031381793) | `push` | `99bea4f` | **failure** | diagnóstico final: o modo mudou (`ObservedMode: 1920x1080@32/64`) e a área observada não |
+| [43032309531](https://github.com/pauloatx/Win-Slim/actions/runs/43032309531) | `push` | `67786ae` | **success** | **CI hospedada aprovada com o registo completo**: 31/31 suítes, build e self-test WPF verdes, `TechnicalPassed=true` |
 
 Artefato da execução aprovada: `WinSlim-CI-42980308809-1`, ID `13837042851`, 192 467 bytes, retenção 14 dias. As evidências textuais da execução (contexto, hashes de entrada, `dependencies.json`, `display-preparation.json`, par `summary.json`/`regressions.json` da candidata, `resultado.json` com 30 casos aprovados e `SHA256.json`) foram preservadas no artefacto.
 
@@ -84,7 +92,10 @@ Ambiente real observado: GitHub Actions `windows-2022`, imagem `20261101.353.1`,
 2. **Ordem do workflow restaurada.** A reordenação temporária (validação depois do build) foi revertida: o desenho oficial valida os hashes **antes** da compilação, porque o baseline regista o executável operacional aceite. O workflow volta ao byte revisado `47f6235262499ca3ae269615112ec9b6d8fbdc58d5f2ffabe8a7638f6508c39f`, e `release/review.json` / `release/security-incidents.json` / o baseline mantêm a cadeia de revisão intacta.
 3. **Baseline renovado para a revisão de `AGENTS.md` de 10/11/2026** (`dfb83a8893fb49deb...`). A revisão do documento de processo pelo responsável ocorreu depois do último reprocessamento do baseline e fazia o TEST 06B reprovar localmente e na CI.
 4. **Diagnóstico hospedado antes de qualquer alteração de produto.** O `REG-UI-001` reprovava dentro do próprio self-test com `Detalhe: dimensão ou nome incorreto.`, mensagem sem valores. Um passo de diagnóstico **apenas de CI** capturou o ambiente real (ecrã 1024x768, área de trabalho 1024x728, cultura en-US), a resposta real do bridge (`name` correto e ASCII) e a evolução do tamanho da janela: `1180x760` antes de ser apresentada e **1044x760** depois. Conclusão: a janela contratada de 1180x760 não cabe na área de trabalho do runner e o SO restringe-a; a asserção de tamanho exato falha por ambiente, não por defeito do produto.
-5. **Preparação do ecrã do runner antes do gate.** Um passo novo aplica um modo de ecrã compatível (1920x1080 → área de trabalho 1920x1040) e **falha fechada** se a área ficar abaixo de 1200x800, em vez de deixar o gate reprovar por uma limitação do runner. Com o ecrã preparado, a janela mantém 1180x760 e o self-test fecha verde.
+5. **Preparação do ecrã do runner antes do gate.** Um passo novo aplica um modo de ecrã compatível (1920x1080 → área de trabalho 1920x1040) e **falha fechada** se a área ficar abaixo de 1200x800, em vez de deixar o gate reprovar por uma limitação do runner. A lógica passou para o instrumento revisto `tools/validation/HostedDisplayPreparation.ps1`, usado **da mesma forma** no computador de desenvolvimento, no runner e na VM.
+6. **Medição sem cache.** A área de trabalho é lida do sistema operativo (`SPI_GETWORKAREA`) em cada medição: `System.Windows.Forms.Screen` mantém as métricas do ecrã em cache durante a vida do processo e reportava o valor antigo depois da mudança, o que fez a preparação ser dada como falha apesar de o modo ter mudado (`ApiResult: 0`, `ObservedMode: 1920x1080@32/64`).
+7. **Regressão comportamental do instrumento.** `REG-HOSTEDDISPLAY-001` (23 verificações) prova que o instrumento relata o estado real, recusa um requisito impossível com código diferente de zero, **não** altera o ecrã no modo de observação e é coerente entre a área observada e o contrato da janela. O caso está registado em `tests/regression/cases.json` e na cadeia de revisão (`requiredIds`, `registrySHA256`, manifesto).
+8. **Registo de bugs.** `docs/BUGLOG.md` passou a existir com os identificadores `WS-BUG-0001` a `WS-BUG-0010`, incluindo o defeito de instrumentação (métricas em cache) e o defeito conhecido que permanece por corrigir (gate local *one-shot*).
 
 Nenhuma fonte de produção, contrato Apply/Verify/Undo, harness retido ou aceite físico foi alterado por estas correções de infraestrutura. O binário aceite `62eb3819580efa1d...` e as cadeias de revisão mantêm-se intactos.
 
@@ -92,19 +103,21 @@ Nenhuma fonte de produção, contrato Apply/Verify/Undo, harness retido ou aceit
 
 | Item | Valor real |
 | --- | --- |
-| Run | [42980308809](https://github.com/pauloatx/Win-Slim/actions/runs/42980308809) (evento `push`, SHA `39431b2`, tentativa 1) |
+| Run | [43032309531](https://github.com/pauloatx/Win-Slim/actions/runs/43032309531) (evento `push`, SHA `67786ae`, tentativa 1) |
 | Conclusão | **success**, job `candidate` com 12/12 passos aprovados |
-| Gate | **30/30 casos de regressão**, `Passed=true`, `ExitCode=0`, nenhuma falha |
+| Gate | **31/31 casos de regressão**, `Passed=true`, `ExitCode=0`, nenhuma falha (`REG-UI-001` em 90 s, `REG-HOSTEDDISPLAY-001` em 3 s) |
 | Candidata | `TechnicalPassed=true`, `ProductionApproved=false`, `ManualValidation=Pending`, `Error=null` |
-| Evidência | `FreshCandidateEvidence=true`, 111 logs textuais alterados, `SHA256.json` do artefacto |
-| Ambiente | `windows-2022` imagem `20261101.353.1`, PowerShell 5.1.20348.5773 x64, Python 3.13.12 x64, ecrã 1920x1080 (área 1920x1040) |
-| Artefato | `WinSlim-CI-42980308809-1`, ID `13837042851`, retenção 14 dias |
+| Ecrã | antes `1024x728` → aplicado `1920x1080` (área `1920x1040`), `ApiResult: 0`; contrato da janela medido pelo mesmo instrumento: `afterShow=1180x760`, `contractHeld=true` |
+| Evidência | `FreshCandidateEvidence=true`, 111 logs textuais alterados, `SHA256.json` do artefacto; cópia local em `logs/ci-hosted-20261111/` com manifesto e hashes |
+| Ambiente | `windows-2022` imagem `20261101.353.1`, PowerShell 5.1.20348.5773 x64, Python 3.13.12 x64 |
+| Artefato | `WinSlim-CI-43032309531-1`, 195 618 bytes, retenção 14 dias |
 
 ### O que falta
 
-1. Conservar URL/run_id/run_attempt, SHA/branch/evento e imagem reais, logs, artefacto ID/URL/digest e o seu `SHA256.json` antes do expirar a retenção de 14 dias, e anexar o artefacto ao registo do projeto.
-2. Preparar a revisão textual do resultado hospedado (incluindo a rejeição do `REG-UI-001` no ecrã pequeno e a preparação do ecrã como evidência de ambiente).
-3. Publicação/produção continuam pendentes: incidente AV-20261021-001 não resolvido pelo fabricante, `productionApproved=false`, distribuição em `hold`, aceites físicos e de VM pendentes. Nenhuma família física já aceita precisa ser repetida por esta alteração de infraestrutura.
+1. Conservar URL/run_id/run_attempt, SHA/branch/evento e imagem reais, logs, artefacto ID/URL/digest e o seu `SHA256.json` antes do expirar a retenção de 14 dias. A cópia local em `logs/ci-hosted-20261111/` (manifesto `b51295d643a54776...`) preserva o essencial.
+2. Validar os testes nativos na VM Windows 11 (critério de aceite desta etapa) e preparar a revisão textual do resultado hospedado.
+3. Corrigir o defeito conhecido `WS-BUG-0007` (gate local *one-shot*) com a remediação `REG-RESTORE-001` especificada.
+4. Publicação/produção continuam pendentes: incidente AV-20261021-001 não resolvido pelo fabricante, `productionApproved=false`, distribuição em `hold`, aceites físicos e de VM pendentes. Nenhuma família física já aceita precisa ser repetida por esta alteração de infraestrutura.
 
 ## Arquivos da implementação
 
