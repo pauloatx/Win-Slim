@@ -53,6 +53,57 @@ jobs:
         run: |
           python tools/package_release.py . specs/FASE7-R3.2.84-baseline.json
           exit $LASTEXITCODE
+      - name: Prepare interactive display for the WPF self-test
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Add-Type -AssemblyName System.Windows.Forms
+          Add-Type -TypeDefinition @'
+          using System;
+          using System.Runtime.InteropServices;
+          public static class WinSlimDisplayMode {
+            [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
+            public struct DEVMODE {
+              [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmDeviceName;
+              public short dmSpecVersion, dmDriverVersion, dmSize, dmDriverExtra;
+              public int dmFields, dmPositionX, dmPositionY, dmDisplayOrientation, dmDisplayFixedOutput;
+              public short dmColor, dmDuplex, dmYResolution, dmTTOption, dmCollate;
+              [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmFormName;
+              public short dmLogPixels;
+              public int dmBitsPerPel, dmPelsWidth, dmPelsHeight, dmDisplayFlags, dmDisplayFrequency;
+              public int dmICMMethod, dmICMIntent, dmMediaType, dmDitherType, dmReserved1, dmReserved2, dmPanningWidth, dmPanningHeight;
+            }
+            [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string device, int mode, ref DEVMODE dm);
+            [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern int ChangeDisplaySettings(ref DEVMODE dm, int flags);
+            public static bool Apply(int width, int height) {
+              DEVMODE dm = new DEVMODE();
+              dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+              if (!EnumDisplaySettings(null, -1, ref dm)) return false;
+              dm.dmFields = 0x80000 | 0x100000 | 0x40000;
+              dm.dmPelsWidth = width;
+              dm.dmPelsHeight = height;
+              dm.dmBitsPerPel = 32;
+              return ChangeDisplaySettings(ref dm, 0x01) == 0;
+            }
+          }
+          '@
+          $required = @{ Width = 1200; Height = 800 }
+          $applied = $null
+          foreach ($candidate in @(@(1920, 1080), @(1600, 1200), @(1280, 1024))) {
+            if ([WinSlimDisplayMode]::Apply($candidate[0], $candidate[1])) {
+              Start-Sleep -Seconds 2
+              $screen = [System.Windows.Forms.Screen]::PrimaryScreen
+              if ($screen.WorkingArea.Width -ge $required.Width -and $screen.WorkingArea.Height -ge $required.Height) {
+                $applied = [ordered]@{ Requested = "$($candidate[0])x$($candidate[1])"; Bounds = $screen.Bounds.ToString(); WorkingArea = $screen.WorkingArea.ToString() }
+                break
+              }
+            }
+          }
+          $record = [ordered]@{ RequiredWorkingArea = "$($required.Width)x$($required.Height)"; Applied = $applied; FinalWorkingArea = ([System.Windows.Forms.Screen]::PrimaryScreen.WorkingArea.ToString()) }
+          $record | ConvertTo-Json -Depth 4 | Set-Content -Encoding UTF8 (Join-Path $env:CI_EVIDENCE 'display-preparation.json')
+          if ($null -eq $applied) {
+            throw ('A area de trabalho do runner nao comporta a janela 1180x760 do aplicativo. Modos tried: 1920x1080, 1600x1200, 1280x1024. Final: ' + $record.FinalWorkingArea)
+          }
+          Write-Host ('Display prepared: ' + ($applied | ConvertTo-Json -Compress))
       - name: Run official candidate pipeline (build, WPF and current registry)
         id: candidate
         run: |

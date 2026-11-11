@@ -82,7 +82,7 @@
     "src/UI/Native/R3_2_84/BenchmarkSettingsWindow.cs": "151cddf2eddc9f43b171a0f7f8531069282a14d21eacdb59ad10a63b7aa57552",
     "src/UI/Native/R3_2_84/MainWindowController.cs": "18b2cc23192b40d58dcf614e6ee18960f48d0acce9e591c10fe21d6514b1fa05",
     ".gitattributes": "b4e7b9b0df3762b74a29433913a78101b42b6ef674f89485982bfaaa202771aa",
-    ".github/workflows/windows-candidate.yml": "31fd97c8b9eb2e8b682f10c5cd3791c4cdb69a1806b6624c7aa5b1561438b977",
+    ".github/workflows/windows-candidate.yml": "2909452c962937df76b98af318a8067fcdc32c17b243313456d6339441d7bf7b",
     "tools/ci_evidence.py": "18a5a6bae132d6baf413ca47ea0ece1ec9f06adedf4eeacffdf224641fca8add",
     "tests/test_ci_evidence.py": "32c382877b2bba213e8a20fa0d0dfcb6081acebffbf8f1e7dfd12130a24ebc05",
     "tests/regression/Test-HostedCI-R3.2.84.ps1": "6aacbcb5c763e9dffd737084b3ba182dd13f83f14e9a0e47285783070a1d4d2c",
