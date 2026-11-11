@@ -36,7 +36,7 @@
   ],
   "registrySHA256": "73a9730bae481a48266553af719e045c98aa53a5cefa4be2a25dd51f0c6c229e",
   "activeFiles": {
-    ".github/workflows/windows-candidate.yml": "996c19789c74febee5110f9ec3f709df74c97c267cd728b714169137de6e1fdc",
+    ".github/workflows/windows-candidate.yml": "e981200abdefdcbf9b03e4ea18b046d7ed7d8c7f575f4d09cbab9344311f7966",
     "Executar-Regressoes.ps1": "e2321f5921828604420ebefe7b7d49737955d297f29039b9ec3013121d83ff65",
     "tests/BenchmarkOverlayHarness.cs": "b6b7ff3180623e53fab33a26cbea7f1288a242a33962ac7ca6f1f0d96c03b1bf",
     "tests/OverlaySettingsHarness.cs": "ccb758b63a25e8eaecf6151c85f083bc914557f157fb78b1dfeadcbcb979512f",
@@ -74,7 +74,7 @@
     "tests/regression/Test-SecurityHold-R3.2.84.ps1": "3c225c7cef70205ad8212bcba4f7b9c2e77c7d48ba97e70b1825d791ff419171",
     "tools/ReleasePipeline.ps1": "e3ae209630c3a00afeab6eecbab02c1a849ddc33dc112404f013e16a4da58a33",
     "tools/TestExecutionPolicy.ps1": "5fa1e707d976c29b037da8ba460451abfae26c19e755bcddd5c32c654f0d6a77",
-    "tools/validation/HostedDisplayPreparation.ps1": "e7009c8da75060a0e0d6861f19e53f4a42d3ad4a8539cca7b2d3997dcb67475a",
+    "tools/validation/HostedDisplayPreparation.ps1": "49e70713bf46bf58485d7db052be8715a8db05a7a66d1f0375c3c4d1dd58e447",
     "tools/validation/WinSlimCaptureData.ps1": "729925f9e2f3c131a6e77881a9a87551a6711573d6aae56265f0a04372be3cbb",
     "tests/Test-Fase7-R3.2.84-HotkeyWParam.ps1": "932a79b10173921dd93dfe4dc676c5a62efb45877b30e299b4c1bcf7e1ea2fc8",
     "tests/fixtures/HotkeyWParamFixture.cs": "0662ddc4284a2a541364310ace4a34e568ed4cc5e0dbf7fe3c72609a929131d9",

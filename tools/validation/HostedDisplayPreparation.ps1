@@ -200,7 +200,7 @@ if ($ProbeOnly) {
     if (-not $satisfies) {
         throw ('Area de trabalho ' + $before.ToString() + ' nao atinge o minimo ' + $receipt.RequiredWorkingArea + ' e o modo ProbeOnly nao altera o ecra.')
     }
-    exit 0
+    return
 }
 
 $candidates = @(
@@ -220,7 +220,7 @@ if ($before.Width -ge $MinimumWidth -and $before.Height -ge $MinimumHeight) {
     if ($Diagnose) { $receipt['Probe'] = Measure-WinSlimWindowContract -RootPath $Root }
     Write-WinSlimReceipt -Receipt $receipt
     Write-Host ('Display already suitable: ' + $before.ToString())
-    exit 0
+    return
 }
 $receipt['AlreadySatisfied'] = $false
 foreach ($candidate in $candidates) {
@@ -244,4 +244,4 @@ if (-not $receipt['SatisfiesRequirement']) {
     throw ('Area de trabalho final ' + $final.ToString() + ' nao atinge o minimo ' + $receipt.RequiredWorkingArea + '. A janela contratada 1180x760 nao pode ser preservada nesta sessao; o gate nao pode ser considerado valido.')
 }
 Write-Host ('Display prepared: ' + $final.ToString())
-exit 0
+return

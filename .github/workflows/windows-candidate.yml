@@ -59,8 +59,9 @@ jobs:
           # The native self-test requires the window to keep 1180x760. The tool
           # fails closed when the session cannot host that size, so an
           # environment limitation is never mistaken for a product defect.
-          & powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File 'tools\validation\HostedDisplayPreparation.ps1' -MinimumWidth 1200 -MinimumHeight 800 -EvidencePath (Join-Path $env:CI_EVIDENCE 'display-preparation.json')
-          exit $LASTEXITCODE
+          # The tool is sourced in this process: the display mode belongs to
+          # the session of the caller.
+          . .\tools\validation\HostedDisplayPreparation.ps1 -MinimumWidth 1200 -MinimumHeight 800 -EvidencePath (Join-Path $env:CI_EVIDENCE 'display-preparation.json')
       - name: Run official candidate pipeline (build, WPF and current registry)
         id: candidate
         run: |
@@ -92,8 +93,7 @@ jobs:
           # The reviewed preparation tool is the single instrument used locally,
           # on the hosted runner and in the VM: it reports the real window
           # contract and never changes the display in ProbeOnly mode.
-          & powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File 'tools\validation\HostedDisplayPreparation.ps1' -ProbeOnly -Diagnose -EvidencePath (Join-Path $diag 'display-diagnosis.json')
-          Write-Host ('Display diagnosis exit code: ' + $LASTEXITCODE)
+          . .\tools\validation\HostedDisplayPreparation.ps1 -ProbeOnly -Diagnose -EvidencePath (Join-Path $diag 'display-diagnosis.json')
           try {
             $catalog = Get-Content -LiteralPath 'catalog.json' -Raw -Encoding UTF8 | ConvertFrom-Json
             $items = if ($catalog.PSObject.Properties.Name -contains 'tweaks') { @($catalog.tweaks) } else { @($catalog) }
