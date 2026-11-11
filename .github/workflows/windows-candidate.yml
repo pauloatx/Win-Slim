@@ -58,6 +58,52 @@ jobs:
         run: |
           & .\Iniciar-Validacao.bat /ci
           exit $LASTEXITCODE
+      - name: Collect hosted WPF and bridge evidence
+        if: always()
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $diag = Join-Path $env:CI_EVIDENCE 'hosted-diagnostics'
+          New-Item -ItemType Directory -Path $diag -Force | Out-Null
+          $root = (Resolve-Path '.').Path
+          $envInfo = [ordered]@{
+            Culture = [System.Globalization.CultureInfo]::CurrentCulture.Name
+            UICulture = [System.Globalization.CultureInfo]::CurrentUICulture.Name
+            DefaultCodePage = [System.Text.Encoding]::Default.CodePage
+            ConsoleOutputCodePage = [Console]::OutputEncoding.CodePage
+            PowerShell = $PSVersionTable.PSVersion.ToString()
+            PowerShellEdition = $PSVersionTable.PSEdition
+            Process64Bit = [Environment]::Is64BitProcess
+            Temp = $env:TEMP
+          }
+          try {
+            Add-Type -AssemblyName System.Windows.Forms
+            $envInfo['Screens'] = @([System.Windows.Forms.Screen]::AllScreens | ForEach-Object {
+              [ordered]@{ Device = $_.DeviceName; Bounds = $_.Bounds.ToString(); WorkingArea = $_.WorkingArea.ToString(); Primary = $_.Primary } })
+          } catch { $envInfo['Screens'] = $_.Exception.Message }
+          $envInfo | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $diag 'environment.json')
+          try {
+            $catalog = Get-Content -LiteralPath 'catalog.json' -Raw -Encoding UTF8 | ConvertFrom-Json
+            $items = if ($catalog.PSObject.Properties.Name -contains 'tweaks') { @($catalog.tweaks) } else { @($catalog) }
+            @($items | Where-Object { $_.id -in @('PERF-001', 'PERF-004') }) |
+              ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $diag 'catalog-entries.json')
+          } catch { $_.Exception.Message | Set-Content -Encoding UTF8 (Join-Path $diag 'catalog-entries.error.txt') }
+          $bridge = Join-Path $root 'src\UI\Native\R3_2_84\WinSlim.UiBridge.ps1'
+          foreach ($tweakId in @('PERF-001', 'PERF-004')) {
+            $request = [pscustomobject]@{ id = 'diag-' + $tweakId; action = 'tweakDetails'; tweakId = $tweakId } | ConvertTo-Json -Compress
+            $response = $request | & powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $bridge -Server -RootPath $root 2>&1
+            $response | Set-Content -Encoding UTF8 (Join-Path $diag ('bridge-' + $tweakId + '.json'))
+          }
+          $exe = Join-Path $root 'bin\WinSlim.UI.Native.R3.2.84.exe'
+          if (Test-Path -LiteralPath $exe) {
+            $self = Join-Path $diag 'selftest.json'
+            $process = Start-Process -FilePath $exe -ArgumentList @('--root', $root, '--self-test', $self) -WorkingDirectory $root -Wait -PassThru -RedirectStandardOutput (Join-Path $diag 'selftest.stdout.log') -RedirectStandardError (Join-Path $diag 'selftest.stderr.log')
+            [ordered]@{ ExitCode = $process.ExitCode; ResultExists = (Test-Path -LiteralPath $self) } | ConvertTo-Json | Set-Content -Encoding UTF8 (Join-Path $diag 'selftest-exit.json')
+            foreach ($name in @('ui-native-r3.2.84.log', 'selftest-r3.2.84.log', 'selftest-custom-r3.2.84.log')) {
+              $source = Join-Path $root ('logs\' + $name)
+              if (Test-Path -LiteralPath $source) { Copy-Item -LiteralPath $source -Destination (Join-Path $diag $name) -Force }
+            }
+          }
+          exit 0
       - name: Collect current-run text evidence and integrity
         if: always()
         env:
