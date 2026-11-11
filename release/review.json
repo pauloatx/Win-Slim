@@ -74,7 +74,7 @@
     "tests/regression/Test-SecurityHold-R3.2.84.ps1": "3c225c7cef70205ad8212bcba4f7b9c2e77c7d48ba97e70b1825d791ff419171",
     "tools/ReleasePipeline.ps1": "e3ae209630c3a00afeab6eecbab02c1a849ddc33dc112404f013e16a4da58a33",
     "tools/TestExecutionPolicy.ps1": "5fa1e707d976c29b037da8ba460451abfae26c19e755bcddd5c32c654f0d6a77",
-    "tools/validation/HostedDisplayPreparation.ps1": "50fa554610859a606d419d385b631e60d9f9861447c854145f6b2b09bdd30d5c",
+    "tools/validation/HostedDisplayPreparation.ps1": "3c3586208b033141fb8d79017e73423247b51c68dc0fceaa0349cd245717468e",
     "tools/validation/WinSlimCaptureData.ps1": "729925f9e2f3c131a6e77881a9a87551a6711573d6aae56265f0a04372be3cbb",
     "tests/Test-Fase7-R3.2.84-HotkeyWParam.ps1": "932a79b10173921dd93dfe4dc676c5a62efb45877b30e299b4c1bcf7e1ea2fc8",
     "tests/fixtures/HotkeyWParamFixture.cs": "0662ddc4284a2a541364310ace4a34e568ed4cc5e0dbf7fe3c72609a929131d9",

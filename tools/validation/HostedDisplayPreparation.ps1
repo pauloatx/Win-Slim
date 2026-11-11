@@ -35,10 +35,19 @@ if ([string]::IsNullOrWhiteSpace($Root)) {
 $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 
 function Get-WinSlimPrimaryWorkingArea {
-    Add-Type -AssemblyName System.Windows.Forms -ErrorAction SilentlyContinue
-    $screen = [System.Windows.Forms.Screen]::PrimaryScreen
-    if ($null -eq $screen) { throw 'Sessao sem ecra primario disponivel.' }
-    return $screen.WorkingArea
+    # Read from the operating system on every call: the .NET Screen class caches
+    # the display metrics for the lifetime of the process.
+    $raw = [WinSlimDisplayMode]::WorkArea()
+    if ($raw -eq 'unavailable') { throw 'Sessao sem area de trabalho disponivel.' }
+    $parts = $raw.Split(',')
+    if ($parts.Count -ne 4) { throw ('Area de trabalho invalida: ' + $raw) }
+    return [pscustomobject]@{
+        X = [int]$parts[0]
+        Y = [int]$parts[1]
+        Width = [int]$parts[2]
+        Height = [int]$parts[3]
+        Text = '{X=' + $parts[0] + ',Y=' + $parts[1] + ',Width=' + $parts[2] + ',Height=' + $parts[3] + '}'
+    }
 }
 
 function Write-WinSlimReceipt {
@@ -65,9 +74,9 @@ function Set-WinSlimDisplayMode {
     $current = Get-WinSlimPrimaryWorkingArea
     $mode = [WinSlimDisplayMode]::CurrentMode()
     if ($code -eq 0 -and $current.Width -ge $RequiredWidth -and $current.Height -ge $RequiredHeight) {
-        return [pscustomobject]@{ Applied = $true; ApiResult = $code; Target = 'default-display'; WorkingArea = $current.ToString(); Mode = $mode }
+        return [pscustomobject]@{ Applied = $true; ApiResult = $code; Target = 'default-display'; WorkingArea = $current.Text; Mode = $mode }
     }
-    return [pscustomobject]@{ Applied = $false; ApiResult = $code; Target = $null; WorkingArea = $current.ToString(); Mode = $mode }
+    return [pscustomobject]@{ Applied = $false; ApiResult = $code; Target = $null; WorkingArea = $current.Text; Mode = $mode }
 }
 
 function Measure-WinSlimWindowContract {
@@ -88,9 +97,9 @@ function Measure-WinSlimWindowContract {
             $reader = [System.Xml.XmlReader]::Create($stream, $settings)
             try { $window = [System.Windows.Markup.XamlReader]::Load($reader) } finally { $reader.Dispose() }
         } finally { $stream.Dispose() }
-        $working = [System.Windows.Forms.Screen]::PrimaryScreen.WorkingArea
+        $working = Get-WinSlimPrimaryWorkingArea
         $stages['afterXaml'] = [string]$window.Width + 'x' + [string]$window.Height
-        $stages['workingArea'] = $working.ToString()
+        $stages['workingArea'] = $working.Text
         $stages['workingAreaWidth'] = [int]$working.Width
         $stages['workingAreaHeight'] = [int]$working.Height
         $stages['contractFits'] = ($working.Width -ge 1180 -and $working.Height -ge 760)
@@ -136,6 +145,16 @@ public static class WinSlimDisplayMode {
   }
   [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string device, int mode, ref DEVMODE dm);
   [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern int ChangeDisplaySettings(ref DEVMODE dm, int flags);
+  [StructLayout(LayoutKind.Sequential)] public struct RECT { public int Left, Top, Right, Bottom; }
+  [DllImport("user32.dll", SetLastError=true)] private static extern bool SystemParametersInfo(uint action, uint param, ref RECT rect, uint flags);
+  // The work area is read straight from the operating system: the .NET Screen
+  // class caches the display metrics for the lifetime of the process, so a
+  // process that reads it before the change would keep reporting the old size.
+  public static string WorkArea() {
+    RECT rect = new RECT();
+    if (!SystemParametersInfo(0x0030, 0, ref rect, 0)) return "unavailable";
+    return string.Format("{0},{1},{2},{3}", rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
+  }
   public static List<string> Modes() {
     List<string> modes = new List<string>();
     DEVMODE dm = new DEVMODE();
@@ -175,7 +194,7 @@ $receipt = [ordered]@{
     RequiredWorkingArea = "$MinimumWidth" + 'x' + "$MinimumHeight"
     ContractedWindow = '1180x760'
     Mode = if ($ProbeOnly) { 'ProbeOnly' } else { 'Prepare' }
-    Before = $before.ToString()
+    Before = $before.Text
     BeforeWidth = [int]$before.Width
     BeforeHeight = [int]$before.Height
     Applied = $null
@@ -198,13 +217,13 @@ if ($Diagnose) {
 if ($ProbeOnly) {
     $satisfies = ($before.Width -ge $MinimumWidth -and $before.Height -ge $MinimumHeight)
     $receipt['SatisfiesRequirement'] = $satisfies
-    $receipt['Final'] = $before.ToString()
+    $receipt['Final'] = $before.Text
     $receipt['FinalWidth'] = [int]$before.Width
     $receipt['FinalHeight'] = [int]$before.Height
     Write-WinSlimReceipt -Receipt $receipt
-    Write-Host ('Display probe only: working area ' + $before.ToString() + '; satisfies=' + $satisfies)
+    Write-Host ('Display probe only: working area ' + $before.Text + '; satisfies=' + $satisfies)
     if (-not $satisfies) {
-        throw ('Area de trabalho ' + $before.ToString() + ' nao atinge o minimo ' + $receipt.RequiredWorkingArea + ' e o modo ProbeOnly nao altera o ecra.')
+        throw ('Area de trabalho ' + $before.Text + ' nao atinge o minimo ' + $receipt.RequiredWorkingArea + ' e o modo ProbeOnly nao altera o ecra.')
     }
     return
 }
@@ -219,13 +238,13 @@ if ($before.Width -ge $MinimumWidth -and $before.Height -ge $MinimumHeight) {
     # The session already hosts the contracted window: the display is left untouched.
     $receipt['AlreadySatisfied'] = $true
     $receipt['Tried'] = $tried
-    $receipt['Final'] = $before.ToString()
+    $receipt['Final'] = $before.Text
     $receipt['FinalWidth'] = [int]$before.Width
     $receipt['FinalHeight'] = [int]$before.Height
     $receipt['SatisfiesRequirement'] = $true
     if ($Diagnose) { $receipt['Probe'] = Measure-WinSlimWindowContract -RootPath $Root }
     Write-WinSlimReceipt -Receipt $receipt
-    Write-Host ('Display already suitable: ' + $before.ToString())
+    Write-Host ('Display already suitable: ' + $before.Text)
     return
 }
 $receipt['AlreadySatisfied'] = $false
@@ -239,7 +258,7 @@ foreach ($candidate in $candidates) {
 }
 $receipt['Tried'] = $tried
 $final = Get-WinSlimPrimaryWorkingArea
-$receipt['Final'] = $final.ToString()
+$receipt['Final'] = $final.Text
 $receipt['FinalWidth'] = [int]$final.Width
 $receipt['FinalHeight'] = [int]$final.Height
 $receipt['SatisfiesRequirement'] = ($final.Width -ge $MinimumWidth -and $final.Height -ge $MinimumHeight)
@@ -247,7 +266,7 @@ if ($Diagnose) { $receipt['Probe'] = Measure-WinSlimWindowContract -RootPath $Ro
 Write-WinSlimReceipt -Receipt $receipt
 
 if (-not $receipt['SatisfiesRequirement']) {
-    throw ('Area de trabalho final ' + $final.ToString() + ' nao atinge o minimo ' + $receipt.RequiredWorkingArea + '. A janela contratada 1180x760 nao pode ser preservada nesta sessao; o gate nao pode ser considerado valido.')
+    throw ('Area de trabalho final ' + $final.Text + ' nao atinge o minimo ' + $receipt.RequiredWorkingArea + '. A janela contratada 1180x760 nao pode ser preservada nesta sessao; o gate nao pode ser considerado valido.')
 }
-Write-Host ('Display prepared: ' + $final.ToString())
+Write-Host ('Display prepared: ' + $final.Text)
 return
