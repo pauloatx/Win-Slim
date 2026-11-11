@@ -54,32 +54,51 @@ Pasta principal: `logs/ci-hosted-implementation-20261029/`.
 - `repository-access.json`, `initial-state.json`, `repository-public-discovery.json`: estado de acesso, sem credenciais persistidas/expostas. `preserved-scope.json` e `held-policy-check.json`: arquivos anteriores e recusa das famílias, sem invocar geradores.
 - `before/` e `before-files.json`: arquivos alterados e identidades anteriores. O teste nativo foi reconstituído pelo patch e gravado somente após corresponder exatamente ao SHA-256 original revisado `8a0cabf58458aa06f9fa172e708032f5e5680ea0e864cf7ee381500fd20c32cb`; `native-test.diff` permite a comparação textual.
 
-**Gate oficial local final aprovado: 30/30 IDs distintos, build e self-test WPF, exit 0.** [Relatório completo](../logs/regressao-20261029-164438-685-d188a4dd/resultado.json), [resumo da candidata](../logs/candidato-r3284-20261029-164438-424-5847dd2f/summary.json), `official-candidate-stabilized.log`. TechnicalPassed=true, ProductionApproved=false. Os 22 testes do empacotador passaram dentro de REG-SECURITY-001; testes de CI passaram também pelo runner oficial usando Python 3.13.0 local. A versão hospedada 3.13.12 ainda não foi executada.
+**Gate oficial local final aprovado: 30/30 IDs distintos, build e self-test WPF, exit 0.** [Relatório completo](../logs/regressao-20261029-164438-685-d188a4dd/resultado.json), [resumo da candidata](../logs/candidato-r3284-20261029-164438-424-5847dd2f/summary.json), `official-candidate-stabilized.log`. TechnicalPassed=true, ProductionApproved=false. Os 22 testes do empacotador passaram dentro de REG-SECURITY-001; testes de CI passaram também pelo runner oficial usando Python 3.13.0 local. A versão hospedada 3.13.12 foi executada a partir de 10/11/2026 (ver "Execução hospedada").
 
 O transporte real local conservou **111 logs textuais novos/alterados** em `stabilized-evidence/logs/`; `stabilized-evidence/context.json` registra Hosted=false e RunURL=null, e `stabilized-evidence/SHA256.json` identifica todos os arquivos copiados. Nenhum EXE/DLL/ZIP entrou nessa pasta. Foram conferidos novamente os hashes da cópia preservada. O build validado tem SHA-256 `d783a3d5c62b222d6bfe62e92cb1aa365a847de23812759d7982412870161365`; sua identidade e recibo constam nas evidências, sem distribuição do binário.
 
 Como esta alteração é de infraestrutura, o EXE operacional aceito `62eb3819580efa1d1e80151e9934646b796572fe2e9ac786bdb961241a04de62` e seu cache original compatível foram restaurados byte a byte ao final. A identidade de todas as entradas do build permaneceu igual à cópia aceita. [Recibo de restauração](../logs/ci-hosted-implementation-20261029/post-validation-restoration-stabilized.json). Os relatórios do gate continuam identificando o build novo efetivamente testado, sem atribuir a ele os aceites físicos anteriores. A baseline final mantém o hash do EXE entregue/aceito; nenhuma expectativa foi atualizada para encobrir a falha inicial.
 
-## Execução hospedada: o que falta
+## Execução hospedada: registo real e o que falta
 
-**URL/ID/resultado hospedado: inexistentes; nenhuma execução iniciada.** A pasta de trabalho não tem `.git`, remoto ou branch. `gh` não está instalado, não há GH_TOKEN/GITHUB_TOKEN no ambiente e o credential helper configurado não retornou credencial não interativa. GitHub está disponível como integração, mas não foi confirmado conectado. A sugestão de conexão não significa acesso concedido.
+**Execuções hospedadas iniciadas em 10/11/2026.** A pasta de trabalho foi inicializada como repositório Git, recebeu o remoto `https://github.com/pauloatx/Win-Slim.git` e envia a branch `master`. `gh` continua não instalado; a autenticação non-interactive foi feita com token de conta autenticada do proprietário, nunca gravado no repositório nem em log.
 
-A UI aponta para [`pauloatx/Win-Slim`](https://github.com/pauloatx/Win-Slim). A API pública confirmou existência, branch padrão `main` e HEAD observado `4be07a9fe6126fa05684ab6167dfc4b0a81701d3`; isso não vincula este diretório ao remoto nem comprova permissão de escrita.
+| Run | Evento | SHA | Resultado | Causa registrada |
+| --- | --- | --- | --- | --- |
+| [42917048392](https://github.com/pauloatx/Win-Slim/actions/runs/42917048392) | `workflow_dispatch` | `41909af` | **failure** | `REJECTED: Missing or outside release: bin/WinSlim.UI.Native.R3.2.84.exe` — as regras de exclusão do repositório removiam do checkout os artefatos entregues exigidos pelo baseline |
+| [42917525392](https://github.com/pauloatx/Win-Slim/actions/runs/42917525392) | `workflow_dispatch` | `d901a9b` | **failure** | `[FALHA] Reviewed dependency changed: .github/workflows/windows-candidate.yml` — a reordenação dos passos invalidou o hash revisado do manifesto de segurança |
+| [42918314152](https://github.com/pauloatx/Win-Slim/actions/runs/42918314152) | `workflow_dispatch` | `8de239b` | **cancelled** | cancelado pelo grupo de concorrência quando o evento `push` iniciou a execução seguinte; cancelamento não aprova nada |
+| [42918325245](https://github.com/pauloatx/Win-Slim/actions/runs/42918325245) | `push` | `8de239b` | **failure** | `[FAIL] R3.2.84 recebido: third_party/PresentMon/PresentMon-2.6.0-x64.exe` → `Integridade de entrada reprovada; compilacao bloqueada.` (TEST 06B, REG-UI-001) |
 
-1. Confirmar o repositório/checkout de destino e disponibilizar uma conta autenticada autorizada a gravar o workflow e iniciar Actions. Usar checkout isolado, preservando a pasta atual e diferenças existentes; não enviar indiscriminadamente `logs/`, backups, perfis ou ZIPs locais.
-2. Incorporar os arquivos listados abaixo e o corpus de fontes/baselines requerido pelo projeto. Verificar os bytes de todos os arquivos já no checkout com `python tools/package_release.py . specs/FASE7-R3.2.84-baseline.json` e a política oficial. `.gitattributes` evita conversões novas, mas não recupera blobs que já tenham sido normalizados anteriormente.
-3. Enviar a branch de CI: `push`/PR já disparam o workflow. Para disparo manual, o workflow com `workflow_dispatch` precisa existir na branch padrão; selecionar a branch correta em Actions → WinSlim Windows candidate → Run workflow. [Requisito oficial](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow).
-4. Acompanhar o runner real, corrigir qualquer falha e conservar URL/run_id/run_attempt, SHA/branch/evento e imagem reais, logs, par de relatórios da candidata, artefato ID/URL/digest e seu `SHA256.json`. Somente conclusão integral `success` e evidências coerentes permitem registrar CI aprovada; cancelamento, ausência de resultados ou YAML local aprovado não permitem.
-5. Atualizar retomada/cronograma e preparar a revisão textual do resultado hospedado. Publicação/produção continuam pendentes e nenhuma família física já aceita precisa ser repetida por esta alteração da infraestrutura.
+Artefato da última execução: `WinSlim-CI-42918325245-1`, ID `13810547573`, digest `61bef76c40b5d3687306a185bb0508e138aa024c9b7a6cc7af939d6f94b318de`, retenção 14 dias. As evidências textuais da execução (contexto, hashes de entrada, `dependencies.json`, par `summary.json`/`regressions.json` da candidata, `resultado.json` e `SHA256.json`) foram preservadas no artefato.
+
+Ambiente real observado: GitHub Actions `windows-2022`, imagem `20261101.353.1`, Windows Server 2022 `10.0.20348`, Windows PowerShell **5.1.20348.5773 x64**, .NET Framework release `533509`, `csc.exe` `4.8.9363.0` (SHA-256 `baef2676444878d5818628f46483f4e55241d6380ecff0bbb855c470852e1872`), Python **3.13.12 x64**, Git `2.56.0.windows.4`.
+
+### Correções aplicadas após a execução real
+
+1. **Corpus de entrega rastreado.** As regras de exclusão passaram a ignorar apenas conteúdo gerado (`logs/`, `evidencias/`, cache Python, ZIP de diagnóstico, staging transitório de build). O repositório passa a rastrear **os 248 ficheiros do baseline byte a byte**, incluindo o executável nativo aceite `bin/WinSlim.UI.Native.R3.2.84.exe` (`62eb3819580efa1d...`), o respetivo `.exe.config` e o binário oficial de terceiros fixado `third_party/PresentMon/PresentMon-2.6.0-x64.exe` (`b2a706bc6ad47574...`). As cópias históricas sob `release/winslim-r3284-p*/` continuam excluídas e citadas apenas por `RETOMADA-R3.2.84-P*.md` e `release/candidate-p*-artifacts.json`.
+2. **Ordem do workflow restaurada.** A reordenação temporária (validação depois do build) foi revertida: o desenho oficial valida os hashes **antes** da compilação, porque o baseline regista o executável operacional aceite. O workflow volta ao byte revisado `47f6235262499ca3ae269615112ec9b6d8fbdc58d5f2ffabe8a7638f6508c39f`, e `release/review.json` / `release/security-incidents.json` / o baseline mantêm a cadeia de revisão intacta.
+3. **Baseline renovado para a revisão de `AGENTS.md` de 10/11/2026** (`dfb83a8893fb49deb...`). A revisão do documento de processo pelo responsável ocorreu depois do último reprocessamento do baseline e fazia o TEST 06B reprovar localmente e na CI.
+
+Nenhuma fonte de produção, contrato Apply/Verify/Undo, harness retido ou aceite físico foi alterado por estas correções de infraestrutura.
+
+### O que falta
+
+1. Uma execução hospedada com conclusão integral **success** e o par novo `summary.json`/`regressions.json` da candidata. Cancelamento, ausência de resultados ou YAML local aprovado não permitem registrar CI aprovada.
+2. Conservar URL/run_id/run_attempt, SHA/branch/evento e imagem reais, logs, artefato ID/URL/digest e o seu `SHA256.json` antes do expirar a retenção de 14 dias.
+3. Atualizar a retomada/cronograma com o resultado hospedado definitivo e preparar a revisão textual do resultado.
+4. Publicação/produção continuam pendentes: incidente AV-20261021-001 não resolvido pelo fabricante, `productionApproved=false`, distribuição em `hold`. Nenhuma família física já aceita precisa ser repetida por esta alteração de infraestrutura.
 
 ## Arquivos da implementação
 
 | Grupo | Arquivos novos/alterados |
 | --- | --- |
-| CI e transporte | `.github/workflows/windows-candidate.yml`, `.gitattributes`, `tools/ci_evidence.py` |
+| CI e transporte | `.github/workflows/windows-candidate.yml`, `.gitattributes`, `.gitignore`, `tools/ci_evidence.py` |
 | Integridade nativa | `tools/validation/NativeBuildIntegrity.ps1`, `tests/Test-Fase7-R3.2.84-NativeUI.ps1` |
 | Regressões | `tests/test_ci_evidence.py`, `tests/regression/Test-HostedCI-R3.2.84.ps1`, `tests/regression/Test-NativeBuildIntegrity-R3.2.84.ps1`, `tests/regression/cases.json` |
 | Cadeia de revisão | `release/review.json`, `release/security-incidents.json`, `specs/FASE7-R3.2.84-baseline.json`, `REVISAO-TECNICA-GATE-R3.2.84.md` |
 | Continuidade | `RETOMADA-R3.2.84-AV.md`, `docs/CRONOGRAMA-INDEPENDENTE-R3.2.84.md`, este relatório e `docs/REVISAO-NEMOTRON-CI-R3.2.84.md` |
+| Corpus entregue (rastreado pelo Git) | `bin/WinSlim.UI.Native.R3.2.84.exe`, `bin/WinSlim.UI.Native.R3.2.84.exe.config`, `third_party/PresentMon/PresentMon-2.6.0-x64.exe` |
 
 Os arquivos auxiliares/evidências desta rodada ficam na pasta de logs indicada. Não houve alteração de produção nas fontes C#/XAML/backend, nos contratos Apply/Verify/Undo ou no runtime PresentMon.

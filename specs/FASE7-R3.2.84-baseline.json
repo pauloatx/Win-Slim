@@ -1,12 +1,12 @@
 {
   "revision": "FASE7-R3.2.84",
   "windowsGate": "contained-component-review-current-gate-r3-2-84",
-  "change": "Hosted Windows CI implementation: official Iniciar-Validacao.bat /ci only, immutable action commits, Windows PowerShell 5.1 x64 and Python 3.13.12, byte-preserving Git checkout, current-run text evidence and integrity without distribution packaging. REG-HOSTEDCI-001 adds isolated transport/Git regressions. Local checks do not approve hosted CI. Physical/VM acceptances and production retain their existing status; held harness sources remain blocked and unchanged.",
+  "change": "Hosted Windows CI implementation: official Iniciar-Validacao.bat /ci only, immutable action commits, Windows PowerShell 5.1 x64 and Python 3.13.12, byte-preserving Git checkout, current-run text evidence and integrity without distribution packaging. REG-HOSTEDCI-001 adds isolated transport/Git regressions. Local checks do not approve hosted CI. Physical/VM acceptances and production retain their existing status; held harness sources remain blocked and unchanged. Hosted CI delivery corpus correction 2026-11-10: the repository now tracks all 248 baseline files byte-exact, including the accepted native build bin/WinSlim.UI.Native.R3.2.84.exe (62eb3819...), its .exe.config and the hash-pinned official third_party/PresentMon/PresentMon-2.6.0-x64.exe (b2a706bc...), which the ignore rules had excluded and the hosted checkout therefore missed. Baseline refreshed for the 2026-11-10 revision of AGENTS.md; no production source, contract, held harness or acceptance changed.",
   "r3284Files": {
     "bin/WinSlim.UI.Native.R3.2.84.exe": "62eb3819580efa1d1e80151e9934646b796572fe2e9ac786bdb961241a04de62",
     "bin/WinSlim.UI.Native.R3.2.84.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
     ".github/workflows/windows-candidate.yml": "47f6235262499ca3ae269615112ec9b6d8fbdc58d5f2ffabe8a7638f6508c39f",
-    "AGENTS.md": "1662c6f2bedc0118e008c4dd24f7184e13fb0d3843f8b201f95d957b1260a884",
+    "AGENTS.md": "dfb83a8893fb49debebe4559fad87fd5208e94a64c5d95bdac14078bb3782b96",
     "AUDITORIA-UI-QOL-R3.2.84.md": "cd3b87b369f95900b6836415e33b90e8fd5c7ef757a9837a8f4bf9baad00fc86",
     "Build-NativeUI-R3.2.84.ps1": "d6ccf173e5948cebf781781a0ba117af0daa520d2ecafabf1a2a78e3ab81f062",
     "COMECE-AQUI.md": "3cdc5cbdcbfc50ee7b045eefb01c243b1b7a2214181f007a9b7dbc38d12b787b",
@@ -173,7 +173,7 @@
     "docs/REVISAO-ESTATICA-HARNESS-R3.2.84.md": "827187fdeee56d5f7b8715fe1496e25d36e83615b1863a424aa1208b877103c7",
     "tools/prototypes/FrameLimitPlan.ps1": "47458103de0268f24149db296e1d51710c5c284c0bff545ef76429f4ba923b48",
     "tests/regression/Test-FrameLimitPlan-R3.2.84.ps1": "daaf84074ded187ce4519739342a95c2992a4879abed8c475a6801d83943bf51",
-    "docs/CRONOGRAMA-INDEPENDENTE-R3.2.84.md": "77924e1386e3c5e496d47d742cb7b8e50d574dab0938d5012b7006dac55f64ca",
+    "docs/CRONOGRAMA-INDEPENDENTE-R3.2.84.md": "98c1de0e974a3b93e2cbab90fcfa12dca50e323d8f4130279a02c0fa663b2fa9",
     "tools/integration/Inspect-WinSlimEdgeVm.ps1": "3abaada376e17f06478cdcad4e168d82be6bd023e2fab3597b450c823caeaffb",
     "tools/integration/Invoke-WinSlimEdgeIsolatedVm.ps1": "79998ab9edff0ef9bae722429eef4de2296820c2f0becccaaa4b1f5fcd420ca1",
     "tools/integration/Test-WinSlimEdgeRealVm.ps1": "7e0e0b7430d246c63a3678ad6d704a9eaf7b1beea3f118b21154e0ce5d5c5e41",
@@ -249,7 +249,7 @@
     "release/review.json": "1998028bbb317084f3884b56f9d4e1627048dade20a4832a64957f2edb5a346c",
     "tools/validation/NativeBuildIntegrity.ps1": "2c58e279ab9a9a18bdc9ac885e067d66f99a4a7475ded689146bdc38feb6893d",
     "tests/regression/Test-NativeBuildIntegrity-R3.2.84.ps1": "a1810ab3a55014a93d0635f4b82d9508d624dca86f2fffad0b39fa9293e9227a",
-    "docs/CI-WINDOWS-HOSPEDADA-R3.2.84.md": "941664ebf82e14a88d933524c5abca1b931e1ad9cc14f12336ea4bc7137b8c86",
+    "docs/CI-WINDOWS-HOSPEDADA-R3.2.84.md": "54fe80de2bbe801cb724a876cc87e855708a118d69f90edd2d507de3563d6d3d",
     "docs/REVISAO-NEMOTRON-CI-R3.2.84.md": "bd84e7533dc068a77d6f147ada856471860b9f704c226d84ecc538333b864cb9"
   },
   "patch": 9,

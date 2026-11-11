@@ -1,6 +1,22 @@
 # Continuidade do cronograma durante AV-20261021-001
 
-## Atualização vigente — 29/10/2026
+## Atualização vigente — 10/11/2026
+
+Esta atualização prevalece sobre os quadros históricos de 29/10 e 22/10 abaixo, que ficam preservados como registo. [Estado atual único](../RETOMADA-R3.2.84-AV.md), [CI e evidências](CI-WINDOWS-HOSPEDADA-R3.2.84.md).
+
+| Frente | Situação comprovada | Próximo passo elegível |
+| --- | --- | --- |
+| CI Windows hospedada | **Execução real iniciada**: repositório Git inicializado, remoto `pauloatx/Win-Slim`, branch `master`, corpus de entrega completo rastreado. Quatro execuções hospedadas registadas (42917048392 e 42917525392 `failure`, 42918314152 `cancelled`, 42918325245 `failure`), todas com causa raiz identificada e corrigida: exclusões do repositório removiam os artefatos entregues do checkout; reordenação do workflow invalidou o hash revisado; baseline desatualizado para a revisão de `AGENTS.md` de 10/11. Ambiente real `windows-2022` imagem `20261101.353.1`, PowerShell 5.1.20348.5773 x64, Python 3.13.12 x64, csc 4.8.9363.0 | Obter uma execução hospedada com conclusão integral **success** e o par novo `summary.json`/`regressions.json` da candidata; conservar URL/run_id/tentativa/SHA/artefato/digest antes do expirar a retenção de 14 dias. Cancelamento ou YAML local aprovado não declararam CI aprovada |
+| Segurança e gate | `component-contained`, 53 activeFiles; PresentMonHarness/MonitorHarness retidos, guard-only/fontes intactos; incidente histórico sem resolução do fabricante. Corrida da CI não alterou escopo, contratos nem hashes da cadeia de revisão | Preservar escopo e evidências. O workflow mantém `contents: read`, ações fixadas por commit, checkout sem credencial persistente e nenhum pacote de distribuição |
+| Temas/overlay/hotkey/Edge | Aceites anteriores da VM, jogo real com troca de tema, P9 funcional, correção UI-HOTKEY-WPARAM-001 e Edge Apply/Verify/Undo preservados | Não repetir sem regressão relacionada. Nenhuma alteração de produção nos fontes C#/XAML/backend nesta rodada de infraestrutura |
+| Multimonitor físico | Não demonstrado; simulação WPF e runner não substituem hardware | Arraste livre com overlay visível entre monitores, quando houver ambiente apropriado; seguir janela automaticamente não é requisito |
+| Próxima frente técnica independente do limitador | Revisões AMD/NVIDIA e leitor NVIDIA de fixtures preservados | Licença/ABI e leitor AMD restrito, quando retomado, sem escrita por jogo; NVIDIA física continua sem laboratório |
+| Efeitos Edge condicionais | 018/OptionalData e 021/Entra sem aceite; 014/015 exigem revisão acima de 155 | Somente com condições específicas disponíveis; não repetir lotes aceitos |
+| Publicação/produção | Pendentes/hold; nenhum pacote de distribuição criado ou enviado; `productionApproved=false` | CI hospedada real bem-sucedida e demais requisitos de escopo/revisão/aceite antes de qualquer decisão de produção |
+
+Correção aplicada nesta data: as regras de exclusão do repositório passaram a ignorar apenas conteúdo gerado, e o repositório passou a rastrear **os 248 ficheiros do baseline byte a byte**, incluindo o executável nativo aceite `62eb3819580efa1d...` e o binário oficial de terceiros fixado `b2a706bc6ad47574...`. Nenhuma fonte de produção, contrato Apply/Verify/Undo, harness retido ou aceite físico foi alterado. [Registo completo](CI-WINDOWS-HOSPEDADA-R3.2.84.md).
+
+## Atualização anterior — 29/10/2026
 
 Esta atualização prevalece sobre os quadros históricos de 22/10 abaixo. [Estado atual único](../RETOMADA-R3.2.84-AV.md), [CI e evidências](CI-WINDOWS-HOSPEDADA-R3.2.84.md).
 
