@@ -51,52 +51,25 @@ function Write-WinSlimReceipt {
     [System.IO.File]::WriteAllText($EvidencePath, ($Receipt | ConvertTo-Json -Depth 8), $Utf8NoBom)
 }
 
-function Get-WinSlimDisplayDevice {
-    Add-Type -AssemblyName System.Windows.Forms -ErrorAction SilentlyContinue
-    $screen = [System.Windows.Forms.Screen]::PrimaryScreen
-    if ($null -eq $screen) { return $null }
-    return [string]$screen.DeviceName
-}
-
 function Get-WinSlimDisplayModes {
-    $mode = New-Object WinSlimDisplayMode+DEVMODE
-    $mode.dmSize = [System.Runtime.InteropServices.Marshal]::SizeOf([type]'WinSlimDisplayMode+DEVMODE')
-    $device = Get-WinSlimDisplayDevice
-    $modes = @()
-    foreach ($target in @($device, $null)) {
-        if ($null -eq $target -and $device) { continue }
-        for ($index = 0; $index -lt 512; $index++) {
-            if (-not [WinSlimDisplayMode]::EnumDisplaySettings($target, $index, [ref]$mode)) { break }
-            $modes += [pscustomobject]@{ Width = [int]$mode.dmPelsWidth; Height = [int]$mode.dmPelsHeight; BitsPerPel = [int]$mode.dmBitsPerPel }
-        }
-        if ($modes.Count -gt 0) { break }
-    }
-    return $modes
+    return @([WinSlimDisplayMode]::Modes())
 }
 
 function Set-WinSlimDisplayMode {
     param([int]$Width, [int]$Height, [int]$RequiredWidth, [int]$RequiredHeight)
-    # Both enumeration paths are attempted: the named device and the default
-    # display. ChangeDisplaySettings can report success without changing the
-    # active display, so the effect is always verified against the observed
-    # working area instead of trusting the return code alone.
-    foreach ($target in @((Get-WinSlimDisplayDevice), $null)) {
-        $mode = New-Object WinSlimDisplayMode+DEVMODE
-        $mode.dmSize = [System.Runtime.InteropServices.Marshal]::SizeOf([type]'WinSlimDisplayMode+DEVMODE')
-        if (-not [WinSlimDisplayMode]::EnumDisplaySettings($target, -1, [ref]$mode)) { continue }
-        $mode.dmFields = 0x80000 -bor 0x100000 -bor 0x40000
-        $mode.dmPelsWidth = $Width
-        $mode.dmPelsHeight = $Height
-        $mode.dmBitsPerPel = 32
-        if ([WinSlimDisplayMode]::ChangeDisplaySettings([ref]$mode, 0x01) -ne 0) { continue }
-        Start-Sleep -Seconds 2
-        $current = Get-WinSlimPrimaryWorkingArea
-        $label = if ($null -eq $target) { 'default-display' } else { [string]$target }
-        if ($current.Width -ge $RequiredWidth -and $current.Height -ge $RequiredHeight) {
-            return [pscustomobject]@{ Applied = $true; Target = $label; WorkingArea = $current.ToString() }
-        }
+    # ChangeDisplaySettings can report success without changing the active
+    # display, so the effect is always verified against the observed working
+    # area instead of trusting the return code alone.
+    $accepted = [WinSlimDisplayMode]::Apply($Width, $Height)
+    if (-not $accepted) {
+        return [pscustomobject]@{ Applied = $false; Target = $null; WorkingArea = (Get-WinSlimPrimaryWorkingArea).ToString() }
     }
-    return [pscustomobject]@{ Applied = $false; Target = $null; WorkingArea = (Get-WinSlimPrimaryWorkingArea).ToString() }
+    Start-Sleep -Seconds 2
+    $current = Get-WinSlimPrimaryWorkingArea
+    if ($current.Width -ge $RequiredWidth -and $current.Height -ge $RequiredHeight) {
+        return [pscustomobject]@{ Applied = $true; Target = 'default-display'; WorkingArea = $current.ToString() }
+    }
+    return [pscustomobject]@{ Applied = $false; Target = $null; WorkingArea = $current.ToString() }
 }
 
 function Measure-WinSlimWindowContract {
@@ -149,6 +122,7 @@ function Measure-WinSlimWindowContract {
 
 Add-Type -TypeDefinition @'
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 public static class WinSlimDisplayMode {
   [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
@@ -164,6 +138,28 @@ public static class WinSlimDisplayMode {
   }
   [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string device, int mode, ref DEVMODE dm);
   [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern int ChangeDisplaySettings(ref DEVMODE dm, int flags);
+  public static List<string> Modes() {
+    List<string> modes = new List<string>();
+    DEVMODE dm = new DEVMODE();
+    dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+    for (int i = 0; i < 512; i++) {
+      if (!EnumDisplaySettings(null, i, ref dm)) break;
+      modes.Add(dm.dmPelsWidth + "x" + dm.dmPelsHeight + "@" + dm.dmBitsPerPel + "/" + dm.dmDisplayFrequency);
+    }
+    return modes;
+  }
+  // The DEVMODE struct is filled and handed to the API from managed code: the
+  // device name buffer is only reliable when the same runtime instance owns it.
+  public static bool Apply(int width, int height) {
+    DEVMODE dm = new DEVMODE();
+    dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+    if (!EnumDisplaySettings(null, -1, ref dm)) return false;
+    dm.dmFields = 0x80000 | 0x100000 | 0x40000;
+    dm.dmPelsWidth = width;
+    dm.dmPelsHeight = height;
+    dm.dmBitsPerPel = 32;
+    return ChangeDisplaySettings(ref dm, 0x01) == 0;
+  }
 }
 '@
 
@@ -186,7 +182,7 @@ $receipt = [ordered]@{
     Probe = $null
     Utc = [DateTime]::UtcNow.ToString('o')
 }
-$receipt['AvailableModes'] = @(Get-WinSlimDisplayModes | ForEach-Object { "$($_.Width)x$($_.Height)@$($_.BitsPerPel)" })
+$receipt['AvailableModes'] = @(Get-WinSlimDisplayModes)
 
 if ($Diagnose) {
     $receipt['Probe'] = Measure-WinSlimWindowContract -RootPath $Root
