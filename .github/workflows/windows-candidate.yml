@@ -56,54 +56,11 @@ jobs:
       - name: Prepare interactive display for the WPF self-test
         run: |
           $ErrorActionPreference = 'Stop'
-          Add-Type -AssemblyName System.Windows.Forms
-          Add-Type -TypeDefinition @'
-          using System;
-          using System.Runtime.InteropServices;
-          public static class WinSlimDisplayMode {
-            [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
-            public struct DEVMODE {
-              [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmDeviceName;
-              public short dmSpecVersion, dmDriverVersion, dmSize, dmDriverExtra;
-              public int dmFields, dmPositionX, dmPositionY, dmDisplayOrientation, dmDisplayFixedOutput;
-              public short dmColor, dmDuplex, dmYResolution, dmTTOption, dmCollate;
-              [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmFormName;
-              public short dmLogPixels;
-              public int dmBitsPerPel, dmPelsWidth, dmPelsHeight, dmDisplayFlags, dmDisplayFrequency;
-              public int dmICMMethod, dmICMIntent, dmMediaType, dmDitherType, dmReserved1, dmReserved2, dmPanningWidth, dmPanningHeight;
-            }
-            [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string device, int mode, ref DEVMODE dm);
-            [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern int ChangeDisplaySettings(ref DEVMODE dm, int flags);
-            public static bool Apply(int width, int height) {
-              DEVMODE dm = new DEVMODE();
-              dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
-              if (!EnumDisplaySettings(null, -1, ref dm)) return false;
-              dm.dmFields = 0x80000 | 0x100000 | 0x40000;
-              dm.dmPelsWidth = width;
-              dm.dmPelsHeight = height;
-              dm.dmBitsPerPel = 32;
-              return ChangeDisplaySettings(ref dm, 0x01) == 0;
-            }
-          }
-          '@
-          $required = @{ Width = 1200; Height = 800 }
-          $applied = $null
-          foreach ($candidate in @(@(1920, 1080), @(1600, 1200), @(1280, 1024))) {
-            if ([WinSlimDisplayMode]::Apply($candidate[0], $candidate[1])) {
-              Start-Sleep -Seconds 2
-              $screen = [System.Windows.Forms.Screen]::PrimaryScreen
-              if ($screen.WorkingArea.Width -ge $required.Width -and $screen.WorkingArea.Height -ge $required.Height) {
-                $applied = [ordered]@{ Requested = "$($candidate[0])x$($candidate[1])"; Bounds = $screen.Bounds.ToString(); WorkingArea = $screen.WorkingArea.ToString() }
-                break
-              }
-            }
-          }
-          $record = [ordered]@{ RequiredWorkingArea = "$($required.Width)x$($required.Height)"; Applied = $applied; FinalWorkingArea = ([System.Windows.Forms.Screen]::PrimaryScreen.WorkingArea.ToString()) }
-          $record | ConvertTo-Json -Depth 4 | Set-Content -Encoding UTF8 (Join-Path $env:CI_EVIDENCE 'display-preparation.json')
-          if ($null -eq $applied) {
-            throw ('A area de trabalho do runner nao comporta a janela 1180x760 do aplicativo. Modos tried: 1920x1080, 1600x1200, 1280x1024. Final: ' + $record.FinalWorkingArea)
-          }
-          Write-Host ('Display prepared: ' + ($applied | ConvertTo-Json -Compress))
+          # The native self-test requires the window to keep 1180x760. The tool
+          # fails closed when the session cannot host that size, so an
+          # environment limitation is never mistaken for a product defect.
+          & powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File 'tools\validation\HostedDisplayPreparation.ps1' -MinimumWidth 1200 -MinimumHeight 800 -EvidencePath (Join-Path $env:CI_EVIDENCE 'display-preparation.json')
+          exit $LASTEXITCODE
       - name: Run official candidate pipeline (build, WPF and current registry)
         id: candidate
         run: |
@@ -132,65 +89,11 @@ jobs:
               [ordered]@{ Device = $_.DeviceName; Bounds = $_.Bounds.ToString(); WorkingArea = $_.WorkingArea.ToString(); Primary = $_.Primary } })
           } catch { $envInfo['Screens'] = $_.Exception.Message }
           $envInfo | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $diag 'environment.json')
-          try {
-            Add-Type -TypeDefinition @'
-          using System;
-          using System.Collections.Generic;
-          using System.Runtime.InteropServices;
-          public static class WinSlimDisplayProbe {
-            [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
-            public struct DEVMODE {
-              [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmDeviceName;
-              public short dmSpecVersion, dmDriverVersion, dmSize, dmDriverExtra;
-              public int dmFields, dmPositionX, dmPositionY, dmDisplayOrientation, dmDisplayFixedOutput;
-              public short dmColor, dmDuplex, dmYResolution, dmTTOption, dmCollate;
-              [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmFormName;
-              public short dmLogPixels;
-              public int dmBitsPerPel, dmPelsWidth, dmPelsHeight, dmDisplayFlags, dmDisplayFrequency;
-              public int dmICMMethod, dmICMIntent, dmMediaType, dmDitherType, dmReserved1, dmReserved2, dmPanningWidth, dmPanningHeight;
-            }
-            [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string device, int mode, ref DEVMODE dm);
-            public static List<string> Modes() {
-              List<string> modes = new List<string>();
-              DEVMODE dm = new DEVMODE();
-              dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
-              for (int i = 0; i < 512; i++) {
-                if (!EnumDisplaySettings(null, i, ref dm)) break;
-                modes.Add(dm.dmPelsWidth + "x" + dm.dmPelsHeight + "@" + dm.dmBitsPerPel + "/" + dm.dmDisplayFrequency);
-              }
-              return modes;
-            }
-          }
-          '@
-            $envInfo['DisplayModes'] = @([WinSlimDisplayProbe]::Modes())
-          } catch { $envInfo['DisplayModes'] = $_.Exception.Message }
-          $envInfo | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $diag 'environment.json')
-          try {
-            Add-Type -AssemblyName PresentationFramework
-            Add-Type -AssemblyName PresentationCore
-            $probe = New-Object System.Windows.Window
-            $probe.WindowStyle = [System.Windows.WindowStyle]::None
-            $probe.ResizeMode = [System.Windows.ResizeMode]::CanResize
-            $probe.AllowsTransparency = $false
-            $probe.WindowStartupLocation = [System.Windows.WindowStartupLocation]::CenterScreen
-            $probe.MinWidth = 1040
-            $probe.MinHeight = 680
-            $probe.Width = 1180
-            $probe.Height = 760
-            $stages = [ordered]@{}
-            $stages['afterSet'] = [string]$probe.Width + 'x' + [string]$probe.Height
-            $probe.Content = New-Object System.Windows.Controls.UserControl
-            $probe.Content.Measure([System.Windows.Size]::new(1178, 758))
-            $probe.Content.Arrange([System.Windows.Rect]::new(0, 0, 1178, 758))
-            $probe.Content.UpdateLayout()
-            $stages['afterContentLayout'] = [string]$probe.Width + 'x' + [string]$probe.Height
-            $probe.Show()
-            $probe.UpdateLayout()
-            $stages['afterShow'] = [string]$probe.Width + 'x' + [string]$probe.Height
-            $stages['actualAfterShow'] = [string]$probe.ActualWidth + 'x' + [string]$probe.ActualHeight
-            $probe.Close()
-            $stages | ConvertTo-Json | Set-Content -Encoding UTF8 (Join-Path $diag 'window-probe.json')
-          } catch { $_.Exception.Message | Set-Content -Encoding UTF8 (Join-Path $diag 'window-probe.error.txt') }
+          # The reviewed preparation tool is the single instrument used locally,
+          # on the hosted runner and in the VM: it reports the real window
+          # contract and never changes the display in ProbeOnly mode.
+          & powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File 'tools\validation\HostedDisplayPreparation.ps1' -ProbeOnly -Diagnose -EvidencePath (Join-Path $diag 'display-diagnosis.json')
+          Write-Host ('Display diagnosis exit code: ' + $LASTEXITCODE)
           try {
             $catalog = Get-Content -LiteralPath 'catalog.json' -Raw -Encoding UTF8 | ConvertFrom-Json
             $items = if ($catalog.PSObject.Properties.Name -contains 'tweaks') { @($catalog.tweaks) } else { @($catalog) }

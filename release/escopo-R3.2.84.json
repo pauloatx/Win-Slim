@@ -97,7 +97,7 @@
     "error": "Grafico deve preservar amostras e permanecer dentro da area visivel.",
     "passedSuites": 15
   },
-  "requiredWindowsSuites": 28,
+  "requiredWindowsSuites": 31,
   "acceptedManualP4": {
     "date": "2026-10-21",
     "timezone": "America/Sao_Paulo",
