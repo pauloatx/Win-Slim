@@ -1,9 +1,12 @@
-# Generated logs and evidence
+# Generated logs and evidence (never part of the delivered tree)
 logs/
 evidencias/
 
-# Build outputs
-bin/
+# Build outputs and compiled binaries
+# bin/* (contents) instead of bin/ so the two delivered files below stay trackable:
+# git cannot re-include a file whose parent directory itself is excluded.
+# **/bin/* also covers the historical release snapshots under release/.
+**/bin/*
 *.exe
 *.dll
 *.pdb
@@ -29,3 +32,11 @@ __pycache__/
 # OS
 Thumbs.db
 Desktop.ini
+
+# Delivered artifacts required byte-exact by specs/FASE7-R3.2.84-baseline.json
+# (TEST 06B / native input integrity). These are not build outputs of the
+# repository: the native binary is the accepted operational build and the
+# PresentMon console is the hash-pinned official third-party binary.
+!bin/WinSlim.UI.Native.R3.2.84.exe
+!bin/WinSlim.UI.Native.R3.2.84.exe.config
+!third_party/PresentMon/PresentMon-2.6.0-x64.exe

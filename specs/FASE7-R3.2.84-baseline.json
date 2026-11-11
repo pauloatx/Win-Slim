@@ -5,7 +5,7 @@
   "r3284Files": {
     "bin/WinSlim.UI.Native.R3.2.84.exe": "62eb3819580efa1d1e80151e9934646b796572fe2e9ac786bdb961241a04de62",
     "bin/WinSlim.UI.Native.R3.2.84.exe.config": "4b049b388c528f882ff2a04303a79744fa72e3635a6ba6ce736ebe3aa7548999",
-    ".github/workflows/windows-candidate.yml": "68ecac27a2db9edf918da72225de80dc80406b7aa5c1d47bcba4edec4b101f84",
+    ".github/workflows/windows-candidate.yml": "47f6235262499ca3ae269615112ec9b6d8fbdc58d5f2ffabe8a7638f6508c39f",
     "AGENTS.md": "1662c6f2bedc0118e008c4dd24f7184e13fb0d3843f8b201f95d957b1260a884",
     "AUDITORIA-UI-QOL-R3.2.84.md": "cd3b87b369f95900b6836415e33b90e8fd5c7ef757a9837a8f4bf9baad00fc86",
     "Build-NativeUI-R3.2.84.ps1": "d6ccf173e5948cebf781781a0ba117af0daa520d2ecafabf1a2a78e3ab81f062",
