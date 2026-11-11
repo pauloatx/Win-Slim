@@ -60,16 +60,14 @@ function Set-WinSlimDisplayMode {
     # ChangeDisplaySettings can report success without changing the active
     # display, so the effect is always verified against the observed working
     # area instead of trusting the return code alone.
-    $accepted = [WinSlimDisplayMode]::Apply($Width, $Height)
-    if (-not $accepted) {
-        return [pscustomobject]@{ Applied = $false; Target = $null; WorkingArea = (Get-WinSlimPrimaryWorkingArea).ToString() }
-    }
+    $code = [WinSlimDisplayMode]::Apply($Width, $Height)
     Start-Sleep -Seconds 2
     $current = Get-WinSlimPrimaryWorkingArea
-    if ($current.Width -ge $RequiredWidth -and $current.Height -ge $RequiredHeight) {
-        return [pscustomobject]@{ Applied = $true; Target = 'default-display'; WorkingArea = $current.ToString() }
+    $mode = [WinSlimDisplayMode]::CurrentMode()
+    if ($code -eq 0 -and $current.Width -ge $RequiredWidth -and $current.Height -ge $RequiredHeight) {
+        return [pscustomobject]@{ Applied = $true; ApiResult = $code; Target = 'default-display'; WorkingArea = $current.ToString(); Mode = $mode }
     }
-    return [pscustomobject]@{ Applied = $false; Target = $null; WorkingArea = $current.ToString() }
+    return [pscustomobject]@{ Applied = $false; ApiResult = $code; Target = $null; WorkingArea = $current.ToString(); Mode = $mode }
 }
 
 function Measure-WinSlimWindowContract {
@@ -150,15 +148,23 @@ public static class WinSlimDisplayMode {
   }
   // The DEVMODE struct is filled and handed to the API from managed code: the
   // device name buffer is only reliable when the same runtime instance owns it.
-  public static bool Apply(int width, int height) {
+  // The raw API result is returned so the evidence records the real outcome
+  // instead of a normalised boolean.
+  public static int Apply(int width, int height) {
     DEVMODE dm = new DEVMODE();
     dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
-    if (!EnumDisplaySettings(null, -1, ref dm)) return false;
+    if (!EnumDisplaySettings(null, -1, ref dm)) return -1;
     dm.dmFields = 0x80000 | 0x100000 | 0x40000;
     dm.dmPelsWidth = width;
     dm.dmPelsHeight = height;
     dm.dmBitsPerPel = 32;
-    return ChangeDisplaySettings(ref dm, 0x01) == 0;
+    return ChangeDisplaySettings(ref dm, 0x01);
+  }
+  public static string CurrentMode() {
+    DEVMODE dm = new DEVMODE();
+    dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+    if (!EnumDisplaySettings(null, -1, ref dm)) return "unavailable";
+    return dm.dmPelsWidth + "x" + dm.dmPelsHeight + "@" + dm.dmBitsPerPel + "/" + dm.dmDisplayFrequency;
   }
 }
 '@
@@ -225,7 +231,7 @@ if ($before.Width -ge $MinimumWidth -and $before.Height -ge $MinimumHeight) {
 $receipt['AlreadySatisfied'] = $false
 foreach ($candidate in $candidates) {
     $result = Set-WinSlimDisplayMode -Width $candidate.Width -Height $candidate.Height -RequiredWidth $MinimumWidth -RequiredHeight $MinimumHeight
-    $tried += [ordered]@{ Requested = "$($candidate.Width)x$($candidate.Height)"; Applied = [bool]$result.Applied; Target = $result.Target; ObservedWorkingArea = $result.WorkingArea }
+    $tried += [ordered]@{ Requested = "$($candidate.Width)x$($candidate.Height)"; Applied = [bool]$result.Applied; ApiResult = $result.ApiResult; ObservedMode = $result.Mode; ObservedWorkingArea = $result.WorkingArea }
     if ($result.Applied) {
         $receipt['Applied'] = [ordered]@{ Requested = "$($candidate.Width)x$($candidate.Height)"; Target = $result.Target; WorkingArea = $result.WorkingArea }
         break
