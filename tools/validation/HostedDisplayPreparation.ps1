@@ -75,18 +75,28 @@ function Get-WinSlimDisplayModes {
 }
 
 function Set-WinSlimDisplayMode {
-    param([int]$Width, [int]$Height)
-    $mode = New-Object WinSlimDisplayMode+DEVMODE
-    $mode.dmSize = [System.Runtime.InteropServices.Marshal]::SizeOf([type]'WinSlimDisplayMode+DEVMODE')
-    $device = Get-WinSlimDisplayDevice
-    if (-not [WinSlimDisplayMode]::EnumDisplaySettings($device, -1, [ref]$mode)) {
-        if (-not [WinSlimDisplayMode]::EnumDisplaySettings($null, -1, [ref]$mode)) { return $false }
+    param([int]$Width, [int]$Height, [int]$RequiredWidth, [int]$RequiredHeight)
+    # Both enumeration paths are attempted: the named device and the default
+    # display. ChangeDisplaySettings can report success without changing the
+    # active display, so the effect is always verified against the observed
+    # working area instead of trusting the return code alone.
+    foreach ($target in @((Get-WinSlimDisplayDevice), $null)) {
+        $mode = New-Object WinSlimDisplayMode+DEVMODE
+        $mode.dmSize = [System.Runtime.InteropServices.Marshal]::SizeOf([type]'WinSlimDisplayMode+DEVMODE')
+        if (-not [WinSlimDisplayMode]::EnumDisplaySettings($target, -1, [ref]$mode)) { continue }
+        $mode.dmFields = 0x80000 -bor 0x100000 -bor 0x40000
+        $mode.dmPelsWidth = $Width
+        $mode.dmPelsHeight = $Height
+        $mode.dmBitsPerPel = 32
+        if ([WinSlimDisplayMode]::ChangeDisplaySettings([ref]$mode, 0x01) -ne 0) { continue }
+        Start-Sleep -Seconds 2
+        $current = Get-WinSlimPrimaryWorkingArea
+        $label = if ($null -eq $target) { 'default-display' } else { [string]$target }
+        if ($current.Width -ge $RequiredWidth -and $current.Height -ge $RequiredHeight) {
+            return [pscustomobject]@{ Applied = $true; Target = $label; WorkingArea = $current.ToString() }
+        }
     }
-    $mode.dmFields = 0x80000 -bor 0x100000 -bor 0x40000
-    $mode.dmPelsWidth = $Width
-    $mode.dmPelsHeight = $Height
-    $mode.dmBitsPerPel = 32
-    return ([WinSlimDisplayMode]::ChangeDisplaySettings([ref]$mode, 0x01) -eq 0)
+    return [pscustomobject]@{ Applied = $false; Target = $null; WorkingArea = (Get-WinSlimPrimaryWorkingArea).ToString() }
 }
 
 function Measure-WinSlimWindowContract {
@@ -203,16 +213,26 @@ $candidates = @(
     [pscustomobject]@{ Width = 1280; Height = 1024 }
 )
 $tried = @()
+if ($before.Width -ge $MinimumWidth -and $before.Height -ge $MinimumHeight) {
+    # The session already hosts the contracted window: the display is left untouched.
+    $receipt['AlreadySatisfied'] = $true
+    $receipt['Tried'] = $tried
+    $receipt['Final'] = $before.ToString()
+    $receipt['FinalWidth'] = [int]$before.Width
+    $receipt['FinalHeight'] = [int]$before.Height
+    $receipt['SatisfiesRequirement'] = $true
+    if ($Diagnose) { $receipt['Probe'] = Measure-WinSlimWindowContract -RootPath $Root }
+    Write-WinSlimReceipt -Receipt $receipt
+    Write-Host ('Display already suitable: ' + $before.ToString())
+    exit 0
+}
+$receipt['AlreadySatisfied'] = $false
 foreach ($candidate in $candidates) {
-    $changed = Set-WinSlimDisplayMode -Width $candidate.Width -Height $candidate.Height
-    $tried += [ordered]@{ Requested = "$($candidate.Width)x$($candidate.Height)"; Accepted = $changed }
-    if ($changed) {
-        Start-Sleep -Seconds 2
-        $current = Get-WinSlimPrimaryWorkingArea
-        if ($current.Width -ge $MinimumWidth -and $current.Height -ge $MinimumHeight) {
-            $receipt['Applied'] = [ordered]@{ Requested = "$($candidate.Width)x$($candidate.Height)"; WorkingArea = $current.ToString() }
-            break
-        }
+    $result = Set-WinSlimDisplayMode -Width $candidate.Width -Height $candidate.Height -RequiredWidth $MinimumWidth -RequiredHeight $MinimumHeight
+    $tried += [ordered]@{ Requested = "$($candidate.Width)x$($candidate.Height)"; Applied = [bool]$result.Applied; Target = $result.Target; ObservedWorkingArea = $result.WorkingArea }
+    if ($result.Applied) {
+        $receipt['Applied'] = [ordered]@{ Requested = "$($candidate.Width)x$($candidate.Height)"; Target = $result.Target; WorkingArea = $result.WorkingArea }
+        break
     }
 }
 $receipt['Tried'] = $tried

@@ -72,6 +72,22 @@ try {
     Check ($after.ExitCode -eq 0) 'o ambiente continua utilizavel apos as execucoes de teste'
     $afterReceipt = Get-Content -LiteralPath (Join-Path $fixture 'after.json') -Raw -Encoding UTF8 | ConvertFrom-Json
     Check ([string]$afterReceipt.Final -eq [string]$receipt.Final) 'a area de trabalho do Developer nao foi alterada pela suite'
+
+    # When the session already hosts the contracted window the preparation must
+    # not touch the display at all; the mutation path is covered by the hosted
+    # runner, where the area starts at 1024x728.
+    $preparePath = Join-Path $fixture 'prepare.json'
+    $prepare = Invoke-Tool -Arguments @('-MinimumWidth','1200','-MinimumHeight','800','-EvidencePath',$preparePath)
+    Check ($prepare.ExitCode -eq 0) 'a preparacao conclui com sucesso'
+    $prepareReceipt = Get-Content -LiteralPath $preparePath -Raw -Encoding UTF8 | ConvertFrom-Json
+    Check ([bool]$prepareReceipt.SatisfiesRequirement) 'a preparacao termina com uma area de trabalho conforme'
+    if ([int]$prepareReceipt.BeforeWidth -ge 1200 -and [int]$prepareReceipt.BeforeHeight -ge 800) {
+        Check ([bool]$prepareReceipt.AlreadySatisfied) 'uma area ja conforme e declarada como tal'
+        Check ([string]$prepareReceipt.Final -eq [string]$prepareReceipt.Before) 'uma area ja conforme nao leva a alteracao do ecra'
+    } else {
+        Check (-not [bool]$prepareReceipt.AlreadySatisfied) 'uma area insuficiente nao e declarada conforme antes da preparacao'
+        Check ([string]$prepareReceipt.Final -ne [string]$prepareReceipt.Before) 'uma area insuficiente e efectivamente alterada pela preparacao'
+    }
     Write-Host ('HostedDisplayPreparation: '+$checks+' behavioral checks passed.')
 } finally {
     Remove-Item -LiteralPath $fixture -Recurse -Force -ErrorAction SilentlyContinue
