@@ -173,7 +173,7 @@
     "docs/REVISAO-ESTATICA-HARNESS-R3.2.84.md": "827187fdeee56d5f7b8715fe1496e25d36e83615b1863a424aa1208b877103c7",
     "tools/prototypes/FrameLimitPlan.ps1": "47458103de0268f24149db296e1d51710c5c284c0bff545ef76429f4ba923b48",
     "tests/regression/Test-FrameLimitPlan-R3.2.84.ps1": "daaf84074ded187ce4519739342a95c2992a4879abed8c475a6801d83943bf51",
-    "docs/CRONOGRAMA-INDEPENDENTE-R3.2.84.md": "98c1de0e974a3b93e2cbab90fcfa12dca50e323d8f4130279a02c0fa663b2fa9",
+    "docs/CRONOGRAMA-INDEPENDENTE-R3.2.84.md": "b753c1d6ade5c08635afde5c34fe31a10cd382685f8f774b32d27eb4060f9069",
     "tools/integration/Inspect-WinSlimEdgeVm.ps1": "3abaada376e17f06478cdcad4e168d82be6bd023e2fab3597b450c823caeaffb",
     "tools/integration/Invoke-WinSlimEdgeIsolatedVm.ps1": "79998ab9edff0ef9bae722429eef4de2296820c2f0becccaaa4b1f5fcd420ca1",
     "tools/integration/Test-WinSlimEdgeRealVm.ps1": "7e0e0b7430d246c63a3678ad6d704a9eaf7b1beea3f118b21154e0ce5d5c5e41",
@@ -249,7 +249,7 @@
     "release/review.json": "fd65b1b1c83165566584b61e42da429b00665063904ed07add830e27b7d1d692",
     "tools/validation/NativeBuildIntegrity.ps1": "2c58e279ab9a9a18bdc9ac885e067d66f99a4a7475ded689146bdc38feb6893d",
     "tests/regression/Test-NativeBuildIntegrity-R3.2.84.ps1": "a1810ab3a55014a93d0635f4b82d9508d624dca86f2fffad0b39fa9293e9227a",
-    "docs/CI-WINDOWS-HOSPEDADA-R3.2.84.md": "54fe80de2bbe801cb724a876cc87e855708a118d69f90edd2d507de3563d6d3d",
+    "docs/CI-WINDOWS-HOSPEDADA-R3.2.84.md": "c36e657a8f725debfc1f4c7411491d172433c69237c18d2f981f66140c5244c0",
     "docs/REVISAO-NEMOTRON-CI-R3.2.84.md": "bd84e7533dc068a77d6f147ada856471860b9f704c226d84ecc538333b864cb9"
   },
   "patch": 9,

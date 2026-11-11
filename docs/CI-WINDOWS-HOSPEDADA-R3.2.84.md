@@ -70,8 +70,11 @@ Como esta alteração é de infraestrutura, o EXE operacional aceito `62eb381958
 | [42917525392](https://github.com/pauloatx/Win-Slim/actions/runs/42917525392) | `workflow_dispatch` | `d901a9b` | **failure** | `[FALHA] Reviewed dependency changed: .github/workflows/windows-candidate.yml` — a reordenação dos passos invalidou o hash revisado do manifesto de segurança |
 | [42918314152](https://github.com/pauloatx/Win-Slim/actions/runs/42918314152) | `workflow_dispatch` | `8de239b` | **cancelled** | cancelado pelo grupo de concorrência quando o evento `push` iniciou a execução seguinte; cancelamento não aprova nada |
 | [42918325245](https://github.com/pauloatx/Win-Slim/actions/runs/42918325245) | `push` | `8de239b` | **failure** | `[FAIL] R3.2.84 recebido: third_party/PresentMon/PresentMon-2.6.0-x64.exe` → `Integridade de entrada reprovada; compilacao bloqueada.` (TEST 06B, REG-UI-001) |
+| [42977834181](https://github.com/pauloatx/Win-Slim/actions/runs/42977834181) | `push` | `7ac35c2` | **failure** | workflow inválido: o corpo do here-string PowerShell ficou com indentação 0 e encerrou o bloco YAML; nenhuma suíte executou |
+| [42978644088](https://github.com/pauloatx/Win-Slim/actions/runs/42978644088) | `push` | `c02f516` | **failure** | diagnóstico executado: `Detalhe: dimensão ou nome incorreto.` reproduzido; nome confirmado correto pelo bridge e janela medida pelo SO |
+| [42980308809](https://github.com/pauloatx/Win-Slim/actions/runs/42980308809) | `push` | `39431b2` | **success** | **CI hospedada aprovada**: 30/30 suítes, build e self-test WPF verdes, `TechnicalPassed=true` |
 
-Artefato da última execução: `WinSlim-CI-42918325245-1`, ID `13810547573`, digest `61bef76c40b5d3687306a185bb0508e138aa024c9b7a6cc7af939d6f94b318de`, retenção 14 dias. As evidências textuais da execução (contexto, hashes de entrada, `dependencies.json`, par `summary.json`/`regressions.json` da candidata, `resultado.json` e `SHA256.json`) foram preservadas no artefato.
+Artefato da execução aprovada: `WinSlim-CI-42980308809-1`, ID `13837042851`, 192 467 bytes, retenção 14 dias. As evidências textuais da execução (contexto, hashes de entrada, `dependencies.json`, `display-preparation.json`, par `summary.json`/`regressions.json` da candidata, `resultado.json` com 30 casos aprovados e `SHA256.json`) foram preservadas no artefacto.
 
 Ambiente real observado: GitHub Actions `windows-2022`, imagem `20261101.353.1`, Windows Server 2022 `10.0.20348`, Windows PowerShell **5.1.20348.5773 x64**, .NET Framework release `533509`, `csc.exe` `4.8.9363.0` (SHA-256 `baef2676444878d5818628f46483f4e55241d6380ecff0bbb855c470852e1872`), Python **3.13.12 x64**, Git `2.56.0.windows.4`.
 
@@ -80,15 +83,28 @@ Ambiente real observado: GitHub Actions `windows-2022`, imagem `20261101.353.1`,
 1. **Corpus de entrega rastreado.** As regras de exclusão passaram a ignorar apenas conteúdo gerado (`logs/`, `evidencias/`, cache Python, ZIP de diagnóstico, staging transitório de build). O repositório passa a rastrear **os 248 ficheiros do baseline byte a byte**, incluindo o executável nativo aceite `bin/WinSlim.UI.Native.R3.2.84.exe` (`62eb3819580efa1d...`), o respetivo `.exe.config` e o binário oficial de terceiros fixado `third_party/PresentMon/PresentMon-2.6.0-x64.exe` (`b2a706bc6ad47574...`). As cópias históricas sob `release/winslim-r3284-p*/` continuam excluídas e citadas apenas por `RETOMADA-R3.2.84-P*.md` e `release/candidate-p*-artifacts.json`.
 2. **Ordem do workflow restaurada.** A reordenação temporária (validação depois do build) foi revertida: o desenho oficial valida os hashes **antes** da compilação, porque o baseline regista o executável operacional aceite. O workflow volta ao byte revisado `47f6235262499ca3ae269615112ec9b6d8fbdc58d5f2ffabe8a7638f6508c39f`, e `release/review.json` / `release/security-incidents.json` / o baseline mantêm a cadeia de revisão intacta.
 3. **Baseline renovado para a revisão de `AGENTS.md` de 10/11/2026** (`dfb83a8893fb49deb...`). A revisão do documento de processo pelo responsável ocorreu depois do último reprocessamento do baseline e fazia o TEST 06B reprovar localmente e na CI.
+4. **Diagnóstico hospedado antes de qualquer alteração de produto.** O `REG-UI-001` reprovava dentro do próprio self-test com `Detalhe: dimensão ou nome incorreto.`, mensagem sem valores. Um passo de diagnóstico **apenas de CI** capturou o ambiente real (ecrã 1024x768, área de trabalho 1024x728, cultura en-US), a resposta real do bridge (`name` correto e ASCII) e a evolução do tamanho da janela: `1180x760` antes de ser apresentada e **1044x760** depois. Conclusão: a janela contratada de 1180x760 não cabe na área de trabalho do runner e o SO restringe-a; a asserção de tamanho exato falha por ambiente, não por defeito do produto.
+5. **Preparação do ecrã do runner antes do gate.** Um passo novo aplica um modo de ecrã compatível (1920x1080 → área de trabalho 1920x1040) e **falha fechada** se a área ficar abaixo de 1200x800, em vez de deixar o gate reprovar por uma limitação do runner. Com o ecrã preparado, a janela mantém 1180x760 e o self-test fecha verde.
 
-Nenhuma fonte de produção, contrato Apply/Verify/Undo, harness retido ou aceite físico foi alterado por estas correções de infraestrutura.
+Nenhuma fonte de produção, contrato Apply/Verify/Undo, harness retido ou aceite físico foi alterado por estas correções de infraestrutura. O binário aceite `62eb3819580efa1d...` e as cadeias de revisão mantêm-se intactos.
+
+### Execução aprovada
+
+| Item | Valor real |
+| --- | --- |
+| Run | [42980308809](https://github.com/pauloatx/Win-Slim/actions/runs/42980308809) (evento `push`, SHA `39431b2`, tentativa 1) |
+| Conclusão | **success**, job `candidate` com 12/12 passos aprovados |
+| Gate | **30/30 casos de regressão**, `Passed=true`, `ExitCode=0`, nenhuma falha |
+| Candidata | `TechnicalPassed=true`, `ProductionApproved=false`, `ManualValidation=Pending`, `Error=null` |
+| Evidência | `FreshCandidateEvidence=true`, 111 logs textuais alterados, `SHA256.json` do artefacto |
+| Ambiente | `windows-2022` imagem `20261101.353.1`, PowerShell 5.1.20348.5773 x64, Python 3.13.12 x64, ecrã 1920x1080 (área 1920x1040) |
+| Artefato | `WinSlim-CI-42980308809-1`, ID `13837042851`, retenção 14 dias |
 
 ### O que falta
 
-1. Uma execução hospedada com conclusão integral **success** e o par novo `summary.json`/`regressions.json` da candidata. Cancelamento, ausência de resultados ou YAML local aprovado não permitem registrar CI aprovada.
-2. Conservar URL/run_id/run_attempt, SHA/branch/evento e imagem reais, logs, artefato ID/URL/digest e o seu `SHA256.json` antes do expirar a retenção de 14 dias.
-3. Atualizar a retomada/cronograma com o resultado hospedado definitivo e preparar a revisão textual do resultado.
-4. Publicação/produção continuam pendentes: incidente AV-20261021-001 não resolvido pelo fabricante, `productionApproved=false`, distribuição em `hold`. Nenhuma família física já aceita precisa ser repetida por esta alteração de infraestrutura.
+1. Conservar URL/run_id/run_attempt, SHA/branch/evento e imagem reais, logs, artefacto ID/URL/digest e o seu `SHA256.json` antes do expirar a retenção de 14 dias, e anexar o artefacto ao registo do projeto.
+2. Preparar a revisão textual do resultado hospedado (incluindo a rejeição do `REG-UI-001` no ecrã pequeno e a preparação do ecrã como evidência de ambiente).
+3. Publicação/produção continuam pendentes: incidente AV-20261021-001 não resolvido pelo fabricante, `productionApproved=false`, distribuição em `hold`, aceites físicos e de VM pendentes. Nenhuma família física já aceita precisa ser repetida por esta alteração de infraestrutura.
 
 ## Arquivos da implementação
 
