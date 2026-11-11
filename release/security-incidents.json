@@ -78,7 +78,7 @@
         "authority": "project-owner-authorized-technical-review",
         "record": "REVISAO-TECNICA-GATE-R3.2.84.md",
         "manifest": "release/review.json",
-        "manifestSHA256": "a2551e0e018525d00789dab0c098ceaf79c665b72eabd8c13216bfb1d518fcf5",
+        "manifestSHA256": "f808042f915c69908e1c69e837215d1ecc93bada8cff7580461c49f1d0c7f381",
         "historicalIncidentResolved": false,
         "productionApproved": false,
         "fullGatePassed": true,

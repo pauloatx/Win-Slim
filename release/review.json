@@ -33,7 +33,7 @@
     "REG-HOSTEDCI-001",
     "REG-BUILDIDENTITY-001"
   ],
-  "registrySHA256": "5283fd4e904118a0ca6a4d2c01b17f4f1da9b5c6df0b63d41ddf1f5fa18f6109",
+  "registrySHA256": "73a9730bae481a48266553af719e045c98aa53a5cefa4be2a25dd51f0c6c229e",
   "activeFiles": {
     ".github/workflows/windows-candidate.yml": "996c19789c74febee5110f9ec3f709df74c97c267cd728b714169137de6e1fdc",
     "Executar-Regressoes.ps1": "e2321f5921828604420ebefe7b7d49737955d297f29039b9ec3013121d83ff65",
