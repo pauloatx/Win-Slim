@@ -83,34 +83,34 @@ jobs:
           $envInfo | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $diag 'environment.json')
           try {
             Add-Type -TypeDefinition @'
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-public static class WinSlimDisplayProbe {
-  [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
-  public struct DEVMODE {
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmDeviceName;
-    public short dmSpecVersion, dmDriverVersion, dmSize, dmDriverExtra;
-    public int dmFields, dmPositionX, dmPositionY, dmDisplayOrientation, dmDisplayFixedOutput;
-    public short dmColor, dmDuplex, dmYResolution, dmTTOption, dmCollate;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmFormName;
-    public short dmLogPixels;
-    public int dmBitsPerPel, dmPelsWidth, dmPelsHeight, dmDisplayFlags, dmDisplayFrequency;
-    public int dmICMMethod, dmICMIntent, dmMediaType, dmDitherType, dmReserved1, dmReserved2, dmPanningWidth, dmPanningHeight;
-  }
-  [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string device, int mode, ref DEVMODE dm);
-  public static List<string> Modes() {
-    List<string> modes = new List<string>();
-    DEVMODE dm = new DEVMODE();
-    dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
-    for (int i = 0; i < 512; i++) {
-      if (!EnumDisplaySettings(null, i, ref dm)) break;
-      modes.Add(dm.dmPelsWidth + "x" + dm.dmPelsHeight + "@" + dm.dmBitsPerPel + "/" + dm.dmDisplayFrequency);
-    }
-    return modes;
-  }
-}
-'@
+          using System;
+          using System.Collections.Generic;
+          using System.Runtime.InteropServices;
+          public static class WinSlimDisplayProbe {
+            [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
+            public struct DEVMODE {
+              [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmDeviceName;
+              public short dmSpecVersion, dmDriverVersion, dmSize, dmDriverExtra;
+              public int dmFields, dmPositionX, dmPositionY, dmDisplayOrientation, dmDisplayFixedOutput;
+              public short dmColor, dmDuplex, dmYResolution, dmTTOption, dmCollate;
+              [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmFormName;
+              public short dmLogPixels;
+              public int dmBitsPerPel, dmPelsWidth, dmPelsHeight, dmDisplayFlags, dmDisplayFrequency;
+              public int dmICMMethod, dmICMIntent, dmMediaType, dmDitherType, dmReserved1, dmReserved2, dmPanningWidth, dmPanningHeight;
+            }
+            [DllImport("user32.dll", CharSet=CharSet.Ansi)] public static extern bool EnumDisplaySettings(string device, int mode, ref DEVMODE dm);
+            public static List<string> Modes() {
+              List<string> modes = new List<string>();
+              DEVMODE dm = new DEVMODE();
+              dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+              for (int i = 0; i < 512; i++) {
+                if (!EnumDisplaySettings(null, i, ref dm)) break;
+                modes.Add(dm.dmPelsWidth + "x" + dm.dmPelsHeight + "@" + dm.dmBitsPerPel + "/" + dm.dmDisplayFrequency);
+              }
+              return modes;
+            }
+          }
+          '@
             $envInfo['DisplayModes'] = @([WinSlimDisplayProbe]::Modes())
           } catch { $envInfo['DisplayModes'] = $_.Exception.Message }
           $envInfo | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $diag 'environment.json')
