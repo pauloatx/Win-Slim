@@ -83,7 +83,7 @@
     "maxFramesPerChain": 4096,
     "maxChains": 16
   },
-  "patch": 9,
+  "patch": 10,
   "previousAcceptedEvidence": {
     "revision": "R3.2.84 patch 2",
     "windowsSuitesPassed": 16,
@@ -97,7 +97,7 @@
     "error": "Grafico deve preservar amostras e permanecer dentro da area visivel.",
     "passedSuites": 15
   },
-  "requiredWindowsSuites": 31,
+  "requiredWindowsSuites": 32,
   "acceptedManualP4": {
     "date": "2026-10-21",
     "timezone": "America/Sao_Paulo",

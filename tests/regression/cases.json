@@ -366,6 +366,15 @@
       "scenario": "The native self-test requires the window to keep the contracted 1180x760 size. On a hosted session whose working area is smaller (observed 1024x728 on windows-2022) the operating system constrains the window to 1044x760, so REG-UI-001 failed with 'Detalhe: dimensao ou nome incorreto.' while the same byte-identical tree passed on a 1920x1080 desktop. The reviewed preparation tool must report the real working area and available display modes, declare whether the contracted window fits, measure the real window contract with the application XAML, refuse an impossible requirement with a non-zero exit instead of claiming success, and never change the display while only probing. The same instrument is used on the developer host, on the hosted runner and in the VM. No production source, registry, service, held harness, ETW or physical acceptance is touched; the self-test expectation of exactly 1180x760 is preserved and never relaxed.",
       "script": "tests/regression/Test-HostedDisplay-R3.2.84.ps1",
       "timeoutSeconds": 300
+    },
+    {
+      "id": "REG-RESTORE-001",
+      "bugs": [
+        "native-gate-replaces-delivered-build-without-restoration"
+      ],
+      "scenario": "A local candidate builds the native executable twice and publishes the validation output over the delivered executable, so the next gate run fails before compilation. The restoration transaction must verify the delivered executable and configuration against the release baseline, preserve the accepted build-inputs cache, restore all three byte for byte after either a successful or failed validation operation, and record the validation-build identities separately. Missing, tampered or outside-root evidence must fail closed without writing; unrelated baseline entries must remain unchanged. The inert fixture performs no compiler, WPF, VM, registry, service, task, ETW or production optimization.",
+      "script": "tests/regression/Test-NativeBuildRestoration-R3.2.84.ps1",
+      "timeoutSeconds": 90
     }
   ]
 }

@@ -112,12 +112,28 @@ exit 0
  Check ($code -eq 1 -and -not (Test-Path -LiteralPath (Join-Path $fixture 'calls.txt'))) 'delegacao incompleta bloqueia antes de executar filhos'
  # Actual candidate script, with a synthetic regression harness: never invokes production settings.
  $candidate=Join-Path $temp 'Candidato com acentuação'
- [void][IO.Directory]::CreateDirectory((Join-Path $candidate 'tools'))
+ [void][IO.Directory]::CreateDirectory((Join-Path $candidate 'tools\validation'))
  [void][IO.Directory]::CreateDirectory((Join-Path $candidate 'tests\regression'))
+ [void][IO.Directory]::CreateDirectory((Join-Path $candidate 'bin'))
+ [void][IO.Directory]::CreateDirectory((Join-Path $candidate 'logs'))
+ [void][IO.Directory]::CreateDirectory((Join-Path $candidate 'specs'))
  Copy-Item -LiteralPath (Join-Path $Root 'tools\ReleasePipeline.ps1') -Destination (Join-Path $candidate 'tools')
+ Copy-Item -LiteralPath (Join-Path $Root 'tools\validation\NativeBuildRestoration.ps1') -Destination (Join-Path $candidate 'tools\validation')
  Copy-Item -LiteralPath (Join-Path $Root 'Validar-Candidato-R3.2.84.ps1') -Destination $candidate
- Copy-Item -LiteralPath (Join-Path $Root 'tests\regression\RegressionPaths.ps1') -Destination (Join-Path $candidate 'tests\regression')
+ $fixtureExe='bin/WinSlim.UI.Native.R3.2.84.exe'
+ $fixtureConfig=$fixtureExe+'.config'
+ [IO.File]::WriteAllText((Join-Path $candidate $fixtureExe),'inert accepted executable')
+ [IO.File]::WriteAllText((Join-Path $candidate $fixtureConfig),'inert accepted configuration')
+ $fixtureExeHash=(Get-FileHash -LiteralPath (Join-Path $candidate $fixtureExe) -Algorithm SHA256).Hash.ToLowerInvariant()
+ $fixtureConfigHash=(Get-FileHash -LiteralPath (Join-Path $candidate $fixtureConfig) -Algorithm SHA256).Hash.ToLowerInvariant()
+ $fixtureCache=[ordered]@{schemaVersion=1;inputs=('a'*64);exeHash=$fixtureExeHash.ToUpperInvariant();configHash=$fixtureConfigHash.ToUpperInvariant()}
+ [IO.File]::WriteAllText((Join-Path $candidate 'logs\build-inputs-r3.2.84.json'),($fixtureCache|ConvertTo-Json -Compress))
+ $fixtureBaseline=[ordered]@{revision='FASE7-R3.2.84';r3284Files=[ordered]@{}}
+ $fixtureBaseline.r3284Files[$fixtureExe]=$fixtureExeHash
+ $fixtureBaseline.r3284Files[$fixtureConfig]=$fixtureConfigHash
+ [IO.File]::WriteAllText((Join-Path $candidate 'specs\FASE7-R3.2.84-baseline.json'),($fixtureBaseline|ConvertTo-Json -Depth 6))
  foreach($launcher in @('Iniciar-Validacao.bat','Coletar-Diagnostico.bat')){Copy-Item -LiteralPath (Join-Path $Root $launcher) -Destination $candidate}
+ Copy-Item -LiteralPath (Join-Path $Root 'tests\regression\RegressionPaths.ps1') -Destination (Join-Path $candidate 'tests\regression')
  [pscustomobject]@{schemaVersion=1;cases=$cases} | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $candidate 'tests\regression\cases.json') -Encoding UTF8
  foreach($mode in @('valid','empty','failure','missing')){
   $body='param([string]$Root,[string]$ResultPath); '

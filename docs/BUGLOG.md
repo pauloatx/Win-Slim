@@ -20,7 +20,7 @@
 | WS-BUG-0004 | Baseline desatualizado para a revisão de `AGENTS.md` de 10/11/2026 | CI/Infraestrutura | S2 | N3 | corrigido | 2026-11-10 | 2026-11-10 |
 | WS-BUG-0005 | Workflow inválido: here-string PowerShell com indentação 0 encerrava o bloco YAML | CI/Infraestrutura | S2 | N2 | corrigido | 2026-11-11 | 2026-11-11 |
 | WS-BUG-0006 | `REG-UI-001` reprovava por área de trabalho do runner menor que a janela contratada | CI/Interface | S2 | N2 | corrigido | 2026-11-11 | 2026-11-11 |
-| WS-BUG-0007 | Gate local é one-shot: o build forçado substitui `bin/` e a execução seguinte reprova | Gate/Nativo | S2 | N3 | nao_corrigir | 2026-11-10 | — |
+| WS-BUG-0007 | Gate local é one-shot: o build forçado substitui `bin/` e a execução seguinte reprova | Gate/Nativo | S2 | N3 | corrigido | 2026-11-10 | 2026-11-11 |
 | WS-BUG-0008 | Escopo declarava 28 suítes obrigatórias enquanto o cadastro real tinha 30 | Governança | S4 | N1 | corrigido | 2026-11-11 | 2026-11-11 |
 | WS-BUG-0009 | Cadeia de revisão não acompanhou o registo de casos: `registrySHA256` e `requiredIds` divergentes | Segurança/Cadeia | S2 | N3 | corrigido | 2026-11-11 | 2026-11-11 |
 | WS-BUG-0010 | Medição da área de trabalho via `System.Windows.Forms.Screen` lia métricas em cache e dava a preparação por falhada | CI/Instrumentação | S2 | N2 | corrigido | 2026-11-11 | 2026-11-11 |
@@ -92,29 +92,33 @@
 
 ### WS-BUG-0006 — `REG-UI-001` reprovava por área de trabalho insuficiente
 
-- **Família / severidade / risco:** CI/Interface · S2 · N2 · **Estado:** `corrigido`
+- **Família / severidade / risco:** CI/Interface · S2 · N2 · **Estado:** `corrigido` (diagnóstico concluído; validação nativa final em VM Windows 11 pendente)
 - **Versão encontrada/corrigida:** R3.2.84 / R3.2.84 · **Origem:** CI · **Datas:** 2026-11-11 / 2026-11-11
 - **Sintoma:** `System.IO.InvalidDataException: Detalhe: dimensão ou nome incorreto.` em `MainWindowController.ValidateTweakDetail`, fazendo o `REG-UI-001` reprovar e a execução candidata falhar.
 - **Cenário de reprodução:** runner `windows-2022` com ecrã 1024x768 e área de trabalho 1024x728; a asserção exige exatamente 1180x760 e o SO restringe a janela a 1044x760. A mesma árvore byte a byte passa num ambiente de 1920x1080.
 - **Comportamento esperado:** o self-test nativo obtém uma janela de 1180x760; quando a sessão não a comporta, o ambiente é declarado inadequado em vez de o produto ser apontado como defeituoso.
 - **Causa raiz:** limitação do ambiente interativo do runner (área de trabalho menor que a janela contratada), **não** defeito do produto. Diagnóstico provado com o mesmo instrumento nos dois ambientes: local `afterShow=1180x760` (`contractHeld=true`); runner `afterShow=1044x760` (`contractFits=false`). O nome do ajuste foi confirmado correcto pelo bridge (`bridge-PERF-001.json`), o que excluiu a segunda hipótese da mesma asserção. **Categoria:** `ui`.
-- **Correção:** `tools/validation/HostedDisplayPreparation.ps1` prepara um modo de ecrã compatível (1920x1080 → área 1920x1040) **antes** do gate e **falha fechada** quando a área fica abaixo de 1200x800. A expectativa do self-test (1180x760 exatos) **não foi afrouxada**, nenhuma fonte de produção foi alterada e o binário aceite mantém a identidade `62eb3819580efa1d...`.
+- **Classificação:** falha ambiental e de sessão gráfica; **sem evidência de defeito no produto**. O problema é a capacidade gráfica/desktop do host, não a lógica do Win-Slim.
+- **Correção adotada:** `tools/validation/HostedDisplayPreparation.ps1` prepara um modo de ecrã compatível (1920x1080 → área 1920x1040) **antes** do gate e **falha fechada** quando a área fica abaixo de 1200x800. A expectativa do self-test (1180x760 exatos) **não foi afrouxada**, nenhuma fonte de produção foi alterada e o binário aceite mantém a identidade `62eb3819580efa1d...`.
 - **Testes:** `REG-HOSTEDDISPLAY-001` (19 verificações comportamentais: estado real, recusa de requisito impossível, não-mutação no modo de observação, coerência entre a área observada e o contrato da janela) e `REG-UI-001` (suite nativa completa, 67 s).
 - **Evidência de falha prévia:** artefacto da execução `42978644088` (`hosted-diagnostics/window-probe.json` com `afterShow=1044x760`; `bridge-PERF-001.json` com o `name` correcto).
-- **Verificação Windows:** `aprovada` (runs hospedadas `42980308809`, `42982286279` e seguintes, 31/31).
+- **Situação atual:** `REG-UI-001` continua a requerer **validação real na VM Windows 11**. O diagnóstico do ambiente foi concluído e o instrumento de preparação foi corrigido, mas a aprovação final da janela nativa em desktop real continua pendente.
+- **Verificação Windows:** `pendente` para VM Windows 11; os runs hospedados `42980308809` e `42982286279` validaram a capacidade do diagnóstico e da preparação, mas não substituem a sessão física/VM nativa.
 - **Limitações:** a preparação exige sessão interativa com direito a alterar o modo de ecrã; runners sem esse direito falham de forma explícita e o gate não é considerado válido.
 
-### WS-BUG-0007 — Gate local é one-shot (por corrigir)
+### WS-BUG-0007 — Gate local é one-shot
 
-- **Família / severidade / risco:** Gate/Nativo · S2 · N3 · **Estado:** `nao_corrigir`
-- **Versão encontrada:** R3.2.84 · **Origem:** validação · **Data:** 2026-11-10
+- **Família / severidade / risco:** Gate/Nativo · S2 · N3 · **Estado:** `corrigido`
+- **Versão encontrada/corrigida:** R3.2.84 / R3.2.84 · **Origem:** validação · **Datas:** 2026-11-10 / 2026-11-11
 - **Sintoma:** a primeira execução do gate termina com 30/30 e exit 0; a execução imediata seguinte reprova em `REG-UI-001` com `[FAIL] R3.2.84 recebido: bin/WinSlim.UI.Native.R3.2.84.exe`.
 - **Cenário de reprodução:** executar o gate duas vezes consecutivas sem restauro do executável aceite.
-- **Comportamento esperado:** o gate é repetível sem intervenção manual.
+- **Comportamento esperado:** o gate é repetível sem intervenção manual e restaura o estado aceite mesmo quando uma execução falha.
 - **Causa raiz:** o `REG-UI-001` executa build forçado duas vezes; o build publica o novo binário por cima do executável aceite e o `TEST 06B` valida o baseline **antes** do build. **Categoria:** `idempotencia`.
-- **Remediação especificada (não aplicada):** restauro pós-validação no pipeline, verificado por SHA-256 contra o baseline e coberto por caso de regressão próprio (`REG-RESTORE-001`), conforme [achado documentado](../logs/achado-gate-reexecucao-r3.2.84-20261110.md).
-- **Justificativa de não correção nesta etapa:** automatizar o restauro toca o `Validar-Candidato-R3.2.84.ps1` e exige novo caso de regressão; o lote está congelado no diagnóstico do `REG-UI-001` e na consolidação da infraestrutura de CI. A CI hospedada não é afetada (cada execução parte de um checkout novo) e o gate local desta etapa foi executado em cópia descartável.
-- **Verificação Windows:** `pendente`. **Relacionados:** WS-BUG-0006.
+- **Correção:** `tools/validation/NativeBuildRestoration.ps1` captura o EXE/config/cache aceites antes do gate e restaura-os byte a byte no `finally`, com prova SHA-256, staging transacional, rollback em falha parcial e recibo por candidata. `Validar-Candidato-R3.2.84.ps1` passa a falhar se a restauração falhar. Nenhum contrato Apply/Verify/Undo ou fonte C#/WPF foi alterado.
+- **Testes:** `REG-RESTORE-001` (`tests/regression/Test-NativeBuildRestoration-R3.2.84.ps1`), 20 verificações comportamentais na fixture inerte; `REG-PIPELINE-001`; duas candidatas oficiais consecutivas com 32/32 suítes, build e self-test WPF.
+- **Evidência de falha prévia:** `logs/reg-restore-001-red.log` — exit 1 porque `tools/validation/NativeBuildRestoration.ps1` não existia; `logs/achado-gate-reexecucao-r3.2.84-20261110.md` — segunda execução imediata reprovada antes da correção.
+- **Verificação Windows:** `aprovada` — candidatas `logs/candidato-r3284-20261112-040720-434-75e72501` e `logs/candidato-r3284-20261112-041152-998-bd4d5e98`, ambas `TechnicalPassed=true`, 32/32 e restauração do EXE aceite `62eb3819580efa1d1e80151e9934646b796572fe2e9ac786bdb961241a04de62`. **Relacionados:** WS-BUG-0006.
+- **Limitações:** a restauração é uma infraestrutura de gate; não altera produção, contracts Apply/Verify/Undo, publication ou `ProductionApproved=false`.
 
 ### WS-BUG-0008 — Contagem de suítes divergente no escopo
 

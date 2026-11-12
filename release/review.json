@@ -32,9 +32,10 @@
     "REG-OVERLAYTHEME-001",
     "REG-HOSTEDCI-001",
     "REG-BUILDIDENTITY-001",
-    "REG-HOSTEDDISPLAY-001"
+    "REG-HOSTEDDISPLAY-001",
+    "REG-RESTORE-001"
   ],
-  "registrySHA256": "73a9730bae481a48266553af719e045c98aa53a5cefa4be2a25dd51f0c6c229e",
+  "registrySHA256": "c6ac9d0ad1f4775040b4527b5a236853e4935393263c72d7d450c8a08e02b6fc",
   "activeFiles": {
     ".github/workflows/windows-candidate.yml": "e981200abdefdcbf9b03e4ea18b046d7ed7d8c7f575f4d09cbab9344311f7966",
     "Executar-Regressoes.ps1": "e2321f5921828604420ebefe7b7d49737955d297f29039b9ec3013121d83ff65",
@@ -53,7 +54,7 @@
     "tests/Test-Fase7-R3.2.84-NativeUI.ps1": "1edc5a9d2db2e5e864b3115253a57a3789fde018337c38c4af230197d2328558",
     "tests/Test-Fase7-R3.2.84-OverlaySettings.ps1": "b194f335b7ea78b14b61e9e526d46374f4e0988bb715f5e7877d1617ec9fe234",
     "tests/Test-Fase7-R3.2.84-Performance.ps1": "735aab3535b99f8d81f277235c9095612dce74dede404d9392b0db33c860ac59",
-    "tests/Test-Fase7-R3.2.84-Pipeline.ps1": "138358fe6f32ab5a832613171fcc95ee37202583aa0a5c9ce4daab875dcc7b50",
+    "tests/Test-Fase7-R3.2.84-Pipeline.ps1": "49382d234d720037e2ca4d7093bf6083c50ff78414d0a0b2836d05828a061df0",
     "tests/Test-Fase7-R3.2.84-PresentMonData.ps1": "c32dca9210f71f5a398af8289a6515c04d76539ec4a70c6a2fa952461a0f2082",
     "tests/Test-Fase7-R3.2.84-QolBatch.ps1": "61c6b0a4582f98809259d1001d5feb94654e257870b70dec0b0a500e43246f39",
     "tests/Test-Fase7-R3.2.84-Report.ps1": "2ba1adfc1698f512742bf6f11b741e95f29d55ba4e9fe651148c5bec33148ed5",
@@ -90,7 +91,10 @@
     "tests/test_ci_evidence.py": "32c382877b2bba213e8a20fa0d0dfcb6081acebffbf8f1e7dfd12130a24ebc05",
     "tests/regression/Test-HostedCI-R3.2.84.ps1": "6aacbcb5c763e9dffd737084b3ba182dd13f83f14e9a0e47285783070a1d4d2c",
     "tools/validation/NativeBuildIntegrity.ps1": "2c58e279ab9a9a18bdc9ac885e067d66f99a4a7475ded689146bdc38feb6893d",
-    "tests/regression/Test-NativeBuildIntegrity-R3.2.84.ps1": "a1810ab3a55014a93d0635f4b82d9508d624dca86f2fffad0b39fa9293e9227a"
+    "tests/regression/Test-NativeBuildIntegrity-R3.2.84.ps1": "a1810ab3a55014a93d0635f4b82d9508d624dca86f2fffad0b39fa9293e9227a",
+    "tests/regression/Test-NativeBuildRestoration-R3.2.84.ps1": "c7f89efd60d96c42b64a32336452922f6de8b08f8da57290855828f05174ceae",
+    "tools/validation/NativeBuildRestoration.ps1": "ca4133e429034597cb8616f604b32c8fab4b4f1289be028e51cb4c046b76f73a",
+    "Validar-Candidato-R3.2.84.ps1": "6234db93eb887d6322f8c672955e12bc35ddf94b0a819445de7a9cd864d217be"
   },
   "guardOnlyFiles": {
     "tests/Test-Fase7-R3.2.84-PresentMon.ps1": "f3661f74179112673dc3a60b4c0fcc04aa03a02940ecad179a2c5087c06a1e14",
@@ -100,5 +104,5 @@
     "tests/PresentMonHarness.cs": "cffa2146ccd3a3f25da40f88eeedc1085270860f2d1745713e482aca0e0a5f71",
     "tests/MonitorHarness.cs": "f5e595c97597d07504ecaf358b49d0be8c0c67426c44a92b2bb54ebb6a6e84fb"
   },
-  "notes": "Contained-component scope decision: current gate runs DLL-only data fixtures and production sources only; PresentMonHarness/MonitorHarness stay held, never compiled or executed. Historical manufacturer incident remains unresolved; production not approved. Evidence: REVISAO-TECNICA-GATE-R3.2.84.md Extension authorized 2026-10-26: REG-HOTKEY-001, production BenchmarkSettings and independent DLL-only HotkeyWParamFixture, provenance recorder; 27 registered suites. No retired source compiled or executed. Authorized overlay-theme extension: per-game optional preference, theme-only synchronization, independent WPF DLL fixture and controller pending-capture self-test; 28 cases. No retired family generation/execution. Hosted CI extension 2026-10-29: REG-HOSTEDCI-001, byte-preserving Git attributes, pinned workflow and text-only current-run evidence transport; no held component generation, production source changes, physical/VM acceptance or publication. Hosted success remains pending until a real run. Hosted CI extension 2026-10-29: REG-HOSTEDCI-001, byte-preserving Git attributes, pinned workflow and text-only current-run evidence transport; no held component generation, production source changes, physical/VM acceptance or publication. Hosted success remains pending until a real run. Local official gate exposed non-deterministic rebuild versus delivered EXE identity; REG-BUILDIDENTITY-001 preserves all baseline expectations before compilation and rechecks inputs plus official current-build receipt outputs after self-test. Native test runner and two independent integrity files explicitly reviewed; no builder or production source changed."
+  "notes": "Contained-component scope decision: current gate runs DLL-only data fixtures and production sources only; PresentMonHarness/MonitorHarness stay held, never compiled or executed. Historical manufacturer incident remains unresolved; production not approved. Evidence: REVISAO-TECNICA-GATE-R3.2.84.md Extension authorized 2026-10-26: REG-HOTKEY-001, production BenchmarkSettings and independent DLL-only HotkeyWParamFixture, provenance recorder; 27 registered suites. No retired source compiled or executed. Authorized overlay-theme extension: per-game optional preference, theme-only synchronization, independent WPF DLL fixture and controller pending-capture self-test; 28 cases. No retired family generation/execution. Hosted CI extension 2026-10-29: REG-HOSTEDCI-001, byte-preserving Git attributes, pinned workflow and text-only current-run evidence transport; no held component generation, production source changes, physical/VM acceptance or publication. Hosted success remains pending until a real run. Hosted CI extension 2026-10-29: REG-HOSTEDCI-001, byte-preserving Git attributes, pinned workflow and text-only current-run evidence transport; no held component generation, production source changes, physical/VM acceptance or publication. Hosted success remains pending until a real run. Local official gate exposed non-deterministic rebuild versus delivered EXE identity; REG-BUILDIDENTITY-001 preserves all baseline expectations before compilation and rechecks inputs plus official current-build receipt outputs after self-test. Native test runner and two independent integrity files explicitly reviewed; no builder or production source changed. Local gate restoration extension 2026-11-11: REG-RESTORE-001 adds a transactional post-validation restoration of the accepted EXE, config and build cache. Evidence is compressed and hash-verified; partial replacement rolls back in reverse order. No Apply/Verify/Undo, production source, held harness, VM acceptance or publication changed."
 }

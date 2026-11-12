@@ -8,4 +8,5 @@ R3.2.84 — CI Windows hospedada executada e consolidada
 - docs/BUGLOG.md criado com o registo WS-BUG-0001 a WS-BUG-0010 e a classificacao das suites quanto ao ambiente de execucao.
 - AGENTS.md revisto (N3-lite): requisitos do ambiente da CI hospedada e do registo de bugs.
 - ProductionApproved=false e distribuicao em hold: incidente AV-20261021-001 continua sem resolucao do fabricante e os acceptes fisicos permanecem pendentes.
-- Defeito conhecido e nao corrigido: o gate local e one-shot porque o build forcado substitui bin/ (WS-BUG-0007, remediacao REG-RESTORE-001 especificada).
+- Fixed WS-BUG-0007: REG-RESTORE-001 automatiza a captura e restauracao byte-a-byte do EXE/config/cache aceites apos o gate, inclusive em falha, com rollback transacional e recibo por candidata. Nenhum contrato Apply/Verify/Undo nem fonte C#/WPF foi alterado.
+- O gate local deixou de ser one-shot: duas candidatas oficiais consecutivas passaram 32/32 suites e repuseram o binario aceite `62eb3819...` sem restauro manual.
